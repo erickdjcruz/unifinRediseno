@@ -38,7 +38,7 @@ class Prospects_AsignacionPO
 
             $bean->assigned_user_id = $id_asignado;
             //Alianzas
-            $bean->origen_c = '12';
+            // $bean->origen_c = '12';
             $bean->compania_po_c = '1'; //Compañia: Unifin
 
 
