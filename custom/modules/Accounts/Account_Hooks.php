@@ -1994,34 +1994,26 @@ where rfc_c = '{$bean->rfc_c}' and
 
     public function ActualizaEmpleadosDDW($bean_account = null, $event = null, $args = null)
     {
-
-        $ddw_empleados = $bean_account->empleados_c;
-        $txt_empleados = $bean_account->total_empleados_c;
-
-        if (($txt_empleados > 0) && (!empty($txt_empleados))) {
-
-            if (($txt_empleados > 0) && ($txt_empleados <= 10)) {
+        $totalEmpleados = $bean_account->total_empleados_c;
+        //ACTUALIZA LA LISTA DE NÚMERO DE EMPLEADOS CONTRA EL NÚMERO DE EMPLEADOS EXACTOS
+        if ($totalEmpleados >= 0) {
+            $GLOBALS['log']->fatal("TOTAL EMPLEADOS EXACTOS ". $totalEmpleados);
+            if ($totalEmpleados <= 10) {
                 $bean_account->empleados_c = '0a10';
-            }
-            if (($txt_empleados > 10) && ($txt_empleados <= 50)) {
+            } elseif ($totalEmpleados <= 50) {
                 $bean_account->empleados_c = '11a50';
-            }
-            if (($txt_empleados > 50) && ($txt_empleados <= 100)) {
+            } elseif ($totalEmpleados <= 100) {
                 $bean_account->empleados_c = '51a100';
-            }
-            if (($txt_empleados > 100) && ($txt_empleados <= 250)) {
+            } elseif ($totalEmpleados <= 250) {
                 $bean_account->empleados_c = '101a250';
-            }
-            if (($txt_empleados > 250) && ($txt_empleados <= 500)) {
+            } elseif ($totalEmpleados <= 500) {
                 $bean_account->empleados_c = '251a500';
-            }
-            if (($txt_empleados > 500) && ($txt_empleados <= 1000)) {
+            } elseif ($totalEmpleados <= 1000) {
                 $bean_account->empleados_c = '501a1000';
-            }
-            if ($txt_empleados > 1000) {
+            } else {
                 $bean_account->empleados_c = '1001';
             }
-
+            $GLOBALS['log']->fatal("ACTUALIZA LISTA DE EMPLEADOS ". $bean_account->empleados_c);
         }
     }
 
