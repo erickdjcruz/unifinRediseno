@@ -1086,6 +1086,32 @@
           });
           return false;
         }
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13')) {
+            //VALIDA EMAIL DEL ASESOR DE ALIANZA
+            if (this.model.get('email_aa_c') === null || this.model.get('email_aa_c') === "") {
+                // Si no hay un email proporcionado
+                app.alert.show('Error_validar_email_alianza', {
+                    level: 'error',
+                    autoClose: false,
+                    messages: 'Se requiere agregar un <b>Email del Asesor de Alianza</b> para el PO.'
+                });
+                return false;        
+
+            } else {
+                var inputEAA = this.model.get('email_aa_c'); // Obtenemos el email
+                var expresionEAA = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
+                                                
+                if (!expresionEAA.test(inputEAA)) {
+                    // Si el formato del email no es válido
+                    app.alert.show('Error_validar_email_aa', {
+                        level: 'error',
+                        autoClose: false,
+                        messages: 'Se requiere un <b>Email del Asesor de Alianza</b> válido para el PO.'
+                    });
+                    return false;
+                }
+            }
+        }        
         
         var id_prospecto = this.model.get('id');
         var buttonReenvio = this.getField('reenvio_correo');

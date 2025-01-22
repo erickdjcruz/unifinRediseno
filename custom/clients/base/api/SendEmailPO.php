@@ -64,7 +64,8 @@ class SendEmailPO extends SugarApi
         $linkPO=$GLOBALS['sugar_config']['site_url'].'/#Prospects/'.$id_prospecto;
         $nombreEmpresa = $beanPO->empresa_po_c;
         $email_po = $beanPO->email1;
-
+        $nombre_asesor_alianza = $beanPO->asesor_alianza_c; 
+        $email_asesor_alianza = $beanPO->email_aa_c;    
         $envio_previo = $beanPO->envio_correo_po_c;
         $id_asesor = $beanPO->assigned_user_id;
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
@@ -101,7 +102,7 @@ class SendEmailPO extends SugarApi
             //Enviando correo
             //ToDO: Antes de enviar, validar que si se haya encontrado un director para enviar notificación y no se intenta mandar correo a una dirección vacía
             if( $email_comercial != "" || $email_regional != ""){
-                $this->sendEmailNotificationPO( $nombre_empresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail );
+                $this->sendEmailNotificationPO($nombreEmpresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail, $nombre_asesor_alianza, $email_asesor_alianza);
                 $response = "Se envió notificación a: ". $name_comercial. " y " .$name_regional; 
             }else{
                 $response = "No existe Director Comercial al que se le pueda enviar notificación"; 
@@ -127,8 +128,8 @@ class SendEmailPO extends SugarApi
             $body_mail_asesor = $this->buildBodyNotificationAsesor( $asesorName, $beanPO->name );
 
             if( !empty($email_asesor) ){
-                $this->sendEmailAsesorPO( $body_mail_asesor, $nombreEmpresa ,$email_asesor, $asesorName, $email_comercial, $name_comercial, $email_regional, $name_regional );
-                $response .= "<br>Se envió notificación a: ". $asesorName. " , " .$name_comercial. " , ".$name_regional; 
+                $this->sendEmailAsesorPO($body_mail_asesor, $nombreEmpresa ,$email_asesor, $asesorName, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza);
+                $response .= "<br>Se envió notificación a: ". $asesorName. " , " .$name_comercial. " , ".$name_regional. " , ".$nombre_asesor_alianza; 
             }
 
             //Se establece bandera para indicar que ya se ha enviado el correo previamente
@@ -152,8 +153,10 @@ class SendEmailPO extends SugarApi
 
         $beanPO = BeanFactory::retrieveBean('Prospects', $id_prospecto, array('disable_row_level_security' => true));
         $email_po = $beanPO->email1;
-
         $id_asesor = $beanPO->assigned_user_id;
+        $nombreEmpresa = $beanPO->empresa_po_c;
+        $nombre_asesor_alianza = $beanPO->asesor_alianza_c; 
+        $email_asesor_alianza = $beanPO->email_aa_c; 
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
         $telefono_asesor = $beanAsesor->phone_mobile;
@@ -196,8 +199,8 @@ class SendEmailPO extends SugarApi
         $body_mail_asesor = $this->buildBodyNotificationAsesor( $asesorName, $beanPO->name );
 
         if( !empty($email_asesor) ){
-            $this->sendEmailAsesorPO( $body_mail_asesor, $nombreEmpresa ,$email_asesor, $asesorName, $email_comercial, $name_comercial, $email_regional, $name_regional );
-            $response .= "<br>Se envió notificación a: ". $asesorName. " , " .$name_comercial. " , ".$name_regional; 
+            $this->sendEmailAsesorPO($body_mail_asesor, $nombreEmpresa ,$email_asesor, $asesorName, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza);
+            $response .= "<br>Se envió notificación a: ". $asesorName. " , " .$name_comercial. " , ".$name_regional. " , ".$nombre_asesor_alianza; 
         }
 
         //Resetea banderas
@@ -217,8 +220,9 @@ class SendEmailPO extends SugarApi
         $beanPO = BeanFactory::retrieveBean('Prospects', $id_prospecto, array('disable_row_level_security' => true));
         $nombreEmpresa = $beanPO->empresa_po_c;
         $email_po = $beanPO->email1;
-
         $id_asesor = $beanPO->assigned_user_id;
+        $nombre_asesor_alianza = $beanPO->asesor_alianza_c; 
+        $email_asesor_alianza = $beanPO->email_aa_c;
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
         $telefono_asesor = $beanAsesor->phone_mobile;
@@ -248,8 +252,8 @@ class SendEmailPO extends SugarApi
         $body_correo_rechazo = $this->buildBodyRechazo( $asesorName, $beanPO->name );
 
         if( !empty($email_asesor) ){
-            $this->sendEmailNotificationRechazo( $body_correo_rechazo, $nombreEmpresa ,$email_asesor, $asesorName, $email_comercial, $name_comercial, $email_regional, $name_regional );
-            $response = "<br>Se envió notificación de rechazo a: ". $asesorName; 
+            $this->sendEmailNotificationRechazo($body_correo_rechazo, $nombreEmpresa ,$email_asesor, $asesorName, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza);
+            $response = "<br>Se envió notificación de rechazo a: ". $asesorName. " , ".$nombre_asesor_alianza; 
         }
 
         //Resetea banderas
@@ -1402,7 +1406,7 @@ class SendEmailPO extends SugarApi
 
     }
 
-    public function sendEmailNotificationPO( $nombre_empresa, $email, $name_email, $email_cc, $name_email_cc, $body_correo ){
+    public function sendEmailNotificationPO($nombre_empresa, $email, $name_email, $email_cc, $name_email_cc, $body_correo, $nombre_asesor_alianza, $email_asesor_alianza){
 
         try{
             $mailer = MailerFactory::getSystemDefaultMailer();
@@ -1422,10 +1426,18 @@ class SendEmailPO extends SugarApi
                 if($email_cc != "") {
                     $mailer->addRecipientsCc(new EmailIdentity($email_cc, $name_email_cc));
                 }
+                //CON COPIA A EMAIL ASESOR ALIANZA
+                if($email_asesor_alianza != "") {
+                    $mailer->addRecipientsCc(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
+                }
 
             } elseif ($email_cc != "") {
                 //DIRECCION PRINCIPAL A EMAIL REGIONAL
                 $mailer->addRecipientsTo(new EmailIdentity($email_cc, $name_email_cc));
+                //CON COPIA A EMAIL ASESOR ALIANZA
+                if($email_asesor_alianza != "") {
+                    $mailer->addRecipientsCc(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
+                }
             }
             
             $GLOBALS['log']->fatal("ENVIANDO CORREO A: ".$email." / ".$email_cc );
@@ -1483,7 +1495,7 @@ class SendEmailPO extends SugarApi
 
     }
 
-    public function sendEmailAsesorPO( $body_correo, $nombre_empresa ,$email_asesor, $name_asesor, $email_comercial, $name_comercial, $email_regional, $name_regional ){
+    public function sendEmailAsesorPO($body_correo, $nombre_empresa ,$email_asesor, $name_asesor, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza){
 
         try{
             $mailer = MailerFactory::getSystemDefaultMailer();
@@ -1503,10 +1515,15 @@ class SendEmailPO extends SugarApi
             if($email_regional !="" ){
                 $mailer->addRecipientsCc(new EmailIdentity($email_regional, $name_regional));
             }
+            //CON COPIA A EMAIL ASESOR ALIANZA
+            if($email_asesor_alianza != "") {
+                $mailer->addRecipientsCc(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
+            }
             
             $GLOBALS['log']->fatal("ENVIANDO CORREO ASESOR: ".$email_asesor );
             $GLOBALS['log']->fatal("ENVIANDO CORREO COMERCIAL: ".$email_comercial );
             $GLOBALS['log']->fatal("ENVIANDO CORREO REGIONAL: ".$email_regional );
+            $GLOBALS['log']->fatal("ENVIANDO CORREO ASESOR ALIANZA: ".$email_asesor_alianza );
             $result = $mailer->send();
 
         } catch (Exception $e){
@@ -1517,7 +1534,7 @@ class SendEmailPO extends SugarApi
 
     }
 
-    public function sendEmailNotificationRechazo( $body_correo, $nombre_empresa ,$email_asesor, $name_asesor, $email_comercial, $name_comercial, $email_regional, $name_regional ){
+    public function sendEmailNotificationRechazo($body_correo, $nombre_empresa ,$email_asesor, $name_asesor, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza){
 
         try{
             $mailer = MailerFactory::getSystemDefaultMailer();
@@ -1538,10 +1555,15 @@ class SendEmailPO extends SugarApi
             if ($email_regional != "") {
                 $mailer->addRecipientsCc(new EmailIdentity($email_regional, $name_regional));
             }
+            //CON COPIA A EMAIL ASESOR ALIANZA
+            if($email_asesor_alianza != "") {
+                $mailer->addRecipientsCc(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
+            }
             
             $GLOBALS['log']->fatal("ENVIANDO CORREO DE RECHAZO ASESOR: ".$email_asesor );
             $GLOBALS['log']->fatal("ENVIANDO CORREO DE RECHAZO COMERCIAL: ".$email_comercial );
             $GLOBALS['log']->fatal("ENVIANDO CORREO DE RECHAZO REGIONAL: ".$email_regional );
+            $GLOBALS['log']->fatal("ENVIANDO CORREO DE RECHAZO ASESOR ALIANZA: ".$email_asesor_alianza );
             $result = $mailer->send();
 
         } catch (Exception $e){
