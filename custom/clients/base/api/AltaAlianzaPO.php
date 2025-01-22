@@ -106,7 +106,11 @@ class AltaAlianzaPO extends SugarApi
                             $beanProspect->$clave = $valor;
                         }
                     }
-
+                    
+                    if($beanProspect->detalle_origen_c=="12"||$beanProspect->detalle_origen_c=="13"){
+                        $beanProspect->origen_c = '12';
+                    }
+                    
                     //Guarda bean y devuelve estructura
                     $beanProspect->save();
 
