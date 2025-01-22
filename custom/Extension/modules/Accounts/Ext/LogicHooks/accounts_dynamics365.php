@@ -1,5 +1,5 @@
 <?php
-
+/*
 $hook_array['after_save'][] = Array(
     22,
     'Establece integración con Dynamics 365',
@@ -7,3 +7,4 @@ $hook_array['after_save'][] = Array(
     'Accounts_Dynamics365',
     'IntegraDynamics'
 );
+*/
