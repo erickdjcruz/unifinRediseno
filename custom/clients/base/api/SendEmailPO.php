@@ -102,7 +102,7 @@ class SendEmailPO extends SugarApi
             //Enviando correo
             //ToDO: Antes de enviar, validar que si se haya encontrado un director para enviar notificación y no se intenta mandar correo a una dirección vacía
             if( $email_comercial != "" || $email_regional != ""){
-                $this->sendEmailNotificationPO($nombreEmpresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail, $nombre_asesor_alianza, $email_asesor_alianza);
+                $this->sendEmailNotificationPO($nombreEmpresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail);
                 $response = "Se envió notificación a: ". $name_comercial. " y " .$name_regional; 
             }else{
                 $response = "No existe Director Comercial al que se le pueda enviar notificación"; 
@@ -1406,7 +1406,7 @@ class SendEmailPO extends SugarApi
 
     }
 
-    public function sendEmailNotificationPO($nombre_empresa, $email, $name_email, $email_cc, $name_email_cc, $body_correo, $nombre_asesor_alianza, $email_asesor_alianza){
+    public function sendEmailNotificationPO($nombre_empresa, $email, $name_email, $email_cc, $name_email_cc, $body_correo){
 
         try{
             $mailer = MailerFactory::getSystemDefaultMailer();
@@ -1426,18 +1426,10 @@ class SendEmailPO extends SugarApi
                 if($email_cc != "") {
                     $mailer->addRecipientsCc(new EmailIdentity($email_cc, $name_email_cc));
                 }
-                //CON COPIA A EMAIL ASESOR ALIANZA
-                if($email_asesor_alianza != "") {
-                    $mailer->addRecipientsCc(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
-                }
 
             } elseif ($email_cc != "") {
                 //DIRECCION PRINCIPAL A EMAIL REGIONAL
                 $mailer->addRecipientsTo(new EmailIdentity($email_cc, $name_email_cc));
-                //CON COPIA A EMAIL ASESOR ALIANZA
-                if($email_asesor_alianza != "") {
-                    $mailer->addRecipientsCc(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
-                }
             }
             
             $GLOBALS['log']->fatal("ENVIANDO CORREO A: ".$email." / ".$email_cc );
@@ -1517,7 +1509,7 @@ class SendEmailPO extends SugarApi
             }
             //CON COPIA A EMAIL ASESOR ALIANZA
             if($email_asesor_alianza != "") {
-                $mailer->addRecipientsCc(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
+                $mailer->addRecipientsTo(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
             }
             
             $GLOBALS['log']->fatal("ENVIANDO CORREO ASESOR: ".$email_asesor );
@@ -1557,7 +1549,7 @@ class SendEmailPO extends SugarApi
             }
             //CON COPIA A EMAIL ASESOR ALIANZA
             if($email_asesor_alianza != "") {
-                $mailer->addRecipientsCc(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
+                $mailer->addRecipientsTo(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
             }
             
             $GLOBALS['log']->fatal("ENVIANDO CORREO DE RECHAZO ASESOR: ".$email_asesor );
