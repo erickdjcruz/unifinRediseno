@@ -45,7 +45,7 @@
         this.model.addValidationTask('check_info', _.bind(this.doValidateInfoReq, this));
         //this.model.addValidationTask('macrosector', _.bind(this.macrosector, this));
         // this.model.addValidationTask('sectoreconomico', _.bind(this.sectoreconomico, this));
-        this.model.addValidationTask('checkEmptyFieldsDire', _.bind(this.validadirecc, this));
+        //this.model.addValidationTask('checkEmptyFieldsDire', _.bind(this.validadirecc, this));
         this.model.addValidationTask('change:email', _.bind(this.expmail, this));
         //Valida que el campo Alta Cedente este check en el perfil del usuario. Adrian Arauz 20/09/2018
         this.model.addValidationTask('check_alta_cedente', _.bind(this.validacedente, this));
@@ -2106,7 +2106,7 @@
                         console.log('Validacion Dir.Nacional');
                         var direcciones = this.oDirecciones.direccion;
                         for (i = 0; i < direcciones.length; i++) {
-                            if (direcciones[i].pais == 2 && direcciones[i].inactivo == 0) {
+                            if (direcciones[i].pais == 2 && direcciones[i].inactivo == 0 || direcciones[i].sinSepomex) {
                                 nacional = 1;
                             }
                         }
@@ -5217,6 +5217,7 @@
                         var indicador = data.records[i].indicador;
                         var indicadorSeleccionados = '^' + listMapIndicador[indicador].replace(/,/gi, "^,^") + '^';
                         
+                        /*
                         var valCodigoPostal = data.records[i].dire_direccion_dire_codigopostal_name;
                         var idCodigoPostal = data.records[i].dire_direccion_dire_codigopostaldire_codigopostal_ida;
                         var valPais = data.records[i].dire_direccion_dire_pais_name;
@@ -5229,6 +5230,32 @@
                         var idCiudad = data.records[i].dire_direccion_dire_ciudaddire_ciudad_ida;
                         var valColonia = data.records[i].dire_direccion_dire_colonia_name;
                         var idColonia = data.records[i].dire_direccion_dire_coloniadire_colonia_ida;
+                        */
+                       //Se obtiene campo description para obtener los id (recordar que el description guarda los id separados por pipeline | 
+                        //ejemplo: "{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}"
+
+                        var description=data.records[i].description;
+
+                        var ids=description.split('|');
+
+                        var identificadorPais=ids[0];
+                        var identificadorEstado=ids[1];
+                        var identificadorCiudad=ids[2];
+                        var identificadorMunicipio=ids[3];
+                        var identificadorColonia=ids[4];
+
+                        var valCodigoPostal = data.records[i].codigo_postal_c;
+                        var idCodigoPostal=data.records[i].dir_sepomex_dire_direcciondir_sepomex_ida;
+                        var valPais = data.records[i].pais_c;
+                        var idPais = identificadorPais;
+                        var valEstado = data.records[i].estado_c;
+                        var idEstado = identificadorEstado;
+                        var valMunicipio = data.records[i].municipio_c;
+                        var idMunicipio = identificadorMunicipio;
+                        var valCiudad = data.records[i].ciudad_c;
+                        var idCiudad=identificadorCiudad;
+                        var valColonia = data.records[i].colonia_c;
+                        var idColonia = identificadorColonia;
                         var calle = data.records[i].calle;
                         var numExt = data.records[i].numext;
                         var numInt = data.records[i].numint;
@@ -5292,6 +5319,23 @@
                             "validaDireccion":validaDireccion
                         };
 
+                        if( _.isEmpty( idCodigoPostal ) ){
+                            app.alert.show("no_match_sepomex", {
+                                level: "info",
+                                messages: 'Una dirección no está homologada con sepomex.<br>Favor de verificar.',
+                                autoClose: false
+                            });
+                            direccion['sinSepomex'] = true;
+
+                            direccion['oldCP'] = data.records[i].dire_direccion_dire_codigopostal_name;
+                            direccion['oldPais'] = data.records[i].dire_direccion_dire_pais_name;
+                            direccion['oldEstado'] = data.records[i].dire_direccion_dire_estado_name;
+                            direccion['oldMunicipio'] = data.records[i].dire_direccion_dire_municipio_name;
+                            direccion['oldCiudad'] = data.records[i].dire_direccion_dire_ciudad_name;
+                            direccion['oldColonia'] = data.records[i].dire_direccion_dire_colonia_name;
+
+                        }
+
                         //Agregar dirección
                         contexto_cuenta.oDirecciones.direccion.push(direccion);
 
@@ -5306,6 +5350,7 @@
                                     var list_municipios = data.municipios;
                                     //var city_list = App.metadata.getCities();
                                     var city_list = data.ciudades_metadata;
+                                    var list_ciudades=data.ciudades;
                                     var list_estados = data.estados;
                                     var list_colonias = data.colonias;
                                     //Poarsea valores para listas
@@ -5333,24 +5378,31 @@
                                     //Colonia
                                     listColonia = {};
                                     for (var i = 0; i < list_colonias.length; i++) {
-                                        listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
+                                        //listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
+                                        listColonia[i]={};
+                                        listColonia[i]['idColonia']=list_colonias[i].idColonia;
+                                        listColonia[i]['nameColonia']=list_colonias[i].nameColonia;
+                                        listColonia[i]['idCodigoPostal']=list_colonias[i].idCodigoPostal;
                                     }
 
                                     //Se ordena la lista de colonias
+                                    /*
                                     var  arrayColonias = Object.entries(listColonia);
                                     // Ordenar el array por valores de manera ascendente
                                     arrayColonias.sort(function (a, b) {
                                         return a[1].localeCompare(b[1]);
                                     });
+                                    */
                                     // Se establece el arreglo ya ordenado
-                                    listColonia = Object.fromEntries(arrayColonias);
+                                    //listColonia = Object.fromEntries(arrayColonias);
 
                                     contexto_cuenta.oDirecciones.direccion[data.indice].listColonia = listColonia;
                                     contexto_cuenta.oDirecciones.direccion[data.indice].listColoniaFull = listColonia;
                                     //Ciudad
-                                    listCiudad = {}
+                                    //listCiudad = {}
                                     idSinCiudad='';
-                                    ciudades = Object.values(city_list);
+                                    //ciudades = Object.values(city_list);
+                                    /*
                                     for (var [key, value] of Object.entries(contexto_cuenta.oDirecciones.direccion[data.indice].listEstado)) {
                                         for (var i = 0; i < ciudades.length; i++) {
                                             if (ciudades[i].estado_id == key) {
@@ -5358,6 +5410,11 @@
                                                 idSinCiudad = (ciudades[i].name == 'SIN CIUDAD') ? ciudades[i].id : idSinCiudad;
                                             }
                                         }
+                                    }
+                                    */
+                                    listCiudad = {};
+                                    for (var i = 0; i < list_ciudades.length; i++) {
+                                        listCiudad[list_ciudades[i].idCiudad] = list_ciudades[i].nameCiudad;
                                     }
 
                                     //Se ordena la lista de ciudades
@@ -9216,6 +9273,7 @@ validaReqUniclickInfo: function () {
 		app.api.call('read', url, {}, {
 			success: _.bind(function (resumen) {
                 contexto_cuenta.showSubpanels();
+                contexto_cuenta.renderDireccionSinSepomex();
 				if(resumen.error_dynamics365_c) {
 					app.alert.show('error_otp', {
 						level: 'warning',
@@ -9250,6 +9308,26 @@ validaReqUniclickInfo: function () {
           this.refreshAllSubpanels();
 
 
+    },
+
+    /**
+     * Se aplica render de account_direcciones en caso de que la(s) dirección(es) tengan el problema de que no tenga match con sepomex
+     */
+    renderDireccionSinSepomex:function(){
+        
+       const sinMatchSepomex = [];
+
+       for (let index = 0; index < contexto_cuenta.oDirecciones.direccion.length; index++) {
+        if( contexto_cuenta.oDirecciones.direccion[index].hasOwnProperty("sinSepomex") ){
+            sinMatchSepomex.push(1);
+        }
+       }
+
+       if( sinMatchSepomex.includes(1) ){
+
+        cont_dir.render();
+
+       }
     },
 
     refreshAllSubpanels: function() {

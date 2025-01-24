@@ -120,6 +120,7 @@ SQL;
         $calle=$bean->calle;
         $numext=$bean->numext;
         $numint=$bean->numint;
+        /*
         $colonia=$bean->dire_direccion_dire_colonia_name;
         if($colonia==null){
             $id_colonia=$bean->dire_direccion_dire_coloniadire_colonia_ida;
@@ -139,6 +140,15 @@ SQL;
             $municipioName = $GLOBALS['db']->fetchByAssoc($querymunicipio);
             $municipio=$municipioName['name'];
         }
+        */
+        //Con base al id de sepomex, se establece el nombre completo de la dirección
+        $id_sepomex = $bean->dir_sepomex_dire_direcciondir_sepomex_ida;
+        $querySepomex = "SELECT * FROM dir_sepomex WHERE id = '{$id_sepomex}'";
+        $GLOBALS['log']->fatal($querySepomex);
+        $querySepomexResult = $GLOBALS['db']->query($querySepomex);
+        $sepomexInfo = $GLOBALS['db']->fetchByAssoc($querySepomexResult);
+        $municipio=$sepomexInfo['municipio'];
+        $colonia=$sepomexInfo['colonia'];
 
         $direccion_completa =$calle." ".$numext." ".($numint != "" ? "Int: ".$numint:""). ", Colonia ".$colonia.", Municipio ".$municipio;
 
@@ -176,18 +186,31 @@ SQL;
                             $GLOBALS['log']->fatal("FEETCHED RELATED");
                             $GLOBALS['log']->fatal(print_r($bean->rel_fields_before_value,true));
     
-                            $cp_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_codigopostaldire_codigopostal_ida');
-                            $cp_por_actualizar = $bean->dire_direccion_dire_codigopostaldire_codigopostal_ida;
-                            $pais_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_paisdire_pais_ida');
-                            $pais_por_actualizar = $bean->dire_direccion_dire_paisdire_pais_ida;
-                            $estado_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_estadodire_estado_ida');
-                            $estado_por_actualizar = $bean->dire_direccion_dire_estadodire_estado_ida;
-                            $municipio_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_municipiodire_municipio_ida');
-                            $municipio_por_actualizar = $bean->dire_direccion_dire_municipiodire_municipio_ida;
-                            $ciudad_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_ciudaddire_ciudad_ida');
-                            $ciudad_por_actualizar = $bean->dire_direccion_dire_ciudaddire_ciudad_ida;
-                            $colonia_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_coloniadire_colonia_ida');
-                            $colonia_por_actualizar = $bean->dire_direccion_dire_coloniadire_colonia_ida;
+                            // $cp_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_codigopostaldire_codigopostal_ida');
+                            // $cp_por_actualizar = $bean->dire_direccion_dire_codigopostaldire_codigopostal_ida;
+                            // $pais_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_paisdire_pais_ida');
+                            // $pais_por_actualizar = $bean->dire_direccion_dire_paisdire_pais_ida;
+                            // $estado_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_estadodire_estado_ida');
+                            // $estado_por_actualizar = $bean->dire_direccion_dire_estadodire_estado_ida;
+                            // $municipio_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_municipiodire_municipio_ida');
+                            // $municipio_por_actualizar = $bean->dire_direccion_dire_municipiodire_municipio_ida;
+                            // $ciudad_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_ciudaddire_ciudad_ida');
+                            // $ciudad_por_actualizar = $bean->dire_direccion_dire_ciudaddire_ciudad_ida;
+                            // $colonia_actual = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_coloniadire_colonia_ida');
+                            // $colonia_por_actualizar = $bean->dire_direccion_dire_coloniadire_colonia_ida;
+                            $cp_actual = $bean->fetched_row['codigo_postal_c'];
+                            $cp_por_actualizar = $bean->codigo_postal_c;
+                            $pais_actual = $bean->fetched_row['pais_c'];
+                            $pais_por_actualizar = $bean->pais_c;
+                            $estado_actual = $bean->fetched_row['estado_c'];
+                            $estado_por_actualizar = $bean->estado_c;
+                            $municipio_actual = $bean->fetched_row['municipio_c'];
+                            $municipio_por_actualizar = $bean->municipio_c;
+                            $ciudad_actual =  $bean->fetched_row['ciudad_c'];;
+                            $ciudad_por_actualizar = $bean->ciudad_c;
+                            $colonia_actual = $bean->fetched_row['colonia_c'];
+                            $colonia_por_actualizar =  $bean->colonia_c;
+
                             $calle_actual = $bean->fetched_row['calle'];
                             $calle_por_actualizar = $bean->calle;
                             $numext_actual = $bean->fetched_row['numext'];
@@ -197,12 +220,18 @@ SQL;
                             $fecha_cambio = "";
     
                             //Armando direccion completa actual
-                            $current_cp = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_codigopostal_name');
-                            $current_pais = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_pais_name');
-                            $current_estado = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_estado_name');
-                            $current_municipio = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_municipio_name');
-                            $current_ciudad = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_ciudad_name');
-                            $current_colonia = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_colonia_name');
+                            //$current_cp = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_codigopostal_name');
+                            $current_cp = $bean->fetched_row['codigo_postal_c'];
+                            //$current_pais = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_pais_name');
+                            $current_pais = $bean->fetched_row['pais_c'];
+                            //$current_estado = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_estado_name');
+                            $current_estado = $bean->fetched_row['estado_c'];
+                            //$current_municipio = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_municipio_name');
+                            $current_municipio = $bean->fetched_row['municipio_c'];
+                            //$current_ciudad = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_ciudad_name');
+                            $current_ciudad = $bean->fetched_row['ciudad_c'];
+                            //$current_colonia = $this->fetched_row_related($bean->rel_fields_before_value,'dire_direccion_dire_colonia_name');
+                            $current_colonia = $bean->fetched_row['colonia_c'];
                             $full_direccion_actual = "Calle: ". $calle_actual .", CP: ". $current_cp .", País: ". $current_pais .", Estado: ". $current_estado .", Municipio: ". $current_municipio .", Ciudad: ". $current_ciudad .", Colonia: ". $current_colonia .", Número exterior: ". $numext_actual .", Número interior: ".$numint_actual;
     
                             //Armando direccion completa por actualizar
@@ -212,42 +241,48 @@ SQL;
                                 $GLOBALS['log']->fatal("Código Postal ID cambió");
                                 $send_notification = true;
                                 $cambio_dirFiscal = true;
-                                $cp_por_actualizar = $bean->dire_direccion_dire_codigopostaldire_codigopostal_ida;
+                                //$cp_por_actualizar = $bean->dire_direccion_dire_codigopostaldire_codigopostal_ida;
+                                $cp_por_actualizar = $bean->codigo_postal_c;
                             }
     
                             if( $pais_actual !== $pais_por_actualizar ){
                                 $GLOBALS['log']->fatal("País cambió");
                                 $send_notification = true;
                                 $cambio_dirFiscal = true;
-                                $pais_por_actualizar = $bean->dire_direccion_dire_paisdire_pais_ida;
+                                //$pais_por_actualizar = $bean->dire_direccion_dire_paisdire_pais_ida;
+                                $pais_por_actualizar = $bean->pais_c;
                             }
     
                             if( $estado_actual !== $estado_por_actualizar ){
                                 $GLOBALS['log']->fatal("Estado cambió");
                                 $send_notification = true;
                                 $cambio_dirFiscal = true;
-                                $estado_por_actualizar = $bean->dire_direccion_dire_estadodire_estado_ida;
+                                //$estado_por_actualizar = $bean->dire_direccion_dire_estadodire_estado_ida;
+                                $estado_por_actualizar = $bean->estado_c;
                             }
     
                             if( $municipio_actual !== $municipio_por_actualizar ){
                                 $GLOBALS['log']->fatal("Municipio cambió");
                                 $send_notification = true;
                                 $cambio_dirFiscal = true;
-                                $municipio_por_actualizar = $bean->dire_direccion_dire_municipiodire_municipio_ida;
+                                //$municipio_por_actualizar = $bean->dire_direccion_dire_municipiodire_municipio_ida;
+                                $municipio_por_actualizar = $bean->municipio_c;
                             }
     
                             if( $ciudad_actual !== $ciudad_por_actualizar ){
                                 $GLOBALS['log']->fatal("Ciudad cambió");
                                 $send_notification = true;
                                 $cambio_dirFiscal = true;
-                                $ciudad_por_actualizar = $bean->dire_direccion_dire_ciudaddire_ciudad_ida;
+                                //$ciudad_por_actualizar = $bean->dire_direccion_dire_ciudaddire_ciudad_ida;
+                                $ciudad_por_actualizar = $bean->ciudad_c;
                             }
     
                             if( $colonia_actual !== $colonia_por_actualizar ){
                                 $GLOBALS['log']->fatal("Colonia cambió");
                                 $send_notification = true;
                                 $cambio_dirFiscal = true;
-                                $colonia_por_actualizar = $bean->dire_direccion_dire_coloniadire_colonia_ida;
+                                //$colonia_por_actualizar = $bean->dire_direccion_dire_coloniadire_colonia_ida;
+                                $colonia_por_actualizar = $bean->colonia_c;
                             }
     
                             if( $bean->fetched_row['calle'] !== $bean->calle ){
@@ -312,13 +347,27 @@ SQL;
 
     public function buildNameDireccionPorActualizar($bean){
 
+
+        $id_sepomex = $bean->dir_sepomex_dire_direcciondir_sepomex_ida;
+        $querySepomex = "SELECT * FROM dir_sepomex WHERE id = '{$id_sepomex}'";
+        //$GLOBALS['log']->fatal($querySepomex);
+        $querySepomexResult = $GLOBALS['db']->query($querySepomex);
+        $sepomexInfo = $GLOBALS['db']->fetchByAssoc($querySepomexResult);
+        $cp_act = $sepomexInfo['codigo_postal'];
+        $pais_act = $sepomexInfo['pais'];
+        $estado_act =$sepomexInfo['estado'];
+        $municipio_act = $sepomexInfo['municipio'];
+        $ciudad_act = $sepomexInfo['ciudad'];
+        $colonia_act = $sepomexInfo['colonia'];
+
+
         $calle_por_actualizar = $bean->calle;
-        $cp_act = $this->obtenerNombreDireccionQuery('dire_codigopostal',$bean->dire_direccion_dire_codigopostaldire_codigopostal_ida);
-        $pais_act = $this->obtenerNombreDireccionQuery('dire_pais',$bean->dire_direccion_dire_paisdire_pais_ida);
-        $estado_act = $this->obtenerNombreDireccionQuery('dire_estado',$bean->dire_direccion_dire_estadodire_estado_ida);
-        $municipio_act = $this->obtenerNombreDireccionQuery('dire_municipio',$bean->dire_direccion_dire_municipiodire_municipio_ida);
-        $ciudad_act = $this->obtenerNombreDireccionQuery('dire_ciudad',$bean->dire_direccion_dire_ciudaddire_ciudad_ida);
-        $colonia_act = $this->obtenerNombreDireccionQuery('dire_colonia',$bean->dire_direccion_dire_coloniadire_colonia_ida);
+        // $cp_act = $this->obtenerNombreDireccionQuery('dire_codigopostal',$bean->dire_direccion_dire_codigopostaldire_codigopostal_ida);
+        // $pais_act = $this->obtenerNombreDireccionQuery('dire_pais',$bean->dire_direccion_dire_paisdire_pais_ida);
+        // $estado_act = $this->obtenerNombreDireccionQuery('dire_estado',$bean->dire_direccion_dire_estadodire_estado_ida);
+        // $municipio_act = $this->obtenerNombreDireccionQuery('dire_municipio',$bean->dire_direccion_dire_municipiodire_municipio_ida);
+        // $ciudad_act = $this->obtenerNombreDireccionQuery('dire_ciudad',$bean->dire_direccion_dire_ciudaddire_ciudad_ida);
+        // $colonia_act = $this->obtenerNombreDireccionQuery('dire_colonia',$bean->dire_direccion_dire_coloniadire_colonia_ida);
         $numext_por_actualizar = $bean->numext;
         $numint_por_actualizar = $bean->numint;
 
@@ -511,6 +560,29 @@ SQL;
             $GLOBALS['db']->query($sqlUpdateRelated);
         }
 
+
+    }
+
+    public function setDescriptionSepomex( $bean = null, $event = null, $args = null ){
+
+        $id_sepomex_actual = $bean->rel_fields_before_value['dir_sepomex_dire_direcciondir_sepomex_ida'];
+        $id_sepomex_nuevo = $bean->dir_sepomex_dire_direcciondir_sepomex_ida;
+
+        if( $id_sepomex_actual != $id_sepomex_nuevo ){
+            //Se obtienen identificadores de sepomex
+            $beanSepomex = BeanFactory::getBean("dir_Sepomex", $id_sepomex_nuevo, array('disable_row_level_security' => true) );
+
+            //$direccion->description="{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idMunicipio}";
+            $idPais = $beanSepomex->id_pais;
+            $idEstado = $beanSepomex->id_estado;
+            $idCiudad = $beanSepomex->id_ciudad;
+            $idMunicipio = $beanSepomex->id_municipio;
+            $idColonia = $beanSepomex->id_colonia;
+
+            $GLOBALS['log']->fatal("SE ESTABLECE DESCRIPCIÓN DE DIRECCIÓN");
+
+            $bean->description="{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
+        }
 
     }
 }

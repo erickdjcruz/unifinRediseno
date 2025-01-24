@@ -117,7 +117,7 @@
                             <select class="row-fluid coloniaExisting select2" {{#if bloqueado}} disabled {{/if}}
                                 data-field="coloniaExisting" placeholder="" style="font-size: 15px;font-weight: 500;">
                                 {{#each listColonia}}
-                                <option value="{{@key}}" {{ifSelected @key ../colonia}}>{{this}}</option>
+                                    <option value="{{this.idColonia}}" data-cp="{{this.idCodigoPostal}}" {{ifSelected this.idColonia ../colonia}}>{{this.nameColonia}}</option>
                                 {{/each}}
                             </select>
                         </div>
@@ -251,7 +251,7 @@
                             <select class="row-fluid newColonia select2" data-field="colonia" placeholder=""
                                 style="font-size: 15px;font-weight: 500;">
                                 {{#each nuevaDireccion.listColonia}}
-                                <option value="{{@key}}" {{ifSelected @key ../nuevaDireccion.colonia}}>{{this}}</option>
+                                    <option value="{{this.idColonia}}" data-cp="{{this.idCodigoPostal}}" {{ifSelected this.idColonia ../nuevaDireccion.colonia}}>{{this.nameColonia}}</option>
                                 {{/each}}
                             </select>
                         </div>

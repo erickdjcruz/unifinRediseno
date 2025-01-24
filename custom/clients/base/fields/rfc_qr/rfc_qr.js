@@ -542,7 +542,11 @@
 																	var listColonia = {};
 																	var auxColonia = '';
 																	for (var i = 0; i < list_colonias.length; i++) {
-																		listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
+																		//listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
+																		listColonia[i]={};
+																		listColonia[i]['idColonia']=list_colonias[i].idColonia;
+																		listColonia[i]['nameColonia']=list_colonias[i].nameColonia;
+																		listColonia[i]['idCodigoPostal']=list_colonias[i].idCodigoPostal;
 																		if(list_colonias[i].nameColonia == Colonia) auxColonia = list_colonias[i].idColonia;
 																	}
 																	if(auxColonia==''){

@@ -52,6 +52,7 @@ class lead_direcciones_class
                 // populate related lead id
                 $direccion->leads_dire_direccion_1leads_ida = $bean->id;
 
+                /*
                 $nombre_colonia_query = "SELECT name from dire_colonia where id ='" . $direccion_row['colonia'] . "'";
                 $nombre_municipio_query = "SELECT name from dire_municipio where id ='" . $direccion_row['municipio'] . "'";
                 $querycolonia = $db->query($nombre_colonia_query);
@@ -108,6 +109,36 @@ class lead_direcciones_class
                         $direccion->dire_direccion_dire_colonia->add($direccion_row['colonia']);
                     }
                 }
+                */
+
+                $id_postal=$direccion_row['postal'];
+                $GLOBALS['log']->fatal("POSTAL: ".$id_postal);
+                $query_sepomex="SELECT * FROM dir_sepomex WHERE id='{$id_postal}'";
+                $GLOBALS['log']->fatal("QUERY SEPOMEX");
+                $GLOBALS['log']->fatal($query_sepomex);
+                $result_sepomex = $db->query($query_sepomex);
+                while ($row = $GLOBALS['db']->fetchByAssoc($result_sepomex)) {
+                    $namePais=$row['pais'];
+                    $idPais=$row['id_pais'];
+                    $nameCP=$row['codigo_postal'];
+                    $nameEstado=$row['estado'];
+                    $idEstado=$row['id_estado'];
+                    $nameCiudad=$row['ciudad'];
+                    $idCiudad=$row['id_ciudad'];
+                    $nameColonia=$row['colonia'];
+                    $idColonia=$row['id_colonia'];
+                    $nameMunicipio=$row['municipio'];
+                    $idMunicipio=$row['id_municipio'];
+                }
+                $direccion_completa = $direccion_row['calle'] . " " . $direccion_row['numext'] . " " . ($direccion_row['numint'] != "" ? "Int: " . $direccion_row['numint'] : "") . ", Colonia " . $nameColonia. ", Municipio " . $nameMunicipio;
+                $direccion->name = $direccion_completa;
+
+                //Se utiliza campo descripcion de la direccion para ya no crear campos nuevos solo para los id
+                $direccion->description="{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
+
+                //Se genera relación entre la dirección y Sepomex
+                $direccion->dir_sepomex_dire_direcciondir_sepomex_ida=$direccion_row['postal'];
+
 
                 $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : DIRECCION NOMBRE" . $direccion_completa);
                 $current_id_list[] = $direccion->id;

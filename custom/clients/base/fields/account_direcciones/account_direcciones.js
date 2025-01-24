@@ -75,12 +75,23 @@
         }
         //Declaración de validation Tasks
         this.model.addValidationTask('check_multiple_fiscal', _.bind(this._doValidateDireccionIndicador, this));
+        this.model.addValidationTask('verificaDireccionSinSepomex', _.bind(this.verificaDireccionSinSepomex, this));
         //Declaración de modelo para nueva dirección
         this.nuevaDireccion = this.limpiaNuevaDireccion();
         this.cont_render = 0;
     },
 
     _render: function () {
+        /* Se agrega esta porción de código para cntrolar la muestra de dirección en caso de tener alguna dirección sin relación con sepomex */
+        if( typeof(contexto_cuenta.oDirecciones) == 'object' ){
+            if( typeof(contexto_cuenta.oDirecciones.direccion) == 'object' ){
+                if( this.oDirecciones == undefined && contexto_cuenta.oDirecciones.direccion ){
+                    this.oDirecciones = contexto_cuenta.oDirecciones;
+                }
+            }
+
+        }
+
         this._super("_render");
 
         if($('[data-fieldname="account_direcciones"] > span').length >0){
@@ -214,8 +225,12 @@
                             //Colonia
                             listColonia = {};
                             for (var i = 0; i < list_colonias.length; i++) {
-                                listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
-
+                                //listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
+                                listColonia[i]={};
+                                listColonia[i]['idColonia']=list_colonias[i].idColonia;
+                                listColonia[i]['nameColonia']=list_colonias[i].nameColonia;
+                                listColonia[i]['idCodigoPostal']=list_colonias[i].idCodigoPostal;
+                                listColonia[i]['idMunicipio']=list_colonias[i].idMunicipio;
                             }
                             cont_dir.nuevaDireccion.listColonia = listColonia;
                             cont_dir.nuevaDireccion.listColoniaFull = listColonia;
@@ -242,9 +257,13 @@
 
                             //Ejecuta filtro por dependencia de País
                             cont_dir.nuevaDireccion.pais = (Object.keys(cont_dir.nuevaDireccion.listPais)[0] != undefined) ? Object.keys(cont_dir.nuevaDireccion.listPais)[0] : "";
-                            cont_dir.populateEdoByPais(cont_dir.nuevaDireccion.pais);
-                            cont_dir.populateCiudadesByEstado(cont_dir.nuevaDireccion.estado);
-                            cont_dir.populateColoniasByMunicipio(cont_dir.nuevaDireccion.municipio);
+                            cont_dir.nuevaDireccion.municipio = (Object.keys(cont_dir.nuevaDireccion.listMunicipio)[0] != undefined) ? Object.keys(cont_dir.nuevaDireccion.listMunicipio)[0] : "";
+                            cont_dir.nuevaDireccion.estado = (Object.keys(cont_dir.nuevaDireccion.listEstado)[0] != undefined) ? Object.keys(cont_dir.nuevaDireccion.listEstado)[0] : "";
+                            cont_dir.nuevaDireccion.colonia = (Object.keys(cont_dir.nuevaDireccion.listColonia)[0] != undefined) ? Object.keys(cont_dir.nuevaDireccion.listColonia)[0] : "";
+                            cont_dir.nuevaDireccion.ciudad = (Object.keys(cont_dir.nuevaDireccion.listCiudad)[0] != undefined) ? Object.keys(cont_dir.nuevaDireccion.listCiudad)[0] : "";
+                            //cont_dir.populateEdoByPais(cont_dir.nuevaDireccion.pais);
+                            //cont_dir.populateCiudadesByEstado(cont_dir.nuevaDireccion.estado);
+                            //cont_dir.populateColoniasByMunicipio(cont_dir.nuevaDireccion.municipio);
 
                         }else {
                             app.alert.show('cp_not_found', {
@@ -354,7 +373,12 @@
                             //Colonia
                             listColonia = {};
                             for (var i = 0; i < list_colonias.length; i++) {
-                                listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
+                                //listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
+                                listColonia[i]={};
+                                listColonia[i]['idColonia']=list_colonias[i].idColonia;
+                                listColonia[i]['nameColonia']=list_colonias[i].nameColonia;
+                                listColonia[i]['idCodigoPostal']=list_colonias[i].idCodigoPostal;
+                                listColonia[i]['idMunicipio']=list_colonias[i].idMunicipio;
                             }
                             cont_dir.oDirecciones.direccion[index].listColonia = listColonia;
                             cont_dir.oDirecciones.direccion[index].listColoniaFull = listColonia;
@@ -386,13 +410,13 @@
                             evt.index = index;
 
                             evt.idPais=cont_dir.oDirecciones.direccion[index].pais;
-                            cont_dir.populateEdoByPaisDE(evt);
+                            //cont_dir.populateEdoByPaisDE(evt);
 
                             evt.idEstado=cont_dir.oDirecciones.direccion[index].estado;
-                            cont_dir.populateCiudadesByEstadoDE(evt);
+                            //cont_dir.populateCiudadesByEstadoDE(evt);
 
                             evt.idMunicipio=cont_dir.oDirecciones.direccion[index].municipio;
-                            cont_dir.populateColoniasByMunicipioDE(evt);
+                            //cont_dir.populateColoniasByMunicipioDE(evt);
                         }else {
                             app.alert.show('cp_not_found', {
                                 level: 'error',
@@ -484,9 +508,17 @@
             val = (val.length==1)? "00"+val:val;
             val = (val.length==2)? "0"+val:val;
         }
+        // for (var [key, value] of Object.entries(arr)) {
+        //     if (key.startsWith(val)) {
+        //       filtroLista[key]=value;
+        //     }
+        // }
+
+        //Mejora para actualizar la colonia por el Municipio
         for (var [key, value] of Object.entries(arr)) {
-            if (key.startsWith(val)) {
-              filtroLista[key]=value;
+            // Compara el idMunicipio
+            if (value.idMunicipio && value.idMunicipio.toString() === val) {
+                filtroLista[key] = value;
             }
         }
         return filtroLista;
@@ -529,7 +561,7 @@
         this.nuevaDireccion.listColonia = filtroColonia;
 
         //Establece ids default
-        this.nuevaDireccion.colonia = (Object.keys(this.nuevaDireccion.listColonia)[0] != undefined) ? Object.keys(this.nuevaDireccion.listColonia)[0] : "";
+        this.nuevaDireccion.colonia = (Object.keys(this.nuevaDireccion.listColonia)[0] != undefined) ? this.nuevaDireccion.listColonia[0].idColonia : "";
         this.render();
     },
 
@@ -1236,6 +1268,94 @@
         callback(null, fields, errors);
     },
 
+
+    verificaDireccionSinSepomex: function(fields, errors, callback){
+      
+        const accountId = this.model.get('id');
+        var tiposRelacionSepomexRequerido = App.lang.getAppListStrings('valida_match_sepomex_relacion_list');
+        var ids = Object.keys(tiposRelacionSepomexRequerido);
+        // Generar la cadena con la estructura requerida
+        var filterString = ids
+            .map((id, index) => `&filter[0][relaciones_activas][$in][${index}]=${id}`)
+            .join('');
+        //console.log(filterString);
+        // Resultado: "&filter[0][relaciones_activas][$in][0]=1&filter[0][relaciones_activas][$in][1]=2"
+        const endpoint = 'Accounts/'+accountId+'/link/accounts_rel_relaciones_1?fields=name,relaciones_activas'+filterString;
+        // /link/accounts_rel_relaciones_1?fields=name,relaciones_activas&filter[0][relaciones_activas][$in][0]=Contacto&filter[0][relaciones_activas][$in][1]=Contacto
+        
+        app.api.call('GET', app.api.buildURL(endpoint), null, {
+            success: function (data) {
+                var tipoRegistroCuenta = contexto_cuenta.model.get('tipo_registro_cuenta_c');
+                var tiposRegistrosSepomexRequerido = App.lang.getAppListStrings('valida_match_sepomex_tipo_list');
+
+                //Generamos arreglo con los tipos de Cuenta a los que se les debe pedir como requerido el llenado de sepomex
+                const keysTipoCuenta = Object.keys(tiposRegistrosSepomexRequerido);
+
+                let existeRelacionParaPedirRequerida = 0;
+                              
+                if (data.records && data.records.length > 0) {
+                    existeRelacionParaPedirRequerida = 1;
+                }
+                
+                if( keysTipoCuenta.includes(tipoRegistroCuenta) ||  existeRelacionParaPedirRequerida ){
+
+                    var arrSinSepomex = [];
+                    var direccionHomologada = false; // Bandera para saber si hay una dirección homologada
+
+                    //Recorremos las direcciones para saber si alguna direccion no está homologada con Sepomex
+                    for (let index = 0; index < cont_dir.oDirecciones.direccion.length; index++) {
+                        const element = cont_dir.oDirecciones.direccion[index];
+                        var valCodigoPostal = element.valCodigoPostal;
+                        var valPrincipal = element.principal;
+                        var valSinSepomex = element.sinSepomex;
+                        
+                        if(element.hasOwnProperty('sinSepomex') && valSinSepomex && _.isEmpty(valCodigoPostal) ){
+                            arrSinSepomex.push(1);
+                            // Si la dirección no está homologada y tiene la bandera 'principal' activada, la desactivamos
+                            if (valPrincipal) {
+                                element.principal = 0;
+                            }
+
+                        } else {
+                            // Si encontramos una dirección homologada, activamos la bandera
+                            if (!direccionHomologada) {
+                                direccionHomologada = true;
+                                element.principal = 1;
+                            }
+                        }
+                    }                   
+
+                    if( arrSinSepomex.includes(1) ){
+
+                        $("#row-advice-no-match p").css("color", "red");
+
+                        app.alert.show('no_sepomex_required', {
+                            level: 'error',
+                            autoClose: false,
+                            messages: 'Favor de completar la dirección que no está homologada con sepomex'
+                        });
+            
+                        errors['account_direcciones_sin_sepomex'] = errors['account_direcciones_sin_sepomex'] || {};
+                        errors['account_direcciones_sin_sepomex'].required = true;
+
+                    }
+                }
+                cont_dir.render();
+                callback(null, fields, errors);
+            },
+            error: function (error) {
+                app.alert.show('validation-error', {
+                    level: 'error',
+                    messages: 'Hubo un error al validar los datos. Verifica la conexión o el endpoint.',
+                    autoClose: false,
+                });
+                console.error('Error:', error);
+                callback(null, fields, errors);
+            },
+        });
+
+    },
+
     /**
      * When data changes, re-render the field only if it is not on edit (see MAR-1617).
      * @inheritdoc
@@ -1316,6 +1436,10 @@
         var idColonia = this.$(evt.currentTarget).val();
         //Actualiza modelo
         this.nuevaDireccion.colonia = idColonia;
+
+        //Al actualizar colonia nueva también se establece el id del Código Postal
+        var idCP=$(evt.currentTarget).find('option:selected').attr('data-cp');
+        this.nuevaDireccion.postal=idCP;
 
     },
 
@@ -1523,6 +1647,10 @@
         var idColonia = input.val();
         //Actualiza modelo
         this.oDirecciones.direccion[index].colonia = idColonia;
+
+        //Al actualizar colonia nueva también se establece el id del Código Postal
+        var idCP=$(evt.currentTarget).find('option:selected').attr('data-cp');
+        this.oDirecciones.direccion[index].postal=idCP;
 
     },
 
