@@ -1,5 +1,9 @@
 <?php
- // created: 2019-04-15 17:19:11
-$dictionary['Tel_Telefonos']['fields']['estatus']['default'] = 'Activo';
-$dictionary['Tel_Telefonos']['fields']['estatus']['full_text_search']['boost'] = 1;
+ // created: 2025-01-15 19:30:48
+$dictionary['Tel_Telefonos']['fields']['estatus']['default']='Activo';
+$dictionary['Tel_Telefonos']['fields']['estatus']['audited']=true;
+$dictionary['Tel_Telefonos']['fields']['estatus']['hidemassupdate']=false;
+$dictionary['Tel_Telefonos']['fields']['estatus']['visibility_grid']=array (
+);
 
+ ?>

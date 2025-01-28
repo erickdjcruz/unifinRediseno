@@ -1,7 +1,16 @@
 <style>
-    /*Recuadros*/
+    /* Wrapper para que todo esté en una fila y sea flexible */
+    .wrapper {
+        display: flex;
+        flex-wrap: wrap; /* Permite que los elementos se ajusten si es necesario */
+        justify-content: flex-start; /* Alinea los elementos desde el inicio */
+        gap: 10px; /* Espacio entre los pasos */
+        margin-bottom: 10px;
+    }
+
+    /* Recuadros */
     .arrow-steps .step {
-        font-size: 14px;
+        font-size: 12px; /* Reducir tamaño de fuente */
         text-align: center;
         color: #666;
         cursor: default;
@@ -11,8 +20,11 @@
         float: left;
         position: relative;
         background-color: #d9e3f7;
-    }
-    /*Punta triángulos*/
+        box-sizing: border-box; /* Para que el padding no afecte el tamaño total */
+        display: inline-block;
+    }    
+
+    /* Flechas y triángulos */
     .arrow-steps .step:after,
     .arrow-steps .step:before {
         content: " ";
@@ -26,22 +38,27 @@
         border-left: 17px solid #d9e3f7;
         z-index: 2;
     }
-    /*Triángulo blanco*/
+
+    /* Triángulo blanco */
     .arrow-steps .step:before {
         right: auto;
         left: 0;
         border-left: 17px solid #fff;
         z-index: 0;
     }
-    /*Borde primer recuadro*/
+
+    /* Borde primer recuadro */
     .arrow-steps .step:first-child:before {
         border: 0px solid #369;
     }
+
+    /* Primer paso redondeado */
     .arrow-steps .step:first-child {
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
     }
-    /*Formato Palomita*/
+
+    /* Formato Palomita */
     .arrow-steps .step span:before {
         opacity: 0;
         content: "✔";
@@ -49,94 +66,116 @@
         top: -2px;
         left: -20px;
     }
-    /*Estilo Palomita*/
+
+    /* Estilo Palomita cuando la etapa está completada */
     .arrow-steps .step.done span:before {
         opacity: 1;
-        -webkit-transition: opacity 0.3s ease 0.5s;
-        -moz-transition: opacity 0.3s ease 0.5s;
-        -ms-transition: opacity 0.3s ease 0.5s;
         transition: opacity 0.3s ease 0.5s;
     }
-    /*Posición Palomas*/
+
+    /* Posición Palomas */
     .arrow-steps .step span {
         position: relative;
     }
-    /*Recuadro Actual*/
+
+    /* Estado actual */
     .arrow-steps .step.current {
         color: #fff;
         background-color: #23468c;
     }
-    /*Triángulo Actual*/
+
+    /* Flecha actual */
     .arrow-steps .step.current:after {
         border-left: 18px solid #23468c;
     }
-    /*Recuadro Actual OK subetapa*/
+
+    /* Estado éxito */
     .arrow-steps .step.success {
         color: #fff;
         background-color: #00ab4d;
     }
-    /*Triángulo Actual OK subetapa*/
+
+    /* Flecha de éxito */
     .arrow-steps .step.success:after {
         border-left: 18px solid #00ab4d;
     }
-    /*Recuadro Actual error subetapa*/
+
+    /* Estado de error */
     .arrow-steps .step.error {
         color: #fff;
         background-color: #e40000;
     }
-    /*Triángulo Actual error subetapa*/
+
+    /* Flecha de error */
     .arrow-steps .step.error:after {
         border-left: 18px solid #e40000;
     }
-    /*Recuadro pasado hide subetapa*/
+
+    /* Estado oculto (paso no visible) */
     .arrow-steps .step.ocult {
         color: #fff;
         background-color: #ffffff;
     }
-    /*Triángulo pasado hide subetapa*/
+
+    /* Flecha oculta */
     .arrow-steps .step.ocult:after {
         border-left: 18px solid #ffffff;
     }
-    /*Recuadro  alerta amarilla subetapa*/
+
+    /* Estado alerta */
     .arrow-steps .step.alerta {
         color: #fff;
         background-color: #d8d74b;
     }
-    /*Triángulo  alerta amarilla subetapa*/
+
+    /* Flecha alerta */
     .arrow-steps .step.alerta:after {
         border-left: 18px solid #d8d74b;
     }
 
+    /* Ajustes para pantallas pequeñas */
+    @media screen and (max-width: 768px) {
+        .arrow-steps .step {
+            font-size: 10px; /* Reducir aún más el tamaño de la fuente */
+            padding: 6px 6px 6px 20px; /* Reducir padding */
+            min-width: 120px; /* Ajustar ancho */
+        }
+
+        .arrow-steps .step:after,
+        .arrow-steps .step:before {
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 8px solid #d9e3f7;
+        }
+
+        /* Flexbox para los pasos ocultos */
+        .arrow-steps .step.ocult {
+            display: block;
+            min-width: auto; /* Permitir que los pasos ocultos se ajusten */
+        }
+    }
 </style>
 
-    <div class="wrapper">
-        <div class="arrow-steps">
-            <div class="step span1" id="SI"><span>Solicitud Inicial</span></div>
-            <div class="step span2" id="P"><span>Int. de Expediente</span></div>
-            <div class="step span2" id="PA"><span>PreAutorizada</span></div>
-            <div class="step span2" id="C"><span>Crédito</span></div>
-            <div class="step span2" id="D"><span>Comité</span></div>
-            <div class="step span1" id="CL"><span>Cliente con Línea</span></div>
-        </div>
-
+<div class="wrapper">
+    <div class="arrow-steps">
+        <div class="step span1" id="SI"><span>Solicitud Inicial</span></div>
+        <div class="step span2" id="P"><span>Int. de Expediente</span></div>
+        <div class="step span2" id="PA"><span>PreAutorizada</span></div>
+        <div class="step span2" id="C"><span>Crédito</span></div>
+        <div class="step span2" id="D"><span>Comité</span></div>
+        <div class="step span1" id="CL"><span>Cliente con Línea</span></div>
     </div>
-<br>
-<br>
-<br>
-
+</div>
 <div class="container2">
     <div class="wrapper">
         <div class="arrow-steps">
-            <div class="step span1 ocult" id="SE1"><span>&nbsp</span></div>
-            <div class="step span2 ocult" id="SE2"><span>&nbsp</span></div>
-            <div class="step span2 ocult" id="SE6"><span>&nbsp</span></div>
-            <div class="step span2 ocult" id="SE3"><span>&nbsp</span></div>
-            <div class="step span2 ocult" id="SE4"><span>&nbsp</span></div>
-            <div class="step span1 ocult" id="SE5"><span>&nbsp</span></div>
+            <div class="step span1 ocult" id="SE1"><span>&nbsp;</span></div>
+            <div class="step span2 ocult" id="SE2"><span>&nbsp;</span></div>
+            <div class="step span2 ocult" id="SE6"><span>&nbsp;</span></div>
+            <div class="step span2 ocult" id="SE3"><span>&nbsp;</span></div>
+            <div class="step span2 ocult" id="SE4"><span>&nbsp;</span></div>
+            <div class="step span1 ocult" id="SE5"><span>&nbsp;</span></div>
         </div>
     </div>
 </div>
-
-<br>
-<br>
 <br>

@@ -7,6 +7,9 @@ class Publico_Objetivo_Meetings{
 		$resultado_actual = $bean->resultado_c;
 		//Ilocalizable
 		if( $bean->parent_type == 'Prospects' ){
+			
+			//Establece origen de reunión PO
+			$bean->origen_po_c = true;
 
 			$id_prospecto = $bean->parent_id;
 			$beanPO = BeanFactory::retrieveBean('Prospects', $id_prospecto, array('disable_row_level_security' => true));

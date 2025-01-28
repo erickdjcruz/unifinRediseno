@@ -8,6 +8,9 @@ class Publico_Objetivo{
 		$resultado_actual = $bean->tct_resultado_llamada_ddw_c;
 		//Ilocalizable
 		if( $bean->parent_type == 'Prospects' ){
+			
+			//Establece origen de llamada PO
+			$bean->origen_po_c = true;
 
 			$id_prospecto = $bean->parent_id;
 			$beanPO = BeanFactory::retrieveBean('Prospects', $id_prospecto, array('disable_row_level_security' => true));

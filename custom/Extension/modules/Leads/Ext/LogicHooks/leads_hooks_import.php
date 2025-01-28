@@ -52,13 +52,13 @@ $hook_array['before_save'][] = Array(
     'cambiaPuesto'
 );
 
-$hook_array['before_save'][] = Array(
-    7,
-    'Se llena Macro Sector',
-    'custom/modules/Leads/Lead_Hooks.php',
-    'Lead_Hooks',
-    'llenaMacro'
-);
+// $hook_array['before_save'][] = Array(
+//     7,
+//     'Se llena Macro Sector',
+//     'custom/modules/Leads/Lead_Hooks.php',
+//     'Lead_Hooks',
+//     'llenaMacro'
+// );
 
 $hook_array['before_save'][] = Array(
     8,

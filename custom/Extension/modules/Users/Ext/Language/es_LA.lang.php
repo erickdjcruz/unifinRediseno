@@ -87,3 +87,4 @@ $mod_strings['LBL_REASIGNACION_PO'] = 'Reasignación de Público Objetivo';
 $mod_strings['LBL_ASIGNACION_PO'] = 'Gestión de asignación PO';
 $mod_strings['LBL_CANCELAR_CASOS'] = 'Cancelar casos';
 $mod_strings['LBL_SEGUIMIENTO_BC'] = 'Seguimiento Buró de Crédito';
+$mod_strings['LBL_DEFINE_ORIGEN_PO'] = 'Define Origen PO';

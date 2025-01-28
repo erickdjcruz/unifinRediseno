@@ -108,7 +108,8 @@ class altaDireccionUnifin extends SugarApi
 				}
 				if (!$error) {
 					//Crea Dirección
-					if ($args['id']) {
+
+          if ($args['id']) {
 						$beanDir = BeanFactory::retrieveBean('dire_Direccion', $args['id'], array('disable_row_level_security' => true));
 					}
 					if (!isset($beanDir->id)) {

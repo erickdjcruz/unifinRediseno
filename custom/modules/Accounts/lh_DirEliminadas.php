@@ -138,10 +138,30 @@ class DirEliminada_Class
       } catch (Exception $e) {
           $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ .  " <".$current_user->user_name."> : Error " . $e->getMessage());
 
+          $this->setErrorLogFailRequest( "ActualizaDireccion", $bean, $host, json_encode($fields), $e->getMessage() );
+
       }
     }
 
     $GLOBALS['log']->fatal("DirEliminadas: Termina");
+
+  }
+
+  public function setErrorLogFailRequest( $endpoint, $bean, $url, $request, $response ){
+
+    $GLOBALS['log']->fatal("Enviando notificación para bitácora de errores S_seguros");
+    require_once("custom/clients/base/api/ErrorLogApi.php");
+    $apiErrorLog = new ErrorLogApi();
+    $args = array(
+      "integration"=> "Unics: ".$endpoint,
+      "system"=> "Unics",
+      "parent_type"=> "Accounts",
+      "parent_id"=> $bean->id,
+      "endpoint"=> $url,
+      "request"=> $request,
+      "response"=> $response
+    );
+    $responseErrorLog = $apiErrorLog->setDataErrorLog(null, $args);
 
   }
 }

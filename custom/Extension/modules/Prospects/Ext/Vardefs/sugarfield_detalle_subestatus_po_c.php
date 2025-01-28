@@ -1,6 +1,8 @@
 <?php
- // created: 2022-04-26 21:13:47
+ // created: 2025-01-14 14:56:11
 $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['labelValue']='Detalle Subestatus';
+$dictionary['Prospect']['fields']['detalle_subestatus_po_c']['enforced']='';
+$dictionary['Prospect']['fields']['detalle_subestatus_po_c']['dependency']='';
 $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['required_formula']='';
 $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['readonly_formula']='';
 $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['visibility_grid']=array (
@@ -21,11 +23,13 @@ $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['visibility_grid']=
     ),
     5 => 
     array (
-      0 => '1',
-      1 => '2',
-      2 => '3',
-      3 => '4',
-      4 => '5',
+      0 => '19',
+      1 => '20',
+      2 => '8',
+      3 => '9',
+      4 => '21',
+      5 => '22',
+      6 => '23',
     ),
     6 => 
     array (
@@ -37,6 +41,14 @@ $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['visibility_grid']=
       5 => '11',
       6 => '12',
       7 => '13',
+    ),
+    7 => 
+    array (
+      0 => '14',
+      1 => '15',
+      2 => '16',
+      3 => '17',
+      4 => '18',
     ),
     '' => 
     array (

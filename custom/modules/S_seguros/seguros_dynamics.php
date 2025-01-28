@@ -5,6 +5,7 @@ class Seguros_dynamics
 {
     public function getAccount($bean = null, $event = null, $args = null)
     {
+        global $sugar_config;
         // Valida si viene de Uni2
         if($bean->seguro_uni2_c)
         {
@@ -123,6 +124,7 @@ class Seguros_dynamics
                             $updateExecute = $db->query($update);
                             $cuenta->int_id_dynamics_c = $id_dyn;
                         }else{
+                            $this->setErrorLogFailRequest( "Account", $bean, $url, $content, json_encode($response) );
                             throw new SugarApiExceptionInvalidParameter("No se puede guardar información en Dynamics. Error al procesar cuenta: ".$response['description']);
                         }
                     }
@@ -130,7 +132,9 @@ class Seguros_dynamics
             }
             else
             {
+              $this->setErrorLogFailRequest("TokenGenerator",$bean,$sugar_config['inter_dynamics_token_url'], "NA", json_encode($token) );
               throw new SugarApiExceptionInvalidParameter("Servicio de Dynamics no disponible");
+
             }
           }
         }
@@ -216,11 +220,14 @@ class Seguros_dynamics
             }
             else
             {
+
+              $this->setErrorLogFailRequest( "Opportunity", $bean, $url, $content, json_encode($token) );
               throw new SugarApiExceptionInvalidParameter("No se puede guardar información en Dynamics. ".$response['description']);
             }
           }
           else
           {
+            $this->setErrorLogFailRequest("TokenGenerator",$bean,$sugar_config['inter_dynamics_token_url'], "NA", json_encode($token) );
             throw new SugarApiExceptionInvalidParameter("Servicio de Dynamics no disponible");
           }
         }
@@ -272,10 +279,16 @@ class Seguros_dynamics
                 curl_close($curl);
             $GLOBALS['log']->fatal('Informacion de Cotizando enviada: ' .$json_response);
             $response = json_decode($json_response, true);
-            if($response['critical'] == 'true') throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            if($response['critical'] == 'true'){
+
+              $this->setErrorLogFailRequest( "Opportunity", $bean, $url, $content, json_encode($response) );
+              throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            } 
+              
           }
           else
           {
+            $this->setErrorLogFailRequest("TokenGenerator",$bean,$sugar_config['inter_dynamics_token_url'], "NA", json_encode($token) );
             throw new SugarApiExceptionInvalidParameter("Servicio de SalesForce no disponible");
           }
         }
@@ -305,10 +318,14 @@ class Seguros_dynamics
             $GLOBALS['log']->fatal('Informacion de Cotizado enviada: ' .$json_response);
                 curl_close($curl);
                 $response = json_decode($json_response, true);
-            if($response['critical'] == 'true') throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            if($response['critical'] == 'true'){
+              $this->setErrorLogFailRequest( "Opportunity", $bean, $url, $content, json_encode($response) );
+              throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            } 
           }
           else
           {
+            $this->setErrorLogFailRequest("TokenGenerator",$bean,$sugar_config['inter_dynamics_token_url'], "NA", json_encode($token) );
             throw new SugarApiExceptionInvalidParameter("Servicio de Dynamics no disponible");
           }
         }
@@ -345,10 +362,14 @@ class Seguros_dynamics
             $GLOBALS['log']->fatal('Informacion de No Cotizado enviada: ' .$json_response);
                 curl_close($curl);
                 $response = json_decode($json_response, true);
-            if($response['critical'] == 'true') throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            if($response['critical'] == 'true'){
+              $this->setErrorLogFailRequest( "Opportunity/".$bean->int_id_dynamics_c, $bean, $url, $content, json_encode($response) );
+              throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            } 
           }
           else
           {
+            $this->setErrorLogFailRequest("TokenGenerator",$bean,$sugar_config['inter_dynamics_token_url'], "NA", json_encode($token) );
             throw new SugarApiExceptionInvalidParameter("Servicio de Dynamics no disponible");
           }
         }
@@ -387,10 +408,14 @@ class Seguros_dynamics
             $GLOBALS['log']->fatal('Informacion de Presentación enviada: ' .$json_response);
                 curl_close($curl);
                 $response = json_decode($json_response, true);
-            if($response['critical'] == 'true') throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            if($response['critical'] == 'true'){
+              $this->setErrorLogFailRequest( "Opportunity/".$bean->int_id_dynamics_c, $bean, $url, $content, json_encode($response) );
+              throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            } 
           }
           else
           {
+            $this->setErrorLogFailRequest("TokenGenerator",$bean,$sugar_config['inter_dynamics_token_url'], "NA", json_encode($token) );
             throw new SugarApiExceptionInvalidParameter("Servicio de Dynamics no disponible");
           }
         }
@@ -421,10 +446,14 @@ class Seguros_dynamics
             $GLOBALS['log']->fatal('Informacion de Re-negociacon enviada: ' .$json_response);
             curl_close($curl);
             $response = json_decode($json_response, true);
-            if($response['critical'] == 'true') throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            if($response['critical'] == 'true'){
+              $this->setErrorLogFailRequest( "Opportunity/".$bean->int_id_dynamics_c, $bean, $url, $content, json_encode($response) );
+              throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            } 
           }
           else
           {
+            $this->setErrorLogFailRequest("TokenGenerator",$bean,$sugar_config['inter_dynamics_token_url'], "NA", json_encode($token) );
             throw new SugarApiExceptionInvalidParameter("Servicio de Dynamics no disponible");
           }
         }
@@ -490,10 +519,14 @@ class Seguros_dynamics
               $GLOBALS['log']->fatal('Informacion de Ganada enviada: ' .$json_response);
               curl_close($curl);
               $response = json_decode($json_response, true);
-              if($response['critical'] == 'true') throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+              if($response['critical'] == 'true'){
+                $this->setErrorLogFailRequest( "Opportunity/".$bean->int_id_dynamics_c, $bean, $url, $content, json_encode($response) );
+                throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+              } 
             }
             else
             {
+              $this->setErrorLogFailRequest("TokenGenerator",$bean,$sugar_config['inter_dynamics_token_url'], "NA", json_encode($token) );
               throw new SugarApiExceptionInvalidParameter("Servicio de Dynamics no disponible");
             }
         }
@@ -532,10 +565,14 @@ class Seguros_dynamics
             $GLOBALS['log']->fatal('Informacion de No Ganada enviada: ' .$json_response);
             curl_close($curl);
             $response = json_decode($json_response, true);
-            if($response['critical'] == 'true') throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            if($response['critical'] == 'true'){
+              $this->setErrorLogFailRequest( "Opportunity/".$bean->int_id_dynamics_c, $bean, $url, $content, json_encode($response) );
+              throw new SugarApiExceptionInvalidParameter("No se puede guardar. ".$response);
+            } 
           }
           else
           {
+            $this->setErrorLogFailRequest("TokenGenerator",$bean,$sugar_config['inter_dynamics_token_url'], "NA", json_encode($token) );
             throw new SugarApiExceptionInvalidParameter("Servicio de Dynamics no disponible");
           }
         }
@@ -567,5 +604,23 @@ class Seguros_dynamics
       $GLOBALS['log']->fatal($response);
         curl_close($curl);
         return $response['Token'];
+    }
+
+    public function setErrorLogFailRequest( $endpoint, $bean, $url, $request, $response ){
+
+      $GLOBALS['log']->fatal("Enviando notificación para bitácora de errores S_seguros");
+      require_once("custom/clients/base/api/ErrorLogApi.php");
+      $apiErrorLog = new ErrorLogApi();
+      $args = array(
+        "integration"=> "Inter Seguros: ".$endpoint,
+        "system"=> "Inter Seguros",
+        "parent_type"=> "S_seguros",
+        "parent_id"=> $bean->id,
+        "endpoint"=> $url,
+        "request"=> $request,
+        "response"=> $response
+      );
+      $responseErrorLog = $apiErrorLog->setDataErrorLog(null, $args);
+
     }
 }

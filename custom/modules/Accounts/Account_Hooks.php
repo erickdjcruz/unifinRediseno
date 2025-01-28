@@ -916,15 +916,18 @@ SQL;
 
     public function textToUppperCase($bean = null, $event = null, $args = null)
     {
-        if ($_REQUEST['module'] != 'Import') {
-            foreach ($bean as $field => $value) {
-                if ($bean->field_defs[$field]['type'] == 'varchar' && $field != 'encodedkey_mambu_c' && $field != 'path_img_qr_c' && $field != 'salesforce_id_c') {
-                    $value = mb_strtoupper($value, "UTF-8");
-                    $bean->$field = $value;
-                }
-                if ($bean->field_defs[$field]['name'] == 'name') {
-                    $value = mb_strtoupper($value, "UTF-8");
-                    $bean->$field = $value;
+        if( isset($_REQUEST['module']) ){
+
+            if ($_REQUEST['module'] != 'Import') {
+                foreach ($bean as $field => $value) {
+                    if ($bean->field_defs[$field]['type'] == 'varchar' && $field != 'encodedkey_mambu_c' && $field != 'path_img_qr_c' && $field != 'salesforce_id_c') {
+                        $value = mb_strtoupper($value, "UTF-8");
+                        $bean->$field = $value;
+                    }
+                    if ($bean->field_defs[$field]['name'] == 'name') {
+                        $value = mb_strtoupper($value, "UTF-8");
+                        $bean->$field = $value;
+                    }
                 }
             }
         }
@@ -2079,34 +2082,26 @@ where rfc_c = '{$bean->rfc_c}' and
 
     public function ActualizaEmpleadosDDW($bean_account = null, $event = null, $args = null)
     {
-
-        $ddw_empleados = $bean_account->empleados_c;
-        $txt_empleados = $bean_account->total_empleados_c;
-
-        if (($txt_empleados > 0) && (!empty($txt_empleados))) {
-
-            if (($txt_empleados > 0) && ($txt_empleados <= 10)) {
+        $totalEmpleados = $bean_account->total_empleados_c;
+        //ACTUALIZA LA LISTA DE NÚMERO DE EMPLEADOS CONTRA EL NÚMERO DE EMPLEADOS EXACTOS
+        if ($totalEmpleados >= 0) {
+            $GLOBALS['log']->fatal("TOTAL EMPLEADOS EXACTOS ". $totalEmpleados);
+            if ($totalEmpleados <= 10) {
                 $bean_account->empleados_c = '0a10';
-            }
-            if (($txt_empleados > 10) && ($txt_empleados <= 50)) {
+            } elseif ($totalEmpleados <= 50) {
                 $bean_account->empleados_c = '11a50';
-            }
-            if (($txt_empleados > 50) && ($txt_empleados <= 100)) {
+            } elseif ($totalEmpleados <= 100) {
                 $bean_account->empleados_c = '51a100';
-            }
-            if (($txt_empleados > 100) && ($txt_empleados <= 250)) {
+            } elseif ($totalEmpleados <= 250) {
                 $bean_account->empleados_c = '101a250';
-            }
-            if (($txt_empleados > 250) && ($txt_empleados <= 500)) {
+            } elseif ($totalEmpleados <= 500) {
                 $bean_account->empleados_c = '251a500';
-            }
-            if (($txt_empleados > 500) && ($txt_empleados <= 1000)) {
+            } elseif ($totalEmpleados <= 1000) {
                 $bean_account->empleados_c = '501a1000';
-            }
-            if ($txt_empleados > 1000) {
+            } else {
                 $bean_account->empleados_c = '1001';
             }
-
+            $GLOBALS['log']->fatal("ACTUALIZA LISTA DE EMPLEADOS ". $bean_account->empleados_c);
         }
     }
 
@@ -2843,6 +2838,181 @@ where rfc_c = '{$bean->rfc_c}' and
 
             }
         }
+
+    }
+
+    public function setEmailPrincipal( $bean = null, $event = null, $args = null ){
+
+        $newPrimaryEmail = $bean->email1;
+
+        $GLOBALS['log']->fatal("EVALUANDO EMAIL PRINCIPAL");
+
+        if ( $GLOBALS['service']->platform != 'base' ) {
+            if( $bean->fetched_row['email1'] != $bean->email1 ){
+                $GLOBALS['log']->fatal("El email cambió");
+                
+                // Recuperar todas las direcciones de email asociadas
+                $existingEmails = $bean->emailAddress->getAddressesByGUID($bean->id, 'Accounts');
+                //$GLOBALS['log']->fatal( print_r($existingEmails,true) );
+
+                $emailAddresses = [];
+
+                // Verificar si el nuevo email ya existe y guardarlo como principal
+                $emailExists = false;
+                foreach ($existingEmails as &$email) {
+                    if ($email['email_address'] === $newPrimaryEmail) {
+                        $email['primary_address'] = true;
+                        $emailExists = true;
+                    } else {
+                        $email['primary_address'] = false; // Marcar los demás como secundarios
+                    }
+                    $emailAddresses[] = $email;
+                }
+
+                // Si el nuevo email no existe, agrégalo como el principal
+                if (!$emailExists) {
+                    $emailAddresses[] = [
+                        'email_address' => $newPrimaryEmail,
+                        'primary_address' => true,
+                        'invalid_email' => false,
+                        'opt_out' => false,
+                    ];
+                }
+
+                // Asignar el nuevo conjunto de correos electrónicos a la cuenta
+                $bean->emailAddress->addresses = $emailAddresses;
+                $bean->emailAddress->save($bean->id, $bean->module_name);
+
+
+            }
+        }
+
+        /*
+          Evaluar cambios a Onboarding:
+          Detecta cambios en; Teléfono móvil, Correo, Apellidos, Nombre
+          Sólo se ejecuta con Régimen fiscal; PF y PFAE
+        */
+        
+        if($GLOBALS['service']->platform == 'base' && $bean->tipodepersona_c != 'Persona Moral'){
+          //Recupera datos actuales
+          //$GLOBALS['log']->fatal("Correo viejo: ".$bean->fetched_row['email1']);
+          //$GLOBALS['log']->fatal("Correo nuevo: ".$bean->email[0]['email_address']);
+          //$GLOBALS['log']->fatal(print_r($bean->email,true));
+          $email = $bean->email[0]['email_address'];
+          $phone = '';
+          $nombre = $bean->primernombre_c;
+          $aPaterno = $bean->apellidopaterno_c;
+          $aMaterno = $bean->apellidomaterno_c;
+          $cambiaTelefono = false;
+          
+          //Recupera teléfono celular
+          foreach ($bean->account_telefonos as $a_telefono) {
+              if($a_telefono['tipotelefono'] == '3'){
+                if (!empty($a_telefono['id'])) {
+                  $telefono = BeanFactory::getBean('Tel_Telefonos', $a_telefono['id']);
+                  $cambiaTelefono = ($telefono->telefono != $a_telefono['telefono']) ? true : $cambiaTelefono;
+                } else {
+                  $cambiaTelefono = true;
+                }
+                $phone = $a_telefono['telefono'];  
+              }
+          }
+          
+          //Valida cambio de información
+          if( $bean->fetched_row['email1'] != $email || $bean->fetched_row['primernombre_c'] != $nombre || $bean->fetched_row['apellidopaterno_c'] != $aPaterno || $bean->fetched_row['apellidomaterno_c'] != $aMaterno || $cambiaTelefono){
+            $GLOBALS['log']->fatal("Identifica cambios para enviar a Onboarding");
+            global $sugar_config, $db;
+            
+            //Recupera Lead & PO asociados
+            $idLead = '';
+            $idPO = '';
+            
+            //Recupera Lead
+            $queryL = "select id,account_id
+                  from leads
+                  where deleted=0
+                  and account_id='{$bean->id}'
+                  order by date_modified desc
+                  limit 1;";
+            $queryResultL = $db->query($queryL);
+            while ($row = $db->fetchByAssoc($queryResultL)) {
+                $idLead = $row['id_c'] ;
+            }
+            if(!empty($idLead)){
+              //Obtiene bean de Lead
+              $beanLead = BeanFactory::retrieveBean('Leads', $idLead, array('disable_row_level_security' => true));
+              if (!empty($beanLead)) {
+                  //Compara datos por actualizar
+                  if( $bean->email1 != $beanLead->email1 || $bean->primernombre_c != $beanLead->nombre_c  || $bean->apellidopaterno_c != $beanLead->apellido_paterno_c  || $bean->apellidomaterno_c != $beanLead->apellido_materno_c ){
+                    $GLOBALS['log']->fatal("Setea datos por actualizar en Lead");
+                    $beanLead->email1 = $email; 
+                    $beanLead->nombre_c = $bean->primernombre_c; 
+                    $beanLead->apellido_paterno_c = $bean->apellidopaterno_c;
+                    $beanLead->apellido_materno_c = $bean->apellidomaterno_c;
+                    $beanLead->phone_mobile = ($phone!='') ? $phone : $beanLead->phone_mobile;
+                    $beanLead->save();
+                    $GLOBALS['log']->fatal("Lead actualizado");
+                  }
+              }
+            }
+            
+            //Recupera PO
+            $queryPO = "select pc.id_c
+                  from prospects_cstm pc
+                  inner join prospects p on p.id =pc.id_c
+                  where ifnull(excluye_campana_c,0) = 0
+                  and p.deleted=0
+                  and pc.account_id2_c='{$bean->id}'
+                  order by p.date_modified desc
+                  limit 1;";
+            $queryResultPO = $db->query($queryPO);
+            while ($row = $db->fetchByAssoc($queryResultPO)) {
+                $idPO = $row['id_c'] ;
+            }
+            if(!empty($idPO)){
+              //Obtiene bean de PO
+              $beanPO = BeanFactory::retrieveBean('Prospects', $idPO, array('disable_row_level_security' => true));
+              if (!empty($beanPO)) {
+                //Compara datos por actualizar
+                if( $bean->email1 != $beanPO->email1 || $bean->primernombre_c != $beanPO->nombre_c  || $bean->apellidopaterno_c != $beanPO->apellido_paterno_c  || $bean->apellidomaterno_c != $beanPO->apellido_materno_c ){
+                  $GLOBALS['log']->fatal("Setea datos por actualizar en PO");
+                  $beanPO->email1 = $email; 
+                  $beanPO->nombre_c = $bean->primernombre_c; 
+                  $beanPO->apellido_paterno_c = $bean->apellidopaterno_c;
+                  $beanPO->apellido_materno_c = $bean->apellidomaterno_c;
+                  $beanPO->phone_mobile = ($phone!='') ? $phone : $beanPO->phone_mobile;
+                  $beanPO->save();
+                  $GLOBALS['log']->fatal("PO actualizado");
+                  
+                  //Genera petición para actualizar datos Onboarding
+                  $callApi = new UnifinAPI();
+                  $hostOnboarding = $sugar_config['urlOnboarding'];
+                  $tokenOnboarding = $sugar_config['tokenOnboarding'];
+
+                  $urlOnboarding = $hostOnboarding.'/api/crm/contact/'.$idPO;
+
+                  $body = array(
+                      "name" => $nombre,
+                      "last_name" => $aPaterno,
+                      "mother_last_name" => $aMaterno,
+                      "email" => $email,
+                      "phone" => ($phone!='') ? $phone : $beanPO->phone_mobile,
+                  );
+                  
+                  $GLOBALS['log']->fatal("Request PO Onboarding");
+                  $GLOBALS['log']->fatal($urlOnboarding);
+                  $GLOBALS['log']->fatal(print_r( $body,true ));
+
+                  $resp = $callApi->postOnboardingPO($urlOnboarding, $tokenOnboarding ,$body);
+
+                  $GLOBALS['log']->fatal("Response PO Onboarding");
+                  $GLOBALS['log']->fatal(print_r($resp, true));
+                }    
+              }
+            }
+          }
+        }        
+
 
     }
 

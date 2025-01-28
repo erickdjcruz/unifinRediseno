@@ -59,7 +59,7 @@ $dictionary['Prospect']['fields']['detalle_origen_c']['visibility_grid']=array (
       0 => '',
       1 => '12',
       2 => '13',
-      3 => '14',
+      /*3 => '14',
       4 => '15',
       5 => '16',
       6 => '17',
@@ -124,7 +124,7 @@ $dictionary['Prospect']['fields']['detalle_origen_c']['visibility_grid']=array (
       65 => '99',
       66 => '100',
       67 => '101',
-      68 => '103',
+      68 => '103',*/
     ),
     13 => 
     array (

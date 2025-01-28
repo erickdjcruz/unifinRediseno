@@ -30,3 +30,7 @@
 /custom/Extension/modules/*/Ext/ScheduledTasks/orderMapping.php
 /custom/plantillaCSV/leads_calidad.csv
 /custom/plantillaCSV/leads_no_calidad.csv
+/custom/Extension/modules/*/Ext/Vardefs/full_text_search_admin.php
+/custom/cotejoDigital/*
+/custom/csf/*
+

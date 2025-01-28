@@ -20,11 +20,11 @@
 
         //Guarda valores en los campos de clasificacion sectorial
         this.model.addValidationTask('GuardaClasfSectorial', _.bind(this.SaveClasfSectorial, this));
-        //this.model.on('sync', this.loadData, this);
+        this.model.on('sync', this.loadData, this);
         clasf_sectorial.renderlista = 0;
         clasf_sectorial.check_uni2 = 0;
 
-        
+
         this.ActividadEconomica = {
             // 'combinaciones': '',
             'ae': {
@@ -54,9 +54,9 @@
             'label_isubsector': '',
             'label_isector': '',
             'label_imacro': '',
-			'label_div': '',
-			'label_grp': '',
-			'label_cls': ''
+            'label_div': '',
+            'label_grp': '',
+            'label_cls': ''
         };
 
         this.prevActEconomica = {
@@ -88,9 +88,9 @@
             'label_isubsector': '',
             'label_isector': '',
             'label_imacro': '',
-			'label_div': '',
-			'label_grp': '',
-			'label_cls': ''			
+            'label_div': '',
+            'label_grp': '',
+            'label_cls': ''
         };
 
         this.ResumenCliente = {
@@ -106,40 +106,40 @@
                 'pb_division': '',
                 'pb_grupo': '',
                 'pb_clase': ''
-            },			
+            },
         };
-        
+
     },
 
     loadData: function () {
         clasf_sectorial = this;
-        clasf_sectorial.ActividadEconomica.ae.id = this.model.get("actividadeconomica_c");
-        clasf_sectorial.ActividadEconomica.sse.id = this.model.get("subsectoreconomico_c");
-        clasf_sectorial.ActividadEconomica.se.id = this.model.get("sectoreconomico_c");
-        clasf_sectorial.ActividadEconomica.ms.id = this.model.get("tct_macro_sector_ddw_c");
+        // clasf_sectorial.ActividadEconomica.ae.id = this.model.get("actividadeconomica_c");
+        // clasf_sectorial.ActividadEconomica.sse.id = this.model.get("subsectoreconomico_c");
+        // clasf_sectorial.ActividadEconomica.se.id = this.model.get("sectoreconomico_c");
+        // clasf_sectorial.ActividadEconomica.ms.id = this.model.get("tct_macro_sector_ddw_c");
         clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
         clasf_sectorial.render();
         if (clasf_sectorial.ActividadEconomica.ae.id != "") {
             $('.list_ae').trigger('change');
         }
         //Api ResumenCliente para los campos de INEGI
-        var idCuenta = clasf_sectorial.model.id; //Id de la Cuenta
-        if (idCuenta != '' && idCuenta != undefined && idCuenta != null) {
-            var url = app.api.buildURL('ResumenCliente/' + idCuenta, null, null,);
-            app.api.call('GET', url, {}, {
-                success: function (data) {
-                    clasf_sectorial.ResumenCliente = data;
-					//Etiquetas de PB para Input del HBS en edit
-					clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
-					clasf_sectorial.ActividadEconomica.label_grp = app.lang.getAppListStrings('pb_grupo_list')[clasf_sectorial.ResumenCliente.pb.pb_grupo];
-					clasf_sectorial.ActividadEconomica.label_cls = app.lang.getAppListStrings('pb_clase_list')[clasf_sectorial.ResumenCliente.pb.pb_clase];
-					clasf_sectorial.check_uni2 = clasf_sectorial.ResumenCliente.inegi.inegi_acualiza_uni2;
-                    clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
-                    _.extend(this, clasf_sectorial.ResumenCliente);
-                    clasf_sectorial.render();
-                }
-            });
-        }
+        // var idCuenta = clasf_sectorial.model.id; //Id de la Cuenta
+        // if (idCuenta != '' && idCuenta != undefined && idCuenta != null) {
+        //     var url = app.api.buildURL('ResumenCliente/' + idCuenta, null, null,);
+        //     app.api.call('GET', url, {}, {
+        //         success: function (data) {
+        //             clasf_sectorial.ResumenCliente = data;
+        // 			//Etiquetas de PB para Input del HBS en edit
+        // 			clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
+        // 			clasf_sectorial.ActividadEconomica.label_grp = app.lang.getAppListStrings('pb_grupo_list')[clasf_sectorial.ResumenCliente.pb.pb_grupo];
+        // 			clasf_sectorial.ActividadEconomica.label_cls = app.lang.getAppListStrings('pb_clase_list')[clasf_sectorial.ResumenCliente.pb.pb_clase];
+        // 			clasf_sectorial.check_uni2 = clasf_sectorial.ResumenCliente.inegi.inegi_acualiza_uni2;
+        //             clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
+        //             _.extend(this, clasf_sectorial.ResumenCliente);
+        //             clasf_sectorial.render();
+        //         }
+        //     });
+        // }
     },
 
     bindDataChange: function () {
@@ -152,16 +152,15 @@
     _render: function () {
         this._super("_render");
 
-        if($('[data-fieldname="account_clasf_sectorial"] > span').length >0){
+        if ($('[data-fieldname="account_clasf_sectorial"] > span').length > 0) {
             $('[data-fieldname="account_clasf_sectorial"] > span').show();
         }
         //campo custom account_clasf_sectorial ocualta la Etiqueta
         $("div.record-label[data-name='account_clasf_sectorial']").attr('style', 'display:none;');
         //Muestra y Oculta campos dependientes de Actividad Economica
-        // if ($('.list_ae').select2('val') != "" || clasf_sectorial.ActividadEconomica.ae.id != "") {
-        //     // clasf_sectorial.MuestraCamposAE();
-        //     $('.list_ae').trigger('change');
-        // }
+        if ($('.list_ae').select2('val') != "" || clasf_sectorial.ActividadEconomica.ae.id != "") {
+            $('.list_ae').trigger('change');
+        }
         //funcion de cargar listas
         if (clasf_sectorial.renderlista != 1) {
             this.cargalistas();
@@ -221,7 +220,7 @@
         });
 
         if (idActEconomica != "" && idActEconomica != null && idActEconomica != undefined) {
-            console.log("idActEconomica "+idActEconomica);
+            console.log("idActEconomica " + idActEconomica);
 
             app.api.call('GET', app.api.buildURL('clasificacionSectorialCNVB/' + idActEconomica), null, {
                 success: function (data) {

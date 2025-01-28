@@ -12,9 +12,9 @@ class clase_ClasfSectorial
         if (!empty($clasfSectorial)) {
 
             $bean->actividadeconomica_c = $clasfSectorial['ae']['id'];
-            $bean->subsectoreconomico_c = $clasfSectorial['sse']['id'];
-            $bean->sectoreconomico_c = $clasfSectorial['se']['id'];
-            $bean->tct_macro_sector_ddw_c = $clasfSectorial['ms']['id'];
+            // $bean->subsectoreconomico_c = $clasfSectorial['sse']['id'];
+            // $bean->sectoreconomico_c = $clasfSectorial['se']['id'];
+            // $bean->tct_macro_sector_ddw_c = $clasfSectorial['ms']['id'];
         }
     }
 }

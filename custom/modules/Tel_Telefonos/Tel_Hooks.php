@@ -47,6 +47,9 @@ class Tel_Hooks{
         $phone_sanitized = substr($phone_sanitized, 0, 13);
 
         $bean->telefono = $phone_sanitized;
+
+        //SE AGREGA TELEFONO AL NAME
+        $bean->name = $bean->telefono;
     }
 
     public function insertaComunicaciónUNICS($bean = null, $event = null, $args = null){
@@ -91,5 +94,27 @@ SQL;
          }
         //$GLOBALS['log']->fatal('>>>Fetched row: '.$bean->fetched_row['id']);
         $GLOBALS['log']->fatal(__FILE__." - ".__CLASS__."->".__FUNCTION__." <".$current_user->user_name."> : ESTADO: $_SESSION[estado] ");
+    }
+
+    public function checkFormatPhones($bean = null, $event = null, $args = null){
+
+        $phone = $bean->telefono;
+
+        if( $phone != "" ){
+            if( !$this->validarNumeros($phone) ){
+                throw new SugarApiExceptionInvalidParameter("Teléfono no válido. El teléfono debe tener únicamente números y máximo 10 dígitos");
+            }
+        }
+
+    }
+
+    public function validarNumeros($input) {
+        // Verifica si el string contiene solo números y tiene una longitud máxima de 10 dígitos
+        return true;
+        if (preg_match('/^\d{1,10}$/', $input)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

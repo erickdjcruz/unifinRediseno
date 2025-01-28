@@ -106,3 +106,5 @@ $mod_strings['LBL_ERROR_DYNAMICS365'] = ' Error en integración Dynamics365';
 $mod_strings['LBL_RAZON_RECHAZO_REGIMEN'] = 'Razón de Rechazo';
 $mod_strings['LBL_ESTADO_CLIENTE'] = 'Estado de Cliente';
 $mod_strings['LBL_SEGUIMIENTO_BC'] = 'Seguimiento Buró de Crédito';
+$mod_strings['LBL_PO_CREADO'] = 'Público Objetivo Guardado';
+$mod_strings['LBL_ID_DIR_COMERCIAL_APRUEBA'] = 'Director Comercial que Aprueba o Rechaza creación de PO';

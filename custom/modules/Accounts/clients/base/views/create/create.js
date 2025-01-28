@@ -463,6 +463,7 @@
         this.model.addValidationTask('check_telefonos', _.bind(this.validatelefonosexisting, this));
         this.model.addValidationTask('check_direcciones', _.bind(this.validadireccexisting, this));
         this.model.addValidationTask('check_rfc', _.bind(this._doValidateRFC, this));
+        this.model.addValidationTask('check_curp', _.bind(this._doValidateCURP, this));
         this.model.on('change:pais_nacimiento_c', this.validaExtranjerosRFC, this);
         //this.model.on('change:rfc_c',this.validaFechaNacimientoDesdeRFC, this);
         this.model.on('change:account_telefonos', this.setPhoneOffice, this);
@@ -685,11 +686,13 @@
             Object.keys(new_options).forEach(function (key) {
               delete new_options[key];
             });
+            /*
             //Valida el puesto del usuraio conectado
             var puesto = app.user.get('puestousuario_c');
             if(puesto!=1 && puesto!=2 && puesto!=3 && puesto!=4 && puesto!=5 && puesto!=6 && puesto!=20 && puesto!=33 && puesto!=44 && puesto!=55) {
               new_options["2"] = "Prospecto";
             }
+            */
         }
         if (App.user.attributes.tct_alta_cd_chk_c == true || App.user.attributes.deudor_factoraje_c == true) {
             new_options["4"] = "Persona";
@@ -945,8 +948,8 @@
                     msjError += '<br>-Solo números son permitidos';
                 }
                 //Valida longitud
-                if (valor4.length < 8) {
-                    msjError += '<br>-Debe contener 8 o más dígitos';
+                if (valor4.length !== 10) {
+                    msjError += '<br>-Debe contener 10 dígitos';
                 }
                 //Valida números repetidos
                 if (valor4.length > 1) {
@@ -2000,12 +2003,18 @@
                 rfc=this.model.get('rfc_c');
             }
 
+            var curp="";
+            if(this.model.get('curp_c') != undefined && this.model.get('curp_c') != ""){
+                curp=this.model.get('curp_c');
+            }
+
             //Parámetros para consumir servicio
             var params = {
                 'nombre': this.model.get('name'),
                 'correo': email,
                 'telefonos': telefonos,
                 'rfc': rfc,
+                'curp': curp
             };
 
             /*
@@ -2184,7 +2193,7 @@
     },
     //Funcion que valida el contenido ingresado en el campo del Email
     expmail: function (fields, errors, callback) {
-        if (this.model.get('email') != null && this.model.get('email') != "") {
+        if (this.model.get('email') != null && this.model.get('email') != "" && this.model.get('email') != undefined) {
 
             var input = (this.model.get('email'));
             var expresion = /^\S+@\S+\.\S+[$%&|<>#]?$/;
@@ -3648,5 +3657,42 @@
           callback(null, fields, errors);
         }
 
+    },
+
+    _doValidateCURP: function (fields, errors, callback) {
+        if (this.model.get('curp_c')) {
+            var fields = ["primernombre_c", "segundonombre_c", "apellidopaterno_c", "apellidomaterno_c", 'curp_c'];
+            var ACCURP = this.model.get('curp_c');
+            app.api.call("read", app.api.buildURL("Accounts/", null, null, {
+                fields: fields.join(','),
+                max_num: 5,
+                "filter": [
+                    {
+                        "curp_c": ACCURP,
+                        "id": {
+                            $not_equals: this.model.id,
+                        }
+                    }
+                ]
+            }), null, {
+                success: _.bind(function (data) {
+                    if (data.records.length > 0) {
+
+                        app.alert.show("DuplicateCheck", {
+                            level: "error",
+                            title: "El CURP ingresado ya Existe.",
+                            autoClose: false
+                        });
+
+                        this.model.set("curp_c", '');
+
+                        errors['curp_c'] = errors['curp_c'] || {};
+                        errors['curp_c'].required = true;
+
+                    }
+                }, this)
+            });
+        }
+        callback(null, fields, errors);
     },
 })

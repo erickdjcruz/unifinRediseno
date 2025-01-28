@@ -27,4 +27,5 @@ function limpieza_soc()
     }
   
     $GLOBALS['log']->fatal('Job limpieza_soc: Fin');
+    return true;
 }

@@ -25,21 +25,38 @@
           font-size: 25px;
           color: #33800d;
       }
+
+      .centered-container {
+          display: flex;
+          /*justify-content: center;*/
+          align-items: center;
+          margin-top: 20px;
+          margin-left: 20px;
+        }
+
+      .nav-tabs .nav-item.show .nav-link, 
+      .nav-tabs .nav-link.active {
+          background-color: #6f777b; /* Cambia a color azul */
+          color: white; /* Cambia el texto a blanco para mayor contraste */
+          border-color: #6f777b; /* Asegura que el borde también sea azul */
+      }
   </style>
-	<script>
+	
+  <script>
 		var $select2 = this.$('.cuentasContainer').find('select.select2');
 		$select2.select2();
 
-        this.$('[data-field="oficinas_atiende_id"].updateOA').select2({
-            width:'100%',
-            minimumResultsForSearch:7,
-            closeOnSelect: false, 
-            containerCssClass: 'select2-choices-pills-close'
-        });
+    this.$('[data-field="oficinas_atiende_id"].updateOA').select2({
+        width:'80%',
+        minimumResultsForSearch:7,
+        closeOnSelect: false, 
+        containerCssClass: 'select2-choices-pills-close'
+    });
+
+    $('.selectZonaGeografica').select2();
 
 	</script>	
 	<div><p></p></div>
-  <div class="container">
     <div class="row-fluid">
       <div style="color: #e2efe2;background-color:#22608c;border-color:#22608c;border-radius: 10px;margin-left:15px;margin-right:15px;height: 35px;display: table;width: 96%;">
         <h1>
@@ -49,64 +66,183 @@
         </h1>
       </div>
     </div>
-		{{#if listaAsignacionPO}}
-			<div class="row-fluid">
-				<table class="table">
-					<tr>
-						<td class="span4">
-							<label class="record-label" style="font-weight:bold; ">&nbsp ZONA GEOGRÁFICA</label>
-						</td>
-						<td class="span4">
-							<label class="record-label" style="font-weight:bold; ">&nbsp EQUIPO(S) ATIENDE</label>
-						</td>
-            <td class="span4">
-							<label class="record-label" style="font-weight:bold; ">&nbsp ÚLTIMA MODIFICACIÓN</label>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<div class="cuentasContainer row-fluid">
-			  <table class="table table-striped tablavet">
-				{{#each listaAsignacionPO}}
-					<tr>
-						<td class="span4">	
-							<span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'> 
-                {{getUnifinListValue "zonageografica_list" zona_geografica}}
-              </span>
-						</td>
-            <td class="span4">
-							<select class="oficinas_atiende select2 updateOA" multiple="multiple" style="width: 100%;" data-field="oficinas_atiende_id">
-								{{#each ../lista_equipo}}
-									<option value="{{@key}}" {{ifMSelected @key ../equipos}}>{{this}}</option>
-								{{/each}}
-							</select>
-						</td>
-            <td class="span4">	
-							<span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>
-                {{uName}}
-              </span><br>
-              <span style='font-family: Helvetica, Arial, sans-serif; font-size: 10px;'>
-                {{date_modified}}
-              </span>
-						</td>                        
-					</tr>
-				{{/each}}
-			  </table>
-			</div>
-			<div><p></p></div>
-      <table>
-				<br>
-				<tr>
-					<th>&nbsp &nbsp Total de registros encontrados: {{Total}}</th>
-          <td align="center"><input type="button" value="Guardar cambios" id="btn_guardar" class="btn btn-success" /></td>
-					<td></td>
-        </tr>
-			</table>
-		{{else}}
-			<div class="row-fluid hide notFound" style="color:gray;">
-				<div class="span12"><center>No se han encontrado registros</center></div>
-			</div>
-		{{/if}}
-		<textarea style="display: none" id="crossSeleccionados" value=""></textarea>
+    
+    <div class="centered-container">
+      <div class="tabbable" style="width:100%">
+        <ul class="nav nav-tabs">
+          {{!-- <li class="active" data-bs-toggle="tab" data-bs-target="#tab1"><a>Asignación de equipos</a></li>
+          <li data-bs-toggle="tab" data-bs-target="#tab2"><a>Asignación de usuario</a></li> --}}
+          <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#tab1" id="linkEquipo">Asignación de equipos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#tab2" id="linkUsuario">Asignación de usuario</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab1">
+
+            {{#if listaAsignacionPO}}
+              <div class="row-fluid">
+                <table class="table span12">
+                  <tr>
+                    <td class="span4">
+                      <label class="record-label" style="font-weight:bold; ">&nbsp; ZONA GEOGRÁFICA</label>
+                    </td>
+                    <td class="span4">
+                      <label class="record-label" style="font-weight:bold; ">&nbsp; EQUIPO(S) ATIENDE</label>
+                    </td>
+                    <td class="span4">
+                      <label class="record-label" style="font-weight:bold; ">&nbsp; ÚLTIMA MODIFICACIÓN</label>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="cuentasContainer row-fluid">
+                <table class="table table-striped tablavet span12">
+                {{#each listaAsignacionPO}}
+                  <tr>
+                    <td class="span4">	
+                      <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'> 
+                        {{getUnifinListValue "zonageografica_list" zona_geografica}}
+                      </span>
+                    </td>
+                    <td class="span4">
+                      <select class="oficinas_atiende select2 updateOA" multiple="multiple" style="width: 100%;" data-field="oficinas_atiende_id">
+                        {{#each ../lista_equipo}}
+                          <option value="{{@key}}" {{ifMSelected @key ../equipos}}>{{this}}</option>
+                        {{/each}}
+                      </select>
+                    </td>
+                    <td class="span4">	
+                      <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>
+                        {{uName}}
+                      </span><br>
+                      <span style='font-family: Helvetica, Arial, sans-serif; font-size: 10px;'>
+                        {{date_modified}}
+                      </span>
+                    </td>                        
+                  </tr>
+                {{/each}}
+                </table>
+              </div>
+              <div><p></p></div>
+              <table>
+                <br>
+                <tr>
+                  <th>&nbsp; &nbsp; Total de registros encontrados: {{Total}}</th>
+                  <td align="center"><input type="button" value="Guardar cambios" id="btn_guardar" class="btn btn-success" /></td>
+                  <td></td>
+                </tr>
+              </table>
+            {{else}}
+              <div class="row-fluid hide notFound" style="color:gray;">
+                <div class="span12"><center>No se han encontrado registros</center></div>
+              </div>
+            {{/if}}
+            <textarea style="display: none" id="crossSeleccionados" value=""></textarea>
+          </div>
+          <div class="tab-pane" id="tab2">
+
+              <div class="record row-fluid panel_body">
+                <div class="span3 record-cell"></div>
+                <div class="span4 record-cell">
+                  <div class="record-label">Búsqueda por Zona Geográfica</div>
+                    <span>
+                      <select class="row-fluid selectZonaGeografica select2">
+                        {{#each listZonaGeografica}}
+                            {{!-- <option value="{{@key}}" {{ifSelected @key ../zonaGeograficaDefault}}>{{this}}</option> --}}
+                            <option value="{{id}}" {{ifSelected id ../zonaGeograficaDefault}}>{{estado}}</option>
+                        {{/each}}
+                      </select>
+                    </span>
+                </div>
+                <div class="span2 record-cell" style="margin-left:10px;">
+                  <div class="record-label">&nbsp;</div>
+                    <span>
+                      <button class="btn btn-primary" id="btnBuscaZonaGeografica" type="button">Buscar<img id="processingZona" style="display: none;" width="15" height="5" src="custom/Levementum/images/icon_processing.gif"></button>
+                    </span>
+                </div>
+                <div class="span3 record-cell"></div>
+              </div>
+            {{#if listaAsignacionSinEquipo}}
+              <div class="row-fluid">
+                &nbsp;
+              </div>
+
+              <div class="row-fluid">
+                  <table class="table span12">
+                    <tr>
+                      <td class="span3">
+                        <label class="record-label" style="font-weight:bold; ">&nbsp; ZONA GEOGRÁFICA</label>
+                      </td>
+                      <td class="span3">
+                        <label class="record-label" style="font-weight:bold; ">&nbsp; MUNICIPIO</label>
+                      </td>
+                      <td class="span3">
+                        <label class="record-label" style="font-weight:bold; ">&nbsp; ASIGNADO</label>
+                      </td>
+                      <td class="span3">
+                        <label class="record-label" style="font-weight:bold; ">&nbsp; ÚLTIMA MODIFICACIÓN</label>
+                      </td>
+                    </tr>
+                  </table>
+              </div>
+
+              <div class="cuentasContainer row-fluid">
+                <table class="table table-striped tablavet span12" id="tablaRegistros">
+                {{#each listaAsignacionSinEquipo}}
+                  <tr data-id="{{id}}">
+                    <td class="span3">	
+                      <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'> 
+                        {{getUnifinListValue "zonageografica_list" zona_geografica}}
+                      </span>
+                    </td>
+                    <td class="span3">	
+                      <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;' data-id-municipio="{{municipio}}"> 
+                        {{nMunicipio}}
+                      </span>
+                    </td>
+                    <td class="span3">	
+                      <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>
+                        {{!-- {{asignado}}<br> --}}
+                        <select class="usersActive select2" style="width: 80%;">
+                        {{#each ../listUsersActive}}
+                          {{!-- <option value="{{@key}}" {{ifSelected @key ../asignado}}>{{full_name}}</option> --}}
+                          <option value="{{id}}" {{ifSelected id ../asignado}}>{{full_name}}</option>
+                        {{/each}}
+                      </select>  
+                      </span><br>
+                    </td>
+                    <td class="span3">
+                      <span style='font-family: Helvetica, Arial, sans-serif; font-size: 10px;'>
+                        {{uName}}
+                        <br>
+                        {{date_modified}}
+                      </span>
+                    </td>
+                  </tr>
+                {{/each}}
+                </table>
+              </div>
+              <table>
+                <br>
+                <tr>
+                  <td align="center"><input type="button" value="Guardar cambios" id="btnGuardarAsignados" class="btn btn-success" /></td>
+                  <td></td>
+                </tr>
+              </table>
+            {{else}}
+               <div class="row-fluid" style="margin-top:50px">
+                <div class="span12"><center>No se han encontrado registros para esta búsqueda</center></div>
+              </div>
+            {{/if}}
+            
+          </div>
+        </div>
+      </div>
     </div>
+    
+    
+</div>
 {{/if}}

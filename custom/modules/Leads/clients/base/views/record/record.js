@@ -233,7 +233,7 @@
             if (num_errors > 0) {
                 app.alert.show("Num-invalido", {
                     level: "error",
-                    title: "El teléfono debe contener entre 8-13 números / Contiene carácteres repetidos",
+                    title: "El teléfono debe contener 10 dígitos / Contiene carácteres repetidos",
                     autoClose: false
                 });
             }
@@ -287,7 +287,7 @@
         requerido = false;
 
         if (telefono != "" && telefono != undefined) {
-            if (telefono.length >= 8) {
+            if (telefono.length == 10) {
 
                 if (telefono.length > 1) {
                     var repetido = true;

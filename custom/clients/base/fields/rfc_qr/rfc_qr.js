@@ -218,7 +218,7 @@
 								//var PathQR=data[0]["path_img_qr"];
 								var Correo = data["email"];
 								var CP = data["address"]["postalCode"];
-								var Calle = data["address"]["streetName"].toUpperCase();
+								var Calle = data["address"]["riched_vialidad"].toUpperCase();
 								var Exterior = data["address"]["streetNumber"].toUpperCase();
 								var Interior = data["address"]["buildingNumber"].toUpperCase();
 								//var Colonia = (data[0]["Colonia"] != undefined && data[0]["Colonia"] !='') ? data[0]["Colonia"] : ' ' ;
@@ -506,6 +506,7 @@
 														Ciudad = ( Ciudad == '' ) ? '_' : Ciudad;
 
 														var strUrl = 'DireccionesQR/' + CP + '/0/' + Colonia +'/'+Municipio+'/'+Estado+'/'+Ciudad;
+                            strUrl = strUrl.replaceAll(' ','+');
 														app.api.call('GET', app.api.buildURL(strUrl), null, {
 															success: _.bind(function (data) {
 																Colonia = (Colonia == '_') ? ' ' : Colonia;

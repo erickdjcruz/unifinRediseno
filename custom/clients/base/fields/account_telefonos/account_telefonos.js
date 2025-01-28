@@ -6,7 +6,7 @@
     newArray: [],
 
     events: {
-        'keydown .existingTelephono': 'keyDownNewExtension',
+        'keydown .Telefonot': 'keyDownNewExtension',
         'keydown .newTelefono': 'keyDownNewExtension',
         'click  .addTelefono': 'addNewTelefono',
         'click  .mcall': 'makecall',
@@ -100,7 +100,8 @@
         if ($.inArray(evt.keyCode, [110, 188, 190, 45, 33, 36, 46, 35, 34, 8, 9, 20, 16, 17, 37, 40, 39, 38, 16, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105]) < 0) {
             app.alert.show("Caracter Invalido", {
                 level: "error",
-                title: "Solo n\u00FAmeros son permitidos en este campo.",
+                title: "Error",
+                messages: "Solo n\u00FAmeros son permitidos en este campo.",
                 autoClose: true
             });
             return false;
@@ -204,9 +205,9 @@
                 msjError += '<br><b>Solo números son permitidos</b>';
             }
             //Valida longitud
-            if (valor4.length < 8) {
+            if (valor4.length !== 10) {
                 faltantes++;
-                msjError += '<br><b>Debe contener 8 o más dígitos</b>';
+                msjError += '<br><b>Debe contener 10 dígitos</b>';
             }
 
             //Valida números repetidos

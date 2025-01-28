@@ -55,3 +55,11 @@ $hook_array['before_save'][] = Array(
    'Rel_Relaciones_Hooks',
    'verifica_cuenta_bloqueada'
 );
+
+$hook_array['before_save'][] = Array(
+   5,
+   'Recupera historial comercial de PO y liga a cuenta principal',
+   'custom/modules/Rel_Relaciones/Rel_Relaciones_Hooks.php',
+   'Rel_Relaciones_Hooks',
+   'obtenHistorialComercial'
+);

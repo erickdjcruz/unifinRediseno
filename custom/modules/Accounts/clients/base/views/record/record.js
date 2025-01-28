@@ -12,7 +12,6 @@
     initialize: function (options) {
         //self = this;
         contexto_cuenta = this;
-        contexto_cuenta.valorPrevioRegimenFiscal = null;
         self.hasContratosActivos = false;
         this._super("initialize", [options]);
 
@@ -30,6 +29,7 @@
         this.model.addValidationTask('checkaccdatestatements', _.bind(this.checkaccdatestatements, this));
         this.model.addValidationTask('duplicate_check', _.bind(this.DuplicateCheck, this));
         this.model.addValidationTask('validaduplicadoRFC', _.bind(this.RFC_DuplicateCheck, this));
+        this.model.addValidationTask('validaduplicadoCURP', _.bind(this.CURP_DuplicateCheck, this));
         this.model.addValidationTask('check_email_telefono', _.bind(this._doValidateEmailTelefono, this));
         this.model.addValidationTask('check_telefonos', _.bind(this.validatelefonos, this));
         this.model.addValidationTask('check_rfc', _.bind(this._doValidateRFC, this));
@@ -331,6 +331,8 @@
         this.estableceOpcionesOrigen();
         //Clic solicitar CIEC
         this.context.on('button:solicitar_ciec:click', this.solicitar_ciec_function, this);
+        
+        this.context.on('button:alta_po:click', this.muestra_modal_alta_po, this);
         //Oculta Menú Solicitar CIEC
         this.model.on('sync', this.ocultaSolicitarCIEC, this);
         //Parche utilizado para ocultar las filas que siguen mostrándose aunque ningún campo se encuentren en ellas
@@ -1054,18 +1056,18 @@
         //Si el registro es Persona Fisica, ya no se podra cambiar a Persona Moral
         this.model.on("change:tipodepersona_c", _.bind(function () {
 
-            if ( contexto_cuenta.valorPrevioRegimenFiscal == 'Persona Fisica') {
+            if (this.model._previousAttributes.tipodepersona_c == 'Persona Fisica') {
                 if (this.model.get('tipodepersona_c') == 'Persona Moral') {
                     this.model.set('tipodepersona_c', 'Persona Fisica');
                 }
             }
-            if ( contexto_cuenta.valorPrevioRegimenFiscal == 'Persona Fisica con Actividad Empresarial') {
+            if (this.model._previousAttributes.tipodepersona_c == 'Persona Fisica con Actividad Empresarial') {
                 if (this.model.get('tipodepersona_c') == 'Persona Moral') {
                     this.model.set('tipodepersona_c', 'Persona Fisica con Actividad Empresarial');
                 }
             }
             //Si es Persona Moral, ya no se podra cambiar a Persona Fisica
-            if ( contexto_cuenta.valorPrevioRegimenFiscal == 'Persona Moral') {
+            if (this.model._previousAttributes.tipodepersona_c == 'Persona Moral') {
                 if (this.model.get('tipodepersona_c') == 'Persona Fisica' || this.model.get('tipodepersona_c') == 'Persona Fisica con Actividad Empresarial') {
                     this.model.set('tipodepersona_c', 'Persona Moral');
                 }
@@ -3332,9 +3334,9 @@
             RFC = RFC.toUpperCase().trim();
             var expReg = "";
             if (this.model.get('tipodepersona_c') != 'Persona Moral') {
-                expReg = /^([A-Z\u00D1&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
+                expReg = /^[A-ZÑ&]{4}\d{6}[A-Z0-9]{3}$/; // /^([A-Z\u00D1&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
             } else {
-                expReg = /^([A-Z\u00D1&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
+                expReg = /^[A-ZÑ&]{3}\d{6}[A-Z0-9]{3}$/; // /^([A-Z\u00D1&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
             }
             if (!RFC.match(expReg)) {
                 app.alert.show("RFC incorrecto", {
@@ -3983,8 +3985,8 @@
                     msjError += '<br>-Solo números son permitidos';
                 }
                 //Valida longitud
-                if (valor4.length < 8) {
-                    msjError += '<br>-Debe contener 8 o más dígitos';
+                if (valor4.length !== 10) {
+                    msjError += '<br>-Debe contener 10 dígitos';
                 }
                 //Valida números repetidos
                 if (valor4.length > 1) {
@@ -4122,7 +4124,7 @@
 
     //Funcion que valida el contenido ingresado en el campo del Email
     expmail: function (fields, errors, callback) {
-        if (this.model.get('email') != null && this.model.get('email') != "") {
+        if (this.model.get('email') != null && this.model.get('email') != "" && this.model.get('email') != undefined) {
 
             var input = (this.model.get('email'));
             var expresion = /^\S+@\S+\.\S+[$%&|<>#]?$/;
@@ -9201,6 +9203,70 @@ validaReqUniclickInfo: function () {
         });
     },
 
+    muestra_modal_alta_po: function(){
+
+        var selfModalAltaPO = this;
+
+        //Mostramos el modal para el director leasing solo si se solictó la creación y si el asesor logueado es el asesor leasing
+        app.alert.show('loadingMuestraModal', {
+            level: 'process',
+            title: 'Cargando...',
+        });
+
+        var url = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null,);
+        app.api.call('GET', url, {}, {
+            success: function (data) {
+                app.alert.dismiss('loadingMuestraModal');
+
+                var asesorLeasingId = selfModalAltaPO.model.get('user_id_c');
+                var currentUserId =  App.user.id;
+
+                if( data.bloqueo_cartera_c || data.bloqueo2_c || data.bloqueo3_c ){
+                    app.alert.show('cuentaBloqueada', {
+                        level: 'error',
+                        messages: 'Acción no disponible.<b>Cuenta Bloqueada</b>',
+                        autoClose: false
+                    });
+                }
+                //Si está notificado y entra alguien que no es director, muestra alaerta de pendiente de aprobación
+                if( data.po_creado_estado_c == '1' && data.id_dir_comercial_aprueba_c != currentUserId ){
+                    app.alert.show('pendienteAprobacion', {
+                        level: 'error',
+                        messages: 'Actualmente se tiene una solicitud de aprobación en proceso. Espere la confirmación o rechazo de su director',
+                        autoClose: false
+                    });
+                }
+                
+                //Si el usuario logueado es igual al Director comercial y además ya se creó el PO, se muestra pantalla con botones para aprobar y rechazar
+                else if( (data.po_creado_c == 1 && data.id_dir_comercial_aprueba_c == currentUserId ) || currentUserId == asesorLeasingId ){
+                    app.drawer.open({
+                        layout: 'layout-alta-po',
+                        context: {
+                            context: selfModalAltaPO.context,
+                            model: selfModalAltaPO.model,
+                        },
+                    },function(context, model,update) {
+                        console.log("CIERRA DRAWER ALTA PO");
+                        
+                        
+                    });
+
+                }else{
+
+                    app.alert.show('sinPermisoModal', {
+                        level: 'error',
+                        messages: 'No cuentas con el privilegio para realizar esta acción',
+                        autoClose: false
+                    });
+
+
+                }
+                
+            }
+        });
+
+    },
+
 	dynamics365:function(){
 		//Muestra mensaje de Dynamics365
 		var url = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
@@ -9217,12 +9283,7 @@ validaReqUniclickInfo: function () {
 				}
 			}, this)
 		});
-        this.setPreviousValueRegimenFiscal();
 	},
-
-    setPreviousValueRegimenFiscal: function (){
-        contexto_cuenta.valorPrevioRegimenFiscal = this.model.get('tipodepersona_c');
-    },
 
     showSubpanels:function(){
 
@@ -9284,7 +9345,40 @@ validaReqUniclickInfo: function () {
             }
             
         });
-    }
+    },
 
+    CURP_DuplicateCheck: function (fields, errors, callback) {
+        var ACCURP = this.model.get('curp_c');
+        if (this.model.get('curp_c')) {
+            app.api.call("read", app.api.buildURL("Accounts/", null, null, {
+                fields: "curp_c",
+                max_num: 5,
+                "filter": [
+                    {
+                        "curp_c": ACCURP,
+                        "id": {
+                            $not_equals: this.model.id,
+                        }
+                    }
+                ]
+            }), null, {
+                success: _.bind(function (data) {
+                    if (data.records.length > 0) {
+                        app.alert.show("DuplicateCheck", {
+                            level: "error",
+                            title: "Ya existe una persona registrada con el mismo CURP.",
+                            autoClose: false
+                        });
+
+                        errors['curp_c'] = errors['curp_c'] || {};
+                        errors['curp_c'].required = true;
+                    }
+                    callback(null, fields, errors);
+                }, this)
+            });
+        } else {
+            callback(null, fields, errors);
+        }
+    },
 
 })

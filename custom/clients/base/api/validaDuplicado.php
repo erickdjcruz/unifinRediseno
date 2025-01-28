@@ -64,6 +64,7 @@ class validaDuplicado extends SugarApi
         $telefonos = isset($args['telefonos']) ? implode("','",$args['telefonos']) : '';
         $totalTelefonos = isset($args['telefonos']) ? count($args['telefonos']) : 0;
         $rfc = isset($args['rfc']) ? $args['rfc'] : '';
+        $curp = isset($args['curp']) ? $args['curp'] : '';
         $consultas = [];
         //Estructura resultado: output
         $items = [];
@@ -79,7 +80,7 @@ class validaDuplicado extends SugarApi
         }
         //Prepara consulta: Lead
         //Nivel 0 - Nombre (limpio con algoritmo: clean_name) + email + algún teléfono + RFC.
-        if (!empty($nombre) && !empty($correo) &&  $totalTelefonos>0 &&  !empty($rfc) ) {
+        if (!empty($nombre) && !empty($correo) && $totalTelefonos>0 && !empty($rfc)) {
             $consultas[] = "select '0' as nivel, 'Lead' as modulo, 'Leads' as moduloLink, lc.clean_name_c nombre, l.id as id, lc.rfc_c as rfc,
             'Nivel de match encontrado a través de la combinación del nombre, email, algún teléfono y RFC' as descripcion
                         from leads l
@@ -158,6 +159,19 @@ class validaDuplicado extends SugarApi
                       	a.clean_name='".$nombre."'
                         and (e.email_address='".$correo."' or t.telefono in ('".$telefonos."'))
                       ";
+        }
+        //Nivel 3 - VALIDA CURP
+        if(!empty($curp)) {
+            $consultas[] ="select '3' as nivel, 'Cuenta' as modulo, 'Accounts' as moduloLink, a.clean_name nombre, a.id as id, ac.rfc_c as rfc,
+            'Nivel de match encontrado a través de la CURP' as descripcion
+            from accounts a
+            inner join accounts_cstm ac on ac.id_c=a.id
+            left join email_addr_bean_rel er on er.bean_id = a.id and er.deleted=0
+            left join email_addresses e on e.id=er.email_address_id and e.deleted =0
+            left join accounts_tel_telefonos_1_c at on at.accounts_tel_telefonos_1accounts_ida = a.id
+            left join tel_telefonos t on t.id = at.accounts_tel_telefonos_1tel_telefonos_idb
+            where ac.curp_c = '".$curp."'
+            ";
         }
 
         // $queryRegistros = isset($consultas) ? implode(" union ",$consultas)." order by nivel desc ; " : '';

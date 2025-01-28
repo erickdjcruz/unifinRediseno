@@ -46,7 +46,24 @@ class proveedor_quantico
 			$response = json_decode($result, true);
 			$GLOBALS['log']->fatal('RESPUESTA PROVEEDOR QUANTICO');
 			$GLOBALS['log']->fatal($response);
-			if($response['IsValid']) $bean->proveedor_quantico_c = 1;
+			if($response['IsValid']){
+				$bean->proveedor_quantico_c = 1;
+			}else{
+				//Envía error de petición a bitáciora de errores
+				$GLOBALS['log']->fatal("Enviando notificación para bitácora de errores Quantico");
+				require_once("custom/clients/base/api/ErrorLogApi.php");
+				$apiErrorLog = new ErrorLogApi();
+				$args = array(
+					"integration"=> "Quantico: SupplierAPI/CreateSupplierInQuantico",
+					"system"=> "Quantico",
+					"parent_type"=> "Accounts",
+					"parent_id"=> $bean->id,
+					"endpoint"=> $url,
+					"request"=> $content,
+					"response"=> json_encode($response)
+				);
+				$responseErrorLog = $apiErrorLog->setDataErrorLog(null, $args);
+			}
 		}
     }
 }

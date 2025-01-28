@@ -1,5 +1,5 @@
 <?php
- // created: 2022-04-26 21:09:58
+ // created: 2025-01-14 14:50:11
 
 $app_list_strings['detalle_subestatus_po_list']=array (
   '' => '',
@@ -16,4 +16,14 @@ $app_list_strings['detalle_subestatus_po_list']=array (
   11 => 'No tiene tiempo de constitución requerido',
   12 => 'No se pudo contactar al tomador de decisión',
   13 => 'No lo necesita por el momento',
+  14 => 'El cliente se encuentra evaluando otras ofertas',
+  15 => 'En espera de existencia del activo',
+  16 => 'No se encuentra el tomador de decisiones',
+  17 => 'El cliente está recabando la información para ingresar al Onboarding',
+  18 => 'Es un Sale & Lease back',
+  19 => 'Buro de Crédito con mala calificación',
+  20 => 'No está interesado',
+  21 => 'El cliente ha recibido propuesta con mejores condiciones',
+  22 => 'Los tiempos de entrega no se ajustan a la necesidad del cliente',
+  23 => 'No se siente con la seguridad de operar con nosotros',
 );

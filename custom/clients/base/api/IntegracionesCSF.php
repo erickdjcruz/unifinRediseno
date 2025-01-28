@@ -147,27 +147,35 @@ class IntegracionesCSF extends SugarApi
 
     public function callDigitalVal( $url, $token ){
 
-        $curl = curl_init();
+        try{
+            $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer '.$token
-            ),
-        ));
-          
-        $response = curl_exec($curl);
-          
-        curl_close($curl);
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Bearer '.$token
+                ),
+            ));
+            
+            $response = curl_exec($curl);
+            
+            curl_close($curl);
 
-        return $response;
+            return $response;
+
+        }catch(Exception $e){
+
+            $this->setErrorLogFailRequest('Validación Digital', "retrieve-digital-val-pdf", '', $url, '', $e->getMessage() );
+
+        }
+        
 
     }
 
@@ -213,31 +221,42 @@ class IntegracionesCSF extends SugarApi
     }
 
     public function callUploadDocument ( $url, $body ){
+        global $current_user;
 
         $body_string = json_encode($body);
 
-        $curl = curl_init();
+        try{
+            $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => $url,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => $body_string,
-        CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json'
-          ),
-        ));
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => $body_string,
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                  ),
+                ));
+                
+                $response = curl_exec($curl);
+                
+                curl_close($curl);
         
-        $response = curl_exec($curl);
-        
-        curl_close($curl);
+                return json_decode($response, true);
 
-        return json_decode($response, true);
+        }catch (Exception $e) {
+            error_log(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error: " . $e->getMessage());
+            $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
+            //$this->setErrorLogFailRequest( "ActualizaSolicitud", '', $host, json_encode($fields), $e->getMessage() );
+            $this->setErrorLogFailRequest( "Alfresco","UploadDocumentAlfesco", '', $url, $body_string, $e->getMessage() );
+
+        }
+  
 
     }
 
@@ -248,6 +267,29 @@ class IntegracionesCSF extends SugarApi
     public function deleteFile($file_name){
         unlink($file_name);
 
+    }
+
+    public function setErrorLogFailRequest( $integration,$endpoint, $bean, $url, $request, $response ){
+
+        $GLOBALS['log']->fatal("Enviando notificación para bitácora de errores Unics");
+        require_once("custom/clients/base/api/ErrorLogApi.php");
+        if( $bean == '' ){
+            $id_bean = '';
+        }else{
+            $id_bean = $bean->id;
+        }
+        $apiErrorLog = new ErrorLogApi();
+        $args = array(
+          "integration"=> $integration . " " . $endpoint,
+          "system"=> "Unics",
+          "parent_type"=> "Accounts",
+          "parent_id"=> $id_bean,
+          "endpoint"=> $url,
+          "request"=> $request,
+          "response"=> $response
+        );
+        $responseErrorLog = $apiErrorLog->setDataErrorLog(null, $args);
+  
     }
 
 

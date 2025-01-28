@@ -80,6 +80,7 @@ class CustomCurrentUserApi extends CurrentUserApi
         $userArray['current_user']['asignacion_po_c'] = $current_user->asignacion_po_c;
         $userArray['current_user']['cancelar_casos_c'] = $current_user->cancelar_casos_c;
         $userArray['current_user']['seguimiento_bc_c'] = $current_user->seguimiento_bc_c;
+        $userArray['current_user']['define_origen_po_c'] = $current_user->define_origen_po_c;
         return $userArray;
     }
 }

@@ -29,13 +29,13 @@
      'existsEmail'
  );
 
- $hook_array['before_save'][] = Array(
-     5,
-     'Se llena Macro Sector',
-     'custom/modules/Prospects/clasifica_sectorial.php',
-     'clasifica_sectorial_class',
-     'clasifica_sectorial_function'
- );
+//  $hook_array['before_save'][] = Array(
+//      5,
+//      'Se llena Macro Sector',
+//      'custom/modules/Prospects/clasifica_sectorial.php',
+//      'clasifica_sectorial_class',
+//      'clasifica_sectorial_function'
+//  );
  $hook_array['before_save'][] = Array(
      6,
      'Validacion de duplicados RFC',
@@ -89,4 +89,20 @@ $hook_array['before_save'][] = array(
     'custom/modules/Prospects/Prospects_Onboarding.php',
     'Prospects_Onboarding',
     'updateApiOnboarding'
+);
+
+$hook_array['before_save'][] = array(
+    14,
+    'Actualización de email a Lead y Cuenta en caso de convertido',
+    'custom/modules/Prospects/Validate_Email.php',
+    'Validate_Email',
+    'checkUpdateEmailPO'
+);
+
+$hook_array['before_save'][] = array(
+    15,
+    'Comprueba longitud y formato de campos de teléfono',
+    'custom/modules/Prospects/clean_fields.php',
+    'clean_fields_class',
+    'checkFormatPhones'
 );

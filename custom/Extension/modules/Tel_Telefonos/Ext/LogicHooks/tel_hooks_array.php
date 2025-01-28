@@ -50,3 +50,11 @@ $hook_array['before_save'][] = array(
     'TelDuplicados_Hooks',
     'validaTelDuplicados'
 );
+
+$hook_array['before_save'][] = array(
+    7,
+    'Valida Telefonos duplicado y marcados como principal ',
+    'custom/modules/Tel_Telefonos/Tel_Hooks.php',
+    'Tel_Hooks',
+    'checkFormatPhones'
+);

@@ -78,7 +78,7 @@ class Webservice
         }
     }
 
-    public function run(?string $requestMethod = ''): void
+    public function run(?string $requestMethod = ""): void
     {
         ob_start();
         require_once $this->webserviceImplPath;

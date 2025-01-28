@@ -1,5 +1,5 @@
 <?php
- // created: 2022-04-26 20:57:04
+ // created: 2025-01-14 14:26:24
 
 $app_list_strings['subestatus_po_list']=array (
   '' => '',
@@ -7,6 +7,7 @@ $app_list_strings['subestatus_po_list']=array (
   2 => 'Seguimiento Administrador',
   3 => 'Seguimiento Tomador de decisión',
   4 => 'Ilocalizable',
-  5 => 'Cancelado / Desperdicio',
+  5 => 'Cancelado',
   6 => 'No es Lead',
+  7 => 'Suspendido',
 );

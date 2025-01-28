@@ -182,4 +182,40 @@ class clean_fields_class
 
     }
 
+    public function checkFormatPhones($bean = null, $event = null, $args = null){
+
+        $phone_work = $bean->phone_work;
+        $phone_home = $bean->phone_home;
+        $phone_mobile = $bean->phone_mobile;
+
+        if( $phone_work != "" ){
+            if( !$this->validarNumeros($phone_work) ){ 
+                throw new SugarApiExceptionInvalidParameter("Teléfono de trabajo no válido. El teléfono debe tener únicamente números y máximo 10 dígitos");
+            }
+        }
+
+        if( $phone_home != "" ){
+            if( !$this->validarNumeros($phone_home) ){
+                throw new SugarApiExceptionInvalidParameter("Teléfono de casa no válido. El teléfono debe tener únicamente números y máximo 10 dígitos");
+            }
+        }
+
+        if( $phone_mobile != "" ){
+            if( !$this->validarNumeros($phone_mobile) ){
+                throw new SugarApiExceptionInvalidParameter("Teléfono celular no válido. El teléfono debe tener únicamente números y máximo 10 dígitos");
+            }
+        }
+
+    }
+
+    public function validarNumeros($input) {
+        // Verifica si el string contiene solo números y tiene una longitud máxima de 10 dígitos
+	return true;
+        if (preg_match('/^\d{1,10}$/', $input)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

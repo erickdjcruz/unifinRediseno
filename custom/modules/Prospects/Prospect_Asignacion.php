@@ -38,7 +38,7 @@ class Prospects_AsignacionPO
 
             $bean->assigned_user_id = $id_asignado;
             //Alianzas
-            $bean->origen_c = '12';
+            // $bean->origen_c = '12';
             $bean->compania_po_c = '1'; //Compañia: Unifin
 
 
@@ -82,6 +82,7 @@ class Prospects_AsignacionPO
                   and u.is_group=0
                   and (bc.vacaciones_c = 0 or bc.vacaciones_c is null)
                   and a.zona_geografica is not null
+                  and uc.posicion_operativa_c like '%^3^%'
                   order by u.last_name asc;";
                 $resultadoC = $db->query($query);
                 $countRows = 0;
@@ -117,6 +118,24 @@ class Prospects_AsignacionPO
               $bean->assigned_user_id = $asignado_id;
             }
           }   
+        }
+        //SE APLICA ACTUALIZACIÓN
+        if ($args['isUpdate'] && $_SESSION['platform'] != 'base') {       
+          //VALIDA SOLO SI HA CAMBIADO DE VALOR LA ZONA GEOGRAFICA
+          if(!empty($bean->zona_geografica_c) && $bean->fetched_row['zona_geografica_c'] != $bean->zona_geografica_c){
+
+            $valor_zona_geografica = $app_list_strings['mapeo_dire_estado_zona_geografica_list'][$bean->zona_geografica_c];
+            $GLOBALS['log']->fatal("ACTUAIZACION DE ZONA GEOGRAFICA ENCONTRADA: ". $valor_zona_geografica);
+
+            if(!empty($valor_zona_geografica)){
+              $bean->zona_geografica_c = $valor_zona_geografica;
+            }
+          }        
+        }
+        
+        //Valida Bloqueo de Origen
+        if( ($bean->origen_c!='' && $bean->fetched_row['origen_c'] != $bean->origen_c) || ($bean->detalle_origen_c!='' && $bean->fetched_row['detalle_origen_c'] != $bean->detalle_origen_c )){
+            $bean->origen_bloqueado_c = true;
         }
     }
 }

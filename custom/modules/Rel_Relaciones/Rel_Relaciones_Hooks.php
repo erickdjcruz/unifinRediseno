@@ -197,4 +197,100 @@ SQL;
         }
         
     }
+    
+    public function obtenHistorialComercial($bean=null,$event=null,$args=null){
+  		/*
+        Función: Recuepera historial comercial del PO asociado a la cuenta que se está relacionando y hereda llamadas y reuniones a Cuenta principal
+        Criterios:
+          1) Cuenta relacionada tiene PO vinculado
+        
+        Acciones:
+          1) Recuperar llamadas relacionadas a PO
+          2) Cambiar valores:
+              parent = Cliente principal
+              po_origen_rel = PO Relacionado
+              cuenta_origen_rel = Cuenta relacionada
+          3) Recuperar reuniones relacionadas a PO
+          4) Cambiar valores:
+              parent = Cliente principal
+              po_origen_rel = PO Relacionado
+              cuenta_origen_rel = Cuenta relacionada
+      */
+      
+      //Recupera datos de cuentas
+      $GLOBALS['log']->fatal('Entra LH Historial PO');
+      global $db;
+      $beanContacto = BeanFactory::retrieveBean('Accounts', $bean->account_id1_c, array('disable_row_level_security' => true));
+      $beanPrincipal = BeanFactory::retrieveBean('Accounts', $bean->rel_relaciones_accounts_1accounts_ida, array('disable_row_level_security' => true));
+      $tieneSeguimientoComercial = false;
+      $IdPO = '';
+      
+      $queryHC = "SELECT 'Calls' module, c.id , c.status, pc.id_c, pc.account_id2_c
+          from calls c
+          inner join prospects_cstm pc on pc.id_c = c.parent_id and c.parent_type='Prospects'
+          where 
+          c.status='Held'
+          and pc.account_id2_c = '{$beanContacto->id}'
+          union
+          select 'Meetings' module, m.id , m.status, pc.id_c, pc.account_id2_c
+          from meetings m
+          inner join prospects_cstm pc on pc.id_c = m.parent_id and m.parent_type='Prospects'
+          where 
+          m.status='Held'
+          and pc.account_id2_c = '{$beanContacto->id}'
+          limit 1;";
+      $GLOBALS['log']->fatal($queryHC);
+      $queryResult = $db->query($queryHC);
+      while ($row = $db->fetchByAssoc($queryResult)) {
+          $tieneSeguimientoComercial = true;
+          $idPO = $row['id_c'];
+      }
+
+  		//Valida criterios
+  		if(isset($beanContacto->id) && isset($beanPrincipal->id) && $tieneSeguimientoComercial){
+  			//Actualiza llamadas cstm
+        $queryCC = "UPDATE calls_cstm cc
+            	inner join calls c on c.id = cc.id_c
+            	inner join prospects_cstm pc on pc.id_c = c.parent_id and c.parent_type='Prospects'
+            set 
+            	cc.prospect_id_c ='{$idPO}', cc.account_id1_c ='{$beanContacto->id}'
+            where 
+            	c.status='Held'
+            	and pc.account_id2_c = '{$beanContacto->id}' ;";
+        $db->query($queryCC);
+        
+        //Actualiza llamadas
+        $queryC = "UPDATE calls c 
+            inner join prospects_cstm pc on pc.id_c = c.parent_id and c.parent_type='Prospects'
+            set 
+            c.parent_id ='{$beanPrincipal->id}' , c.parent_type='Accounts'
+            where 
+            c.status='Held'
+            and pc.account_id2_c = '{$beanContacto->id}' ;";
+        $db->query($queryC);
+        
+        //Actualiza reuniones cstm
+        $queryMC = "UPDATE meetings_cstm mc
+            	inner join meetings m on m.id = mc.id_c
+            	inner join prospects_cstm pc on pc.id_c = m.parent_id and m.parent_type='Prospects'
+            set 
+            	mc.prospect_id_c ='{$idPO}', mc.account_id_c ='{$beanContacto->id}'
+            where 
+            	m.status='Held'
+            	and pc.account_id2_c = '{$beanContacto->id}' ;";
+        $db->query($queryMC);
+        
+        //Actualiza reuniones
+        $queryM = "UPDATE meetings m 
+              	inner join prospects_cstm pc on pc.id_c = m.parent_id and m.parent_type='Prospects'
+              set 
+              	m.parent_id ='{$beanPrincipal->id}' , m.parent_type='Accounts'
+              where 
+              	m.status='Held'
+              	and pc.account_id2_c = '{$beanContacto->id}' ;";
+        $db->query($queryM);
+        
+  		}
+
+  	}
 }

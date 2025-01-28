@@ -105,6 +105,32 @@ class AuditTable
 
             }
 
+            //Valida cambio en el campo Posicion Operativa
+            if($bean->fetched_row['posicion_operativa_c'] != $bean->posicion_operativa_c){
+
+              $id_u_audit=create_guid();
+              $tipo=$this->getFieldType($bean,'posicion_operativa_c');
+              $anterior=$bean->fetched_row["posicion_operativa_c"];
+              $actual=$bean->posicion_operativa_c;
+              $sqlInsert="insert into users_audit (id, parent_id, date_created, created_by, field_name, data_type, before_value_string, after_value_string, before_value_text, after_value_text, event_id, date_updated)
+                VALUES ('{$id_u_audit}', '{$bean->id}', '{$date}', '{$current_user->id}', 'posicion_operativa_c', '{$tipo}', '{$anterior}', '{$actual}', '{$anterior}', '{$actual}', '1', '{$date}')";
+              $GLOBALS['db']->query($sqlInsert);
+
+            }
+            
+            //Valida cambio en el campo Define Origen
+            if($bean->fetched_row['define_origen_po_c'] != $bean->define_origen_po_c){
+
+              $id_u_audit=create_guid();
+              $tipo=$this->getFieldType($bean,'define_origen_po_c');
+              $anterior=$bean->fetched_row["define_origen_po_c"];
+              $actual=$bean->define_origen_po_c;
+              $sqlInsert="insert into users_audit (id, parent_id, date_created, created_by, field_name, data_type, before_value_string, after_value_string, before_value_text, after_value_text, event_id, date_updated)
+                VALUES ('{$id_u_audit}', '{$bean->id}', '{$date}', '{$current_user->id}', 'define_origen_po_c', '{$tipo}', '{$anterior}', '{$actual}', '{$anterior}', '{$actual}', '1', '{$date}')";
+              $GLOBALS['db']->query($sqlInsert);
+
+            }
+
         }
 
     }

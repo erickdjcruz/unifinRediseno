@@ -1,6 +1,7 @@
 <?php
- // created: 2024-04-15 23:44:12
+ // created: 2024-12-06 10:46:23
 $dictionary['Opportunity']['fields']['estatus_c']['labelValue']='SubEtapa';
+$dictionary['Opportunity']['fields']['estatus_c']['enforced']='';
 $dictionary['Opportunity']['fields']['estatus_c']['dependency']='';
 $dictionary['Opportunity']['fields']['estatus_c']['required_formula']='';
 $dictionary['Opportunity']['fields']['estatus_c']['readonly_formula']='';
@@ -8,44 +9,6 @@ $dictionary['Opportunity']['fields']['estatus_c']['visibility_grid']=array (
   'trigger' => 'tct_etapa_ddw_c',
   'values' => 
   array (
-    1 => 
-    array (
-      0 => 'P',
-      1 => 'E',
-      2 => 'D',
-      3 => 'R',
-      4 => 'K',
-      5 => 'CM',
-      6 => 'OP',
-      7 => 'N',
-      8 => 'BC',
-      9 => 'EF',
-      10 => 'SC',
-      11 => 'RF',
-      12 => 'CC',
-      13 => 'CN',
-      14 => 'RM',
-      15 => 'DP',
-      16 => 'SG',
-    ),
-    2 => 
-    array (
-      0 => 'N',
-    ),
-    3 => 
-    array (
-      0 => 'CZ',
-      1 => 'SL',
-      2 => 'OC',
-      3 => 'CT',
-    ),
-    4 => 
-    array (
-      0 => 'LB',
-      1 => 'CA',
-      2 => 'AL',
-      3 => 'T',
-    ),
     'SI' => 
     array (
       0 => '',
@@ -63,6 +26,11 @@ $dictionary['Opportunity']['fields']['estatus_c']['visibility_grid']=array (
       6 => 'VC',
       7 => 'AN',
     ),
+    'PA' => 
+    array (
+      0 => 'CV',
+      1 => 'BE',
+    ),
     'C' => 
     array (
       0 => 'BC',
@@ -79,21 +47,18 @@ $dictionary['Opportunity']['fields']['estatus_c']['visibility_grid']=array (
     'CL' => 
     array (
       0 => 'N',
+      1 => 'VF',
     ),
     'R' => 
     array (
       0 => 'CM',
       1 => 'R',
+      2 => 'RV',
     ),
     'D' => 
     array (
       0 => 'AC',
       1 => 'D',
-    ),
-    'PA' => 
-    array (
-      0 => 'CV',
-      1 => 'BE',
     ),
   ),
 );

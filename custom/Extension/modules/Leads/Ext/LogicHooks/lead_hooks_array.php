@@ -55,3 +55,11 @@ $hook_array['before_save'][] = Array(
    'verifica_cuenta_bloqueada_opp'
 );
 
+$hook_array['before_save'][] = Array(
+    14,
+    'Comprueba longitud y formato de campos de teléfono',
+    'custom/modules/Prospects/clean_fields.php',
+    'clean_fields_class',
+    'checkFormatPhones'
+ );
+

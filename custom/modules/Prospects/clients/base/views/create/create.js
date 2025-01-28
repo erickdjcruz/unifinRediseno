@@ -19,14 +19,16 @@
         this.events['keydown [name=phone_mobile]'] = 'validaSoloNumerosTel';
         this.events['keydown [name=phone_home]'] = 'validaSoloNumerosTel';
         this.events['keydown [name=phone_work]'] = 'validaSoloNumerosTel';
-
+        this.events['keypress [name=telefono_aa_c]'] = 'validaSoloNumerosTel';
+        this.events['keydown [name=telefono_aa_c]'] = 'validaSoloNumerosTel';
         this.model.addValidationTask('check_longDupTel', _.bind(this.validaLongDupTel, this));
         this.model.addValidationTask('check_TextOnly', _.bind(this.checkTextOnly, this));
         this.model.addValidationTask('change:email', _.bind(this.expmail, this));
         //this.model.addValidationTask('checkCreateRecord', _.bind(this.checkCreateRecord, this));
         //Validation task que muestra modal sobre duplicados
-        this.model.addValidationTask('check_duplicados_modal', _.bind(this.check_duplicados_modal, this));
+        //this.model.addValidationTask('check_duplicados_modal', _.bind(this.check_duplicados_modal, this));
         this.events['keydown [name=ventas_anuales_c]'] = 'checkInVentas';
+        this.events['keydown [name=potencial_lead_c]'] = 'checkInVentas';
         this.on('render', this._hidechkLeadCancelado, this);
         this.model.addValidationTask('setCleanName', _.bind(this.cleanName, this));
         this.model.on("change:regimen_fiscal_c", _.bind(this._cleanRegFiscal, this));
@@ -48,6 +50,16 @@
 
         //Función para eliminar opciones del campo origen
         this.estableceOpcionesOrigenLeads();
+        this.model.on("change:origen_c", _.bind(this.estableceOpcionesOrigenLeads, this));
+        //Función para establecer el año y el mes actual + 2 futuros
+        this._estableceMesOperacion();
+        this.model.on("change:mes_operacion_c", _.bind(this._estableceMesOperacion, this));
+        //Valida 3 activos maximo
+        this.model.addValidationTask('validate_activo_interes', _.bind(this._validateTaskActivoInteres, this));
+        this.model.on("change:activos_interes_c", this._validaActivoInteres, this);
+        //Valida el potencial de cierre debe ser entre 10 y 100%
+        this.model.addValidationTask('validate_potencial_cierre', _.bind(this._validateTaskPotencialCierre, this));
+        this.model.on("change:potencial_cierre_c", this._validaPotencialCierre, this);
     },
 
     delegateButtonEvents: function() {
@@ -153,6 +165,26 @@
             }
         }
 
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13')) {
+            //VALIDA FORMATO DE EMAIL DEL ASESOR DE ALIANZA
+            if (this.model.get('email_aa_c') != undefined && this.model.get('email_aa_c') !== "") {
+
+                var inputEAA = this.model.get('email_aa_c'); // Obtenemos el email
+                var expresionEAA = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
+
+                if (!expresionEAA.test(inputEAA)) {
+                    // Si el formato del email no es válido, mostramos el error
+                    app.alert.show('Error al validar email AA', {
+                        level: 'error',
+                        autoClose: false,
+                        messages: '<b>Formato de Email del Asesor de Alianza Incorrecto.</b>'
+                    });
+                    errors['email_aa_c'] = errors['email_aa_c'] || {};
+                    errors['email_aa_c'].required = true;
+                }
+            }
+        }
+
         callback(null, fields, errors);
     },
 
@@ -191,7 +223,7 @@
             var nombre = this.model.get('nombre_c');
             var comprueba = expresion.test(nombre);
             if (comprueba != true) {
-                camponame = camponame + '<b>' + app.lang.get("LBL_NOMBRE", "Prospects") + '</b><br>';
+                camponame = camponame + '<b>' + app.lang.get("LBL_NOMBRE_C", "Prospects") + '</b><br>';
                 errors['nombre_c'] = errors['nombre_c'] || {};
                 errors['nombre_c'].required = true;
             }
@@ -375,7 +407,7 @@
             if (num_errors > 0) {
                 app.alert.show("Num-invalido", {
                     level: "error",
-                    title: "El teléfono debe contener entre 8-13 números / Contiene carácteres repetidos",
+                    title: "El teléfono debe contener 10 dígitos / Contiene carácteres repetidos",
                     autoClose: false
                 });
             }
@@ -422,6 +454,22 @@
                 });
             }
         }
+
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13')) {
+            //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO TELEFONICO DEL ASESOR DE ALIANZA
+            if (this.model.get('telefono_aa_c') != "" && this.model.get('telefono_aa_c') != undefined) {
+                if (this.model.get('telefono_aa_c').trim() == "" || this.model.get('telefono_aa_c').trim().length != 10) {
+                    app.alert.show('telefono_aa_invalido', {
+                        level: 'error',
+                        autoClose: false,
+                        messages: 'Se requiere un teléfono válido de <b>10 dígitos</b> para el <b>Teléfono del Asesor de Alianza</b>'
+                    });
+                    errors['telefono_aa_c'] = errors['telefono_aa_c'] || {};
+                    errors['telefono_aa_c'].required = true;
+                }
+            }
+        }
+
         callback(null, fields, errors);
     },
 
@@ -429,7 +477,7 @@
         requerido = false;
 
         if (telefono != "" && telefono != undefined) {
-            if (telefono.length >= 8) {
+            if (telefono.length == 10) {
 
                 if (telefono.length > 1) {
                     var repetido = true;
@@ -456,7 +504,7 @@
             app.alert.show('Caracter_Invalido', {
                 level: 'error',
                 autoClose: true,
-                messages: 'El campo no acepta caracteres especiales.'
+                messages: '<b>Solo números son permitidos en este campo.</b>'
             });
             return false;
         }
@@ -474,12 +522,28 @@
         var campos = "";
 
         var tipoPersona = this.model.get('regimen_fiscal_c');
-        var campos_req = ['phone_mobile','email','zona_geografica_c'];
+        var campos_req = ['phone_mobile','email','zona_geografica_c', 'activos_interes_c', 'potencial_cierre_c', 'mes_operacion_c'];
 
         if (tipoPersona!='3'){
             campos_req.push('nombre_c', 'apellido_paterno_c', 'apellido_materno_c');
         }else{
             campos_req.push('nombre_empresa_c');
+        }
+
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13')) {
+            //CAMPOS REQUERIDOS DE ALIANZAS
+            if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined) {
+                campos_req.push('franquicia_c');
+            }
+            if (this.model.get('asesor_alianza_c') == '' || this.model.get('asesor_alianza_c') == undefined) {
+                campos_req.push('asesor_alianza_c');
+            }
+            if (this.model.get('email_aa_c') == '' || this.model.get('email_aa_c') == undefined) {
+                campos_req.push('email_aa_c');
+            }
+            if (this.model.get('telefono_aa_c') == '' || this.model.get('telefono_aa_c') == undefined) {
+                campos_req.push('telefono_aa_c');
+            }
         }
 
         if (campos_req.length > 0) {
@@ -522,6 +586,22 @@
             errors['phone_work'] = errors['phone_work'] || {};
             errors['phone_work'].required = true;
         }
+        //ACTIVIDAD ECONOMICA REQUERIDO
+        if (this.model.get('actividad_economica_c') == '' || this.model.get('actividad_economica_c') == '0' || this.model.get('actividad_economica_c') == null) {
+            campos = campos + '<b>' + 'Actividad Económica' + '</b><br>';
+            $('.campoAE .record-label').css('color', '#bb0e1b');
+            $('.list_ae .select2-choice').css('border', '1px solid #bb0e1b');
+
+            errors['actividad_economica_c'] = errors['actividad_economica_c'] || {};
+            errors['actividad_economica_c'].required = true;
+        }
+        //MONTO ESTIMADO REQUERIDO
+        if (this.model.get('potencial_lead_c') === '' || this.model.get('potencial_lead_c') === undefined || this.model.get('potencial_lead_c') === '0') {            
+            campos = campos + '<b>' + 'Monto estimado' + '</b><br>';
+            errors['potencial_lead_c'] = errors['potencial_lead_c'] || {};
+            errors['potencial_lead_c'].required = true;
+        }
+
         if (campos) {
             app.alert.show("Campos Requeridos", {
                 level: "error",
@@ -588,16 +668,48 @@
     //Función para eliminar opciones del campo origen
     estableceOpcionesOrigenLeads:function(){
         var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
+        var opciones_detalle_origen = app.lang.getAppListStrings('detalle_origen_list');
 
-        if (App.user.attributes.puestousuario_c != '53') { //Si no tiene puesto uniclick, se eliminan las opciones Closer y Growth
+        if (App.user.attributes.define_origen_po_c) { //Se modifica validación para habilitar origen si usuario tiene define_origen_po_c
+            //Define opciones de origen
             Object.keys(opciones_origen).forEach(function (key) {
-                if (key == "14" || key == "15") {
+                if (key != "12" && key != "20") { //12:Alianzas - 20:Leasing
                     delete opciones_origen[key];
                 }
             });
+            this.model.fields['origen_c'].options = opciones_origen;
+            if(this.model.get('origen_c') == undefined || this.model.get('origen_c') == "" ){
+                this.model.set('origen_c','12');
+            }
+            
+            //Define opciones de detalle origen
+            Object.keys(opciones_detalle_origen).forEach(function (key) {
+                if (key != "12" && key != "13" && key != "113") { //12:SOC, 13:Creditaria - 113:Leasing
+                    delete opciones_detalle_origen[key];
+                }
+            });
+            if(this.model.get('detalle_origen_c') == undefined || this.model.get('detalle_origen_c') == "" ){
+                this.model.set('detalle_origen_c','12');
+            }
+            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+            
+        }else{
+          //Define opciones de origen
+          Object.keys(opciones_origen).forEach(function (key) {
+              if (key != "20") { // 20:Leasing
+                  delete opciones_origen[key];
+              }
+          });
+          this.model.fields['origen_c'].options = opciones_origen;
+          this.model.set('origen_c','20');
+          this.model.set('detalle_origen_c','113');
+          self.noEditFields.push('origen_c');
+          $('[data-name="origen_c"]').css('pointer-events','none');
+          self.$('.record-edit-link-wrapper[data-name=origen_c]').remove();
+          self.noEditFields.push('detalle_origen_c');
+          $('[data-name="detalle_origen_c"]').css('pointer-events','none');
+          self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').remove();
         }
-
-        this.model.fields['origen_c'].options = opciones_origen;
 
     },
 
@@ -687,7 +799,7 @@
             app.alert.show('error_dinero', {
                 level: 'error',
                 autoClose: true,
-                messages: 'El campo no acepta Caracteres Especiales.'
+                messages: '<b>El campo no acepta Caracteres Especiales.</b>'
             });
             return "false";
         }
@@ -721,7 +833,7 @@
             app.alert.show('error_dinero', {
                 level: 'error',
                 autoClose: true,
-                messages: 'El campo no acepta caracteres especiales.'
+                messages: '<b>El campo no acepta caracteres especiales.</b>'
             });
             return "false";
         }
@@ -797,6 +909,12 @@
 
         //Deshabilita Estado
         $('[data-name="estatus_po_c"]').attr('style', 'pointer-events:none');
+        
+        //Deshabilita Origen
+        if(!App.user.attributes.define_origen_po_c){
+          $('[data-name="origen_c"]').attr('style', 'pointer-events:none');
+          $('[data-name="detalle_origen_c"]').attr('style', 'pointer-events:none');
+        }
 
     },
 
@@ -1021,5 +1139,78 @@
         else {
           callback(null, fields, errors);
         }
+    },
+
+    _estableceMesOperacion:function () {
+        // Obtener fecha actual
+        var fechaActual = new Date();
+        var yyyy = fechaActual.getFullYear();
+        var mm = fechaActual.getMonth() + 1; 
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        // Calcular los próximos dos meses en el mismo formato 'YYYYMM'
+        var proximosMeses = [];
+        for (var i = 0; i < 3; i++) {
+            var nuevoMes = new Date(yyyy, mm - 1 + i); 
+            var nuevoYYYY = nuevoMes.getFullYear();
+            var nuevoMM = nuevoMes.getMonth() + 1;
+            if (nuevoMM < 10) {
+                nuevoMM = '0' + nuevoMM;
+            }
+            proximosMeses.push(parseInt(`${nuevoYYYY}${nuevoMM}`));
+        }
+        // Obtener lista de valores y filtrar
+        var lista_mes_operacion = app.lang.getAppListStrings('mes_operacion_list');
+        var nuevaLista = {};
+
+        Object.keys(lista_mes_operacion).forEach(function (key) {
+            var claveNumerica = parseInt(key); // Convertir clave a número para comparación
+            if (proximosMeses.includes(claveNumerica)) {
+                nuevaLista[key] = lista_mes_operacion[key]; // Conservar solo los permitidos
+            }
+        });
+        // Actualizar opciones del campo
+        this.model.fields['mes_operacion_c'].options = nuevaLista;
+    },
+
+    _validaActivoInteres: function(type, errors) {
+        var activosInteres = this.model.get('activos_interes_c');
+        //VALIDA QUE SOLO SEAN 3 ACTIVOS DE INTERES
+        if (activosInteres && activosInteres.length > 3) {
+            app.alert.show("valida_activo_interes", {
+                level: "error",
+                messages: "<b>Favor de seleccionar solo 3 activos de interés.</b>",
+                autoClose: false
+            });
+            if (type === 'validateActivoInteres' && errors) {
+                errors['activos_interes_c'] = errors['activos_interes_c'] || {};
+                errors['activos_interes_c'].required = true;
+            }
+        }        
+    },
+    _validateTaskActivoInteres: function(fields, errors, callback) {
+        this._validaActivoInteres("validateActivoInteres", errors);
+        callback(null, fields, errors);
+    },
+
+    _validaPotencialCierre: function(type, errors) {
+        var potencialCierre = this.model.get('potencial_cierre_c');
+        //Valida el potencial de cierre debe ser entre 10 y 100%
+        if (potencialCierre < 10 || potencialCierre > 100) {
+            app.alert.show("valida_potencial_cierre", {
+                level: "error",
+                messages: "<b>El potencial de cierre debe ser entre 10 y 100%.</b>",
+                autoClose: false
+            });
+            if(type == 'validatePotencialCierre' && errors) {
+                errors['potencial_cierre_c'] = errors['potencial_cierre_c'] || {};
+                errors['potencial_cierre_c'].required = true;
+            }            
+        }
+    },
+    _validateTaskPotencialCierre: function(fields, errors, callback) {
+        this._validaPotencialCierre("validatePotencialCierre", errors);
+        callback(null, fields, errors);
     },
 })

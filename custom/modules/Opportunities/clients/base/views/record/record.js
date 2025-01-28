@@ -2996,8 +2996,8 @@
         }
         if (app.user.attributes.id == this.directorSolicitudId && (producto == "1" || (producto=="2" && (negocio!="2" || negocio!="10"))) && (this.model.get('tct_etapa_ddw_c') == "SI" && this.model.get('estatus_c')!='K' && this.model.get('estatus_c')!='N')
             && this.model.get('doc_scoring_chk_c') == true && (this.model.get("fecha_validacion_c") == "" || this.model.get("fecha_validacion_c") == null)) {
-            $('[name="vobo_leasing"]').removeClass('hidden');
-            $('[name="rechazo_leasing"]').removeClass('hidden');
+            $('[name="vobo_leasing"]').removeClass('disabled');
+            $('[name="rechazo_leasing"]').removeClass('disabled');
             $('[name="vobo_leasing"]').show();
             $('[name="rechazo_leasing"]').show();
         }
@@ -3523,6 +3523,8 @@
 			var account = app.data.createBean('Accounts', {id:this.model.get('account_id')});
 			account.fetch({
 				success: _.bind(function (model) {
+                    $('[name="vobo_leasing"]').hide();
+                    $('[name="rechazo_leasing"]').hide();
 					if(this.model.get('alianza_soc_chk_c')){
 						model.attributes.alianza_soc_chk_c = true;
 						model.save();

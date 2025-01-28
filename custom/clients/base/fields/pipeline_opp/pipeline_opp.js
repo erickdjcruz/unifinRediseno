@@ -12,7 +12,6 @@
 
     _render: function () {
         this._super("_render");
-
     },
 
     pipelineopp: function (){
@@ -59,7 +58,7 @@
             if(subetapa=="P"){
                 $("#SE2").removeClass('ocult');
                 $('#SE2').addClass('success');
-                $("#SE2").html("Integración de Expediente");
+                $("#SE2").html("Int de Expediente");
             }
             if(subetapa=="DP"){
                 $("#SE2").removeClass('ocult');
@@ -84,7 +83,7 @@
             if(subetapa=="VC"){
                 $("#SE2").removeClass('ocult');
                 $('#SE2').addClass('success');
-                $("#SE2").html("Validación mesa de Control");
+                $("#SE2").html("Val mesa de Control");
             }
             if(subetapa=="AN"){
                 $("#SE2").removeClass('ocult');
@@ -107,7 +106,7 @@
             if (subetapa=="BE") {
                 $("#SE6").removeClass('ocult');
                 $('#SE6').addClass('error');
-                $("#SE6").html("Bloqueada por expediente");
+                $("#SE6").html("Bloq por expediente");
             }
         }
         
@@ -126,7 +125,7 @@
             if(subetapa=="CC"){
                 $("#SE3").removeClass('ocult');
                 $('#SE3').addClass('success');
-                $("#SE3").html("Cualitativo y Cuantitativo");
+                $("#SE3").html("Cualitativo/Cuantitativo");
             }
             if(subetapa=="RF"){
                 $("#SE3").removeClass('ocult');
@@ -146,7 +145,7 @@
             if(subetapa=="RM"){
                 $("#SE3").removeClass('ocult');
                 $('#SE3').addClass('success');
-                $("#SE3").html("Análisis de Crédito RM");
+                $("#SE3").html("Análisis Crédito RM");
             }
             if(subetapa=="SC"){
                 $("#SE3").removeClass('ocult');
@@ -198,9 +197,14 @@
             $('#PA').addClass('done');
             //Valida subetapa
             if (subetapa=="N") {
-                $("#SE4").removeClass('ocult');
-                $('#SE4').addClass('success');
-                $("#SE4").html("Autorizada");
+                $("#SE5").removeClass('ocult');
+                $('#SE5').addClass('success');
+                $("#SE5").html("Autorizada");
+            }
+            if (subetapa=="VF") {
+                $("#SE5").removeClass('ocult');
+                $('#SE5').addClass('success');
+                $("#SE5").html("Val firmas formatos U");
             }
         }
         if (etapa=="R"){
@@ -215,14 +219,19 @@
             $("#CL").html("Rechazado");
             //Valida subetapas
             if(subetapa=="CM"){
-                $("#SE4").removeClass('ocult');
-                $('#SE4').addClass('error');
-                $("#SE4").html("Rechazada Comité");
+                $("#SE5").removeClass('ocult');
+                $('#SE5').addClass('error');
+                $("#SE5").html("Rechazada Comité");
             }
             if(subetapa=="R"){
-                $("#SE4").removeClass('ocult');
-                $('#SE4').addClass('error');
-                $("#SE4").html("Rechazada Crédito");
+                $("#SE5").removeClass('ocult');
+                $('#SE5').addClass('error');
+                $("#SE5").html("Rechazada Crédito");
+            }
+            if(subetapa=="RV"){
+                $("#SE5").removeClass('ocult');
+                $('#SE5').addClass('error');
+                $("#SE5").html("Rechazada Visita Ocular");
             }
 
         }

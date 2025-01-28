@@ -26,8 +26,16 @@
         delete this.tipo_cuenta[1];
         this.model.on('change:users_accounts_1users_ida', this._setOffset, this);
 
-        this.loadView = true;
+        var privilegioReassignPO = App.user.get('reasignacion_po_c');
+        var typeuser= App.user.get('type'); //'admin'
 
+        
+        if (privilegioReassignPO || typeuser=='admin') {
+            this.loadView = true;
+        }else{
+            var route = app.router.buildRoute(this.module, null, '');
+            app.router.navigate(route, {trigger: true});
+        }
     },
 
     _render: function () {

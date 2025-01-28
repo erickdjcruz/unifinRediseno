@@ -102,37 +102,40 @@
 		clasf_sectorial.ResumenCliente.pb.pb_clase = this.model.get("pb_clase_c");
         //Campos CNBV
         clasf_sectorial.ActividadEconomica.ae.id = this.model.get("actividad_economica_c");
-        clasf_sectorial.ActividadEconomica.sse.id = this.model.get("subsector_c");
-        clasf_sectorial.ActividadEconomica.se.id = this.model.get("sector_economico_c");
-        clasf_sectorial.ActividadEconomica.ms.id = this.model.get("macrosector_c");
+        // clasf_sectorial.ActividadEconomica.sse.id = this.model.get("subsector_c");
+        // clasf_sectorial.ActividadEconomica.se.id = this.model.get("sector_economico_c");
+        // clasf_sectorial.ActividadEconomica.ms.id = this.model.get("macrosector_c");
         //Etiquetas de los campos CNBV para Input del HBS en edit
-        clasf_sectorial.ActividadEconomica.label_subsector = app.lang.getAppListStrings('subsector_list')[this.model.get("subsector_c")];
-        clasf_sectorial.ActividadEconomica.label_sector = app.lang.getAppListStrings('sector_list')[this.model.get("sector_economico_c")];
-        clasf_sectorial.ActividadEconomica.label_macro = app.lang.getAppListStrings('macro_cnbv_list')[this.model.get("macrosector_c")];
+        // clasf_sectorial.ActividadEconomica.label_subsector = app.lang.getAppListStrings('subsector_list')[this.model.get("subsector_c")];
+        // clasf_sectorial.ActividadEconomica.label_sector = app.lang.getAppListStrings('sector_list')[this.model.get("sector_economico_c")];
+        // clasf_sectorial.ActividadEconomica.label_macro = app.lang.getAppListStrings('macro_cnbv_list')[this.model.get("macrosector_c")];
         //Envia los valores de los campos de INEGI a la vista HBS
-        clasf_sectorial.ResumenCliente.inegi.inegi_clase = this.model.get("inegi_clase_c");
-        clasf_sectorial.ResumenCliente.inegi.inegi_subrama = this.model.get("inegi_subrama_c");
-        clasf_sectorial.ResumenCliente.inegi.inegi_rama = this.model.get("inegi_rama_c");
-        clasf_sectorial.ResumenCliente.inegi.inegi_subsector = this.model.get("inegi_subsector_c");
-        clasf_sectorial.ResumenCliente.inegi.inegi_sector = this.model.get("inegi_sector_c");
-        clasf_sectorial.ResumenCliente.inegi.inegi_macro = this.model.get("inegi_macro_c");
+        // clasf_sectorial.ResumenCliente.inegi.inegi_clase = this.model.get("inegi_clase_c");
+        // clasf_sectorial.ResumenCliente.inegi.inegi_subrama = this.model.get("inegi_subrama_c");
+        // clasf_sectorial.ResumenCliente.inegi.inegi_rama = this.model.get("inegi_rama_c");
+        // clasf_sectorial.ResumenCliente.inegi.inegi_subsector = this.model.get("inegi_subsector_c");
+        // clasf_sectorial.ResumenCliente.inegi.inegi_sector = this.model.get("inegi_sector_c");
+        // clasf_sectorial.ResumenCliente.inegi.inegi_macro = this.model.get("inegi_macro_c");
         //Envia los valores al LH para guardarlos en el modulo de Resumen
-        clasf_sectorial.ActividadEconomica.inegi_clase = this.model.get("inegi_clase_c");
-        clasf_sectorial.ActividadEconomica.inegi_subrama = this.model.get("inegi_subrama_c");
-        clasf_sectorial.ActividadEconomica.inegi_rama = this.model.get("inegi_rama_c");
-        clasf_sectorial.ActividadEconomica.inegi_subsector = this.model.get("inegi_subsector_c");
-		clasf_sectorial.ActividadEconomica.inegi_sector = this.model.get("inegi_sector_c");
-        clasf_sectorial.ActividadEconomica.inegi_macro = this.model.get("inegi_macro_c");
+        // clasf_sectorial.ActividadEconomica.inegi_clase = this.model.get("inegi_clase_c");
+        // clasf_sectorial.ActividadEconomica.inegi_subrama = this.model.get("inegi_subrama_c");
+        // clasf_sectorial.ActividadEconomica.inegi_rama = this.model.get("inegi_rama_c");
+        // clasf_sectorial.ActividadEconomica.inegi_subsector = this.model.get("inegi_subsector_c");
+		// clasf_sectorial.ActividadEconomica.inegi_sector = this.model.get("inegi_sector_c");
+        // clasf_sectorial.ActividadEconomica.inegi_macro = this.model.get("inegi_macro_c");
         //Etiquetas de los campos INEGI para Input del HBS en edit
-        clasf_sectorial.ActividadEconomica.label_clase = app.lang.getAppListStrings('clase_list')[this.model.get("inegi_clase_c")];
-        clasf_sectorial.ActividadEconomica.label_subrama = app.lang.getAppListStrings('subrama_list')[this.model.get("inegi_subrama_c")];
-        clasf_sectorial.ActividadEconomica.label_rama = app.lang.getAppListStrings('rama_list')[this.model.get("inegi_rama_c")];
-        clasf_sectorial.ActividadEconomica.label_isubsector = app.lang.getAppListStrings('subsector_list')[this.model.get("inegi_subsector_c")];
-        clasf_sectorial.ActividadEconomica.label_isector = app.lang.getAppListStrings('sector_list')[this.model.get("inegi_sector_c")];
-        clasf_sectorial.ActividadEconomica.label_imacro = app.lang.getAppListStrings('macro_list')[this.model.get("inegi_macro_c")];
+        // clasf_sectorial.ActividadEconomica.label_clase = app.lang.getAppListStrings('clase_list')[this.model.get("inegi_clase_c")];
+        // clasf_sectorial.ActividadEconomica.label_subrama = app.lang.getAppListStrings('subrama_list')[this.model.get("inegi_subrama_c")];
+        // clasf_sectorial.ActividadEconomica.label_rama = app.lang.getAppListStrings('rama_list')[this.model.get("inegi_rama_c")];
+        // clasf_sectorial.ActividadEconomica.label_isubsector = app.lang.getAppListStrings('subsector_list')[this.model.get("inegi_subsector_c")];
+        // clasf_sectorial.ActividadEconomica.label_isector = app.lang.getAppListStrings('sector_list')[this.model.get("inegi_sector_c")];
+        // clasf_sectorial.ActividadEconomica.label_imacro = app.lang.getAppListStrings('macro_list')[this.model.get("inegi_macro_c")];
         _.extend(this, clasf_sectorial.ResumenCliente);
 		clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
 		clasf_sectorial.render();
+        if ($('.list_ae').select2('val') != "" || clasf_sectorial.ActividadEconomica.ae.id != "") {
+            $('.list_ae').trigger('change');
+        }
     },
 
     bindDataChange: function () {
@@ -191,15 +194,15 @@
         });
 		if(window.actualiza == 1) {
             this.model.set("actividad_economica_c", clasf_sectorial.ActividadEconomica.ae.id);
-			this.model.set("subsector_c", clasf_sectorial.ActividadEconomica.sse.id);
-			this.model.set("sector_economico_c", clasf_sectorial.ActividadEconomica.se.id);
-			this.model.set("macrosector_c", clasf_sectorial.ActividadEconomica.ms.id);
-			this.model.set("inegi_clase_c", clasf_sectorial.ActividadEconomica.inegi_clase);
-			this.model.set("inegi_subrama_c", clasf_sectorial.ActividadEconomica.inegi_subrama);
-			this.model.set("inegi_rama_c", clasf_sectorial.ActividadEconomica.inegi_rama);
-			this.model.set("inegi_subsector_c", clasf_sectorial.ActividadEconomica.inegi_subsector);
-			this.model.set("inegi_sector_c", clasf_sectorial.ActividadEconomica.inegi_sector);
-			this.model.set("inegi_macro_c", clasf_sectorial.ActividadEconomica.inegi_macro);
+			// this.model.set("subsector_c", clasf_sectorial.ActividadEconomica.sse.id);
+			// this.model.set("sector_economico_c", clasf_sectorial.ActividadEconomica.se.id);
+			// this.model.set("macrosector_c", clasf_sectorial.ActividadEconomica.ms.id);
+			// this.model.set("inegi_clase_c", clasf_sectorial.ActividadEconomica.inegi_clase);
+			// this.model.set("inegi_subrama_c", clasf_sectorial.ActividadEconomica.inegi_subrama);
+			// this.model.set("inegi_rama_c", clasf_sectorial.ActividadEconomica.inegi_rama);
+			// this.model.set("inegi_subsector_c", clasf_sectorial.ActividadEconomica.inegi_subsector);
+			// this.model.set("inegi_sector_c", clasf_sectorial.ActividadEconomica.inegi_sector);
+			// this.model.set("inegi_macro_c", clasf_sectorial.ActividadEconomica.inegi_macro);
 			window.actualiza = 0;
         }
     },
@@ -215,6 +218,7 @@
                 success: function (data) {
                     dataInegi = data;
                     if (dataInegi != '') {
+                        console.log("idActEconomica ", idActEconomica);
                         //Campos CNBV
                         clasf_sectorial.ActividadEconomica.ae.id = idActEconomica;
                         clasf_sectorial.ActividadEconomica.sse.id = dataInegi['id_subsector_economico_cnbv'];

@@ -219,6 +219,7 @@ class UnifinAPI
 
         } catch (Exception $e) {
             $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
+            $this->setErrorLogFailRequest( $host, $bean->id, $host, json_encode($fields), $e->getMessage() );
         }
     }
 
@@ -387,6 +388,8 @@ class UnifinAPI
             } catch (Exception $e) {
                 error_log(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error: " . $e->getMessage());
                 $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
+
+                $this->setErrorLogFailRequest( "InsertaClienteCompleto", $objecto, $host, json_encode($fields), $e->getMessage() );
             }
         }
     }
@@ -402,7 +405,6 @@ class UnifinAPI
             $RegimenConyugal = $IntValue->getEstadoCivilInt($objecto->estadocivil_c);
             $TipoCliente = $IntValue->getTipoCliente($objecto->tipo_registro_cuenta_c, $objecto->estatus_c, $objecto->esproveedor_c, $objecto->tipo_relacion_c, $objecto->cedente_factor_c, $objecto->deudor_factor_c);
             $_ClntFechaNacimiento = $RegimenFiscal == 3 ? $objecto->fechaconstitutiva_c : $objecto->fechadenacimiento_c;
-
             $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaPersona";
 
             $cleanValues = array();
@@ -1125,6 +1127,8 @@ SQL;
         } catch (Exception $e) {
             error_log(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error: " . $e->getMessage());
             $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
+
+            $this->setErrorLogFailRequest( "Account", $object, $host, json_encode($fields), $e->getMessage() );
         }
 
         //$this->usuarioProveedores($object);
@@ -1332,6 +1336,7 @@ SQL;
         } catch (Exception $e) {
             error_log(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error: " . $e->getMessage());
             $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
+            $this->setErrorLogFailRequest( "CreaRfcPersonaFisica", '', $host, json_encode($fields), $e->getMessage() );
         }
     }
 
@@ -1352,6 +1357,7 @@ SQL;
         } catch (Exception $e) {
             error_log(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error: " . $e->getMessage());
             $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
+            $this->setErrorLogFailRequest( "CreaRfcPersonaMoral", '', $host, json_encode($fields), $e->getMessage() );
         }
     }
 
@@ -1831,6 +1837,8 @@ SQL;
         } catch (Exception $e) {
             error_log(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error: " . $e->getMessage());
             $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
+
+            $this->setErrorLogFailRequest( "ActualizaCorreos", '', $host, json_encode($fields), $e->getMessage() );
         }
     }
 
@@ -2042,6 +2050,8 @@ SQL;
         } catch (Exception $e) {
             error_log(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error: " . $e->getMessage());
             $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
+            $this->setErrorLogFailRequest( "ActualizaSolicitud", '', $host, json_encode($fields), $e->getMessage() );
+
         }
 
     }
@@ -2494,6 +2504,7 @@ SQL;
 
         } catch (Exception $exception) {
             $GLOBALS['log']->fatal($exception->getMessage());
+            $this->setErrorLogFailRequest( "Reus", '', $host, '', $exception->getMessage() );
         }
     }
 
@@ -2578,6 +2589,7 @@ SQL;
 
     public function getInfoRegimenesSAT($host,$token)
     {
+        global $current_user;
         try {
             $url = $host;
             $ch = curl_init();
@@ -2598,13 +2610,14 @@ SQL;
 
             return $response;
         } catch (Exception $exception) {
-            $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : unifinPostCall ERROR: " . $e->getMessage());
+            $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : unifinPostCall ERROR: " . $exception->getMessage());
         }
 
     }
 
     public function postOnboardingPO($host, $token, $body)
     {
+        global $current_user;
         try {
             $url = $host;
             $request_body = json_encode($body);
@@ -2632,7 +2645,30 @@ SQL;
 
             return $response;
         } catch (Exception $exception) {
-            $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : unifinPostCall ERROR: " . $e->getMessage());
+            $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : unifinPostCall ERROR: " . $exception->getMessage());
         }
+    }
+
+    public function setErrorLogFailRequest( $endpoint , $bean, $url, $request, $response ){
+
+        $GLOBALS['log']->fatal("Enviando notificación para bitácora de errores Unics");
+        require_once("custom/clients/base/api/ErrorLogApi.php");
+        if( $bean == '' ){
+            $id_bean = '';
+        }else{
+            $id_bean = $bean->id;
+        }
+        $apiErrorLog = new ErrorLogApi();
+        $args = array(
+          "integration"=> "Unics: ".$endpoint,
+          "system"=> "Unics",
+          "parent_type"=> "Accounts",
+          "parent_id"=> $id_bean,
+          "endpoint"=> $url,
+          "request"=> $request,
+          "response"=> $response
+        );
+        $responseErrorLog = $apiErrorLog->setDataErrorLog(null, $args);
+  
     }
 }

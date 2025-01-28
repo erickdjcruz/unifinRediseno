@@ -144,8 +144,11 @@
 
     setValueEstadoInModel: function(){
         var valorEstado = $('#estado_nacimiento_cstm').val();
-
-        contextoPaisesEstadosCstm.model.set('estado_nacimiento_c',valorEstado);
+        if( valorEstado != undefined ){
+          contextoPaisesEstadosCstm.model.set('estado_nacimiento_c',valorEstado);
+          contextoPaisesEstadosCstm.idEstadoCstm = contextoPaisesEstadosCstm.model.get("estado_nacimiento_c");
+          contextoPaisesEstadosCstm.valEstadoCstm = contextoPaisesEstadosCstm.estadosList[contextoPaisesEstadosCstm.searchValueFromArray(contextoPaisesEstadosCstm.estadosList, valorEstado)].nameEstado;
+        }
         
     },
 

@@ -8,7 +8,7 @@ $viewdefs['Opportunities']['base']['view']['record'] = array (
       'type' => 'button',
       'name' => 'vobo_leasing',
       'label' => 'Vo.Bo.',
-      'css_class' => 'btn-success hidden',
+      'css_class' => 'btn-success hide disabled',
       'showOn' => 'view',
       'events' => 
       array (
@@ -20,7 +20,7 @@ $viewdefs['Opportunities']['base']['view']['record'] = array (
       'type' => 'button',
       'name' => 'rechazo_leasing',
       'label' => 'Rechazar',
-      'css_class' => 'btn-danger hidden',
+      'css_class' => 'btn-danger hide disabled',
       'showOn' => 'view',
       'events' => 
       array (

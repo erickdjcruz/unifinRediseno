@@ -1411,19 +1411,22 @@
 
     ocultaFunc: function () {
         _.each(this.fields, function (field) {
-            $('.record-cell[data-name="' + field.name + '"]').hide();
+
+            if( field.name !== "renewal" && field.name != "name" && field.name != "account_name" && field.name != "picture" ){
+                $('.record-cell[data-name="' + field.name + '"]').hide();
+            }
         });
-        $('.record-cell[data-name="name"]').css('display','block');
+        //$('.record-cell[data-name="name"]').css('display','block');
         //$('[data-name="tct_etapa_ddw_c"]').show();
         //$('[data-name="estatus_c"]').show();
         //$('[data-name="idsolicitud_c"]').show();
-        $('.record-cell[data-name="account_name"]').css('display','block');
+        //$('.record-cell[data-name="account_name"]').css('display','block');
         $('.record-cell[data-name="tipo_producto_c"]').css('display','block');
         //$('[data-name="producto_financiero_c"]').show();
         $('.record-cell[data-name="negocio_c"]').css('display','block');
         $('.record-cell[data-name="monto_c"]').css('display','block');
         $('.record-cell[data-name="assigned_user_name"]').css('display','block');
-        $('[data-name="picture"]').show();
+        //$('[data-name="picture"]').show();
         $('[data-name="tct_numero_vehiculos_c"]').show();
         
 
@@ -2619,8 +2622,8 @@
 
     //En la creación no se posible crear solicitudes con el Producto Leasing
     validaCreacionLeasing: function (fields, errors, callback) {
-
-        if( this.model.get('tipo_producto_c') == '1' ){
+        var leasingHabilitado = App.lang.getAppListStrings('habilita_creacion_opt_list')[1] == '1' ? true : false;
+        if( this.model.get('tipo_producto_c') == '1' && !leasingHabilitado){
             app.alert.show("noLeasing", {
               level: "error",
               title: "Error",
