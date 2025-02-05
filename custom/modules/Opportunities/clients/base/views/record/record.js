@@ -1582,14 +1582,16 @@
     },
 
     calcularPorcientoRI: function () {
-
-        if (!_.isEmpty(this.model.get("amount")) && !_.isEmpty(this.model.get("ca_importe_enganche_c")) && this.model.get("ca_importe_enganche_c") != 0 && this.model.get("tipo_operacion_c") == 1) {
+        /*
+        if (!_.isEmpty(this.model.get("amount")) && !_.isEmpty(this.model.get("ca_importe_enganche_c")) 
+            && this.model.get("ca_importe_enganche_c") != 0 && this.model.get("tipo_operacion_c") == 1) {
             var percent = ((this.model.get("ca_importe_enganche_c") * 100) / this.model.get("amount")).toFixed(2);
             this.model.set("porciento_ri_c", percent);
         }
         if(this.model.get("ca_importe_enganche_c")==0 && this.model.get('producto_financiero_c') == '43'){
             this.model.set("porciento_ri_c", 0);
         }
+        */
     },
 
 
@@ -1956,13 +1958,15 @@
                         if (data.records[i].indicador != "" && data.records[i].inactivo == false) {
 
                             var array_indicador = this._getIndicador(data.records[i].indicador);
-
-                            for (var j = 0; j < array_indicador.length; j++) {
-                                if (array_indicador[j] == '1') {
-                                    correspondecia++;
-                                }
-                                if (array_indicador[j] == '2') {
-                                    fiscal++;
+                            
+                            if(array_indicador != null){
+                                for (var j = 0; j < array_indicador.length; j++) {
+                                    if (array_indicador[j] == '1') {
+                                        correspondecia++;
+                                    }
+                                    if (array_indicador[j] == '2') {
+                                        fiscal++;
+                                    }
                                 }
                             }
                         }
