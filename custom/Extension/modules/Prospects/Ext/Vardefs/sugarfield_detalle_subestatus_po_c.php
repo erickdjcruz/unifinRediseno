@@ -1,5 +1,5 @@
 <?php
- // created: 2025-01-14 14:56:11
+ // created: 2025-02-06 23:24:47
 $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['labelValue']='Detalle Subestatus';
 $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['enforced']='';
 $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['dependency']='';
@@ -23,13 +23,14 @@ $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['visibility_grid']=
     ),
     5 => 
     array (
-      0 => '19',
-      1 => '20',
-      2 => '8',
-      3 => '9',
-      4 => '21',
-      5 => '22',
-      6 => '23',
+      0 => '',
+      1 => '19',
+      2 => '20',
+      3 => '8',
+      4 => '9',
+      5 => '21',
+      6 => '22',
+      7 => '23',
     ),
     6 => 
     array (
@@ -44,11 +45,12 @@ $dictionary['Prospect']['fields']['detalle_subestatus_po_c']['visibility_grid']=
     ),
     7 => 
     array (
-      0 => '14',
-      1 => '15',
-      2 => '16',
-      3 => '17',
-      4 => '18',
+      0 => '',
+      1 => '14',
+      2 => '15',
+      3 => '16',
+      4 => '17',
+      5 => '18',
     ),
     '' => 
     array (
