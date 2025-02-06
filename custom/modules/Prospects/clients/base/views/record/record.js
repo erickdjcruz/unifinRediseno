@@ -396,14 +396,14 @@
             _.each(this.model.fields, function (field) {
                 if (_.isEqual(field.name, key)) {
                     if (field.vname) {
-                        campos = campos + '<b>' + app.lang.get(field.vname, "Leads") + '</b><br>';
+                        campos = campos + '<b>' + app.lang.get(field.vname, "Prospects") + '</b><br>';
                     }
                 }
             }, this);
         }, this);
 
         /*****CHECK LEAD CANCELAR*********/
-        if (this.model.get('lead_cancelado_c') == '1') {
+        /*if (this.model.get('lead_cancelado_c') == '1') {
             if (this.model.get('motivo_cancelacion_c') == '' || this.model.get('motivo_cancelacion_c') == null) {
 
                 campos = campos + '<b>' + app.lang.get("LBL_MOTIVO_CANCELACION_C", "Leads") + '</b><br>';
@@ -411,11 +411,11 @@
                 errors['motivo_cancelacion_c'].required = true;
             }
         }
-
+        */
         if (campos) {
             app.alert.show("Campos Requeridos", {
                 level: "error",
-                messages: "Hace falta completar la siguiente información para guardar un <b>Lead: </b><br>" + campos,
+                messages: "Hace falta completar la siguiente información para guardar un <b>Público Objetivo: </b><br>" + campos,
                 autoClose: false
             });
         }
