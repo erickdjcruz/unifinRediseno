@@ -1166,6 +1166,15 @@
           });
           return false;
         }
+
+        if(!App.user.attributes.gestion_utility_trailers_po_c){
+            app.alert.show('not_access_gut', {
+                level: 'error',
+                autoClose: false,
+                messages: 'No cuentas con permiso para cambiar el origen de un PO con Utility TRailers'
+            });
+            return false;
+        }
         
         if( !this.model.get('origen_bloqueado_c') && this.model.get('origen_c')=='' ){
           app.alert.show('sin_bloqueo', {
