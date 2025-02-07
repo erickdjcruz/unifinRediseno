@@ -1,5 +1,5 @@
 <?php
- // created: 2023-08-14 15:45:30
+ // created: 2025-02-05 13:09:20
 
 $app_list_strings['detalle_origen_list']=array (
   '' => '',
@@ -116,4 +116,5 @@ $app_list_strings['detalle_origen_list']=array (
   111 => 'VWMAN',
   112 => 'Compranet',
   113 => 'Leasing',
+  114 => 'Utility Trailers',
 );

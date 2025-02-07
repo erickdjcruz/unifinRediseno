@@ -911,11 +911,15 @@
         $('[data-name="estatus_po_c"]').attr('style', 'pointer-events:none');
         
         //Deshabilita Origen
-        if(!App.user.attributes.define_origen_po_c){
+        if(!App.user.attributes.define_origen_po_c && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')){
           $('[data-name="origen_c"]').attr('style', 'pointer-events:none');
           $('[data-name="detalle_origen_c"]').attr('style', 'pointer-events:none');
         }
-
+        //READONLY: PERMISO GESTION UTILITY TRAILERS, ORIGEN - ALIANZA / DETALLE ORIGEN - UTILITY TRAILERS
+        if (!App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') === '12' && this.model.get('detalle_origen_c') === '114') {
+            $('[data-name="origen_c"]').css('pointer-events','none');
+            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
+        }
     },
 
     fechaAsignacion: function () {
