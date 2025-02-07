@@ -1,6 +1,7 @@
 <?php
- // created: 2022-07-20 16:44:31
+ // created: 2025-02-06 12:03:04
 $dictionary['Account']['fields']['detalle_origen_c']['labelValue']=' Detalle Origen';
+$dictionary['Account']['fields']['detalle_origen_c']['enforced']='';
 $dictionary['Account']['fields']['detalle_origen_c']['dependency']='';
 $dictionary['Account']['fields']['detalle_origen_c']['required_formula']='';
 $dictionary['Account']['fields']['detalle_origen_c']['readonly_formula']='';
@@ -39,35 +40,16 @@ $dictionary['Account']['fields']['detalle_origen_c']['visibility_grid']=array (
       26 => '109',
       27 => '110',
     ),
-    2 => 
-    array (
-      0 => '',
-      1 => '1',
-      2 => '6',
-      3 => '10',
-    ),
     3 => 
     array (
     ),
-    4 => 
-    array (
-    ),
-    5 => 
-    array (
-    ),
     6 => 
-    array (
-    ),
-    7 => 
     array (
     ),
     8 => 
     array (
     ),
     9 => 
-    array (
-    ),
-    10 => 
     array (
     ),
     11 => 
@@ -145,6 +127,7 @@ $dictionary['Account']['fields']['detalle_origen_c']['visibility_grid']=array (
       67 => '101',
       68 => '103',
       69 => '111',
+      70 => '114',
     ),
     13 => 
     array (
@@ -165,10 +148,6 @@ $dictionary['Account']['fields']['detalle_origen_c']['visibility_grid']=array (
       3 => '68',
       4 => '69',
     ),
-    16 => 
-    array (
-      0 => '102',
-    ),
     17 => 
     array (
     ),
@@ -178,6 +157,9 @@ $dictionary['Account']['fields']['detalle_origen_c']['visibility_grid']=array (
     19 => 
     array (
       0 => '112',
+    ),
+    20 => 
+    array (
     ),
     '' => 
     array (

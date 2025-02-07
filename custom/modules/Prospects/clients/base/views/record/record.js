@@ -577,7 +577,7 @@
         }
 
         //Se omite función para deshabilitar origen, ya que se opta por hacerlo a través de dependencias
-        if(!App.user.attributes.define_origen_po_c){
+        if(!App.user.attributes.define_origen_po_c && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')){
             //this.deshabilitaOrigen();
             self.noEditFields.push('origen_c');
             $('[data-name="origen_c"]').css('pointer-events','none');
@@ -614,6 +614,13 @@
             $('[data-name="potencial_cierre_c"]').css('pointer-events','none');
             $('[data-fieldname="prospect_cp_estados_municipios"]').css('pointer-events','none');
             $('[data-fieldname="prospects_clasf_sectorial"]').css('pointer-events','none');
+        }
+        //READONLY: PERMISO GESTION UTILITY TRAILERS, ORIGEN - ALIANZA / DETALLE ORIGEN - UTILITY TRAILERS
+        if (!App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') === '12' && this.model.get('detalle_origen_c') === '114') {
+            $('[data-name="origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('origen_c');
+            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('detalle_origen_c');
         }
     },
 

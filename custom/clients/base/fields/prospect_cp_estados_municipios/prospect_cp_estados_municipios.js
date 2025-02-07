@@ -37,7 +37,7 @@
         this.nameMunicipio = this.model.get('municipio_po_c');
 
         //this.render();
-        if(this.nameCP != "" ){
+        if(this.nameCP !== "" && this.nameCP !== null && this.nameCP !== undefined){
 
             this.idEstadoFromZonaGeografica =  this.convertZonaGeografica(this.nameZonaGeografica);
             //this.estadoDetail =  App.lang.getAppListStrings("zonageografica_list")[this.nameZonaGeografica];

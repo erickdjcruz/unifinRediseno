@@ -176,14 +176,16 @@ class ObtenerRelacionesAltaPO extends SugarApi
         $idAsesorCuentaPrincipal = $args['idAsesorCuentaPrincipal'];
         
         try{
+            $GLOBALS['log']->fatal( "ID_CUENTA_RELACION_A_PO ". $idRegistro);
             $beanCuenta = BeanFactory::getBean('Accounts', $idRegistro, array('disable_row_level_security' => true));
-
             $nombre = $beanCuenta->primernombre_c;
             $paterno = $beanCuenta->apellidopaterno_c;
             $materno = $beanCuenta->apellidomaterno_c;
             $email = $beanCuenta->email1;
             $rfc = $beanCuenta->rfc_c;
             $idAsesor = $beanCuenta->user_id_c;
+            $origen = ($beanCuenta->origen_cuenta_c == '12')? $beanCuenta->origen_cuenta_c: ''; //ORIGEN ALIANZA
+            $detalleOrigen = ($beanCuenta->detalle_origen_c == '114')? $beanCuenta->detalle_origen_c: ''; //DETALLE ORIGEN UTILITY TRAILERS
 
             $telCasa = "";
             $telTrabajo = "";
@@ -197,7 +199,7 @@ class ObtenerRelacionesAltaPO extends SugarApi
                 if( isset($telefonos['celular']) )  $telCelular = $telefonos['celular'];
             }
             $regimen = ($beanCuenta->tipodepersona_c == 'Persona Fisica') ? '1' :'2'; 
-            $dataProspect = $this->crearPO( $nombre, $paterno, $materno, $email, $telCasa, $telTrabajo, $telCelular, $rfc, $idAsesorCuentaPrincipal, $regimen );
+            $dataProspect = $this->crearPO($nombre, $paterno, $materno, $email, $telCasa, $telTrabajo, $telCelular, $rfc, $idAsesorCuentaPrincipal, $regimen, $origen, $detalleOrigen);
 
             return array(
                 "status" => "ok",
@@ -248,8 +250,8 @@ class ObtenerRelacionesAltaPO extends SugarApi
 
     }
 
-    public function crearPO( $nombre, $paterno, $materno, $email, $telCasa, $telTrabajo, $telCelular, $rfc, $idAsesor,$regimen  ){
-        $GLOBALS['log']->fatal( "CREANDO PO" );
+    public function crearPO($nombre, $paterno, $materno, $email, $telCasa, $telTrabajo, $telCelular, $rfc, $idAsesor, $regimen, $origen, $detalleOrigen){
+        $GLOBALS['log']->fatal("CREANDO PO ");
         $beanProspect = BeanFactory::newBean("Prospects");
         $beanProspect->regimen_fiscal_c = $regimen;
         $beanProspect->nombre_c = $nombre;
@@ -260,13 +262,11 @@ class ObtenerRelacionesAltaPO extends SugarApi
         $beanProspect->phone_work = $telTrabajo;
         $beanProspect->phone_mobile = $telCelular;
         $beanProspect->assigned_user_id = $idAsesor;
-        //$beanProspect->rfc_c = $rfc;
-
-
+        $beanProspect->origen_c = $origen;
+        $beanProspect->detalle_origen_c = $detalleOrigen;
         $beanProspect->save();
 
         return array($beanProspect->id, $beanProspect->name);
-
     }
 
 

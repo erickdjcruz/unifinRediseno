@@ -672,6 +672,15 @@ array (
                 'name' => 'define_origen_po_c',
                 'label' => 'LBL_DEFINE_ORIGEN_PO',
               ),
+              69 => 
+              array (
+              ),
+              70 => 
+              array (
+                'readonly' => false,
+                'name' => 'gestion_utility_trailers_po_c',
+                'label' => 'LBL_GESTION_UTILITY_TRAILERS_PO',
+              ),
             ),
           ),
         ),
