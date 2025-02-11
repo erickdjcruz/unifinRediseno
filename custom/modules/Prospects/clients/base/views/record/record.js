@@ -575,37 +575,41 @@
             });
             this._disableActionsSubpanel();
         }
-
         //Se omite función para deshabilitar origen, ya que se opta por hacerlo a través de dependencias
-        if(!App.user.attributes.define_origen_po_c && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')){
-            //this.deshabilitaOrigen();
+        //ReadOnly Alianza - Soc / Creditaria
+        if (!App.user.attributes.define_origen_po_c && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')) {
+            $('[data-name="origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('origen_c');
+            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('detalle_origen_c');
+        }
+        //ReadOnly Alianza - Utility Trailers
+        if (!App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') === '12' && this.model.get('detalle_origen_c') === '114') {
+            $('[data-name="origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('origen_c');
+            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('detalle_origen_c');
+        } 
+        //READONLY EN ORIGEN BLOQUEADO || MARKETING - ORGANICO || LEASING - LEASING
+        if(this.model.get('origen_bloqueado_c') || (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
+        (this.model.get('origen_c') === '20' && this.model.get('detalle_origen_c') === '113')) {
             self.noEditFields.push('origen_c');
             $('[data-name="origen_c"]').css('pointer-events','none');
             self.$('.record-edit-link-wrapper[data-name=origen_c]').remove();
             self.noEditFields.push('detalle_origen_c');
             $('[data-name="detalle_origen_c"]').css('pointer-events','none');
             self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').remove();
-        }else{
-          if(this.model.get('origen_bloqueado_c')){
-              self.noEditFields.push('origen_c');
-              $('[data-name="origen_c"]').css('pointer-events','none');
-              self.$('.record-edit-link-wrapper[data-name=origen_c]').remove();
-              self.noEditFields.push('detalle_origen_c');
-              $('[data-name="detalle_origen_c"]').css('pointer-events','none');
-              self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').remove();
             
-          }else{
-              var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
-              //Define opciones de origen
-              var current_option = this.model.get('origen_c');
-              Object.keys(opciones_origen).forEach(function (key) {
-                  if (key != "12" && key != "20" && key != current_option) { //12:Alianzas - 20:Leasing
-                      delete opciones_origen[key];
-                  }
-              });
-              this.model.fields['origen_c'].options = opciones_origen;
-          }
-        }
+        }         
+        //DEFINE LISTA DESPLEGABLE DE ORIGEN
+        var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
+        var current_option = this.model.get('origen_c');
+        Object.keys(opciones_origen).forEach(function (key) {
+            if (key != "12" && key != "20" && key != "1" && key != current_option) { //12:Alianzas - 20:Leasing - 1:Marketing
+                delete opciones_origen[key];
+            }
+        });
+        this.model.fields['origen_c'].options = opciones_origen;            
         //READONLY: ORIGEN - MARKETING  / DETALLE ORIGEN - ORGANICO
         if (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') {            
             $('[data-name="potencial_lead_c"]').css('pointer-events','none');
@@ -614,13 +618,6 @@
             $('[data-name="potencial_cierre_c"]').css('pointer-events','none');
             $('[data-fieldname="prospect_cp_estados_municipios"]').css('pointer-events','none');
             $('[data-fieldname="prospects_clasf_sectorial"]').css('pointer-events','none');
-        }
-        //READONLY: PERMISO GESTION UTILITY TRAILERS, ORIGEN - ALIANZA / DETALLE ORIGEN - UTILITY TRAILERS
-        if (!App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') === '12' && this.model.get('detalle_origen_c') === '114') {
-            $('[data-name="origen_c"]').css('pointer-events','none');
-            self.noEditFields.push('origen_c');
-            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
-            self.noEditFields.push('detalle_origen_c');
         }
     },
 
