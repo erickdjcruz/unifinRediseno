@@ -575,37 +575,41 @@
             });
             this._disableActionsSubpanel();
         }
-
         //Se omite función para deshabilitar origen, ya que se opta por hacerlo a través de dependencias
-        if(!App.user.attributes.define_origen_po_c && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')){
-            //this.deshabilitaOrigen();
+        //ReadOnly Alianza - Soc / Creditaria
+        if (!App.user.attributes.define_origen_po_c && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')) {
+            $('[data-name="origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('origen_c');
+            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('detalle_origen_c');
+        }
+        //ReadOnly Alianza - Utility Trailers
+        if (!App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') === '12' && this.model.get('detalle_origen_c') === '114') {
+            $('[data-name="origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('origen_c');
+            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('detalle_origen_c');
+        } 
+        //READONLY EN ORIGEN BLOQUEADO || MARKETING - ORGANICO || LEASING - LEASING
+        if(this.model.get('origen_bloqueado_c') || (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
+        (this.model.get('origen_c') === '20' && this.model.get('detalle_origen_c') === '113')) {
             self.noEditFields.push('origen_c');
             $('[data-name="origen_c"]').css('pointer-events','none');
             self.$('.record-edit-link-wrapper[data-name=origen_c]').remove();
             self.noEditFields.push('detalle_origen_c');
             $('[data-name="detalle_origen_c"]').css('pointer-events','none');
             self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').remove();
-        }else{
-          if(this.model.get('origen_bloqueado_c')){
-              self.noEditFields.push('origen_c');
-              $('[data-name="origen_c"]').css('pointer-events','none');
-              self.$('.record-edit-link-wrapper[data-name=origen_c]').remove();
-              self.noEditFields.push('detalle_origen_c');
-              $('[data-name="detalle_origen_c"]').css('pointer-events','none');
-              self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').remove();
             
-          }else{
-              var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
-              //Define opciones de origen
-              var current_option = this.model.get('origen_c');
-              Object.keys(opciones_origen).forEach(function (key) {
-                  if (key != "12" && key != "20" && key != current_option) { //12:Alianzas - 20:Leasing
-                      delete opciones_origen[key];
-                  }
-              });
-              this.model.fields['origen_c'].options = opciones_origen;
-          }
-        }
+        }         
+        //DEFINE LISTA DESPLEGABLE DE ORIGEN
+        var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
+        var current_option = this.model.get('origen_c');
+        Object.keys(opciones_origen).forEach(function (key) {
+            if (key != "12" && key != "20" && key != "1" && key != current_option) { //12:Alianzas - 20:Leasing - 1:Marketing
+                delete opciones_origen[key];
+            }
+        });
+        this.model.fields['origen_c'].options = opciones_origen;            
         //READONLY: ORIGEN - MARKETING  / DETALLE ORIGEN - ORGANICO
         if (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') {            
             $('[data-name="potencial_lead_c"]').css('pointer-events','none');
@@ -614,13 +618,6 @@
             $('[data-name="potencial_cierre_c"]').css('pointer-events','none');
             $('[data-fieldname="prospect_cp_estados_municipios"]').css('pointer-events','none');
             $('[data-fieldname="prospects_clasf_sectorial"]').css('pointer-events','none');
-        }
-        //READONLY: PERMISO GESTION UTILITY TRAILERS, ORIGEN - ALIANZA / DETALLE ORIGEN - UTILITY TRAILERS
-        if (!App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') === '12' && this.model.get('detalle_origen_c') === '114') {
-            $('[data-name="origen_c"]').css('pointer-events','none');
-            self.noEditFields.push('origen_c');
-            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
-            self.noEditFields.push('detalle_origen_c');
         }
     },
 
@@ -1166,6 +1163,15 @@
           });
           return false;
         }
+
+        if(!App.user.attributes.gestion_utility_trailers_po_c){
+            app.alert.show('not_access_gut', {
+                level: 'error',
+                autoClose: false,
+                messages: 'No cuentas con permiso para cambiar el origen de un PO con Utility Trailers'
+            });
+            return false;
+        }
         
         if( !this.model.get('origen_bloqueado_c') && this.model.get('origen_c')=='' ){
           app.alert.show('sin_bloqueo', {
@@ -1336,31 +1342,18 @@
                         var tipoSeleccionados = '^' + listMapIndicador[tipo].replace(/,/gi, "^,^") + '^';
                         var indicador = data.records[i].indicador;
                         var indicadorSeleccionados = '^' + listMapIndicador[indicador].replace(/,/gi, "^,^") + '^';
-
-                        //Se obtiene campo description para obtener los id (recordar que el description guarda los id separados por pipeline | 
-                        //ejemplo: "{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}"
-
-                        var description=data.records[i].description;
-                        var ids=description.split('|');
-
-                        var identificadorPais=ids[0];
-                        var identificadorEstado=ids[1];
-                        var identificadorCiudad=ids[2];
-                        var identificadorMunicipio=ids[3];
-                        var identificadorColonia=ids[4];
-
-                        var valCodigoPostal = data.records[i].codigo_postal_c;
-                        var idCodigoPostal=data.records[i].dir_sepomex_dire_direcciondir_sepomex_ida;
-                        var valPais = data.records[i].pais_c;
-                        var idPais = identificadorPais;
-                        var valEstado = data.records[i].estado_c;
-                        var idEstado = identificadorEstado;
-                        var valMunicipio = data.records[i].municipio_c;
-                        var idMunicipio = identificadorMunicipio;
-                        var valCiudad = data.records[i].ciudad_c;
-                        var idCiudad=identificadorCiudad;
-                        var valColonia = data.records[i].colonia_c;
-                        var idColonia = identificadorColonia;
+                        var valCodigoPostal = data.records[i].dire_direccion_dire_codigopostal_name;
+                        var idCodigoPostal = data.records[i].dire_direccion_dire_codigopostaldire_codigopostal_ida;
+                        var valPais = data.records[i].dire_direccion_dire_pais_name;
+                        var idPais = data.records[i].dire_direccion_dire_paisdire_pais_ida;
+                        var valEstado = data.records[i].dire_direccion_dire_estado_name;
+                        var idEstado = data.records[i].dire_direccion_dire_estadodire_estado_ida;
+                        var valMunicipio = data.records[i].dire_direccion_dire_municipio_name;
+                        var idMunicipio = data.records[i].dire_direccion_dire_municipiodire_municipio_ida;
+                        var valCiudad = data.records[i].dire_direccion_dire_ciudad_name;
+                        var idCiudad = data.records[i].dire_direccion_dire_ciudaddire_ciudad_ida;
+                        var valColonia = data.records[i].dire_direccion_dire_colonia_name;
+                        var idColonia = data.records[i].dire_direccion_dire_coloniadire_colonia_ida;
                         var calle = data.records[i].calle;
                         var numExt = data.records[i].numext;
                         var numInt = data.records[i].numint;
@@ -1454,18 +1447,19 @@
                                 //Colonia
                                 listColonia = {};
                                 for (var i = 0; i < list_colonias.length; i++) {
-                                    //listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
-                                    listColonia[i]={};
-                                    listColonia[i]['idColonia']=list_colonias[i].idColonia;
-                                    listColonia[i]['nameColonia']=list_colonias[i].nameColonia;
-                                    listColonia[i]['idCodigoPostal']=list_colonias[i].idCodigoPostal;
+                                    listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
                                 }
                                 contexto_prospect.oDirecciones.direccion[data.indice].listColonia = listColonia;
                                 contexto_prospect.oDirecciones.direccion[data.indice].listColoniaFull = listColonia;
                                 //Ciudad
-                                listCiudad = {};
-                                for (var i = 0; i < list_ciudades.length; i++) {
-                                    listCiudad[list_ciudades[i].idCiudad] = list_ciudades[i].nameCiudad;
+                                listCiudad = {}
+                                ciudades = Object.values(city_list);
+                                for (var [key, value] of Object.entries(contexto_prospect.oDirecciones.direccion[data.indice].listEstado)) {
+                                    for (var i = 0; i < ciudades.length; i++) {
+                                        if (ciudades[i].estado_id == key) {
+                                            listCiudad[ciudades[i].id] = ciudades[i].name;
+                                        }
+                                    }
                                 }
                                 contexto_prospect.oDirecciones.direccion[data.indice].listCiudad = listCiudad;
                                 contexto_prospect.oDirecciones.direccion[data.indice].listCiudadFull = listCiudad;
