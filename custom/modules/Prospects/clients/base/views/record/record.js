@@ -1215,7 +1215,7 @@
           });
           return false;
         }
-        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13')) {
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114')) {
             //VALIDA EMAIL DEL ASESOR DE ALIANZA
             if (this.model.get('email_aa_c') === null || this.model.get('email_aa_c') === "") {
                 // Si no hay un email proporcionado
