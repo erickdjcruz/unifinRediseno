@@ -455,7 +455,7 @@
             }
         }
 
-        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13')) {
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114')) {
             //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO TELEFONICO DEL ASESOR DE ALIANZA
             if (this.model.get('telefono_aa_c') != "" && this.model.get('telefono_aa_c') != undefined) {
                 if (this.model.get('telefono_aa_c').trim() == "" || this.model.get('telefono_aa_c').trim().length != 10) {
