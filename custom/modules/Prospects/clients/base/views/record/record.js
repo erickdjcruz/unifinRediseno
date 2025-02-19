@@ -66,6 +66,7 @@
 
         //Función para eliminar opciones del campo origen
         this.estableceOpcionesOrigenLeads();
+        this.model.on("change:origen_c", _.bind(this.estableceOpcionesOrigenLeads, this));
         //Función para establecer el año y el mes actual + 2 futuros
         this._estableceMesOperacion();
         this.model.on("change:mes_operacion_c", _.bind(this._estableceMesOperacion, this));
@@ -402,6 +403,33 @@
             }, this);
         }, this);
 
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114')) {
+            //CAMPOS REQUERIDOS DE ALIANZAS
+            if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined) {
+                campos = campos + '<b>' + 'Franquicia' + '</b><br>';
+
+                errors['franquicia_c'] = errors['franquicia_c'] || {};
+                errors['franquicia_c'].required = true;
+            }
+            if (this.model.get('asesor_alianza_c') == '' || this.model.get('asesor_alianza_c') == undefined) {
+                campos = campos + '<b>' + 'Asesor de la Alianza' + '</b><br>';
+
+                errors['asesor_alianza_c'] = errors['asesor_alianza_c'] || {};
+                errors['asesor_alianza_c'].required = true;
+            }
+            if (this.model.get('email_aa_c') == '' || this.model.get('email_aa_c') == undefined) {
+                campos = campos + '<b>' + 'Email del Asesor de Alianza' + '</b><br>';
+
+                errors['email_aa_c'] = errors['email_aa_c'] || {};
+                errors['email_aa_c'].required = true;
+            }
+            if (this.model.get('telefono_aa_c') == '' || this.model.get('telefono_aa_c') == undefined) {
+                campos = campos + '<b>' + 'Teléfono del Asesor de Alianza' + '</b><br>';
+
+                errors['telefono_aa_c'] = errors['telefono_aa_c'] || {};
+                errors['telefono_aa_c'].required = true;
+            }
+        }
         /*****CHECK LEAD CANCELAR*********/
         /*if (this.model.get('lead_cancelado_c') == '1') {
             if (this.model.get('motivo_cancelacion_c') == '' || this.model.get('motivo_cancelacion_c') == null) {
@@ -457,8 +485,7 @@
             default:
                 break;
         }
-
-        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13')) {
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
             if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == null) {
                 campos_req.push('franquicia_c');
@@ -599,17 +626,7 @@
             self.noEditFields.push('detalle_origen_c');
             $('[data-name="detalle_origen_c"]').css('pointer-events','none');
             self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').remove();
-            
-        }         
-        //DEFINE LISTA DESPLEGABLE DE ORIGEN
-        var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
-        var current_option = this.model.get('origen_c');
-        Object.keys(opciones_origen).forEach(function (key) {
-            if (key != "12" && key != "20" && key != "1" && key != current_option) { //12:Alianzas - 20:Leasing - 1:Marketing
-                delete opciones_origen[key];
-            }
-        });
-        this.model.fields['origen_c'].options = opciones_origen;            
+        }            
         //READONLY: ORIGEN - MARKETING  / DETALLE ORIGEN - ORGANICO
         if (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') {            
             $('[data-name="potencial_lead_c"]').css('pointer-events','none');
@@ -685,8 +702,117 @@
 
     //Función para eliminar opciones del campo origen
     estableceOpcionesOrigenLeads:function(){
-        this.model.set('origen_c','20');
-        this.model.set('detalle_origen_c','113');
+        var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
+        var opciones_detalle_origen = app.lang.getAppListStrings('detalle_origen_list');
+        // Función auxiliar para filtrar opciones
+        var filtrarOpciones = function (opciones, listaPermitida) {
+            Object.keys(opciones).forEach(function (key) {
+                if (!listaPermitida.includes(key)) {
+                    delete opciones[key];
+                }
+            });
+            return opciones; // Retorna el objeto filtrado
+        };
+        // Función reutilizable para actualizar las opciones y el valor del campo detalle_origen_c
+        var actualizarCampoDetalleOrigen = function(opciones_detalle_origen, nuevoValor) {
+            // Forzamos la actualización de las opciones en la vista
+            var field = this.getField("detalle_origen_c");
+            if (field) {
+                field.items = opciones_detalle_origen;  // Actualiza la lista de valores del dropdown
+                field.render();  // Vuelve a pintar el campo
+            }
+            // Borramos el valor actual y asignamos el nuevo
+            var valorActual = this.model.get('detalle_origen_c');
+            // Si el valor actual no está en las opciones permitidas, lo actualizamos
+            if (!opciones_detalle_origen.hasOwnProperty(valorActual)) {
+                this.model.unset('detalle_origen_c'); // Eliminamos solo si el valor no es válido
+                this.model.set('detalle_origen_c', nuevoValor);
+            }
+        };
+        //Se modifica validación para habilitar origen si usuario tiene define_origen_po_c
+        if (App.user.attributes.define_origen_po_c || App.user.attributes.gestion_utility_trailers_po_c) { 
+            //Define opciones de origen
+            opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]); //12:Alianzas - 20:Leasing
+            this.model.fields['origen_c'].options = opciones_origen;
+            //Valor actual Origen
+            var valorActualOrigen = this.model.get('origen_c');
+            //Si el valor actual no está en las opciones permitidas, lo actualizamos
+            if (!opciones_origen.hasOwnProperty(valorActualOrigen)) {
+                this.model.unset('origen_c'); // Eliminamos solo si el valor no es válido
+                this.model.set('origen_c','12');
+            }
+            //Define opciones de detalle origen
+            if (App.user.attributes.define_origen_po_c && App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') == '12') {
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114"]); //12:SOC - 13:Creditaria - 114:Utility Trailers
+                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                //Forzamos la actualización de las opciones en la vista
+                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
+            
+            } else if (App.user.attributes.define_origen_po_c && this.model.get('origen_c') == '12') {
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13"]); //12:SOC - 13:Creditaria
+                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                //Forzamos la actualización de las opciones en la vista
+                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
+            
+            } else if (App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') == '12') {
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["114"]); //114:Utility Trailers
+                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                //Forzamos la actualización de las opciones en la vista
+                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '114');
+            
+            } else if (this.model.get('origen_c') == '20') {
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["113"]);
+                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                //Forzamos la actualización de las opciones en la vista
+                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '113');
+            }
+            //Disparar eventos para forzar la actualización
+            this.model.trigger("change:detalle_origen_c"); 
+            
+        } else if (this.model.get('origen_c') === '1') {
+            console.log("ORIGEN MARKETING");
+            //Define opciones de detalle origen
+            var arrayDetalleOrigen = ['', '3', '9', '5', '11', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '104', '105', '106', '107', '108', '109', '110'];
+            opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, arrayDetalleOrigen);
+            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+            //Forzamos la actualización de las opciones en la vista
+            actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '80'); //80: Organico
+
+        } else if (this.model.get('origen_c') === '13') {
+            console.log("ORIGEN CENTRO DE PROSPECCION");
+            //Define opciones de detalle origen
+            opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ['63', '64']);
+            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;   
+            //Forzamos la actualización de las opciones en la vista
+            actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '63'); //80: Prospección Propia
+            
+        } else if (this.model.get('origen_c') === '14') {
+            console.log("ORIGEN CLOSER");
+            //Define opciones de detalle origen
+            opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ['65']);
+            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+            //Forzamos la actualización de las opciones en la vista
+            actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '65'); //65: Closer
+
+        } else if (this.model.get('origen_c') === '15') {
+            console.log("ORIGEN GROWTH");
+            //Define opciones de detalle origen
+            opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ['66', '67', '68', '69']);
+            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;    
+            //Forzamos la actualización de las opciones en la vista
+            actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '66'); //66: Campañas de Growth
+
+        } else {
+            //Define opciones de origen
+            opciones_origen = filtrarOpciones(opciones_origen, ["12","20","1"]); //12:Alianzas - 20:Leasing - 1:Marketing
+            this.model.fields['origen_c'].options = opciones_origen;
+            // Define opciones de detalle origen
+            opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["113"]);
+            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen; 
+            // SET ORIGEN Y DETALLE ORIGEN LEASING - LEASING
+            this.model.set('origen_c','20');
+            actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '113');
+        }
     },
 
     editClicked: function () {
@@ -819,10 +945,8 @@
         this.$("div.record-label[data-name='prospects_direcciones']").attr('style', 'display:none;');
         //Ocultando campo check de homonimo
         $('[data-name="homonimo_c"]').hide();
-
         //Oculta fecha de bloqueo
         $('[data-name="fecha_bloqueo_origen_c"]').hide();
-
     },
 
     convert_Po_to_Lead: function () {
