@@ -617,8 +617,9 @@
             $('[data-name="detalle_origen_c"]').css('pointer-events','none');
             self.noEditFields.push('detalle_origen_c');
         } 
-        //READONLY EN ORIGEN BLOQUEADO || MARKETING - ORGANICO || LEASING - LEASING
-        if(this.model.get('origen_bloqueado_c') || (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
+        //READONLY DE ORIGEN BLOQUEADO CON ALIANZA SOC Y CREDITARIA || MARKETING - ORGANICO || LEASING - LEASING
+        if((this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')) || 
+        (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
         (this.model.get('origen_c') === '20' && this.model.get('detalle_origen_c') === '113')) {
             self.noEditFields.push('origen_c');
             $('[data-name="origen_c"]').css('pointer-events','none');
