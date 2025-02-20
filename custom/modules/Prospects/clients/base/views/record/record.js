@@ -14,7 +14,7 @@
         //Botones para Aprobar/Rechazar envío de correos
         this.context.on('button:vobo_envio_correo:click', this.vobo_envio_correo, this);
         this.context.on('button:rechaza_envio_correo:click', this.rechaza_envio_correo, this);
-        
+
         //Solicitar edición de origen
         this.context.on('button:cambiar_origen:click', this.solicta_cambio_origen, this);
 
@@ -47,7 +47,7 @@
         this.model.addValidationTask('set_custom_fields', _.bind(this.setCustomFields, this));
         this.model.addValidationTask('checkEmptyFieldsDire', _.bind(this.validadirecc, this));
         this.model.addValidationTask('validate_Direccion_Duplicada', _.bind(this._direccionDuplicada, this));
-        this.model.addValidationTask('valida_usuarios_inactivos',_.bind(this.valida_usuarios_inactivos, this));
+        this.model.addValidationTask('valida_usuarios_inactivos', _.bind(this.valida_usuarios_inactivos, this));
         this.$("[data-panelname='LBL_RECORDVIEW_PANEL3']").hide();
 
         /****** validaciones SOC  **********/
@@ -78,7 +78,7 @@
         this.model.on("change:potencial_cierre_c", this._validaPotencialCierre, this);
     },
 
-    handleEdit: function(e, cell) {
+    handleEdit: function (e, cell) {
         var target,
             cellData,
             field;
@@ -118,9 +118,9 @@
     Se sobreescribe la función de caja para poder evaluar si los campos de origen se deben de bloquear ya que a nivel de dependencoa
     no estaba tomando los diapradores para bloquear dichos campos
     */
-    focusFirstInput: function() {
+    focusFirstInput: function () {
         var self = this;
-        $(function() {
+        $(function () {
             var $element = (app.drawer && (app.drawer.count() > 0)) ?
                 app.drawer._components[app.drawer.count() - 1].$el
                 : app.$contentEl;
@@ -251,19 +251,19 @@
             num_errors = 0;
             if (phoneMobile) {
                 num_errors = num_errors + 1;
-				$('.Telefonom').css('border-color', 'red');
+                $('.Telefonom').css('border-color', 'red');
                 errors['phone_mobile'] = errors['phone_mobile'] || {};
                 errors['phone_mobile'].required = true;
             }
             if (phoneHome) {
                 num_errors = num_errors + 1;
-				$('.Telefonoc').css('border-color', 'red');
+                $('.Telefonoc').css('border-color', 'red');
                 errors['phone_home'] = errors['phone_home'] || {};
                 errors['phone_home'].required = true;
             }
             if (phoneWork) {
                 num_errors = num_errors + 1;
-				$('.Telefonot').css('border-color', 'red');
+                $('.Telefonot').css('border-color', 'red');
                 errors['phone_work'] = errors['phone_work'] || {};
                 errors['phone_work'].required = true;
             }
@@ -281,8 +281,8 @@
             duplicado = 0;
             if (this.model.get('phone_mobile') == this.model.get('phone_home') && this.model.get('phone_mobile') != "" && this.model.get('phone_home') != "") {
                 duplicado = duplicado + 1;
-				$('.Telefonom').css('border-color', 'red');
-				$('.Telefonoc').css('border-color', 'red');
+                $('.Telefonom').css('border-color', 'red');
+                $('.Telefonoc').css('border-color', 'red');
                 errors['phone_mobile'] = errors['phone_mobile'] || {};
                 errors['phone_mobile'].required = true;
                 errors['phone_home'] = errors['phone_home'] || {};
@@ -291,8 +291,8 @@
             }
             if (this.model.get('phone_mobile') == this.model.get('phone_work') && this.model.get('phone_mobile') != "" && this.model.get('phone_work') != "") {
                 duplicado = duplicado + 1;
-				$('.Telefonom').css('border-color', 'red');
-				$('.Telefonot').css('border-color', 'red');
+                $('.Telefonom').css('border-color', 'red');
+                $('.Telefonot').css('border-color', 'red');
                 errors['phone_mobile'] = errors['phone_mobile'] || {};
                 errors['phone_mobile'].required = true;
                 errors['phone_work'] = errors['phone_work'] || {};
@@ -301,8 +301,8 @@
             }
             if (this.model.get('phone_home') == this.model.get('phone_work') && this.model.get('phone_home') != "" && this.model.get('phone_work') != "") {
                 duplicado = duplicado + 1;
-				$('.Telefonoc').css('border-color', 'red');
-				$('.Telefonot').css('border-color', 'red');
+                $('.Telefonoc').css('border-color', 'red');
+                $('.Telefonot').css('border-color', 'red');
                 errors['phone_home'] = errors['phone_home'] || {};
                 errors['phone_home'].required = true;
                 errors['phone_work'] = errors['phone_work'] || {};
@@ -571,7 +571,7 @@
         var self = this;
 
         //Solo Lectura Regimen Fiscal para que únicamente se establezca el PO como PF
-        $('[data-name="regimen_fiscal_c"]').css('pointer-events','none');
+        $('[data-name="regimen_fiscal_c"]').css('pointer-events', 'none');
         /***************************READONLY PARA SUBTIPO DE LEAD CANCELADO**************************/
         if (this.model.get('estatus_po_c') == '3' || this.model.get('estatus_po_c') == '4') {
 
@@ -580,9 +580,9 @@
 
             _.each(this.model.fields, function (field) {
 
-                    self.noEditFields.push(field.name);
-                    self.$('.record-edit-link-wrapper[data-name=' + field.name + ']').remove();
-                    self.$('[data-name=' + field.name + ']').attr('style', 'pointer-events:none;');
+                self.noEditFields.push(field.name);
+                self.$('.record-edit-link-wrapper[data-name=' + field.name + ']').remove();
+                self.$('[data-name=' + field.name + ']').attr('style', 'pointer-events:none;');
 
             });
             this._disableActionsSubpanel();
@@ -591,8 +591,8 @@
         if (this.model.get('estatus_po_c') == '3' || this.model.get('estatus_po_c') == '4') {
             var editButton = self.getField('edit_button');
             editButton.setDisabled(true);
-      			//var btnConvert = self.getField("convert_po_to_Lead");
-      			//btnConvert.hide();
+            //var btnConvert = self.getField("convert_po_to_Lead");
+            //btnConvert.hide();
             _.each(this.model.fields, function (field) {
                 if (field.name != 'origen_ag_tel_c' && field.name != 'promotor_c' && field.name != 'account_to_lead' && field.name != 'assigned_user_name' && field.name != 'email') {
                     self.noEditFields.push(field.name);
@@ -605,41 +605,41 @@
         //Se omite función para deshabilitar origen, ya que se opta por hacerlo a través de dependencias
         //ReadOnly Alianza - Soc / Creditaria
         if (!App.user.attributes.define_origen_po_c && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')) {
-            $('[data-name="origen_c"]').css('pointer-events','none');
+            $('[data-name="origen_c"]').css('pointer-events', 'none');
             self.noEditFields.push('origen_c');
-            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
+            $('[data-name="detalle_origen_c"]').css('pointer-events', 'none');
             self.noEditFields.push('detalle_origen_c');
         }
         //ReadOnly Alianza - Utility Trailers
         if (!App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') === '12' && this.model.get('detalle_origen_c') === '114') {
-            $('[data-name="origen_c"]').css('pointer-events','none');
+            $('[data-name="origen_c"]').css('pointer-events', 'none');
             self.noEditFields.push('origen_c');
-            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
+            $('[data-name="detalle_origen_c"]').css('pointer-events', 'none');
             self.noEditFields.push('detalle_origen_c');
-        } 
+        }
         //READONLY DE ORIGEN BLOQUEADO CON ALIANZA SOC Y CREDITARIA || MARKETING - ORGANICO || LEASING - LEASING
-        if((this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')) || 
-        (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
-        (this.model.get('origen_c') === '20' && this.model.get('detalle_origen_c') === '113')) {
+        if ((this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')) ||
+            (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
+            (this.model.get('origen_c') === '20' && this.model.get('detalle_origen_c') === '113')) {
             self.noEditFields.push('origen_c');
-            $('[data-name="origen_c"]').css('pointer-events','none');
+            $('[data-name="origen_c"]').css('pointer-events', 'none');
             self.$('.record-edit-link-wrapper[data-name=origen_c]').remove();
             self.noEditFields.push('detalle_origen_c');
-            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
+            $('[data-name="detalle_origen_c"]').css('pointer-events', 'none');
             self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').remove();
-        }            
+        }
         //READONLY: ORIGEN - MARKETING  / DETALLE ORIGEN - ORGANICO
-        if (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') {            
-            $('[data-name="potencial_lead_c"]').css('pointer-events','none');
-            $('[data-name="activos_interes_c"]').css('pointer-events','none');
-            $('[data-name="mes_operacion_c"]').css('pointer-events','none');
-            $('[data-name="potencial_cierre_c"]').css('pointer-events','none');
-            $('[data-fieldname="prospect_cp_estados_municipios"]').css('pointer-events','none');
-            $('[data-fieldname="prospects_clasf_sectorial"]').css('pointer-events','none');
+        if (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') {
+            $('[data-name="potencial_lead_c"]').css('pointer-events', 'none');
+            $('[data-name="activos_interes_c"]').css('pointer-events', 'none');
+            $('[data-name="mes_operacion_c"]').css('pointer-events', 'none');
+            $('[data-name="potencial_cierre_c"]').css('pointer-events', 'none');
+            $('[data-fieldname="prospect_cp_estados_municipios"]').css('pointer-events', 'none');
+            $('[data-fieldname="prospects_clasf_sectorial"]').css('pointer-events', 'none');
         }
     },
 
-    deshabilitaOrigen:function(){
+    deshabilitaOrigen: function () {
         var today = new Date();
         var yyyy = today.getFullYear();
         var mm = today.getMonth() + 1; // Months start at 0!
@@ -648,61 +648,61 @@
         if (dd < 10) dd = '0' + dd;
         if (mm < 10) mm = '0' + mm;
 
-        var hoy = yyyy+'-'+mm+'-'+dd;
-        var fecha_actual= new Date(hoy);
-        var fecha_bloqueo=new Date(this.model.get("fecha_bloqueo_origen_c"));
+        var hoy = yyyy + '-' + mm + '-' + dd;
+        var fecha_actual = new Date(hoy);
+        var fecha_bloqueo = new Date(this.model.get("fecha_bloqueo_origen_c"));
 
-        if(fecha_actual<=fecha_bloqueo){
+        if (fecha_actual <= fecha_bloqueo) {
             $('.record-cell[data-name="origen_c"]').find('.normal.index').find('.edit').addClass('disabled');
             $('.record-cell[data-name="origen_c"]').find('.normal.index').find('.select2-container').addClass('select2-container-disabled');
-            $('.record-cell[data-name="origen_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled',"");
-            $('.record-cell[data-name="origen_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled',"");
+            $('.record-cell[data-name="origen_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled', "");
+            $('.record-cell[data-name="origen_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled', "");
             $('.record-cell[data-name="origen_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
             $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('.edit').addClass('disabled');
             $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('.select2-container').addClass('select2-container-disabled');
-            $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled',"");
-            $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled',"");
+            $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled', "");
+            $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled', "");
             $('.record-cell[data-name="detalle_origen_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
             $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('.edit').addClass('disabled');
             $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('.select2-container').addClass('select2-container-disabled');
-            $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled',"");
-            $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled',"");
+            $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled', "");
+            $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled', "");
             $('.record-cell[data-name="prospeccion_propia_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
             $('.record-cell[data-name="medio_digital_c"]').find('.normal.index').find('.edit').addClass('disabled');
             $('.record-cell[data-name="medio_digital_c"]').find('.normal.index').find('.select2-container').addClass('select2-container-disabled');
-            $('.record-cell[data-name="medio_digital_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled',"");
-            $('.record-cell[data-name="medio_digital_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled',"");
+            $('.record-cell[data-name="medio_digital_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled', "");
+            $('.record-cell[data-name="medio_digital_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled', "");
             $('.record-cell[data-name="medio_digital_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
             $('.record-cell[data-name="punto_contacto_c"]').find('.normal.index').find('.edit').addClass('disabled');
             $('.record-cell[data-name="punto_contacto_c"]').find('.normal.index').find('.select2-container').addClass('select2-container-disabled');
-            $('.record-cell[data-name="punto_contacto_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled',"");
-            $('.record-cell[data-name="punto_contacto_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled',"");
+            $('.record-cell[data-name="punto_contacto_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled', "");
+            $('.record-cell[data-name="punto_contacto_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled', "");
             $('.record-cell[data-name="punto_contacto_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
-            $('[data-name="evento_c"]').css({ "pointer-events":"none"});
-            $('[data-name="camara_c"]').css({ "pointer-events":"none"});
-            $('[data-name="promotor_c"]').css({ "pointer-events":"none"});
-            $('[data-name="codigo_expo_c"]').css({ "pointer-events":"none"});
+            $('[data-name="evento_c"]').css({ "pointer-events": "none" });
+            $('[data-name="camara_c"]').css({ "pointer-events": "none" });
+            $('[data-name="promotor_c"]').css({ "pointer-events": "none" });
+            $('[data-name="codigo_expo_c"]').css({ "pointer-events": "none" });
             $('.record-cell[data-name="codigo_expo_c"]').find('.record-edit-link-wrapper').addClass('hide');
         }
     },
 
-    clickActionsCambiaEtiquetaEnvioCorreo: function(){
+    clickActionsCambiaEtiquetaEnvioCorreo: function () {
 
-        if( !this.model.get('envio_correo_po_c')){
+        if (!this.model.get('envio_correo_po_c')) {
             $('[data-event="button:reenvio_correo:click"]').html("Enviar correo");
-        }else{
+        } else {
             $('[data-event="button:reenvio_correo:click"]').html("Reenviar correo");
         }
 
     },
 
     //Función para eliminar opciones del campo origen
-    estableceOpcionesOrigenLeads:function(){
+    estableceOpcionesOrigenLeads: function () {
         var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
         var opciones_detalle_origen = app.lang.getAppListStrings('detalle_origen_list');
         // Función auxiliar para filtrar opciones
@@ -715,7 +715,7 @@
             return opciones; // Retorna el objeto filtrado
         };
         // Función reutilizable para actualizar las opciones y el valor del campo detalle_origen_c
-        var actualizarCampoDetalleOrigen = function(opciones_detalle_origen, nuevoValor) {
+        var actualizarCampoDetalleOrigen = function (opciones_detalle_origen, nuevoValor) {
             // Forzamos la actualización de las opciones en la vista
             var field = this.getField("detalle_origen_c");
             if (field) {
@@ -731,7 +731,7 @@
             }
         };
         //Se modifica validación para habilitar origen si usuario tiene define_origen_po_c
-        if (App.user.attributes.define_origen_po_c || App.user.attributes.gestion_utility_trailers_po_c) { 
+        if (App.user.attributes.define_origen_po_c || App.user.attributes.gestion_utility_trailers_po_c) {
             //Define opciones de origen
             opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]); //12:Alianzas - 20:Leasing
             this.model.fields['origen_c'].options = opciones_origen;
@@ -740,7 +740,7 @@
             //Si el valor actual no está en las opciones permitidas, lo actualizamos
             if (!opciones_origen.hasOwnProperty(valorActualOrigen)) {
                 this.model.unset('origen_c'); // Eliminamos solo si el valor no es válido
-                this.model.set('origen_c','12');
+                this.model.set('origen_c', '12');
             }
             //Define opciones de detalle origen
             if (App.user.attributes.define_origen_po_c && App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') == '12') {
@@ -748,19 +748,19 @@
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                 //Forzamos la actualización de las opciones en la vista
                 actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
-            
+
             } else if (App.user.attributes.define_origen_po_c && this.model.get('origen_c') == '12') {
                 opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13"]); //12:SOC - 13:Creditaria
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                 //Forzamos la actualización de las opciones en la vista
                 actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
-            
+
             } else if (App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') == '12') {
                 opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["114"]); //114:Utility Trailers
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                 //Forzamos la actualización de las opciones en la vista
                 actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '114');
-            
+
             } else if (this.model.get('origen_c') == '20') {
                 opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["113"]);
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
@@ -768,8 +768,8 @@
                 actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '113');
             }
             //Disparar eventos para forzar la actualización
-            this.model.trigger("change:detalle_origen_c"); 
-            
+            this.model.trigger("change:detalle_origen_c");
+
         } else if (this.model.get('origen_c') === '1') {
             console.log("ORIGEN MARKETING");
             //Define opciones de detalle origen
@@ -783,10 +783,10 @@
             console.log("ORIGEN CENTRO DE PROSPECCION");
             //Define opciones de detalle origen
             opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ['63', '64']);
-            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;   
+            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
             //Forzamos la actualización de las opciones en la vista
             actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '63'); //80: Prospección Propia
-            
+
         } else if (this.model.get('origen_c') === '14') {
             console.log("ORIGEN CLOSER");
             //Define opciones de detalle origen
@@ -799,19 +799,19 @@
             console.log("ORIGEN GROWTH");
             //Define opciones de detalle origen
             opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ['66', '67', '68', '69']);
-            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;    
+            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
             //Forzamos la actualización de las opciones en la vista
             actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '66'); //66: Campañas de Growth
 
         } else {
             //Define opciones de origen
-            opciones_origen = filtrarOpciones(opciones_origen, ["12","20","1"]); //12:Alianzas - 20:Leasing - 1:Marketing
+            opciones_origen = filtrarOpciones(opciones_origen, ["12", "20", "1"]); //12:Alianzas - 20:Leasing - 1:Marketing
             this.model.fields['origen_c'].options = opciones_origen;
             // Define opciones de detalle origen
             opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["113"]);
-            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen; 
+            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
             // SET ORIGEN Y DETALLE ORIGEN LEASING - LEASING
-            this.model.set('origen_c','20');
+            this.model.set('origen_c', '20');
             actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '113');
         }
     },
@@ -957,9 +957,9 @@
         };
         // alert(this.model.get('id'))
         this.valida_requeridos();
-    		var btnConvert = this.getField("convert_po_to_Lead");
-    		btnConvert.hide();
-    		var editButton = this.getField('edit_button');
+        var btnConvert = this.getField("convert_po_to_Lead");
+        btnConvert.hide();
+        var editButton = this.getField('edit_button');
         editButton.setDisabled(true);
         app.alert.show('upload', { level: 'process', title: 'LBL_LOADING', autoclose: false });
         app.api.call("create", app.api.buildURL("existsPOLeads", null, null, filter_arguments), null, {
@@ -967,7 +967,7 @@
                 console.log(data);
                 app.alert.dismiss('upload');
                 app.controller.context.reloadData({});
-		            editButton.setDisabled(false);
+                editButton.setDisabled(false);
                 if (data.idCuenta === "" || data.idCuenta == null) {
                     app.alert.show("Conversión", {
                         level: "error",
@@ -981,10 +981,10 @@
                         autoClose: false
                     });
                     this._disableActionsSubpanel();
-          					var btnConvert = this.getField("convert_po_to_Lead");
-          					btnConvert.hide();
-                    self.model.set('estatus_po_c','3');
-                    self.model.set('lead_id',data.idCuenta);
+                    var btnConvert = this.getField("convert_po_to_Lead");
+                    btnConvert.hide();
+                    self.model.set('estatus_po_c', '3');
+                    self.model.set('lead_id', data.idCuenta);
                     self.model.save();
                 }
                 var btnConvert = this.getField("convert_po_to_Lead")
@@ -1091,10 +1091,10 @@
         var name_client = this.model.get('name');
         var id_client = this.model.get('id');
         var modulo = 'Prospects';
-    		var posiciones = app.user.attributes.posicion_operativa_c;
-    		var posicion = '';
-    		if(posiciones.includes(3)) posicion = 'Ventas';
-    		if(posiciones.includes(4)) posicion = 'Staff';
+        var posiciones = app.user.attributes.posicion_operativa_c;
+        var posicion = '';
+        if (posiciones.includes(3)) posicion = 'Ventas';
+        if (posiciones.includes(4)) posicion = 'Staff';
         var Params = [id_client, name_client, modulo, posicion];
         app.api.call('create', app.api.buildURL('createcall'), { data: Params }, {
             success: _.bind(function (data) {
@@ -1175,7 +1175,7 @@
 
     handleCancel: function () {
         this._super("handleCancel");
-		    window.cancel = 1;
+        window.cancel = 1;
         //Valores Previos Clasificacion Sectorial - Actividad Economica e INEGI
         clasf_sectorial.ActividadEconomica = app.utils.deepCopy(clasf_sectorial.prevActEconomica);
         clasf_sectorial.ResumenCliente.inegi.inegi_clase = clasf_sectorial.prevActEconomica.inegi_clase;
@@ -1193,59 +1193,65 @@
         prospect_dir.render();
     },
 
-    reenvio_correo: function(){
+    reenvio_correo: function () {
+        var campos = "";
+        var flagCorreoValido = false;
         /*
-          Valida datos requeridos:
-           - Teléfono celular a 10 digitos
-           - Correo electrónico
+          Valida campos requeridos           
         */
-        if( this.model.get('phone_mobile').trim() == '' || this.model.get('phone_mobile').trim().length != 10 ){
-          app.alert.show('telefono_invalido', {
-              level: 'error',
-              autoClose: false,
-              messages: 'Se requiere un teléfono celular válido de 10 dígitos para el PO'
-          });
-          return false;
+        if (this.model.get('phone_mobile').trim() == '' || this.model.get('phone_mobile').trim().length != 10) {
+            campos = campos + '<b>' + 'Teléfono celular' + '</b><br>';
         }
-        if( this.model.get('email')[0] == undefined || this.model.get('email')[0].email_address == ''){
-          app.alert.show('correo_invalido', {
-              level: 'error',
-              autoClose: false,
-              messages: 'Se requiere un correo electrónico válido para el PO'
-          });
-          return false;
+        if (this.model.get('email')[0] == undefined || this.model.get('email')[0].email_address == '') {
+            campos = campos + '<b>' + 'Correo electrónico' + '</b><br>';
         }
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114')) {
-            //VALIDA EMAIL DEL ASESOR DE ALIANZA
+            //VALIDA CAMPOS DE ALIANZA
+            if (this.model.get('franquicia_c') === null || this.model.get('franquicia_c') === "") {
+                campos = campos + '<b>' + 'Franquicia' + '</b><br>';
+            }
+            if (this.model.get('asesor_alianza_c') === null || this.model.get('asesor_alianza_c') === "") {
+                campos = campos + '<b>' + 'Asesor de la Alianza' + '</b><br>';
+            }
+            if (this.model.get('telefono_aa_c') === null || this.model.get('telefono_aa_c') === "") {
+                campos = campos + '<b>' + 'Teléfono del Asesor de Alianza' + '</b><br>';
+            }
             if (this.model.get('email_aa_c') === null || this.model.get('email_aa_c') === "") {
-                // Si no hay un email proporcionado
-                app.alert.show('Error_validar_email_alianza', {
-                    level: 'error',
-                    autoClose: false,
-                    messages: 'Se requiere agregar un <b>Email del Asesor de Alianza</b> para el PO.'
-                });
-                return false;        
-
+                campos = campos + '<b>' + 'Email del Asesor de Alianza' + '</b><br>';
             } else {
                 var inputEAA = this.model.get('email_aa_c'); // Obtenemos el email
                 var expresionEAA = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
-                                                
+
                 if (!expresionEAA.test(inputEAA)) {
                     // Si el formato del email no es válido
-                    app.alert.show('Error_validar_email_aa', {
-                        level: 'error',
-                        autoClose: false,
-                        messages: 'Se requiere un <b>Email del Asesor de Alianza</b> válido para el PO.'
-                    });
-                    return false;
+                    flagCorreoValido = true;
                 }
             }
-        }        
-        
+        }
+
+        if (campos || flagCorreoValido) {
+            //ALERTAS DE CAMPOS REQUERIDOS
+            if (campos) {
+                app.alert.show("campos_requeridos_email", {
+                    level: "error",
+                    messages: "Hace falta completar la siguiente información para <b>Enviar/Reenviar</b> correo: " + campos,
+                    autoClose: false
+                });
+            }
+            if (flagCorreoValido) {
+                app.alert.show('Error_validar_email_aa', {
+                    level: 'error',
+                    autoClose: false,
+                    messages: 'Se requiere un <b>Email del Asesor de Alianza</b> válido para el PO.'
+                });
+            }
+            return false;
+        }
+
         var id_prospecto = this.model.get('id');
         var buttonReenvio = this.getField('reenvio_correo');
         buttonReenvio.setDisabled(true);
-        
+
         app.alert.show('envio_correo', {
             level: 'process',
             title: 'Enviando correo',
@@ -1265,60 +1271,59 @@
             }, this),
         });
     },
-    
-    
-    solicta_cambio_origen: function(){
+
+    solicta_cambio_origen: function () {
         /*
           Valida que tenga origen bloqueado
         */
-        if(this.model.get("estatus_po_c") == '3'){
-          app.alert.show('convertido_po', {
-              level: 'error',
-              autoClose: false,
-              messages: 'No puedes solicitar cambio en un PO convertido'
-          });
-          return false;
+        if (this.model.get("estatus_po_c") == '3') {
+            app.alert.show('convertido_po', {
+                level: 'error',
+                autoClose: false,
+                messages: 'No puedes solicitar cambio en un PO convertido'
+            });
+            return false;
         }
 
-        if(!App.user.attributes.define_origen_po_c){
-          app.alert.show('not_access', {
-              level: 'error',
-              autoClose: false,
-              messages: 'No cuentas con permiso para solicitar cambiar el origen de un PO'
-          });
-          return false;
+        if (!App.user.attributes.define_origen_po_c) {
+            app.alert.show('not_access', {
+                level: 'error',
+                autoClose: false,
+                messages: 'No cuentas con permiso para solicitar cambiar el origen de un PO'
+            });
+            return false;
         }
-        
-        if( !this.model.get('origen_bloqueado_c') && this.model.get('origen_c')=='' ){
-          app.alert.show('sin_bloqueo', {
-              level: 'error',
-              autoClose: false,
-              messages: 'Este PO no tiene bloqueada la edición de origen'
-          });
-          return false;
+
+        if (!this.model.get('origen_bloqueado_c') && this.model.get('origen_c') == '') {
+            app.alert.show('sin_bloqueo', {
+                level: 'error',
+                autoClose: false,
+                messages: 'Este PO no tiene bloqueada la edición de origen'
+            });
+            return false;
         }
-        if( this.model.get('origen_bloqueado_c') && this.model.get('aprueba_cambio_origen_c') == 'SOLICITAR'){
-          app.alert.show('en_proceso', {
-              level: 'error',
-              autoClose: false,
-              messages: 'Ya se ha generado una solicitud de edición'
-          });
-          return false;
+        if (this.model.get('origen_bloqueado_c') && this.model.get('aprueba_cambio_origen_c') == 'SOLICITAR') {
+            app.alert.show('en_proceso', {
+                level: 'error',
+                autoClose: false,
+                messages: 'Ya se ha generado una solicitud de edición'
+            });
+            return false;
         }
-        
+
         var id_prospecto = this.model.get('id');
         var botonOrigen = this.getField('cambiar_origen');
         botonOrigen.setDisabled(true);
         //Actualiza bean y guarda
-        this.model.set('origen_bloqueado_c',true);
-        this.model.set('aprueba_cambio_origen_c','Solicitar');
+        this.model.set('origen_bloqueado_c', true);
+        this.model.set('aprueba_cambio_origen_c', 'Solicitar');
         this.model.save();
-        
+
         app.alert.show('proceso_solicitud', {
             level: 'process',
             title: 'Enviando correo',
         });
-        
+
         var args = {
             "id_po": this.model.get('id')
         };
@@ -1334,34 +1339,34 @@
         });
     },
 
-    vobo_envio_correo: function(){
+    vobo_envio_correo: function () {
         app.alert.show("aprueba_envio", {
             level: "confirmation",
             messages: "Está a punto de aprobar la operación, ¿Desea confirmar el envío del correo?",
             autoClose: false,
             onConfirm: function () {
                 var id_prospecto = App.controller.context.get('model').id;
-                
-                $('a[name="rechaza_envio_correo"]').attr('disabled',"disabled");
-                $('a[name="vobo_envio_correo"]').attr('disabled',"disabled");
-                $('a[name="rechaza_envio_correo"]').attr('style',"pointer-events:none");
-                $('a[name="vobo_envio_correo"]').attr('style',"pointer-events:none");
-                
+
+                $('a[name="rechaza_envio_correo"]').attr('disabled', "disabled");
+                $('a[name="vobo_envio_correo"]').attr('disabled', "disabled");
+                $('a[name="rechaza_envio_correo"]').attr('style', "pointer-events:none");
+                $('a[name="vobo_envio_correo"]').attr('style', "pointer-events:none");
+
                 app.alert.show('envio_correo_vobo', {
                     level: 'process',
                     title: 'Enviando correo',
                 });
-        
+
                 app.api.call('GET', app.api.buildURL('AutorizaEnvioPO/' + id_prospecto), null, {
                     success: _.bind(function (response) {
-                        
+
                         $('a[name="rechaza_envio_correo"]').removeAttr('disabled');
                         $('a[name="vobo_envio_correo"]').removeAttr('disabled');
-                        $('a[name="rechaza_envio_correo"]').attr('style',"");
-                        $('a[name="vobo_envio_correo"]').attr('style',"");
-                        
+                        $('a[name="rechaza_envio_correo"]').attr('style', "");
+                        $('a[name="vobo_envio_correo"]').attr('style', "");
+
                         app.alert.dismiss('envio_correo_vobo');
-        
+
                         app.alert.show('alert_reenvio_correo', {
                             level: 'success',
                             messages: response,
@@ -1372,10 +1377,10 @@
 
                         $('[name="rechaza_envio_correo"]').addClass('hidden');
                         $('[name="vobo_envio_correo"]').addClass('hidden');
-        
+
                     }, this),
                 });
-                
+
             },
             onCancel: function () {
                 //alert("Cancelled!");
@@ -1383,7 +1388,7 @@
         });
     },
 
-    rechaza_envio_correo: function(){
+    rechaza_envio_correo: function () {
         app.alert.show("rechaza_envio", {
             level: "confirmation",
             messages: "Está a punto de cancelar la operación, ¿Desea rechazar el envío del correo?",
@@ -1391,26 +1396,26 @@
             onConfirm: function () {
                 var id_prospecto = App.controller.context.get('model').id;
 
-                $('a[name="rechaza_envio_correo"]').attr('disabled',"disabled");
-                $('a[name="vobo_envio_correo"]').attr('disabled',"disabled");
-                $('a[name="rechaza_envio_correo"]').attr('style',"pointer-events:none");
-                $('a[name="vobo_envio_correo"]').attr('style',"pointer-events:none");
-                
+                $('a[name="rechaza_envio_correo"]').attr('disabled', "disabled");
+                $('a[name="vobo_envio_correo"]').attr('disabled', "disabled");
+                $('a[name="rechaza_envio_correo"]').attr('style', "pointer-events:none");
+                $('a[name="vobo_envio_correo"]').attr('style', "pointer-events:none");
+
                 app.alert.show('envio_correo_rechazo', {
                     level: 'process',
                     title: 'Rechazando operación',
                 });
-        
+
                 app.api.call('GET', app.api.buildURL('RechazaEnvioPO/' + id_prospecto), null, {
                     success: _.bind(function (response) {
-                        
+
                         $('a[name="rechaza_envio_correo"]').removeAttr('disabled');
                         $('a[name="vobo_envio_correo"]').removeAttr('disabled');
-                        $('a[name="rechaza_envio_correo"]').attr('style',"");
-                        $('a[name="vobo_envio_correo"]').attr('style',"");
+                        $('a[name="rechaza_envio_correo"]').attr('style', "");
+                        $('a[name="vobo_envio_correo"]').attr('style', "");
 
                         app.alert.dismiss('envio_correo_rechazo');
-        
+
                         app.alert.show('alert_reenvio_correo', {
                             level: 'success',
                             messages: response,
@@ -1421,10 +1426,10 @@
 
                         $('[name="rechaza_envio_correo"]').addClass('hidden');
                         $('[name="vobo_envio_correo"]').addClass('hidden');
-        
+
                     }, this),
                 });
-                
+
             },
             onCancel: function () {
                 //alert("Cancelled!");
@@ -1535,7 +1540,7 @@
                                 var list_paises = data.paises;
                                 var list_municipios = data.municipios;
                                 var city_list = App.metadata.getCities();
-                                var list_ciudades=data.ciudades;
+                                var list_ciudades = data.ciudades;
                                 var list_estados = data.estados;
                                 var list_colonias = data.colonias;
                                 //Poarsea valores para listas
@@ -1599,7 +1604,7 @@
     },
 
     //Sobre escribe función para recuperar info de registros relacionados
-    _saveModel: function () {        
+    _saveModel: function () {
         var options,
             successCallback = _.bind(function () {
                 // Loop through the visible subpanels and have them sync. This is to update any related
@@ -1826,37 +1831,37 @@
 
         callback(null, fields, errors);
     },
-    valida_usuarios_inactivos:function (fields, errors, callback) {
-        var ids_usuarios='';
-            if(this.model.attributes.assigned_user_id) {
-              ids_usuarios+=this.model.attributes.assigned_user_id;
-            }
-            console.log("Valor del ID del asignado: ".ids_usuarios);
-            ids_usuarios += ',';
-        if(ids_usuarios!="") {
-          //Generar petición para validación
-          app.api.call('GET', app.api.buildURL('GetStatusOfUser/' + ids_usuarios+'/inactivo'), null, {
-              success: _.bind(function(data) {
-                  if(data.length>0){
-                      var nombres='';
-                      //Armando lista de usuarios
-                      for(var i=0;i<data.length;i++){
-                          nombres+='<b>'+data[i].nombre_usuario+'</b><br>';
-                      }
-                      app.alert.show("Usuarios", {
-                          level: "error",
-                          messages: "No es posible guardar este registro con el siguiente usuario inactivo:<br>"+nombres,
-                          autoClose: false
-                      });
-                      errors['usuariostatus'] = errors['usuariostatus'] || {};
-                      errors['usuariostatus'].required = true;
-                  }
-                  callback(null, fields, errors);
-              }, this)
-          });
+    valida_usuarios_inactivos: function (fields, errors, callback) {
+        var ids_usuarios = '';
+        if (this.model.attributes.assigned_user_id) {
+            ids_usuarios += this.model.attributes.assigned_user_id;
+        }
+        console.log("Valor del ID del asignado: ".ids_usuarios);
+        ids_usuarios += ',';
+        if (ids_usuarios != "") {
+            //Generar petición para validación
+            app.api.call('GET', app.api.buildURL('GetStatusOfUser/' + ids_usuarios + '/inactivo'), null, {
+                success: _.bind(function (data) {
+                    if (data.length > 0) {
+                        var nombres = '';
+                        //Armando lista de usuarios
+                        for (var i = 0; i < data.length; i++) {
+                            nombres += '<b>' + data[i].nombre_usuario + '</b><br>';
+                        }
+                        app.alert.show("Usuarios", {
+                            level: "error",
+                            messages: "No es posible guardar este registro con el siguiente usuario inactivo:<br>" + nombres,
+                            autoClose: false
+                        });
+                        errors['usuariostatus'] = errors['usuariostatus'] || {};
+                        errors['usuariostatus'].required = true;
+                    }
+                    callback(null, fields, errors);
+                }, this)
+            });
         }
         else {
-          callback(null, fields, errors);
+            callback(null, fields, errors);
         }
     },
 
@@ -1875,23 +1880,23 @@
         }
         */
         Object.entries(App.lang.getAppListStrings('soc_usuario_list')).forEach(([key, value]) => {
-            if(value == idUser){
+            if (value == idUser) {
                 readonly = false;
             }
         });
 
-        if(readonly){
+        if (readonly) {
             this.$("[data-name='alianza_soc_chk_c']").attr('style', 'pointer-events:none;');
         }
     },
 
-    muestraBotonCorreo: function(){
+    muestraBotonCorreo: function () {
 
         var id_prospecto = this.model.get('id');
 
         app.api.call('GET', app.api.buildURL('GetRelatedMeetingsCallsPO/' + id_prospecto), null, {
             success: _.bind(function (response) {
-                if( !response ){
+                if (!response) {
                     //Oculta botón para Reenvío de correo
                     var button = this.getField('reenvio_correo');
                     button.dispose();
@@ -1900,31 +1905,31 @@
         });
     },
 
-    hideShowBtnVoBo: function(){
+    hideShowBtnVoBo: function () {
         var id_user = App.user.id;
-        if( this.model.get('envio_correo_po_c') && this.model.get('id_director_vobo_c') == id_user ){
+        if (this.model.get('envio_correo_po_c') && this.model.get('id_director_vobo_c') == id_user) {
             $('[name="rechaza_envio_correo"]').removeClass('hidden');
             $('[name="vobo_envio_correo"]').removeClass('hidden');
         }
     },
 
-    muestraBotonConversion: function(){
+    muestraBotonConversion: function () {
         //Oculta botón de conversión para todos los usuarios, excepto para roles: Seguros, 	Seguros - Creditaria
         var currentUserRoles = App.user.get('roles');
-        var rolesSeguros = ['Seguros','Seguros - Creditaria'];
-        var includesSeguros =[];
+        var rolesSeguros = ['Seguros', 'Seguros - Creditaria'];
+        var includesSeguros = [];
 
         for (let index = 0; index < currentUserRoles.length; index++) {
             const rol = currentUserRoles[index];
-            
-            if( rolesSeguros.includes(rol) ){
+
+            if (rolesSeguros.includes(rol)) {
                 includesSeguros.push("1");
-            }else{
+            } else {
                 includesSeguros.push("0");
             }
         }
 
-        if( !includesSeguros.includes('1') ){
+        if (!includesSeguros.includes('1')) {
             var btnConvert = this.getField('convert_po_to_Lead');
             btnConvert.dispose();
         }
@@ -1935,40 +1940,40 @@
         var cambio = false;
         var valor = 0;
 
-        if (this.model.get('alianza_soc_chk_c') != undefined){
+        if (this.model.get('alianza_soc_chk_c') != undefined) {
             valor = this.model.get('alianza_soc_chk_c');
         }
 
         Object.entries(App.lang.getAppListStrings('soc_usuario_list')).forEach(([key, value]) => {
-            if(value == idUser){
+            if (value == idUser) {
                 cambio = true;
             }
         });
 
-        if(this.model.get('subtipo_registro_c') != undefined && this.model.get('origen_c') != undefined && this.model.get('detalle_origen_c') != undefined){
-            if(this.model.get('subtipo_registro_c') != '4' && this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '12' ){
+        if (this.model.get('subtipo_registro_c') != undefined && this.model.get('origen_c') != undefined && this.model.get('detalle_origen_c') != undefined) {
+            if (this.model.get('subtipo_registro_c') != '4' && this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '12') {
                 this.model.set('alianza_soc_chk_c', 1);
-            }else{
+            } else {
 
-                if(valor){
+                if (valor) {
                     this.model.set('alianza_soc_chk_c', valor);
                     this.cmbio_soc += 1;
-                }else{
+                } else {
                     this.model.set('alianza_soc_chk_c', 0);
                 }
 
-                if( (this.model._previousAttributes.detalle_origen_c == 12 && this.cmbio_soc > 0) ||
+                if ((this.model._previousAttributes.detalle_origen_c == 12 && this.cmbio_soc > 0) ||
                     (this.model._previousAttributes.detalle_origen_c != 12 && this.cmbio_soc > 2)) {
                     this.model.set('alianza_soc_chk_c', 0);
                 }
 
-                if( (this.model._previousAttributes.detalle_origen_c != ""  &&
+                if ((this.model._previousAttributes.detalle_origen_c != "" &&
                     this.model._previousAttributes.detalle_origen_c != 12 && this.cmbio_soc > 0
-                    && this.model.get('alianza_soc_chk_c')==1)) {
+                    && this.model.get('alianza_soc_chk_c') == 1)) {
                     this.model.set('alianza_soc_chk_c', 0);
                 }
 
-                if(!cambio){
+                if (!cambio) {
                     this.model.set('alianza_soc_chk_c', this.model.get('alianza_soc_chk_c'));
                 }
             }
@@ -1979,26 +1984,26 @@
         var prev_status = this.model.previousAttributes().estatus_po_c;
         var status = this.model.get("estatus_po_c");
 
-        if(event.type == 'mouseup'){
+        if (event.type == 'mouseup') {
             //Si nuevo valor es Convertido y valor previo es diferente a convertido regresa a estatus previo
-            if (status=='3' && prev_status!='3') {
-                this.model.set("estatus_po_c",prev_status);
+            if (status == '3' && prev_status != '3') {
+                this.model.set("estatus_po_c", prev_status);
             }
         }
     },
 
-    _estableceMesOperacion:function () {
+    _estableceMesOperacion: function () {
         // Obtener fecha actual
         var fechaActual = new Date();
         var yyyy = fechaActual.getFullYear();
-        var mm = fechaActual.getMonth() + 1; 
+        var mm = fechaActual.getMonth() + 1;
         if (mm < 10) {
             mm = '0' + mm;
         }
         // Calcular los próximos dos meses en el mismo formato 'YYYYMM'
         var proximosMeses = [];
         for (var i = 0; i < 3; i++) {
-            var nuevoMes = new Date(yyyy, mm - 1 + i); 
+            var nuevoMes = new Date(yyyy, mm - 1 + i);
             var nuevoYYYY = nuevoMes.getFullYear();
             var nuevoMM = nuevoMes.getMonth() + 1;
             if (nuevoMM < 10) {
@@ -2020,7 +2025,7 @@
         this.model.fields['mes_operacion_c'].options = nuevaLista;
     },
 
-    _validaActivoInteres: function(type, errors) {
+    _validaActivoInteres: function (type, errors) {
         var activosInteres = this.model.get('activos_interes_c');
         //VALIDA QUE SOLO SEAN 3 ACTIVOS DE INTERES
         if (activosInteres && activosInteres.length > 3) {
@@ -2033,14 +2038,14 @@
                 errors['activos_interes_c'] = errors['activos_interes_c'] || {};
                 errors['activos_interes_c'].required = true;
             }
-        }        
+        }
     },
-    _validateTaskActivoInteres: function(fields, errors, callback) {
+    _validateTaskActivoInteres: function (fields, errors, callback) {
         this._validaActivoInteres("validateActivoInteres", errors);
         callback(null, fields, errors);
     },
 
-    _validaPotencialCierre: function(type, errors) {
+    _validaPotencialCierre: function (type, errors) {
         var potencialCierre = this.model.get('potencial_cierre_c');
         //Valida el potencial de cierre debe ser entre 10 y 100%
         if (potencialCierre !== null && (potencialCierre < 10 || potencialCierre > 100)) {
@@ -2049,13 +2054,13 @@
                 messages: "<b>El potencial de cierre debe ser entre 10 y 100%.</b>",
                 autoClose: false
             });
-            if(type == 'validatePotencialCierre' && errors) {
+            if (type == 'validatePotencialCierre' && errors) {
                 errors['potencial_cierre_c'] = errors['potencial_cierre_c'] || {};
                 errors['potencial_cierre_c'].required = true;
-            }            
+            }
         }
     },
-    _validateTaskPotencialCierre: function(fields, errors, callback) {
+    _validateTaskPotencialCierre: function (fields, errors, callback) {
         this._validaPotencialCierre("validatePotencialCierre", errors);
         callback(null, fields, errors);
     },
