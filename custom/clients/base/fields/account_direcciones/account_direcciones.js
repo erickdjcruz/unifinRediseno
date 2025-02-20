@@ -382,6 +382,7 @@
                             }
                             cont_dir.oDirecciones.direccion[index].listColonia = listColonia;
                             cont_dir.oDirecciones.direccion[index].listColoniaFull = listColonia;
+                            cont_dir.oDirecciones.direccion[index].colonia = list_colonias[0].idColonia;
                             //Ciudad
                             /*
                             listCiudad = {}
