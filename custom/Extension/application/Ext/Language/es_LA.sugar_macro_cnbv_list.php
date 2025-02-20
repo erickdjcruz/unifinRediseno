@@ -1,5 +1,5 @@
 <?php
- // created: 2021-03-29 11:12:01
+ // created: 2025-01-31 12:51:26
 
 $app_list_strings['macro_cnbv_list']=array (
   '' => '',
@@ -11,4 +11,5 @@ $app_list_strings['macro_cnbv_list']=array (
   6 => 'Servicios',
   7 => 'Servicios Financieros',
   8 => 'Sector macro no clasificado',
+  99 => 'No clasificada',
 );
