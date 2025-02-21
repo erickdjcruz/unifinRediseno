@@ -101,7 +101,38 @@ FROM accounts a INNER JOIN accounts_dire_direccion_1_c ad ON a.id = ad.accounts_
 
             $records_in['records'][$pos]['tipodedireccion'] = $array_tipo;
 
-            //Obteniendo información de Estado
+            //Por cada dirección encontrada, se obtiene el id sepomex para obtener su información
+            $querySepomex ="SELECT s.* FROM dir_sepomex_dire_direccion_c sd
+                            INNER JOIN
+                                dir_sepomex s ON s.id = sd.dir_sepomex_dire_direcciondir_sepomex_ida
+                            WHERE sd.dir_sepomex_dire_direcciondire_direccion_idb ='{$id_direccion}'
+                            AND sd.deleted = 0
+                            AND s.deleted = 0";
+            
+            $resultSepomex = $GLOBALS['db']->query($querySepomex);
+
+            while ($rowSepomex = $GLOBALS['db']->fetchByAssoc($resultSepomex)) {
+
+                $records_in['records'][$pos]['estado_name'] = $rowSepomex['estado'];
+                $records_in['records'][$pos]['id_estado'] = $rowSepomex['id_estado'];
+
+                $records_in['records'][$pos]['codigo_postal'] = $rowSepomex['codigo_postal'];
+                $records_in['records'][$pos]['id_codigo_postal'] = $rowSepomex['id'];
+
+                $records_in['records'][$pos]['colonia'] = $rowSepomex['estado'];
+                $records_in['records'][$pos]['id_colonia'] = $rowSepomex['id_estado'];
+
+                $records_in['records'][$pos]['ciudad'] = $rowSepomex['ciudad'];
+                $records_in['records'][$pos]['id_ciudad'] = $rowSepomex['id_ciudad'];
+
+                $records_in['records'][$pos]['pais'] = $rowSepomex['pais'];
+                $records_in['records'][$pos]['id_pais'] = $rowSepomex['id_pais'];
+
+                $records_in['records'][$pos]['municipio'] = $rowSepomex['municipio'];
+                $records_in['records'][$pos]['id_municipio'] = $rowSepomex['id_municipio'];
+            }
+            
+            /*
             $queryEstado = "SELECT e.id as id,e.name as name FROM dire_estado e
   INNER JOIN dire_direccion_dire_estado_c de on e.id=de.dire_direccion_dire_estadodire_estado_ida
 AND de.dire_direccion_dire_estadodire_direccion_idb='{$id_direccion}' and e.deleted=0 and de.deleted=0";
@@ -114,7 +145,9 @@ AND de.dire_direccion_dire_estadodire_direccion_idb='{$id_direccion}' and e.dele
                 $records_in['records'][$pos]['dire_direccion_dire_estado_name'] = $rowEstado['name'];
                 $records_in['records'][$pos]['dire_direccion_dire_estado'] = $arrayEstado;
             }
+            */
 
+            /*
             //Obteniendo información de Código Postal
             $queryCP = "SELECT cp.id as id,cp.name as name FROM dire_codigopostal cp
   INNER JOIN dire_direccion_dire_codigopostal_c dc on cp.id=dc.dire_direccion_dire_codigopostaldire_codigopostal_ida
@@ -184,7 +217,7 @@ AND dm.dire_direccion_dire_municipiodire_direccion_idb='{$id_direccion}' and m.d
                 $records_in['records'][$pos]['dire_direccion_dire_municipio_name'] = $rowMunicipio['name'];
                 $records_in['records'][$pos]['dire_direccion_dire_municipio'] = $arrayMunicipio;
             }
-
+            */
             $pos++;
 
         }

@@ -45,6 +45,13 @@
         {{#each oDirecciones.direccion}}
             <tr style="border-bottom: 1px solid;   border-color:#cfcfcf;">
                 <td>
+                    {{#if sinSepomex}}
+                        <div class="row-fluid" id="row-advice-no-match" style="margin-top: 10px;">
+                            <p style="color:#155D9C"><i class="sicon sicon-warning-line-lg text-warning"></i><b> &nbsp;Esta dirección requiere revisión manual &nbsp;</b><i class="sicon sicon-warning-line-lg text-warning"></i></p>
+                            <p>Hemos identificado que esta dirección no está homologada con sepomex, por favor, apóyanos actualizándola.</p>
+                            <p>Valores previos: <b>CP:</b> {{oldCP}}, <b>País:</b> {{oldPais}}, <b>Estado:</b> {{oldEstado}}, <b>Municipio:</b> {{oldMunicipio}}, <b>Ciudad:</b> {{oldCiudad}}, <b>Colonia:</b> {{oldColonia}} </p>
+                        </div>
+                    {{/if}}
                     <div>
                         <div class="row-fluid" style="margin-top: 10px;">  <!--Fila 1 -->
                             <div class="span4">
@@ -106,9 +113,13 @@
                                 <div class="span4">
                                     <label class="record-label">Colonia</label>
                                     <select class="row-fluid coloniaExisting select2" {{#if bloqueado}} disabled {{/if}} data-field="coloniaExisting" placeholder="" style="font-size: 15px;font-weight: 500;">
-                                        {{#each listColonia}}
+                                        {{!-- {{#each listColonia}}
                                             <option value="{{@key}}" {{ifSelected @key ../colonia}}>{{this}}</option>
+                                        {{/each}} --}}
+                                        {{#each listColonia}}
+                                            <option value="{{this.idColonia}}" data-cp="{{this.idCodigoPostal}}" {{ifSelected this.idColonia ../colonia}}>{{this.nameColonia}}</option>
                                         {{/each}}
+
                                     </select>
                                 </div>
                         </div>  <!-- Cierre Fila 3 -->
@@ -221,7 +232,9 @@
                             <label class="record-label">Colonia</label>
                             <select class="row-fluid newColonia select2" data-field="colonia" placeholder="" style="font-size: 15px;font-weight: 500;">
                                 {{#each nuevaDireccion.listColonia}}
-                                    <option value="{{@key}}" {{ifSelected @key ../nuevaDireccion.colonia}}>{{this}}</option>
+                                    {{!-- <option value="{{@key}}" {{ifSelected @key ../nuevaDireccion.colonia}}>{{this}}</option> --}}
+                                    <!--<option value="{{@key}}" data-cp="{{idCodigoPostal}}" {{ifSelected @key ../nuevaDireccion.colonia}}>{{this}}</option>-->
+                                    <option value="{{this.idColonia}}" data-cp="{{this.idCodigoPostal}}" {{ifSelected this.idColonia ../nuevaDireccion.colonia}}>{{this.nameColonia}}</option>
                                 {{/each}}
                             </select>
                         </div>
