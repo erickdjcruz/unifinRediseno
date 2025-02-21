@@ -233,7 +233,8 @@
                                 listColonia[i]['idMunicipio'] = list_colonias[i].idMunicipio;
                             }
                             cont_dir.nuevaDireccion.listColonia = listColonia;
-                            cont_dir.nuevaDireccion.listColoniaFull = listColonia;
+                            cont_dir.nuevaDireccion.listColoniaFull = listColonia;                            
+                            
                             //Ciudad
                             /*
                             listCiudad = {}
@@ -264,6 +265,7 @@
                             //cont_dir.populateEdoByPais(cont_dir.nuevaDireccion.pais);
                             //cont_dir.populateCiudadesByEstado(cont_dir.nuevaDireccion.estado);
                             //cont_dir.populateColoniasByMunicipio(cont_dir.nuevaDireccion.municipio);
+                            cont_dir.nuevaDireccion.colonia = list_colonias[0].idColonia;    
 
                         } else {
                             app.alert.show('cp_not_found', {
