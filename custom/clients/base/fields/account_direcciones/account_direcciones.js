@@ -75,7 +75,7 @@
         }
         //Declaración de validation Tasks
         this.model.addValidationTask('check_multiple_fiscal', _.bind(this._doValidateDireccionIndicador, this));
-        this.model.addValidationTask('verificaDireccionSinSepomex', _.bind(this.verificaDireccionSinSepomex, this));
+        //this.model.addValidationTask('verificaDireccionSinSepomex', _.bind(this.verificaDireccionSinSepomex, this));
         //Declaración de modelo para nueva dirección
         this.nuevaDireccion = this.limpiaNuevaDireccion();
         this.cont_render = 0;
