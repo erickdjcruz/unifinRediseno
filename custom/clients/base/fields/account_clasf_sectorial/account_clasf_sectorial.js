@@ -159,7 +159,7 @@
         $("div.record-label[data-name='account_clasf_sectorial']").attr('style', 'display:none;');
         //Muestra y Oculta campos dependientes de Actividad Economica
         if ($('.list_ae').select2('val') != "" || clasf_sectorial.ActividadEconomica.ae.id != "") {
-            $('.list_ae').trigger('change');
+            //$('.list_ae').trigger('change');
         }
         //funcion de cargar listas
         if (clasf_sectorial.renderlista != 1) {
