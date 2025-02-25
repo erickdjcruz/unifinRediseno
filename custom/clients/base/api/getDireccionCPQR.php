@@ -11,6 +11,7 @@
 
 if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 require_once('custom/clients/base/api/GetDireccionesCP.php');
+use Sugarcrm\Sugarcrm\Util\Uuid;
 
 class getDireccionCPQR extends SugarApi
 {
@@ -53,6 +54,9 @@ class getDireccionCPQR extends SugarApi
         $arr_estado = $resultado['estados'];
         $arr_municipio = $resultado['municipios'];
         $arr_ciudades = $resultado['ciudades'];
+        $arr_pais = $resultado['paises'];
+        $id_pais = $arr_pais[0]['idPais'];
+        $pais_val= $arr_pais[0]['namePais'];
         
         $colonia_existe = false;
         $ciudad_existe = false;
@@ -62,6 +66,7 @@ class getDireccionCPQR extends SugarApi
         
         $aux = null;
         $arrin=null;
+        
         
         
         $auxindex = $this->searchForId($colonia_QR, $arr_colonias,'nameColonia');
@@ -88,14 +93,20 @@ class getDireccionCPQR extends SugarApi
             $aux = array( 'estados'=> $arrin);
             $arr_estado = $aux;
             $estado_id = isset($arr_estado['estados'][$auxindex]['idEstado']) ? intval(substr($arr_estado['estados'][$auxindex]['idEstado'],-3)) : 0 ;
+            $estado_val = $arr_estado[$auxindex]['nameEstado'];
             $arr_estado['estados'][0] = $arr_estado['estados'][$auxindex];
             if($auxindex != 0) unset($arr_estado['estados'][$auxindex]);
             unset($resultado['estados']);
             $resultado = array_replace($resultado, $arr_estado);        
+        }else{
+            $estado_id = $arr_estado[0]['idEstado'];
+            $estado_val= $arr_estado[0]['nameEstado'];
         }
         
         //$auxindex = array_search($ciudad_QR,$arr_municipio,false);
         $auxindex = $this->searchForId($ciudad_QR, $arr_municipio,'nameMunicipio');
+        //$GLOBALS['log']->fatal('auxindex',$auxindex);
+        //$GLOBALS['log']->fatal('arr_municipio',$arr_municipio);
         //$GLOBALS['log']->fatal('searchForId',$ciudad_QR,$arr_municipio,$auxindex);
         if( $auxindex != '-1' && $auxindex >=0){
 
@@ -105,11 +116,15 @@ class getDireccionCPQR extends SugarApi
             $aux = array( 'municipios'=> $arrin);
             $arr_municipio = $aux;
             $municipio_id = isset($arr_municipio['municipios'][$auxindex]['idMunicipio']) ? intval(substr($arr_municipio['municipios'][$auxindex]['idMunicipio'],-3)) : 0 ;
+            $municipio = $arr_municipio[$auxindex]['nameMunicipio'];
 
             $arr_municipio['municipios'][0] = $arr_municipio['municipios'][$auxindex];
             if($auxindex != 0) unset($arr_municipio['municipios'][$auxindex]);
             unset($resultado['municipios']); 
             $resultado = array_replace($resultado, $arr_municipio);        
+        }else{
+            $municipio_id = $arr_municipio[0]['idMunicipio'];
+            $municipio= $arr_municipio[0]['nameMunicipio'];
         }
 
         $auxindex = $this->searchForId($ciudad_csf, $arr_ciudades,'nameCiudad');
@@ -127,17 +142,27 @@ class getDireccionCPQR extends SugarApi
             if($auxindex != 0) unset($arr_ciudades['ciudades'][$auxindex]);
             $resultado = array_replace($resultado, $arr_ciudades);
         }
-        
+
         if(!$colonia_existe)
         {
             $GLOBALS['log']->fatal("NO EXISTE COLONIA, SE PROCEDE A INSERTAR");
-            $data = $this->buildBodyRequest( 'colonia', $pais_id , $estado_id, $municipio_id, $colonia_QR, $cod_postal, '', '');
+            
+            //$data = $this->buildBodyRequest( 'colonia', $pais_id , $estado_id, $municipio_id, $colonia_QR, $cod_postal, '', '');
+           
+            $data = $this->insertSepomex( 'colonia',$cod_postal, $id_pais ,$pais_val, $estado_id,$estado_val, $municipio_id, $municipio,'',$colonia_QR , '', '');
+            //$data = $this->buildBodyRequest( 'colonia', $pais_id , $estado_id, $municipio_id, $colonia_QR, $cod_postal, '', '');
             //$result=$this->insertColonia($pais_id,$estado_id,$municipio_id,$cod_postal,$colonia_QR);
-            $result = $this->insertDataDireccion( '/direccion/insertColonia', $data );
+            //$result = $this->insertDataDireccion( '/direccion/insertColonia', $data );
+            /*$GLOBALS['log']->fatal('$data:'.$data);
+            require_once("custom/clients/base/api/CheckSaveSepomex.php");
+            $call_api_sepomex = new CheckSaveSepomex();
+            $result = $call_api_sepomex->saveRecord('saveRecordSepomex', $data);
+            $GLOBALS['log']->fatal('$result',$result);
+            */
 
-            if( !empty($result['name']) ){
+            if( $result['result'] != 'OK' ){
 
-                $queryColonia = "Select * from dire_colonia where codigo_postal='{$cod_postal}' AND name = '{$colonia_QR}'";
+                $queryColonia = "SELECT * FROM dir_sepomex WHERE codigo_postal='{$cod_postal}' AND colonia = '{$colonia_QR}'";
                 $resultQ = $GLOBALS['db']->query($queryColonia);
 
                 if( $resultQ->num_rows > 0 ){
@@ -249,6 +274,40 @@ class getDireccionCPQR extends SugarApi
 
         return $data;
     }
+
+    public function buildBodyRequestSepomex( $dato, $cp,$id_pais, $pais,$id_estado, $estado, $id_municipio,$municipio ,$id_colonia,$colonia, $id_ciudad,$ciudad){
+        $data = null;
+        
+        $data = json_encode(
+            array(
+            "cp"=>$cp,
+            "pais"=>$id_pais,
+            "labelPais"=>$pais,
+            "estado"=>$id_estado,
+            "labelEstado"=>$estado,
+            //"ciudad"=>$id_ciudad,
+            //"labelCiudad"=>$ciudad,
+            "municipio"=>$id_municipio,
+            "labelMunicipio"=>$municipio,
+            //"colonia":colonia, únicamente se inserta la etiqueta, ya que el id no se conoce
+            "labelColonia"=>$colonia
+            )
+        );
+        return $data;
+    }   
+
+    public function insertSepomex( $dato, $cp,$id_pais, $pais,$id_estado, $estado, $id_municipio,$municipio ,$id_colonia,$colonia, $id_ciudad,$ciudad){
+        global $current_user;
+        $new_id_sep=Uuid::uuid1();
+        $id_user=$current_user->id;
+        $current_date=TimeDate::getInstance()->nowDb();
+        $id_colonia = Uuid::uuid1();
+        $name=$pais ." ".$cp." ".$estado." ".$colonia;//labelPais CP Estado Colonia
+        $qinsertRecordSepomex="INSERT INTO `dir_sepomex` (`id`, `name`, `date_entered`, `date_modified`, `modified_user_id`, `created_by`, `deleted`, `pais`, `id_pais`, `codigo_postal`, `estado`, `id_estado`, `ciudad`, `id_ciudad`, `municipio`, `id_municipio`, `colonia`, `id_colonia`) VALUES ('{$new_id_sep}', '{$name}', '{$current_date}', '{$current_date}', '{$id_user}', '{$id_user}', '0', '{$pais}', '{$id_pais}', '{$cp}', '{$estado}', '{$id_estado}','{$ciudad}', '{$id_ciudad}', '{$municipio}', '{$id_municipio}', '{$colonia}', '{$id_colonia}');";
+        $GLOBALS['db']->query($qinsertRecordSepomex);
+        return true;
+
+    }        
 
     public function insertDataDireccion( $endpoint, $data){
         global $sugar_config;
