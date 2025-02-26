@@ -1,5 +1,5 @@
 <?php
- // created: 2025-02-05 13:24:11
+ // created: 2025-02-19 16:55:38
 $dictionary['Prospect']['fields']['telefono_aa_c']['labelValue']='Teléfono del Asesor de Alianza';
 $dictionary['Prospect']['fields']['telefono_aa_c']['full_text_search']=array (
   'enabled' => '0',

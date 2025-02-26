@@ -1,5 +1,5 @@
 <?php
- // created: 2021-04-27 14:47:53
+ // created: 2025-01-31 12:48:39
 
 $app_list_strings['subsector_cnbv_list']=array (
   '' => '',
@@ -88,4 +88,5 @@ $app_list_strings['subsector_cnbv_list']=array (
   814 => 'Hogares con empleados domésticos',
   931 => 'Actividades legislativas, gubernamentales y de impartición de justicia',
   932 => 'Organismos internacionales y extraterritoriales',
+  9999 => 'No clasificada',
 );

@@ -1,6 +1,7 @@
 <?php
- // created: 2022-07-20 16:47:41
+ // created: 2025-02-20 12:11:42
 $dictionary['Opportunity']['fields']['detalle_origen_c']['labelValue']='Detalle Origen';
+$dictionary['Opportunity']['fields']['detalle_origen_c']['enforced']='';
 $dictionary['Opportunity']['fields']['detalle_origen_c']['dependency']='';
 $dictionary['Opportunity']['fields']['detalle_origen_c']['required_formula']='';
 $dictionary['Opportunity']['fields']['detalle_origen_c']['readonly_formula']='';
@@ -39,35 +40,16 @@ $dictionary['Opportunity']['fields']['detalle_origen_c']['visibility_grid']=arra
       26 => '109',
       27 => '110',
     ),
-    2 => 
-    array (
-      0 => '',
-      1 => '1',
-      2 => '6',
-      3 => '10',
-    ),
     3 => 
     array (
     ),
-    4 => 
-    array (
-    ),
-    5 => 
-    array (
-    ),
     6 => 
-    array (
-    ),
-    7 => 
     array (
     ),
     8 => 
     array (
     ),
     9 => 
-    array (
-    ),
-    10 => 
     array (
     ),
     11 => 
@@ -145,6 +127,7 @@ $dictionary['Opportunity']['fields']['detalle_origen_c']['visibility_grid']=arra
       67 => '101',
       68 => '103',
       69 => '111',
+      70 => '114',
     ),
     13 => 
     array (
@@ -162,10 +145,6 @@ $dictionary['Opportunity']['fields']['detalle_origen_c']['visibility_grid']=arra
       2 => '68',
       3 => '69',
     ),
-    16 => 
-    array (
-      0 => '102',
-    ),
     17 => 
     array (
     ),
@@ -175,6 +154,9 @@ $dictionary['Opportunity']['fields']['detalle_origen_c']['visibility_grid']=arra
     19 => 
     array (
       0 => '112',
+    ),
+    20 => 
+    array (
     ),
     '' => 
     array (

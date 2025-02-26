@@ -1,7 +1,7 @@
 <?php
- // created: 2025-01-31 12:58:15
+ // created: 2025-01-31 13:18:48
 
-$app_list_strings['sector_list']=array (
+$app_list_strings['sector_cnbv_list']=array (
   '' => '',
   11 => 'Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza',
   21 => 'Minería',
@@ -22,6 +22,5 @@ $app_list_strings['sector_list']=array (
   72 => 'Servicios de alojamiento temporal y de preparación de alimentos y bebidas',
   81 => 'Otros servicios excepto actividades gubernamentales',
   93 => 'Actividades legislativas, gubernamentales, de impartición de justicia y de organismos internacionales y extraterritoriales',
-  55 => 'Corporativos',
   999 => 'No clasificada',
 );

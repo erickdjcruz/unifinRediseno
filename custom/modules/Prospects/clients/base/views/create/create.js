@@ -455,7 +455,7 @@
             }
         }
 
-        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13')) {
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114')) {
             //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO TELEFONICO DEL ASESOR DE ALIANZA
             if (this.model.get('telefono_aa_c') != "" && this.model.get('telefono_aa_c') != undefined) {
                 if (this.model.get('telefono_aa_c').trim() == "" || this.model.get('telefono_aa_c').trim().length != 10) {
@@ -530,7 +530,7 @@
             campos_req.push('nombre_empresa_c');
         }
 
-        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13')) {
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
             if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined) {
                 campos_req.push('franquicia_c');
@@ -669,48 +669,84 @@
     estableceOpcionesOrigenLeads:function(){
         var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
         var opciones_detalle_origen = app.lang.getAppListStrings('detalle_origen_list');
-
-        if (App.user.attributes.define_origen_po_c) { //Se modifica validación para habilitar origen si usuario tiene define_origen_po_c
+        // Función auxiliar para filtrar opciones
+        var filtrarOpciones = function (opciones, listaPermitida) {
+            Object.keys(opciones).forEach(function (key) {
+                if (!listaPermitida.includes(key)) {
+                    delete opciones[key];
+                }
+            });
+            return opciones; // Retorna el objeto filtrado
+        };
+        // Función reutilizable para actualizar las opciones y el valor del campo detalle_origen_c
+        var actualizarCampoDetalleOrigen = function(opciones_detalle_origen, nuevoValor) {
+            // Forzamos la actualización de las opciones en la vista
+            var field = this.getField("detalle_origen_c");
+            if (field) {
+                field.items = opciones_detalle_origen;  // Actualiza la lista de valores del dropdown
+                field.render();  // Vuelve a pintar el campo
+            }
+            // Borramos el valor actual y asignamos el nuevo
+            var valorActual = this.model.get('detalle_origen_c');
+            // Si el valor actual no está en las opciones permitidas, lo actualizamos
+            if (!opciones_detalle_origen.hasOwnProperty(valorActual)) {
+                this.model.unset('detalle_origen_c'); // Eliminamos solo si el valor no es válido
+                this.model.set('detalle_origen_c', nuevoValor);
+            }
+        };
+        //Se modifica validación para habilitar origen si usuario tiene define_origen_po_c
+        if (App.user.attributes.define_origen_po_c || App.user.attributes.gestion_utility_trailers_po_c) { 
             //Define opciones de origen
-            Object.keys(opciones_origen).forEach(function (key) {
-                if (key != "12" && key != "20") { //12:Alianzas - 20:Leasing
-                    delete opciones_origen[key];
-                }
-            });
+            opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]); //12:Alianzas - 20:Leasing
             this.model.fields['origen_c'].options = opciones_origen;
-            if(this.model.get('origen_c') == undefined || this.model.get('origen_c') == "" ){
-                this.model.set('origen_c','12');
-            }
-            
-            //Define opciones de detalle origen
-            Object.keys(opciones_detalle_origen).forEach(function (key) {
-                if (key != "12" && key != "13" && key != "113") { //12:SOC, 13:Creditaria - 113:Leasing
-                    delete opciones_detalle_origen[key];
-                }
-            });
-            if(this.model.get('detalle_origen_c') == undefined || this.model.get('detalle_origen_c') == "" ){
-                this.model.set('detalle_origen_c','12');
-            }
-            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
-            
-        }else{
-          //Define opciones de origen
-          Object.keys(opciones_origen).forEach(function (key) {
-              if (key != "20") { // 20:Leasing
-                  delete opciones_origen[key];
-              }
-          });
-          this.model.fields['origen_c'].options = opciones_origen;
-          this.model.set('origen_c','20');
-          this.model.set('detalle_origen_c','113');
-          self.noEditFields.push('origen_c');
-          $('[data-name="origen_c"]').css('pointer-events','none');
-          self.$('.record-edit-link-wrapper[data-name=origen_c]').remove();
-          self.noEditFields.push('detalle_origen_c');
-          $('[data-name="detalle_origen_c"]').css('pointer-events','none');
-          self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').remove();
-        }
 
+            if(this.model.get('origen_c') == undefined || this.model.get('origen_c') == ""){
+                this.model.set('origen_c','12');
+            }            
+            //Define opciones de detalle origen
+            if (App.user.attributes.define_origen_po_c && App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') == '12') {
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114"]); //12:SOC - 13:Creditaria - 114:Utility Trailers
+                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                //Forzamos la actualización de las opciones en la vista
+                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
+            
+            } else if (App.user.attributes.define_origen_po_c && this.model.get('origen_c') == '12') {
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13"]); //12:SOC - 13:Creditaria
+                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                //Forzamos la actualización de las opciones en la vista
+                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
+            
+            } else if (App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') == '12') {
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["114"]); //114:Utility Trailers
+                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                //Forzamos la actualización de las opciones en la vista
+                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '114');
+            
+            } else if (this.model.get('origen_c') == '20') {
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["113"]);
+                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                //Forzamos la actualización de las opciones en la vista
+                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '113'); //113:Leasing
+            }
+            //Disparar eventos para forzar la actualización
+            this.model.trigger("change:detalle_origen_c");            
+            
+        } else {
+            //Define opciones de origen
+            opciones_origen = filtrarOpciones(opciones_origen, ["20"]);
+            this.model.fields['origen_c'].options = opciones_origen;
+            // Define opciones de detalle origen
+            opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["113"]);
+            this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;            
+            // SET VALUE LEASING - LEASING
+            this.model.set('origen_c','20');
+            actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '113');
+            // READONLY
+            self.noEditFields.push('origen_c');
+            $('[data-name="origen_c"]').css('pointer-events','none');            
+            self.noEditFields.push('detalle_origen_c');
+            $('[data-name="detalle_origen_c"]').css('pointer-events','none');            
+        }
     },
 
     setButtonStates: function (state) {
@@ -912,12 +948,16 @@
         
         //Deshabilita Origen
         if(!App.user.attributes.define_origen_po_c && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')){
-          $('[data-name="origen_c"]').attr('style', 'pointer-events:none');
-          $('[data-name="detalle_origen_c"]').attr('style', 'pointer-events:none');
+            self.noEditFields.push('origen_c');
+            $('[data-name="origen_c"]').css('pointer-events','none');            
+            self.noEditFields.push('detalle_origen_c');
+            $('[data-name="detalle_origen_c"]').css('pointer-events','none');
         }
         //READONLY: PERMISO GESTION UTILITY TRAILERS, ORIGEN - ALIANZA / DETALLE ORIGEN - UTILITY TRAILERS
         if (!App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') === '12' && this.model.get('detalle_origen_c') === '114') {
-            $('[data-name="origen_c"]').css('pointer-events','none');
+            self.noEditFields.push('origen_c');
+            $('[data-name="origen_c"]').css('pointer-events','none');            
+            self.noEditFields.push('detalle_origen_c');
             $('[data-name="detalle_origen_c"]').css('pointer-events','none');
         }
     },

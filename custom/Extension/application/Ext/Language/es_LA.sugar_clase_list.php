@@ -1,5 +1,5 @@
 <?php
- // created: 2023-10-03 19:31:06
+ // created: 2025-01-31 12:54:34
 
 $app_list_strings['clase_list']=array (
   '' => '',
@@ -1087,4 +1087,6 @@ $app_list_strings['clase_list']=array (
   931310 => 'Unidades económicas gubernamentales dedicadas principalmente a regular, supervisar y apoyar las actividades económicas agropecuarias, mineras, de electricidad, gas y agua, construcción, manufactureras, comerciales y de servicios.',
   931510 => 'Unidades económicas gubernamentales dedicadas principalmente al establecimiento de normas y procedimientos para mejorar y preservar el medio ambiente, y a la administración y regulación de programas para el manejo de residuos.',
   931610 => 'Unidades económicas gubernamentales dedicadas principalmente a las actividades administrativas de instituciones de bienestar social, como asistencia social, salud, educación, cultura, regulación de asuntos laborales, investigación y desarrollo científico, programas de vivienda, impulso de la igualdad de género e implementación de acciones para prevenir la violencia y la discriminación contra las mujeres y niñas.',
+  9999999 => 'NO CLASIFICADA',
+  'ND' => 'ND',
 );
