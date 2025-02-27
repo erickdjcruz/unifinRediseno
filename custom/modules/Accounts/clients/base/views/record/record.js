@@ -549,50 +549,89 @@
      OBS299 Validar que las Direcciones no se repitan 21/11/2018
      */
     _direccionDuplicada: function (fields, errors, callback) {
-
         /* SE VALIDA DIRECTAMENTE DE LOS ELEMENTOS DEL HTML POR LA COMPLEJIDAD DE
          OBETENER LAS DESCRIPCIONES DE LOS COMBOS*/
-
         //var objDirecciones = $('.control-group.direccion')
-        var objDirecciones = $('.control-group.direccion')
-        var concatDirecciones = [];
-        var strDireccionTemp = "";
-        for (var i = 0; i < objDirecciones.length - 1; i++) {
-            if (objDirecciones.eq(i).find('select.inactivo option:selected') == 0) {
-                strDireccionTemp = objDirecciones.eq(i).find('.calleExisting').val() +
-                    objDirecciones.eq(i).find('.numExtExisting').val() +
-                    objDirecciones.eq(i).find('.numIntExisting').val() +
-                    objDirecciones.eq(i).find('select.coloniaExisting option:selected').text() +
-                    objDirecciones.eq(i).find('select.municipioExisting option:selected').text() +
-                    objDirecciones.eq(i).find('select.estadoExisting option:selected').text() +
-                    objDirecciones.eq(i).find('select.ciudadExisting option:selected').text() +
-                    objDirecciones.eq(i).find('.postalInputTempExisting').val();
+        // var objDirecciones = $('.control-group.direccion')
+        // var concatDirecciones = [];
+        // var strDireccionTemp = "";
+        // for (var i = 0; i < objDirecciones.length - 1; i++) {
+        //     if (objDirecciones.eq(i).find('select.inactivo option:selected') == 0) {
+        //         strDireccionTemp = objDirecciones.eq(i).find('.calleExisting').val() +
+        //             objDirecciones.eq(i).find('.numExtExisting').val() +
+        //             objDirecciones.eq(i).find('.numIntExisting').val() +
+        //             objDirecciones.eq(i).find('select.coloniaExisting option:selected').text() +
+        //             objDirecciones.eq(i).find('select.municipioExisting option:selected').text() +
+        //             objDirecciones.eq(i).find('select.estadoExisting option:selected').text() +
+        //             objDirecciones.eq(i).find('select.ciudadExisting option:selected').text() +
+        //             objDirecciones.eq(i).find('.postalInputTempExisting').val();
+        //         concatDirecciones.push(strDireccionTemp.replace(/\s/g, "").toUpperCase());
+        //     }
+        // }
+        // // validamos  el arreglo generado
+        // var existe = false;
+        // for (var j = 0; j < concatDirecciones.length; j++) {
+        //     for (var k = j + 1; k < concatDirecciones.length; k++) {
+        //         if (concatDirecciones[j] == concatDirecciones[k]) {
+        //             existe = true;
+        //         }
+        //     }
+        // }
+        // if (existe) {
+        //     app.alert.show('Direcci\u00F3n', {
+        //         level: 'error',
+        //         autoClose: false,
+        //         messages: 'Existe una o mas direcciones repetidas'
+        //     });
+        //     var messages1 = 'Existe una o mas direcciones repetidas';
+        //     errors['xd'] = errors['xd'] || {};
+        //     // errors['xd'].messages1 = true;
+        //     errors['xd'].required = true;
+        // }
+        /********************************************MEJORA DE DUPLICIDAD DE DIRECCIONES******************************************/
+        var direccion = this.oDirecciones.direccion;
+        var keys = Object.keys(direccion); // Obtiene todas las claves
+        var cDuplicado = 0;
+        for (let i = 0; i < keys.length; i++) {
+            let keyA = keys[i]; //Dirección a comparar A
 
-                concatDirecciones.push(strDireccionTemp.replace(/\s/g, "").toUpperCase());
-            }
-        }
+            for (let j = i + 1; j < keys.length; j++) { // Compara con las siguientes direcciones
+                let keyB = keys[j]; //Dirección a comparar B
 
-        // validamos  el arreglo generado
-        var existe = false;
-        for (var j = 0; j < concatDirecciones.length; j++) {
-            for (var k = j + 1; k < concatDirecciones.length; k++) {
+                var duplicado = 0;
+                var dirA = direccion[keyA];
+                var dirB = direccion[keyB];
 
-                if (concatDirecciones[j] == concatDirecciones[k]) {
-                    existe = true;
+                // Compara atributos clave
+                duplicado += ((dirA.valCodigoPostal ?? "").trim() === (dirB.valCodigoPostal ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.pais ?? "").trim() === (dirB.pais ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.estado ?? "").trim() === (dirB.estado ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.municipio ?? "").trim() === (dirB.municipio ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.ciudad ?? "").trim() === (dirB.ciudad ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.colonia ?? "").trim() === (dirB.colonia ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.calle ?? "").trim().toLowerCase() === (dirB.calle ?? "").trim().toLowerCase()) ? 1 : 0;
+                duplicado += ((dirA.numext ?? "").trim().toLowerCase() === (dirB.numext ?? "").trim().toLowerCase()) ? 1 : 0;            
+
+                var inactivoA = parseInt(dirA.inactivo) || 0;
+                var inactivoB = parseInt(dirB.inactivo) || 0;
+                duplicado += (inactivoA === inactivoB) ? 1 : 0;
+
+                console.log(`Comparando dirección ${keyA} con ${keyB}: duplicado =`, duplicado);
+
+                // Si coinciden 9 atributos, es duplicado
+                if (duplicado === 9) {
+                    cDuplicado++;
                 }
             }
-
         }
-
-        if (existe) {
+        // Mostrar error si hay direcciones repetidas
+        if (cDuplicado >= 1) {
             app.alert.show('Direcci\u00F3n', {
                 level: 'error',
                 autoClose: false,
-                messages: 'Existe una o mas direcciones repetidas'
+                messages: '<b>Existe una o más direcciones repetidas.</b>'
             });
-            var messages1 = 'Existe una o mas direcciones repetidas';
             errors['xd'] = errors['xd'] || {};
-            // errors['xd'].messages1 = true;
             errors['xd'].required = true;
         }
 
