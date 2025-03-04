@@ -317,7 +317,7 @@
         this.model.on('change:no_website_c', this.rowebsite, this);
         //Ocultar panel Analizate
         this.$("[data-panelname='LBL_RECORDVIEW_PANEL18']").hide();
-        this.model.addValidationTask('UniclickCanal', _.bind(this.requeridosUniclickCanal, this));
+        //this.model.addValidationTask('UniclickCanal', _.bind(this.requeridosUniclickCanal, this));
         this.model.addValidationTask('tipo_proveedor_compras', _.bind(this.tipoProveedor, this));
         //Limpia los campos dependientes de Origen y Detalle Origen
         this.model.on('change:origen_cuenta_c', this._cleanDependenciesOrigen, this);
