@@ -48,43 +48,54 @@ class SolicitudAsignacionEmail extends SugarApi
         $GLOBALS['log']->fatal("beanDirectorInformaA: " . $nombreDirectorInformaA . " " . $emailDirectorInformaA);
         // REASIGNACION DE CUENTA PRINCIPAL
         if (!empty($idCuenta)) {
-            // BUSQUEDA DEL PRODUCTO LEASING DE LA CUENTA PRINCIPAL
-            $selectProductoLeasing = "SELECT up.id as idProductoLeasing
+            // BUSQUEDA DE PRODUCTO LEASING DE LA CUENTA PRINCIPAL
+            $selectProductoLeasing = "SELECT up.id as idProductoLeasing, up.assigned_user_id
             FROM accounts a
             INNER JOIN accounts_uni_productos_1_c ap ON a.id = ap.accounts_uni_productos_1accounts_ida
             INNER JOIN uni_productos up ON up.id = ap.accounts_uni_productos_1uni_productos_idb
             INNER JOIN uni_productos_cstm upc ON upc.id_c = up.id
             WHERE a.id = '{$idCuenta}' AND up.tipo_producto = '1' AND up.deleted = '0'";
+
             $resultpl = $GLOBALS['db']->fetchOne($selectProductoLeasing);
 
             if ($resultpl && !empty($resultpl['idProductoLeasing'])) {
                 $idProductoLeasing = $resultpl['idProductoLeasing'];
+                $assignedUserProducto = $resultpl['assigned_user_id'];
+
                 $GLOBALS['log']->fatal("idProductoLeasing (Cuenta Principal): " . $idProductoLeasing);
 
-                // REASIGNACION DEL PRODUCTO LEASING DE LA CUENTA PRINCIPAL
-                $updateProductoAsesor = "
-                    UPDATE uni_productos
-                    SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
-                    WHERE id = '{$idProductoLeasing}'
-                ";
-                $GLOBALS['db']->query($updateProductoAsesor);
+                // REASIGNACION SOLO SI ES NECESARIO
+                if ($assignedUserProducto !== $idAsesorSolicita) {
+                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateProductoAsesorPrincipal ");
+                    $updateProductoAsesorPrincipal = "
+                        UPDATE uni_productos
+                        SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
+                        WHERE id = '{$idProductoLeasing}'
+                    ";
+                    $GLOBALS['db']->query($updateProductoAsesorPrincipal);
+                }
             }
 
-            // REASIGNACION DE LA CUENTA PRINCIPAL
-            $updateCuentaAsesor = "
-                UPDATE accounts_cstm
-                SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
-                WHERE id_c = '{$idCuenta}'
-            ";
-            $GLOBALS['db']->query($updateCuentaAsesor);
+            // REASIGNACION DE LA CUENTA PRINCIPAL SOLO SI ES NECESARIO
+            $selectCuenta = "SELECT user_id_c FROM accounts_cstm WHERE id_c = '{$idCuenta}'";
+            $resultCuenta = $GLOBALS['db']->fetchOne($selectCuenta);
+
+            if ($resultCuenta && $resultCuenta['user_id_c'] !== $idAsesorSolicita) {
+                $GLOBALS['log']->fatal("ACTUALIZACION EN updateCuentaAsesorPrincipal ");
+                $updateCuentaAsesorPrincipal = "
+                    UPDATE accounts_cstm
+                    SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
+                    WHERE id_c = '{$idCuenta}'
+                ";
+                $GLOBALS['db']->query($updateCuentaAsesorPrincipal);
+            }
 
             // BUSQUEDA DE CUENTAS HIJAS RELACIONADAS
             $selectRelacionesHijas  = "SELECT rrc.account_id1_c as idRelacionCuentaHija
-            FROM accounts a
-            INNER JOIN rel_relaciones_accounts_1_c rra ON rra.rel_relaciones_accounts_1accounts_ida = a.id
-            INNER JOIN rel_relaciones rr ON rr.id = rra.rel_relaciones_accounts_1rel_relaciones_idb AND rr.deleted = 0
+            FROM rel_relaciones rr
+            INNER JOIN rel_relaciones_accounts_1_c rra ON rra.rel_relaciones_accounts_1rel_relaciones_idb = rr.id
             INNER JOIN rel_relaciones_cstm rrc ON rrc.id_c = rr.id 
-            WHERE a.id = '{$idCuenta}'";
+            WHERE rra.rel_relaciones_accounts_1accounts_ida = '{$idCuenta}' AND rr.deleted = 0";
 
             $relacionesResult = $GLOBALS['db']->query($selectRelacionesHijas);
 
@@ -92,16 +103,22 @@ class SolicitudAsignacionEmail extends SugarApi
                 $idRelacionCuentaHija = $rowRelacion['idRelacionCuentaHija'];
                 $GLOBALS['log']->fatal("idRelacionCuentaHija: " . $idRelacionCuentaHija);
 
-                // REASIGNACION DE LA CUENTA HIJA
-                $updateRelacion = "
-                    UPDATE accounts_cstm
-                    SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
-                    WHERE id_c = '{$idRelacionCuentaHija}'
-                ";
-                $GLOBALS['db']->query($updateRelacion);
+                // REASIGNACION DE LA CUENTA HIJA SOLO SI ES NECESARIO
+                $selectCuentaHija = "SELECT user_id_c FROM accounts_cstm WHERE id_c = '{$idRelacionCuentaHija}'";
+                $resultCuentaHija = $GLOBALS['db']->fetchOne($selectCuentaHija);
+
+                if ($resultCuentaHija && $resultCuentaHija['user_id_c'] !== $idAsesorSolicita) {
+                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateRelCuentaHija ");
+                    $updateRelCuentaHija = "
+                        UPDATE accounts_cstm
+                        SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
+                        WHERE id_c = '{$idRelacionCuentaHija}'
+                    ";
+                    $GLOBALS['db']->query($updateRelCuentaHija);
+                }
 
                 // BUSQUEDA DEL PRODUCTO LEASING DE LA CUENTA HIJA
-                $selectProductoLeasingHija = "SELECT up.id as idProductoLeasing
+                $selectProductoLeasingHija = "SELECT up.id as idProductoLeasing, up.assigned_user_id
                 FROM accounts a
                 INNER JOIN accounts_uni_productos_1_c ap ON a.id = ap.accounts_uni_productos_1accounts_ida
                 INNER JOIN uni_productos up ON up.id = ap.accounts_uni_productos_1uni_productos_idb
@@ -112,15 +129,72 @@ class SolicitudAsignacionEmail extends SugarApi
 
                 if ($resultplHija && !empty($resultplHija['idProductoLeasing'])) {
                     $idProductoLeasingHija = $resultplHija['idProductoLeasing'];
+                    $assignedUserProductoHija = $resultplHija['assigned_user_id'];
+
                     $GLOBALS['log']->fatal("idProductoLeasing (Cuenta Hija): " . $idProductoLeasingHija);
 
-                    // REASIGNACION DEL PRODUCTO LEASING DE LA CUENTA HIJA
-                    $updateProductoAsesorHija = "
-                        UPDATE uni_productos
-                        SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
-                        WHERE id = '{$idProductoLeasingHija}'
+                    // REASIGNACION SOLO SI ES NECESARIO
+                    if ($assignedUserProductoHija !== $idAsesorSolicita) {
+                        $GLOBALS['log']->fatal("ACTUALIZACION EN updateProductoAsesorHija ");
+                        $updateProductoAsesorHija = "
+                            UPDATE uni_productos
+                            SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
+                            WHERE id = '{$idProductoLeasingHija}'
+                        ";
+                        $GLOBALS['db']->query($updateProductoAsesorHija);
+                    }
+                }
+            }
+
+            // BUSQUEDA DE LEAD RELACIONADO A LA CUENTA
+            $selectRelacionLead  = "SELECT id as idLead, assigned_user_id 
+            FROM leads 
+            WHERE account_id = '{$idCuenta}' AND deleted = '0'";
+
+            $leadRelResult = $GLOBALS['db']->fetchOne($selectRelacionLead);
+
+            if ($leadRelResult && !empty($leadRelResult['idLead'])) {
+                $idLead = $leadRelResult['idLead'];
+                $assignedUserLead = $leadRelResult['assigned_user_id'];
+
+                $GLOBALS['log']->fatal("idLead (Lead Relacionado a Cuenta): " . $idLead);
+
+                // REASIGNACION SOLO SI ES NECESARIO
+                if ($assignedUserLead !== $idAsesorSolicita) {
+                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateLeadAsesor ");
+                    $updateLeadAsesor = "
+                        UPDATE leads
+                        SET assigned_user_id = '{$idAsesorSolicita}'
+                        WHERE id = '{$idLead}'
                     ";
-                    $GLOBALS['db']->query($updateProductoAsesorHija);
+                    $GLOBALS['db']->query($updateLeadAsesor);
+                }
+
+                // BUSQUEDA DE PUBLICO OBJETIVO (PO) RELACIONADO AL LEAD
+                $selectRelacionPO  = "SELECT p.id as idPO, p.assigned_user_id
+                FROM prospects_leads_1_c pl
+                INNER JOIN prospects p ON p.id = pl.prospects_leads_1prospects_ida AND p.deleted = 0
+                INNER JOIN prospects_cstm pc ON pc.id_c = p.id
+                WHERE pl.prospects_leads_1leads_idb = '{$idLead}'";
+
+                $poRelResult = $GLOBALS['db']->fetchOne($selectRelacionPO);
+
+                if ($poRelResult && !empty($poRelResult['idPO'])) {
+                    $idPO = $poRelResult['idPO'];
+                    $assignedUserPO = $poRelResult['assigned_user_id'];
+
+                    $GLOBALS['log']->fatal("idPO (PO Relacionado a Lead de la Cuenta): " . $idPO);
+
+                    // REASIGNACION SOLO SI ES NECESARIO
+                    if ($assignedUserPO !== $idAsesorSolicita) {
+                        $GLOBALS['log']->fatal("ACTUALIZACION EN updatePOAsesor ");
+                        $updatePOAsesor = "
+                            UPDATE prospects
+                            SET assigned_user_id = '{$idAsesorSolicita}'
+                            WHERE id = '{$idPO}'
+                        ";
+                        $GLOBALS['db']->query($updatePOAsesor);
+                    }
                 }
             }
         }
