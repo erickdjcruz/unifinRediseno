@@ -148,8 +148,7 @@ class SolicitudAsignacionEmail extends SugarApi
 
             // BUSQUEDA DE LEAD RELACIONADO A LA CUENTA
             $selectRelacionLead  = "SELECT id as idLead, assigned_user_id 
-            FROM leads 
-            WHERE account_id = '{$idCuenta}' AND deleted = '0'";
+            FROM leads WHERE account_id = '{$idCuenta}' AND deleted = '0'";
 
             $leadRelResult = $GLOBALS['db']->fetchOne($selectRelacionLead);
 
@@ -645,12 +644,27 @@ class SolicitudAsignacionEmail extends SugarApi
     public function sendEmailAsesorCuentas($subject, $bodyMail, $emailDestinatario, $nombreDestinatario)
     {
         try {
+            global $app_list_strings;
+            //LISTA DE CORREOS PARA COPIA AL DIRECTOR ASIGNACION
+            $listaEmailsCCDirectorAsignacion = $app_list_strings['copia_informa_director_asignacion_list'];
+            $arr_emails = array();
+            foreach ($listaEmailsCCDirectorAsignacion as $key => $email) {
+                array_push($arr_emails,$email);
+            }
+
             $mailer = MailerFactory::getSystemDefaultMailer();
             $mailer->setSubject($subject);
             $mailer->addAttachment(new \EmbeddedImage('Copia_de_Recurso-2unileasingazulLOW', 'custom/images_email/Copia_de_Recurso-2unileasingazulLOW.png', 'Copia_de_Recurso-2unileasingazulLOW'), "Copia_de_Recurso-2unileasingazulLOW");
             $mailer->setHtmlBody(trim($bodyMail));
             $mailer->addRecipientsTo(new EmailIdentity($emailDestinatario, $nombreDestinatario));
 
+            if(count($arr_emails) > 0){
+                //LISTA DE CORREOS CON COPIA AL DIRECTOR ASIGNACION
+                for ($i = 0; $i < count($arr_emails); $i++) {
+                    $GLOBALS['log']->fatal("AGREGANDO CORREOS CON COPIA AL DIRECTOR ASIGNACION: " . $arr_emails[$i]);
+                    $mailer->addRecipientsCc(new EmailIdentity($arr_emails[$i], $arr_emails[$i]));
+                }
+            }
             $GLOBALS['log']->fatal("ENVIANDO CORREO A: " . $emailDestinatario);
             $mailer->send();
         } catch (Exception $e) {
