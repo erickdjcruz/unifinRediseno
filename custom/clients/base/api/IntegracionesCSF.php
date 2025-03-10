@@ -71,7 +71,7 @@ class IntegracionesCSF extends SugarApi
             $GLOBALS['log']->fatal("Inicia petición Robina CSF: ".$url_digital_csf);
             $responseCSF_base64=$this->callDigitalVal($url_digital_csf, $token );
             
-            //file_put_contents('custom/csf/csforiginal.pdf', chunk_split($base64_CSF));
+            file_put_contents('custom/csf/csforiginal.pdf', chunk_split($base64_CSF));
             file_put_contents('custom/csf/csf1.pdf', $responseCSF_base64);
             $b64CSFVal = chunk_split(base64_encode(file_get_contents('custom/csf/csf1.pdf')));
             $response['robina']= "Validación digital de CSF generada correctamente";
