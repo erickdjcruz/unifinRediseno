@@ -1,0 +1,675 @@
+<?php
+
+if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+
+class SolicitudAsignacionEmail extends SugarApi
+{
+    public function registerApiRest()
+    {
+        return array(
+            'solicitudAsignacionEmail' => array(
+                'reqType' => 'POST',
+                'noLoginRequired' => true,
+                'path' => array('solicitudAsignacionEmail'),
+                'pathVars' => array(''),
+                'method' => 'sendEmailAsignacionCuentas',
+                'shortHelp' => 'Envía notificación por email a respectivos usuarios para solicitar asignación de cuentas',
+            ),
+        );
+    }
+
+    public function sendEmailAsignacionCuentas($api, $args)
+    {
+        $GLOBALS['log']->fatal("...SendEmailAsignacionCuentas...");
+        $idCuenta = $args['id_cuenta'];
+        $idAsesorSolicita = $args['id_asesor_solicita'];
+        $response = "";
+
+        if (!empty($idCuenta)) {
+            $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
+            $nombreCuenta = $beanAccount->name;
+        }
+
+        if (!empty($idAsesorSolicita)) {
+            $beanAsesorSolicita = BeanFactory::retrieveBean('Users', $idAsesorSolicita, array('disable_row_level_security' => true));
+            $nombreAsesorSolicita = $beanAsesorSolicita->first_name . " " . $beanAsesorSolicita->last_name;
+            $emailAsesorSolicita = $beanAsesorSolicita->email1;
+            $idDirectorInformaA = $beanAsesorSolicita->reports_to_id;
+        }
+
+        if (!empty($idDirectorInformaA)) {
+            $beanDirectorInformaA = BeanFactory::retrieveBean('Users', $idDirectorInformaA, array('disable_row_level_security' => true));
+            $nombreDirectorInformaA = $beanDirectorInformaA->first_name . " " . $beanDirectorInformaA->last_name;
+            $emailDirectorInformaA = $beanDirectorInformaA->email1;
+        }
+        $GLOBALS['log']->fatal("idCuenta: " . $idCuenta);
+        $GLOBALS['log']->fatal("nombreCuenta: " . $nombreCuenta);
+        $GLOBALS['log']->fatal("beanAsesorSolicita: " . $nombreAsesorSolicita . " " . $emailAsesorSolicita);
+        $GLOBALS['log']->fatal("beanDirectorInformaA: " . $nombreDirectorInformaA . " " . $emailDirectorInformaA);
+        // REASIGNACION DE CUENTA PRINCIPAL
+        if (!empty($idCuenta)) {
+            // BUSQUEDA DE PRODUCTO LEASING DE LA CUENTA PRINCIPAL
+            $selectProductoLeasing = "SELECT up.id as idProductoLeasing, up.assigned_user_id
+            FROM accounts a
+            INNER JOIN accounts_uni_productos_1_c ap ON a.id = ap.accounts_uni_productos_1accounts_ida
+            INNER JOIN uni_productos up ON up.id = ap.accounts_uni_productos_1uni_productos_idb
+            INNER JOIN uni_productos_cstm upc ON upc.id_c = up.id
+            WHERE a.id = '{$idCuenta}' AND up.tipo_producto = '1' AND up.deleted = '0'";
+
+            $resultpl = $GLOBALS['db']->fetchOne($selectProductoLeasing);
+
+            if ($resultpl && !empty($resultpl['idProductoLeasing'])) {
+                $idProductoLeasing = $resultpl['idProductoLeasing'];
+                $assignedUserProducto = $resultpl['assigned_user_id'];
+
+                $GLOBALS['log']->fatal("idProductoLeasing (Cuenta Principal): " . $idProductoLeasing);
+
+                // REASIGNACION SOLO SI ES NECESARIO
+                if ($assignedUserProducto !== $idAsesorSolicita) {
+                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateProductoAsesorPrincipal ");
+                    $updateProductoAsesorPrincipal = "
+                        UPDATE uni_productos
+                        SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
+                        WHERE id = '{$idProductoLeasing}'
+                    ";
+                    $GLOBALS['db']->query($updateProductoAsesorPrincipal);
+                }
+            }
+
+            // REASIGNACION DE LA CUENTA PRINCIPAL SOLO SI ES NECESARIO
+            $selectCuenta = "SELECT user_id_c FROM accounts_cstm WHERE id_c = '{$idCuenta}'";
+            $resultCuenta = $GLOBALS['db']->fetchOne($selectCuenta);
+
+            if ($resultCuenta && $resultCuenta['user_id_c'] !== $idAsesorSolicita) {
+                $GLOBALS['log']->fatal("ACTUALIZACION EN updateCuentaAsesorPrincipal ");
+                $updateCuentaAsesorPrincipal = "
+                    UPDATE accounts_cstm
+                    SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
+                    WHERE id_c = '{$idCuenta}'
+                ";
+                $GLOBALS['db']->query($updateCuentaAsesorPrincipal);
+            }
+
+            // BUSQUEDA DE CUENTAS HIJAS RELACIONADAS
+            $selectRelacionesHijas  = "SELECT rrc.account_id1_c as idRelacionCuentaHija
+            FROM rel_relaciones rr
+            INNER JOIN rel_relaciones_accounts_1_c rra ON rra.rel_relaciones_accounts_1rel_relaciones_idb = rr.id
+            INNER JOIN rel_relaciones_cstm rrc ON rrc.id_c = rr.id 
+            WHERE rra.rel_relaciones_accounts_1accounts_ida = '{$idCuenta}' AND rr.deleted = 0";
+
+            $relacionesResult = $GLOBALS['db']->query($selectRelacionesHijas);
+
+            while ($rowRelacion = $GLOBALS['db']->fetchByAssoc($relacionesResult)) {
+                $idRelacionCuentaHija = $rowRelacion['idRelacionCuentaHija'];
+                $GLOBALS['log']->fatal("idRelacionCuentaHija: " . $idRelacionCuentaHija);
+
+                // REASIGNACION DE LA CUENTA HIJA SOLO SI ES NECESARIO
+                $selectCuentaHija = "SELECT user_id_c FROM accounts_cstm WHERE id_c = '{$idRelacionCuentaHija}'";
+                $resultCuentaHija = $GLOBALS['db']->fetchOne($selectCuentaHija);
+
+                if ($resultCuentaHija && $resultCuentaHija['user_id_c'] !== $idAsesorSolicita) {
+                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateRelCuentaHija ");
+                    $updateRelCuentaHija = "
+                        UPDATE accounts_cstm
+                        SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
+                        WHERE id_c = '{$idRelacionCuentaHija}'
+                    ";
+                    $GLOBALS['db']->query($updateRelCuentaHija);
+                }
+
+                // BUSQUEDA DEL PRODUCTO LEASING DE LA CUENTA HIJA
+                $selectProductoLeasingHija = "SELECT up.id as idProductoLeasing, up.assigned_user_id
+                FROM accounts a
+                INNER JOIN accounts_uni_productos_1_c ap ON a.id = ap.accounts_uni_productos_1accounts_ida
+                INNER JOIN uni_productos up ON up.id = ap.accounts_uni_productos_1uni_productos_idb
+                INNER JOIN uni_productos_cstm upc ON upc.id_c = up.id
+                WHERE a.id = '{$idRelacionCuentaHija}' AND up.tipo_producto = '1' AND up.deleted = '0'";
+
+                $resultplHija = $GLOBALS['db']->fetchOne($selectProductoLeasingHija);
+
+                if ($resultplHija && !empty($resultplHija['idProductoLeasing'])) {
+                    $idProductoLeasingHija = $resultplHija['idProductoLeasing'];
+                    $assignedUserProductoHija = $resultplHija['assigned_user_id'];
+
+                    $GLOBALS['log']->fatal("idProductoLeasing (Cuenta Hija): " . $idProductoLeasingHija);
+
+                    // REASIGNACION SOLO SI ES NECESARIO
+                    if ($assignedUserProductoHija !== $idAsesorSolicita) {
+                        $GLOBALS['log']->fatal("ACTUALIZACION EN updateProductoAsesorHija ");
+                        $updateProductoAsesorHija = "
+                            UPDATE uni_productos
+                            SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
+                            WHERE id = '{$idProductoLeasingHija}'
+                        ";
+                        $GLOBALS['db']->query($updateProductoAsesorHija);
+                    }
+                }
+            }
+
+            // BUSQUEDA DE LEAD RELACIONADO A LA CUENTA
+            $selectRelacionLead  = "SELECT id as idLead, assigned_user_id 
+            FROM leads WHERE account_id = '{$idCuenta}' AND deleted = '0'";
+
+            $leadRelResult = $GLOBALS['db']->fetchOne($selectRelacionLead);
+
+            if ($leadRelResult && !empty($leadRelResult['idLead'])) {
+                $idLead = $leadRelResult['idLead'];
+                $assignedUserLead = $leadRelResult['assigned_user_id'];
+
+                $GLOBALS['log']->fatal("idLead (Lead Relacionado a Cuenta): " . $idLead);
+
+                // REASIGNACION SOLO SI ES NECESARIO
+                if ($assignedUserLead !== $idAsesorSolicita) {
+                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateLeadAsesor ");
+                    $updateLeadAsesor = "
+                        UPDATE leads
+                        SET assigned_user_id = '{$idAsesorSolicita}'
+                        WHERE id = '{$idLead}'
+                    ";
+                    $GLOBALS['db']->query($updateLeadAsesor);
+                }
+
+                // BUSQUEDA DE PUBLICO OBJETIVO (PO) RELACIONADO AL LEAD
+                $selectRelacionPO  = "SELECT p.id as idPO, p.assigned_user_id
+                FROM prospects_leads_1_c pl
+                INNER JOIN prospects p ON p.id = pl.prospects_leads_1prospects_ida AND p.deleted = 0
+                INNER JOIN prospects_cstm pc ON pc.id_c = p.id
+                WHERE pl.prospects_leads_1leads_idb = '{$idLead}'";
+
+                $poRelResult = $GLOBALS['db']->fetchOne($selectRelacionPO);
+
+                if ($poRelResult && !empty($poRelResult['idPO'])) {
+                    $idPO = $poRelResult['idPO'];
+                    $assignedUserPO = $poRelResult['assigned_user_id'];
+
+                    $GLOBALS['log']->fatal("idPO (PO Relacionado a Lead de la Cuenta): " . $idPO);
+
+                    // REASIGNACION SOLO SI ES NECESARIO
+                    if ($assignedUserPO !== $idAsesorSolicita) {
+                        $GLOBALS['log']->fatal("ACTUALIZACION EN updatePOAsesor ");
+                        $updatePOAsesor = "
+                            UPDATE prospects
+                            SET assigned_user_id = '{$idAsesorSolicita}'
+                            WHERE id = '{$idPO}'
+                        ";
+                        $GLOBALS['db']->query($updatePOAsesor);
+                    }
+                }
+            }
+        }
+
+        //NOTIFICACION POR EMAIL
+        $body_mail_asesor_solicita = $this->buildBodyNotificaAsesorAsignacion($nombreAsesorSolicita, $nombreCuenta);
+        $body_mail_director_informa_a = $this->buildBodyNotificaDirectorInformaA($nombreDirectorInformaA, $nombreCuenta, $nombreAsesorSolicita);
+        //ASESOR SOLICITA
+        if (!empty($emailAsesorSolicita)) {
+            $this->sendEmailAsesorCuentas(
+                'Recarterización de clientes/prospectos ' . $nombreCuenta,
+                $body_mail_asesor_solicita,
+                $emailAsesorSolicita,
+                $nombreAsesorSolicita
+            );
+            $response .= "<br>Se envió notificación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
+        }
+        //DIRECTOR INFORMA A
+        if (!empty($emailDirectorInformaA)) {
+            $this->sendEmailAsesorCuentas(
+                'Reasignación de cliente/prospecto ' . $nombreCuenta,
+                $body_mail_director_informa_a,
+                $emailDirectorInformaA,
+                $nombreDirectorInformaA
+            );
+            $response .= "<br>Se envió notificación a: " . $nombreDirectorInformaA . ", de la cuenta " . $nombreCuenta;
+        }
+
+        return $response;
+    }
+
+    public function buildBodyNotificaAsesorAsignacion($nombre_asesor_solicita, $nombre_cuenta)
+    {
+        $mailHTML = '<head>
+            <title></title>
+            <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+            <meta content="width=device-width, initial-scale=1.0" name="viewport"/><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+            <style>
+                * {
+                    box-sizing: border-box;
+                }
+
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                a[x-apple-data-detectors] {
+                    color: inherit !important;
+                    text-decoration: inherit !important;
+                }
+
+                #MessageViewBody a {
+                    color: inherit;
+                    text-decoration: none;
+                }
+
+                p {
+                    line-height: inherit
+                }
+
+                .desktop_hide,
+                .desktop_hide table {
+                    mso-hide: all;
+                    display: none;
+                    max-height: 0px;
+                    overflow: hidden;
+                }
+
+                .image_block img+div {
+                    display: none;
+                }
+
+                @media (max-width:620px) {
+                    .mobile_hide {
+                        display: none;
+                    }
+
+                    .row-content {
+                        width: 100% !important;
+                    }
+
+                    .stack .column {
+                        width: 100%;
+                        display: block;
+                    }
+
+                    .mobile_hide {
+                        min-height: 0;
+                        max-height: 0;
+                        max-width: 0;
+                        overflow: hidden;
+                        font-size: 0px;
+                    }
+
+                    .desktop_hide,
+                    .desktop_hide table {
+                        display: table !important;
+                        max-height: none !important;
+                    }
+
+                    .row-1 .column-1 .block-1.paragraph_block td.pad>div,
+                    .row-3 .column-1 .block-1.paragraph_block td.pad>div,
+                    .row-5 .column-1 .block-1.paragraph_block td.pad>div {
+                        text-align: center !important;
+                        font-size: 14px !important;
+                    }
+
+                    .row-1 .column-1 .block-1.paragraph_block td.pad,
+                    .row-3 .column-1 .block-1.paragraph_block td.pad,
+                    .row-5 .column-1 .block-1.paragraph_block td.pad {
+                        padding: 20px 35px !important;
+                    }
+
+                    .row-1 .column-1,
+                    .row-3 .column-1,
+                    .row-4 .column-1,
+                    .row-5 .column-1 {
+                        padding: 0 !important;
+                    }
+                }
+            </style>
+            </head>
+            <body style="background-color: #e4e7e7; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+            <table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e4e7e7;" width="100%">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #56adff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:6px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:9px;"> </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_asesor_solicita . '</strong></p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor confirma que así sea.</p>
+                                                                            <br>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
+                                                                            <p style="margin: 0;">Equipo CRM</p>
+                                                                            <p style="margin: 0;">Inteligencia de Negocios</p>
+                                                                            <p style="margin: 0;">T: (55)5249 5800 Ext.5737 y 5677</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; padding-top: 15px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:20px;width:100%;">
+                                                                        <div align="center" class="alignment" style="line-height:10px"><img src="cid:Copia_de_Recurso-2unileasingazulLOW" style="display: block; height: auto; border: 0; max-width: 102px; width: 100%;" width="102"/></div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #dde1e9; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:30px;padding-right:30px;padding-top:25px;">
+                                                                        <div style="color:#000000;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:12px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:14.399999999999999px;">
+                                                                            <p style="margin: 0;"><em>Información confidencial y exclusiva para uso interno de Unifin.</em></p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table><!-- End -->
+            </body>';
+
+        return $mailHTML;
+    }
+
+    public function buildBodyNotificaDirectorInformaA($nombreDirectorInformaA, $nombre_cuenta, $nombreAsesorSolicita)
+    {
+        $mailHTML = '<head>
+            <title></title>
+            <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+            <meta content="width=device-width, initial-scale=1.0" name="viewport"/><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+            <style>
+                * {
+                    box-sizing: border-box;
+                }
+
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                a[x-apple-data-detectors] {
+                    color: inherit !important;
+                    text-decoration: inherit !important;
+                }
+
+                #MessageViewBody a {
+                    color: inherit;
+                    text-decoration: none;
+                }
+
+                p {
+                    line-height: inherit
+                }
+
+                .desktop_hide,
+                .desktop_hide table {
+                    mso-hide: all;
+                    display: none;
+                    max-height: 0px;
+                    overflow: hidden;
+                }
+
+                .image_block img+div {
+                    display: none;
+                }
+
+                @media (max-width:620px) {
+                    .mobile_hide {
+                        display: none;
+                    }
+
+                    .row-content {
+                        width: 100% !important;
+                    }
+
+                    .stack .column {
+                        width: 100%;
+                        display: block;
+                    }
+
+                    .mobile_hide {
+                        min-height: 0;
+                        max-height: 0;
+                        max-width: 0;
+                        overflow: hidden;
+                        font-size: 0px;
+                    }
+
+                    .desktop_hide,
+                    .desktop_hide table {
+                        display: table !important;
+                        max-height: none !important;
+                    }
+
+                    .row-1 .column-1 .block-1.paragraph_block td.pad>div,
+                    .row-3 .column-1 .block-1.paragraph_block td.pad>div,
+                    .row-5 .column-1 .block-1.paragraph_block td.pad>div {
+                        text-align: center !important;
+                        font-size: 14px !important;
+                    }
+
+                    .row-1 .column-1 .block-1.paragraph_block td.pad,
+                    .row-3 .column-1 .block-1.paragraph_block td.pad,
+                    .row-5 .column-1 .block-1.paragraph_block td.pad {
+                        padding: 20px 35px !important;
+                    }
+
+                    .row-1 .column-1,
+                    .row-3 .column-1,
+                    .row-4 .column-1,
+                    .row-5 .column-1 {
+                        padding: 0 !important;
+                    }
+                }
+            </style>
+            </head>
+            <body style="background-color: #e4e7e7; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+            <table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e4e7e7;" width="100%">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #56adff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:6px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:9px;"> </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombreDirectorInformaA . '</strong></p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Le notificamos que la solicitud de reasignación del cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y se encuentra a nombre del usuario <strong>' . $nombreAsesorSolicita . '.</strong></p>
+                                                                            <br>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
+                                                                            <p style="margin: 0;">Equipo CRM</p>
+                                                                            <p style="margin: 0;">Inteligencia de Negocios</p>
+                                                                            <p style="margin: 0;">T: (55)5249 5800 Ext.5737 y 5677</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; padding-top: 15px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:20px;width:100%;">
+                                                                        <div align="center" class="alignment" style="line-height:10px"><img src="cid:Copia_de_Recurso-2unileasingazulLOW" style="display: block; height: auto; border: 0; max-width: 102px; width: 100%;" width="102"/></div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #dde1e9; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:30px;padding-right:30px;padding-top:25px;">
+                                                                        <div style="color:#000000;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:12px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:14.399999999999999px;">
+                                                                            <p style="margin: 0;"><em>Información confidencial y exclusiva para uso interno de Unifin.</em></p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table><!-- End -->
+            </body>';
+
+        return $mailHTML;
+    }
+
+    public function sendEmailAsesorCuentas($subject, $bodyMail, $emailDestinatario, $nombreDestinatario)
+    {
+        try {
+            global $app_list_strings;
+            //LISTA DE CORREOS PARA COPIA AL DIRECTOR ASIGNACION
+            $listaEmailsCCDirectorAsignacion = $app_list_strings['copia_informa_director_asignacion_list'];
+            $arr_emails = array();
+            foreach ($listaEmailsCCDirectorAsignacion as $key => $email) {
+                array_push($arr_emails,$email);
+            }
+
+            $mailer = MailerFactory::getSystemDefaultMailer();
+            $mailer->setSubject($subject);
+            $mailer->addAttachment(new \EmbeddedImage('Copia_de_Recurso-2unileasingazulLOW', 'custom/images_email/Copia_de_Recurso-2unileasingazulLOW.png', 'Copia_de_Recurso-2unileasingazulLOW'), "Copia_de_Recurso-2unileasingazulLOW");
+            $mailer->setHtmlBody(trim($bodyMail));
+            $mailer->addRecipientsTo(new EmailIdentity($emailDestinatario, $nombreDestinatario));
+
+            if(count($arr_emails) > 0){
+                //LISTA DE CORREOS CON COPIA AL DIRECTOR ASIGNACION
+                for ($i = 0; $i < count($arr_emails); $i++) {
+                    $GLOBALS['log']->fatal("AGREGANDO CORREOS CON COPIA AL DIRECTOR ASIGNACION: " . $arr_emails[$i]);
+                    $mailer->addRecipientsCc(new EmailIdentity($arr_emails[$i], $arr_emails[$i]));
+                }
+            }
+            $GLOBALS['log']->fatal("ENVIANDO CORREO A: " . $emailDestinatario);
+            $mailer->send();
+        } catch (Exception $e) {
+            $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico a " . $emailDestinatario);
+            $GLOBALS['log']->fatal(print_r($e, true));
+        }
+    }
+}
