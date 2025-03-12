@@ -9428,50 +9428,44 @@ validaReqUniclickInfo: function () {
         var btnSolicitudAsignacion = this.getField("solicitud_asignacion");
         var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';
         var tipodeCuenta = this.model.get("tipo_registro_cuenta_c");
-        var tiposValidosPendiente = ['2', '3', '4', '5'];
+        var tiposCuentaCPPPValidos = ['2', '3', '4', '5'];
+        var usuarioAsignadoLeasing = this.model.get('user_id_c');
         //OCULTA Y MUESTRA EL BOTON DE SOLICITUD ASIGNACION
         if (btnSolicitudAsignacion) {
             btnSolicitudAsignacion.listenTo(btnSolicitudAsignacion, "render", function () {
-                //VALIDA CUENTAS TIPO PROSPECTO, CLIENTE, PROVEEDOR Y PERSONA ASIGNADO AL USUARIO-LEASING: 0 - PENDIENTE DE ASIGNAR 
-                if (this.model.get('user_id_c') === idUsuarioPendiente && tiposValidosPendiente.includes(tipodeCuenta)) {
-                    btnSolicitudAsignacion.show();
-                } else {
-                    btnSolicitudAsignacion.hide();
-                }
+                //VALIDA USUARIO LEASING
+                var usuario = app.data.createBean('Users', { id: usuarioAsignadoLeasing });
+                usuario.fetch({
+                    success: _.bind(function (modelo) {                        
+                        var regionUsuarioLeasing = (modelo.get('region_c') || '').trim().toLowerCase();
+                        var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
+                        var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
+
+                        //VALIDA CUENTAS TIPO PROSPECTO, CLIENTE, PROVEEDOR Y PERSONA ASIGNADO AL USUARIO-LEASING: 0 - PENDIENTE DE ASIGNAR 
+                        // O SI SON DE LA MISMA REGION
+                        if ((usuarioAsignadoLeasing === idUsuarioPendiente && tiposCuentaCPPPValidos.includes(tipodeCuenta)) || esMismaRegion) {
+                            btnSolicitudAsignacion.show();
+                        } else {
+                            btnSolicitudAsignacion.hide();
+                        }
+
+                    }, this)
+                });
             });
         }
     },
 
     solicitudAsignacionCuenta: function () {
-        console.log("Solicitud asignacion... ", this.model.get('user_id_c'));
-        console.log(this.model.get("tipo_registro_cuenta_c"));
-        console.log(this.model.get('user_id_c'));
+        console.log("...Solicitud asignacion...");
         //ASESOR LEASING
         if (App.user.attributes.puestousuario_c === '5') {
 
+            var validarProcesoPendienteAsignar = true;
+            var validarProcesoMismaRegion = true;
             var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';
             var tipodeCuenta = this.model.get("tipo_registro_cuenta_c");
-            var tiposValidosPendiente = ['2', '3', '4', '5'];
-            var tiposValidosDesatendido = ['2', '4', '5'];
-
-            //CUENTAS TIPO PROSPECTO, CLIENTE, PROVEEDOR Y PERSONA ASIGNADO AL USUARIO-LEASING: 0 - PENDIENTE DE ASIGNAR 
-            if (this.model.get('user_id_c') !== idUsuarioPendiente && tiposValidosPendiente.includes(tipodeCuenta)) {
-                app.alert.show('sa_asesor_asignado', {
-                    level: 'error',
-                    autoClose: false,
-                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque ya tiene un Asesor Asignado.</b>'
-                });
-                return false;
-            }
-            //CUENTAS TIPO PROSPECTO, PROVEEDOR Y PERSONA, CON ESTATUS DESATENDIDO
-            if (contexto_cuenta.ResumenProductos.leasing.estatus_atencion !== '2' && tiposValidosDesatendido.includes(tipodeCuenta)) {
-                app.alert.show('sa_cuenta_atendida', {
-                    level: 'error',
-                    autoClose: false,
-                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque ya esta Atendido.</b>'
-                });
-                return false;
-            }
+            var tiposCPPPValidos = ['2', '3', '4', '5'];
+            var tiposPPPValidos = ['2', '4', '5'];
             //OBTIENE INFORMACION DEL USUARIO LEASING
             var usuarioAsignadoLeasing = this.model.get('user_id_c');
             console.log("usuarioAsignadoLeasing ", usuarioAsignadoLeasing);
@@ -9480,47 +9474,116 @@ validaReqUniclickInfo: function () {
                 var usuario = app.data.createBean('Users', { id: usuarioAsignadoLeasing });
                 usuario.fetch({
                     success: _.bind(function (modelo) {
-                        var userName = modelo.get('user_name');
+                        
                         var status = modelo.get('status');
                         var puestoUsuario = modelo.get('puestousuario_c');
-                        var tipoCuenta = this.model.get("tipo_registro_cuenta_c");
-                        var tiposValidos = ['2', '3', '4', '5'];
+                        var regionUsuarioLeasing = (modelo.get('region_c') || '').trim().toLowerCase();
+                        var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
+                        var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
+                        var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
             
-                        console.log(userName, status, puestoUsuario, tipoCuenta);
-                        //CUENTAS TIPO CLIENTE, PROSPECTO, PROVEEDOR Y PERSONA CON ASESOR ASIGNADO INACTIVO DE LA INSTITUCION
-                        if (status === "Inactive" && tiposValidos.includes(tipoCuenta)) {
-                            app.alert.show('sa_asesor_inactivo', {
-                                level: 'error',
-                                autoClose: false,
-                                messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque el Asesor está Inactivo.</b>'
-                            });
-                            return;
+                        //VALIDA USUARIO-LEASING: 0 - PENDIENTE DE ASIGNAR 
+                        if (esPendienteAsignar) {  
+                            console.log("FECTH - VALIDA USUARIO-LEASING: 0 - PENDIENTE DE ASIGNAR ");
+                            //CUENTAS TIPO PROSPECTO, PROVEEDOR Y PERSONA, CON ESTATUS DESATENDIDO
+                            if (contexto_cuenta.ResumenProductos.leasing.estatus_atencion !== '2' && tiposPPPValidos.includes(tipodeCuenta)) {
+                                app.alert.show('sa_cuenta_atendida', {
+                                    level: 'error',
+                                    autoClose: false,
+                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque ya esta Atendido.</b>'
+                                });
+                                validarProcesoPendienteAsignar = false;
+                            }
+                            //CUENTAS TIPO CLIENTE, PROSPECTO, PROVEEDOR Y PERSONA CON ASESOR ASIGNADO INACTIVO DE LA INSTITUCION
+                            if (status === "Inactive" && tiposCPPPValidos.includes(tipodeCuenta)) {
+                                app.alert.show('sa_asesor_inactivo', {
+                                    level: 'error',
+                                    autoClose: false,
+                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque el Asesor está Inactivo.</b>'
+                                });
+                                validarProcesoPendienteAsignar = false;
+                            }
+                            //CUENTAS TIPO CLIENTE, PROSPECTO, PROVEEDOR Y PERSONA CON ASESOR ASIGNADO QUE NO ES ASESOR COMERCIAL - PUESTO USUARIO 5 ES ASESOR LEASING
+                            if (puestoUsuario !== '5' && tiposCPPPValidos.includes(tipodeCuenta)) {
+                                app.alert.show('sa_asesor_no_leasing', {
+                                    level: 'error',
+                                    autoClose: false,
+                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no es Asesor Leasing.</b>'
+                                });
+                                validarProcesoPendienteAsignar = false;
+                            }
+                        } 
+                        // VALIDACIONES PARA "MISMA REGIÓN"
+                        if (!esPendienteAsignar) {
+                            if (!esMismaRegion) {
+                                //DEBE DE IDENTIFICAR QUE LA CUENTA ESTA COMO ASIGNADA A UN ASESOR DE LA MISMA REGION
+                                app.alert.show('sa_asesor_misma_region', {
+                                    level: 'error',
+                                    autoClose: false,
+                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no eres de la misma Región.</b>'
+                                });
+                                validarProcesoMismaRegion = false;
+                            } else {
+                                console.log("FETCH - VALIDA MISMA REGION");
+                                //REGISTRO TIPO CLIENTE EN LA TARJETA DE PRODUCTO LEASING
+                                if (contexto_cuenta.ResumenProductos.leasing.tipo_cuenta !== '3') {
+                                    app.alert.show('sa_cuenta_tipo_cliente', {
+                                        level: 'error',
+                                        autoClose: false,
+                                        messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no es de tipo Cliente.</b>'
+                                    });
+                                    validarProcesoMismaRegion = false;
+                                }
+                                //CUENTA TIPO PROSPECTO, PROVEEDOR Y PERSONA, TIENE UN ESTATUS DE ATENCION ATENDIDO POR EL ASESOR ACTUAL Y DE LA MISMA REGION
+                                if (contexto_cuenta.ResumenProductos.leasing.estatus_atencion !== '1' && tiposPPPValidos.includes(tipodeCuenta)) {
+                                    app.alert.show('sa_cuenta_tipo_cliente', {
+                                        level: 'error',
+                                        autoClose: false,
+                                        messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque ya está Atendido.</b>'
+                                    });
+                                    validarProcesoMismaRegion = false;
+                                }
+                            }
                         }
-                        //CUENTAS TIPO CLIENTE, PROSPECTO, PROVEEDOR Y PERSONA CON ASESOR ASIGNADO QUE NO ES ASESOR COMERCIAL - PUESTO USUARIO 5 ES ASESOR LEASING
-                        if (puestoUsuario !== '5' && tiposValidos.includes(tipoCuenta)) {
-                            app.alert.show('sa_asesor_no_leasing', {
-                                level: 'error',
-                                autoClose: false,
-                                messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no es Asesor Leasing.</b>'
-                            });
-                            return;
+                        // Valida proceso pendiente de asignar
+                        if (esPendienteAsignar && validarProcesoPendienteAsignar) {
+                            this.enviarEmailSolicitudAsignacionAPI(true, false); 
                         }
+                        // Valida proceso misma región
+                        if (!esPendienteAsignar && esMismaRegion && validarProcesoMismaRegion) {
+                            this.enviarEmailSolicitudAsignacionAPI(false, true);
+                        }
+
                     }, this)
                 });
             }
 
-            var btnSolAsignacion = this.getField('solicitud_asignacion');
-            btnSolAsignacion.setDisabled(true);
-
-            app.alert.show('proceso_solicitud_asignacion', {
-                level: 'process',
-                title: 'Enviando correo',
+        } else {
+            app.alert.show('sa_asesor_no_comercial', {
+                level: 'error',
+                autoClose: false,
+                messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no eres un Asesor Leasing.</b>'
             });
+            return false;
+        }
+    },
+
+    enviarEmailSolicitudAsignacionAPI: function(flagPendienteAsignar, flagMismaRegion) {
+        console.log("...EnviarEmailSolicitudAsignacionAPI...");
+        var btnSolAsignacion = this.getField('solicitud_asignacion');
+        btnSolAsignacion.setDisabled(true);
     
+        app.alert.show('proceso_solicitud_asignacion', {
+            level: 'process',
+            title: 'Enviando correo',
+        });
+        
+        //PROCESO PENDIENTE DE ASIGNAR
+        if (flagPendienteAsignar) {        
             var args = {
                 "id_cuenta": this.model.get('id'),
                 "id_asesor_solicita": App.user.attributes.id
-            };
+            };    
             console.log(args);
             app.api.call("create", app.api.buildURL("solicitudAsignacionEmail", null, null, args), null, {
                 success: _.bind(function (response) {
@@ -9532,15 +9595,26 @@ validaReqUniclickInfo: function () {
                     });
                 }, this),
             });
-
-        } else {
-            app.alert.show('sa_asesor_no_comercial', {
-                level: 'error',
-                autoClose: false,
-                messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no eres un Asesor Leasing.</b>'
-            });
-            return false;
         }
-    },
+        //PROCESO DE APROBACION MISMA REGION
+        if (flagMismaRegion) {     
+            var argsa = {
+                "id_cuenta": this.model.get('id'),
+                "id_asesor_solicita": App.user.attributes.id,
+                "id_asesor_anterior": this.model.get('user_id_c'),
+            };    
+            console.log(argsa);       
+            app.api.call("create", app.api.buildURL("voboDirectorRegionalCuentas", null, null, argsa), null, {
+                success: _.bind(function (response) {
+                    app.alert.dismiss('proceso_solicitud_asignacion');
+                    btnSolAsignacion.setDisabled(true);
+                    app.alert.show('alert_correo_aprobacion', {
+                        level: 'success',
+                        messages: response,
+                    });
+                }, this),
+            });
+        }        
+    },    
 
 })
