@@ -352,6 +352,9 @@
 
                             evt.idMunicipio = lead_dir.oDirecciones.direccion[index].municipio;
                             //lead_dir.populateColoniasByMunicipioDE(evt);
+                            lead_dir.oDirecciones.direccion[index].ciudad = Object.entries(listCiudad)[0][0];
+                            lead_dir.oDirecciones.direccion[index].municipio = Object.entries(listMunicipio)[0][0];
+                            lead_dir.oDirecciones.direccion[index].estado = Object.entries(listEstado)[0][0]; 
                         } else {
                             app.alert.show('cp_not_found', {
                                 level: 'error',

@@ -265,7 +265,8 @@
                             //cont_dir.populateEdoByPais(cont_dir.nuevaDireccion.pais);
                             //cont_dir.populateCiudadesByEstado(cont_dir.nuevaDireccion.estado);
                             //cont_dir.populateColoniasByMunicipio(cont_dir.nuevaDireccion.municipio);
-                            cont_dir.nuevaDireccion.colonia = list_colonias[0].idColonia;    
+                            cont_dir.nuevaDireccion.colonia = list_colonias[0].idColonia;  
+                            cont_dir.nuevaDireccion.ciudad = listCiudad[0].idCiudad;  
 
                         } else {
                             app.alert.show('cp_not_found', {
@@ -407,6 +408,7 @@
                             }
                             cont_dir.oDirecciones.direccion[index].listCiudad = listCiudad;
                             cont_dir.oDirecciones.direccion[index].listCiudadFull = listCiudad;
+                            
 
                             //Ejecuta filtro por dependencia de País
                             cont_dir.oDirecciones.direccion[index].pais = (Object.keys(cont_dir.oDirecciones.direccion[index].listPais)[0] != undefined) ? Object.keys(cont_dir.oDirecciones.direccion[index].listPais)[0] : "";
@@ -420,6 +422,9 @@
 
                             evt.idMunicipio = cont_dir.oDirecciones.direccion[index].municipio;
                             //cont_dir.populateColoniasByMunicipioDE(evt);
+                            cont_dir.oDirecciones.direccion[index].ciudad = Object.entries(listCiudad)[0][0];
+                            cont_dir.oDirecciones.direccion[index].municipio = Object.entries(listMunicipio)[0][0];
+                            cont_dir.oDirecciones.direccion[index].estado = Object.entries(listEstado)[0][0]; 
                         } else {
                             app.alert.show('cp_not_found', {
                                 level: 'error',
