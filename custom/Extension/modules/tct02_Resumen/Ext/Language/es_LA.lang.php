@@ -108,3 +108,5 @@ $mod_strings['LBL_ESTADO_CLIENTE'] = 'Estado de Cliente';
 $mod_strings['LBL_SEGUIMIENTO_BC'] = 'Seguimiento Buró de Crédito';
 $mod_strings['LBL_PO_CREADO'] = 'Público Objetivo Guardado';
 $mod_strings['LBL_ID_DIR_COMERCIAL_APRUEBA'] = 'Director Comercial que Aprueba o Rechaza creación de PO';
+$mod_strings['LBL_ID_DIRECTOR_REGION_APROBAR'] = 'ID Director Región Aprobar';
+$mod_strings['LBL_ASIGNACION_ACTIVA_C'] = 'Asignación Activa';
