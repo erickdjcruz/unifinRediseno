@@ -49,6 +49,12 @@
                     this.loadView = true;
                     this.render();
                 }else{
+                    app.alert.show("asignacion_asesores",{
+                        level: "error",
+                        title: "Error",
+                        messages: "No tiene permisos suficientes para reasignar cuentas",
+                        autoClose: false
+                    });					
                     var route = app.router.buildRoute(this.module, null, '');
                     app.router.navigate(route, {trigger: true});
                 }
@@ -520,90 +526,51 @@
                     level: 'process',
                     title: 'Cargando',
             });
-            app.api.call('GET', app.api.buildURL('GetRegistrosAsignadosForProtocolo/' + id_user), null, {
-                success: function (data) {
-                    App.alert.dismiss('obtieneAsignados');
-                    //var maximo_registros_list=App.lang.getAppListStrings('limite_maximo_asignados_list');
-                    var maximo_registros=data.limite;
-
-                    //VALIDA EL CONTEO DE PROSPECTOS
-                    if ((maximo_registros - data.total_asignados) < countProspecto && countProspecto != 0 && data.posicion_operativa.includes('3')) {
-
-                        var leadsDesmarcar = 0;
-                        leadsDesmarcar = ((maximo_registros - data.total_asignados) > 0)?countProspecto-(maximo_registros - data.total_asignados) : "todos los ";
-
-                        var alertOptions = {
-                            title: "No es posible reasignar al asesor seleccionado ya que cuenta con más de " + maximo_registros +" registros asignados de la Metodología LM <br>Si desea continuar con la asignación de:<br>Personas, Clientes o Proveedores,<br>Desmarque " + leadsDesmarcar + " prospecto (s) seleccionado (s).",
-                            level: "error"
-                        };
-                        app.alert.show('validaNumeroProspectos', alertOptions);
-
-                        return;
-                    }
-                    //VALIDA EL TOTAL DE ASIGNADOS CONTRA EL MAXIMO DE REGISTROS Y CUENTA EL NUMERO DE PROSPECTOS
-                    if(data.total_asignados>=maximo_registros && (data.puesto=='2' || data.puesto=='5') && countProspecto >= 1){
-                        var alertOptions = {
-                            title: "No es posible reasignar al asesor seleccionado ya que cuenta con más de " + maximo_registros +" registros asignados<br>Para continuar es necesario atender alguno de sus registros asignados.",
-                            level: "error"
-                        };
-                        app.alert.show('validationProspecto', alertOptions);
-
-                    }else{
-                        var parametros = seleccionadosFull;
-						//var parametros = '';
-                        var producto_seleccionado = $("#Productos").val();
-                        if(!_.isEmpty(parametros)) {
-
-                            var Params = {
-                                'optBl':radioBl,
-                                'seleccionados': parametros,
-                                'reAssignado': reAssignarA,
-                                'producto_seleccionado': producto_seleccionado,
-                                'promoActual': promoActual,
-                            };
-                            app.alert.show('reasignando', {
-                                level: 'process',
-                                title: 'Cargando...'
-                            });
-                            var dnbProfileUrl = app.api.buildURL("AsignacionAsesores", '', {}, {});
-                            app.api.call("create", dnbProfileUrl, {data: Params}, {
-                                success: _.bind(function (data) {
-                                    console.log(typeof data);
-                                    if(data){
-                                        app.alert.dismiss('reasignando');
-                                        self.cuentas = [];
-                                        self.seleccionados = [];
-                                        self.render();
-                                        $('#successful').show();
-                                        self.model.set("users_accounts_1users_ida","");
-                                        self.model.set("users_accounts_1_name","");
-                                        self.model.set("asignar_a_promotor_id","");
-                                        self.model.set("asignar_a_promotor","");
-                                    }else{
-                                        app.alert.dismiss('reasignando');
-                                        var alertOptions = {
-                                            title: "El tipo de producto entre el asesor actual y reasignado debe ser el mismo",
-                                            level: "error"
-                                        };
-                                        app.alert.show('validation', alertOptions);
-                                    }
-                                }, this)
-                            });
+            var parametros = seleccionadosFull;
+            var producto_seleccionado = $("#Productos").val();
+            if(!_.isEmpty(parametros)) {
+                var Params = {
+                    'optBl':radioBl,
+                    'seleccionados': parametros,
+                    'reAssignado': reAssignarA,
+                    'producto_seleccionado': producto_seleccionado,
+                    'promoActual': promoActual,
+                };
+                app.alert.show('reasignando', {
+                    level: 'process',
+                    title: 'Cargando...'
+                });
+                var dnbProfileUrl = app.api.buildURL("AsignacionAsesores", '', {}, {});
+                app.api.call("create", dnbProfileUrl, {data: Params}, {
+                    success: _.bind(function (data) {
+                        console.log(typeof data);
+                        if(data){
+                            app.alert.dismiss('reasignando');
+                            self.cuentas = [];
+                            self.seleccionados = [];
+                            self.render();
+                            $('#successful').show();
+                            self.model.set("users_accounts_1users_ida","");
+                            self.model.set("users_accounts_1_name","");
+                            self.model.set("asignar_a_promotor_id","");
+                            self.model.set("asignar_a_promotor","");
                         }else{
+                            app.alert.dismiss('reasignando');
                             var alertOptions = {
-                                title: "No hay clientes seleccionados para reasignar",
+                                title: "El tipo de producto entre el asesor actual y reasignado debe ser el mismo",
                                 level: "error"
                             };
                             app.alert.show('validation', alertOptions);
                         }
-                    }
-                },
-                error: function (e) {
-                    throw e;
-                }
-            });
-
-
+                    }, this)
+                });
+            }else{
+                var alertOptions = {
+                    title: "No hay clientes seleccionados para reasignar",
+                    level: "error"
+                };
+                app.alert.show('validation', alertOptions);
+            }
         }else{
             var alertOptions = {
                 title: "Por favor, seleccione tanto el Asesor Actual como el Asesor Destino",
@@ -614,22 +581,12 @@
     },
 
     obtenerProductosUsuario: function (){
+		var list_html = '';
         var userId = App.user.id;
         this.productos_list = [];
         var productos_label = app.lang.getAppListStrings('tipo_producto_list');
-
-        app.api.call("read", app.api.buildURL("Users/" + userId, null, null, {}), null, {
-            success: _.bind(function (data) {
-
-                var list_html = '';
-                _.each(data.productos_c, function(value, key) {
-                    list_html += '<option value="' + productos_label[value] + '">' + productos_label[value] + '</option>';
-                });
-
-                this.productos_list = list_html;
-                this.render();
-            }, this)
-        });
+		list_html += '<option value="LEASING">LEASING</option>';
+        this.productos_list = list_html;
     },
 
 })
