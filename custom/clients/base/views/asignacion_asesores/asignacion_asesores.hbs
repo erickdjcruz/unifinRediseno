@@ -1,0 +1,189 @@
+{{#if this.loadView}}
+    <style>
+        .container {
+            overflow-y: auto;
+            display: block;
+            width: 100%;
+        }
+
+        .cuentas {
+            display: table;
+            width: 90%;
+        }
+
+        .cuentasContainer {
+            margin-top: 1%;
+            overflow-y: auto;
+            height: 300px;
+        }
+
+        #containerHeader {
+            font-size: 18px;
+            margin-top: 2%;
+            margin-left: 1%;
+            line-height: 10px;
+        }
+
+        #successful {
+            margin-top: 10%;
+            font-size: 25px;
+            color: #33800d;
+        }
+    </style>
+
+    <div class="container">
+        <h1 id="containerHeader" align="left" style="color:#22608c"><b>Reasignación de asesores</b></h1>
+        <hr margin: 5px>
+        <div class="row-fluid">
+            <div style="color: #e2efe2;background-color:#22608c;border-color:#22608c;border-radius: 10px;margin-left:15px;margin-right:15px;height: 35px;display: table;width: 96%;">
+                <h1>
+                    <p style="vertical-align: middle;  margin: 5px;">
+                       Reasignación por filtros
+                    </p>
+                </h1>
+            </div>
+        </div>
+        <div class="record row-fluid panel_body">
+            <div class="span2 record-cell">
+                <div class="record-label">Producto</div>
+                <span>
+                    <span>
+                        <select id="Productos" style="width: 100%;">
+                            {{{productos_list}}}
+                        </select>
+                                <p class="help-block"></p>
+                    </span>
+                </span>
+            </div>
+            <div class="span2 record-cell">
+                <div class="record-label">Asesor Actual</div>
+                <span>
+                    <span>
+                        {{#each meta.panels}}
+                            {{#each fields}}
+                                {{field ../../this}}
+                            {{/each}}
+                        {{/each}}
+                        <p class="help-block"></p>
+                    </span>
+                </span>
+            </div>
+            <div class="span3 record-cell">
+                <div class="record-label">Cliente / Prospecto</div>
+                <span>
+                    <span>
+                        <input id="filtroCliente" type="text" value="">
+                                <p class="help-block"></p>
+                    </span>
+                </span>
+            </div>
+            <div class="span4 record-cell">
+                <div class="record-label">Tipo de Cuenta</div>
+                <span>
+                    <span>
+                        <select id="tipo_de_cuenta" class="row-fluid select2 tipo_cuenta" multiple="multiple"
+                                        style="width: 100%" size="3">
+                            {{#each tipo_cuenta}}
+                                <option value="{{@key}}">{{this}}</option>
+                            {{/each}}
+                        </select>
+                        <p class="help-block"></p>
+                    </span>
+                </span>
+            </div>
+            <div class="span1 record-cell" style="margin-left:0px;">
+                <div class="record-label">&nbsp;</div>
+                <span>
+                    <span>
+                        <button class="btn btn-primary" id="btn_Cuentas" type="button">Buscar<img
+                                        id='processing' style="display: none;" width="15" height="5"
+                                        src="custom/Levementum/images/icon_processing.gif"></button>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div style="display: none" id="successful">
+            <p style="text-align: center;">Los Clientes fueron reasignados</p>
+        </div>
+        <br>
+    <div class="cuentasContainer">
+    <table class="cuentas tcenter" align="center" border="1">
+        {{#if cuentas}}
+            <tr>
+                <th width="10%"><input type="button" value="Seleccionar Todo" id="btn_STodo" class="btn btn-primary"
+                                       btnState="Off"/></th>
+                <th width="10%">TIPO</th>
+                <th width="60%">NOMBRE</th>
+                <th width="10%">ANTERIOR ASESOR</th>
+                <th width="10%">NUEVO ASESOR</th>
+            </tr>
+            {{#each cuentas}}
+                <tr class='single'>
+                    <td>
+                    <span sfuuid='880' class='list'>
+                          <div class='ellipsis_inline' data-placement='bottom'>
+                            <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>
+								<input type="checkbox" name="selected" value="{{id}}" title="{{getUnifinListValue 'tipo_registro_cuenta_list' tipo_registro_cuenta_c}}" class="selected"/>
+							</span>
+                          </div>
+                    </span>
+                    </td>
+                    <td>
+                    <span sfuuid='880' class='list'>
+                        <div class='ellipsis_inline' data-placement='bottom'>
+                            <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>{{Tipo}}</span>
+                        </div>
+                    </span>
+                    </td>
+                    <td>
+                    <span sfuuid='880' class='list'>
+                          <div class='ellipsis_inline' data-placement='bottom'>
+                              <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>{{name_c}}</span>
+                          </div>
+                    </span>
+                    </td>
+                    <td>
+                    <span sfuuid='880' class='list'>
+                        <div class='ellipsis_inline' data-placement='bottom'>
+                            <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>{{nombre_completo_c}}</span>
+                        </div>
+                    </span>
+                    </td>
+                    <td>
+                    <span sfuuid='880' class='list'>
+						<div class="span2 record-cell">
+                            <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>
+								<select class="usuarios select2 updateusr" style="width: 100%;" data-field="user_id">
+									{{#each ../usuarios_list}}
+										<option value="{{@key}}" {{ifSelected @key ../reports_to_id}}>{{this}}</option>
+									{{/each}}
+								</select>
+							</span>
+                        </div>
+                    </span>
+                    </td>
+                </tr>
+            {{/each}}
+            <tr>
+                <td colspan="4"></td>
+                <td>
+                    <div class="btn-group">
+                        <a class="btn fa fa-caret-left" id="previous_offset"></a>
+                        <a class="btn disabled" id="offset_value" from_set="" to_set="" total="{{../this.total}}"></a>
+                        <a class="btn fa fa-caret-right" id="next_offset"></a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        </div>
+            <div><p></p></div>
+            <table align="left">
+                <tr>
+                    <td></td>
+                    <td><input type="button" value="Guardar" id="btn_ReAsignar" class="btn btn-success"/></td>
+                </tr>
+            </table>
+        {{/if}}
+        <textarea style="display: none" id="crossSeleccionados" value=""></textarea>
+    </div>
+{{/if}}
