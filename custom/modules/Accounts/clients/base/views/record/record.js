@@ -9460,12 +9460,9 @@ validaReqUniclickInfo: function () {
         //ASESOR LEASING
         if (App.user.attributes.puestousuario_c === '5') {
 
-            var validarProcesoPendienteAsignar = true;
-            var validarProcesoMismaRegion = true;
             var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';
-            var tipodeCuenta = this.model.get("tipo_registro_cuenta_c");
-            var tiposCPPPValidos = ['2', '3', '4', '5'];
-            var tiposPPPValidos = ['2', '4', '5'];
+            var esValidoProcesoCeroPendienteAsignar = false;
+            var esValidoProcesoMismaRegion = false;
             //OBTIENE INFORMACION DEL USUARIO LEASING
             var usuarioAsignadoLeasing = this.model.get('user_id_c');
             console.log("usuarioAsignadoLeasing ", usuarioAsignadoLeasing);
@@ -9481,76 +9478,42 @@ validaReqUniclickInfo: function () {
                         var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
                         var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
                         var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
-            
-                        //VALIDA USUARIO-LEASING: 0 - PENDIENTE DE ASIGNAR 
-                        if (esPendienteAsignar) {  
-                            console.log("FECTH - VALIDA USUARIO-LEASING: 0 - PENDIENTE DE ASIGNAR ");
-                            //CUENTAS TIPO PROSPECTO, PROVEEDOR Y PERSONA, CON ESTATUS DESATENDIDO
-                            if (contexto_cuenta.ResumenProductos.leasing.estatus_atencion !== '2' && tiposPPPValidos.includes(tipodeCuenta)) {
-                                app.alert.show('sa_cuenta_atendida', {
+                        var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
+                        var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
+                        
+                        //VALIDACION 0-PENDIENTE DE ASIGNAR: Usuario = 0-pendiente o estatus atención = desatendido o estatus usuario = inactivo o puesto usuario <> asesor comercial
+                        if (esPendienteAsignar) {                              
+                            esValidoProcesoCeroPendienteAsignar = (estatusAtencion === '2' || status === "Inactive" || puestoUsuario !== '5');   
+                            
+                            if (!esValidoProcesoCeroPendienteAsignar) {
+                                app.alert.show('sa_asesor_cero_pendiente_asignar', {
                                     level: 'error',
                                     autoClose: false,
-                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque ya esta Atendido.</b>'
-                                });
-                                validarProcesoPendienteAsignar = false;
-                            }
-                            //CUENTAS TIPO CLIENTE, PROSPECTO, PROVEEDOR Y PERSONA CON ASESOR ASIGNADO INACTIVO DE LA INSTITUCION
-                            if (status === "Inactive" && tiposCPPPValidos.includes(tipodeCuenta)) {
-                                app.alert.show('sa_asesor_inactivo', {
-                                    level: 'error',
-                                    autoClose: false,
-                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque el Asesor está Inactivo.</b>'
-                                });
-                                validarProcesoPendienteAsignar = false;
-                            }
-                            //CUENTAS TIPO CLIENTE, PROSPECTO, PROVEEDOR Y PERSONA CON ASESOR ASIGNADO QUE NO ES ASESOR COMERCIAL - PUESTO USUARIO 5 ES ASESOR LEASING
-                            if (puestoUsuario !== '5' && tiposCPPPValidos.includes(tipodeCuenta)) {
-                                app.alert.show('sa_asesor_no_leasing', {
-                                    level: 'error',
-                                    autoClose: false,
-                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no es Asesor Leasing.</b>'
-                                });
-                                validarProcesoPendienteAsignar = false;
-                            }
-                        } 
-                        // VALIDACIONES PARA "MISMA REGIÓN"
-                        if (!esPendienteAsignar) {
-                            if (!esMismaRegion) {
-                                //DEBE DE IDENTIFICAR QUE LA CUENTA ESTA COMO ASIGNADA A UN ASESOR DE LA MISMA REGION
-                                app.alert.show('sa_asesor_misma_region', {
-                                    level: 'error',
-                                    autoClose: false,
-                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no eres de la misma Región.</b>'
-                                });
-                                validarProcesoMismaRegion = false;
-                            } else {
-                                console.log("FETCH - VALIDA MISMA REGION");
-                                //REGISTRO TIPO CLIENTE EN LA TARJETA DE PRODUCTO LEASING
-                                if (contexto_cuenta.ResumenProductos.leasing.tipo_cuenta !== '3') {
-                                    app.alert.show('sa_cuenta_tipo_cliente', {
-                                        level: 'error',
-                                        autoClose: false,
-                                        messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no es de tipo Cliente.</b>'
-                                    });
-                                    validarProcesoMismaRegion = false;
-                                }
-                                //CUENTA TIPO PROSPECTO, PROVEEDOR Y PERSONA, TIENE UN ESTATUS DE ATENCION ATENDIDO POR EL ASESOR ACTUAL Y DE LA MISMA REGION
-                                if (contexto_cuenta.ResumenProductos.leasing.estatus_atencion !== '1' && tiposPPPValidos.includes(tipodeCuenta)) {
-                                    app.alert.show('sa_cuenta_tipo_cliente', {
-                                        level: 'error',
-                                        autoClose: false,
-                                        messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque ya está Atendido.</b>'
-                                    });
-                                    validarProcesoMismaRegion = false;
-                                }
+                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por 0-Pendiente de Asignar.</b>'
+                                });  
                             }
                         }
+                        //VALIDACIONES MISMA REGIÓN: Si región asesor viejo = región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces entra, Si tipo cuenta = cliente entonces entra}
+                        if (!esPendienteAsignar && esMismaRegion) {
+                            esValidoProcesoMismaRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
+                            
+                            if (!esValidoProcesoMismaRegion) {
+                                app.alert.show('sa_cuenta_tipo_cliente', {
+                                    level: 'error',
+                                    autoClose: false,
+                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Misma Región.</b>'
+                                });
+                            }
+                        }
+                        
                         // Valida proceso pendiente de asignar
-                        if (esPendienteAsignar && validarProcesoPendienteAsignar) {
+                        if (esValidoProcesoCeroPendienteAsignar) {
+                            console.log("ProcesoCeroPendienteAsignar");
                             this.enviarEmailSolicitudAsignacionAPI(true, false); 
                         }
                         // Valida proceso misma región
-                        if (!esPendienteAsignar && esMismaRegion && validarProcesoMismaRegion) {
+                        if (esValidoProcesoMismaRegion) {
+                            console.log("ProcesoMismaRegion");
                             this.enviarEmailSolicitudAsignacionAPI(false, true);
                         }
 
@@ -9614,7 +9577,7 @@ validaReqUniclickInfo: function () {
                     });
                 }, this),
             });
-        }        
+        } 
     },    
 
 })
