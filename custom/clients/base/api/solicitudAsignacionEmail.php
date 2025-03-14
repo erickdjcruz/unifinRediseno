@@ -87,7 +87,7 @@ class SolicitudAsignacionEmail extends SugarApi
                 $emailAsesorSolicita,
                 $nombreAsesorSolicita
             );
-            $response .= "<br>Se envió notificación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
+            $response .= "<br>Se envió notificación a: <b>" . $nombreAsesorSolicita . "</b>";
         }
         //DIRECTOR INFORMA A
         if (!empty($emailDirectorInformaA)) {
@@ -97,7 +97,7 @@ class SolicitudAsignacionEmail extends SugarApi
                 $emailDirectorInformaA,
                 $nombreDirectorInformaA
             );
-            $response .= "<br>Se envió notificación a: " . $nombreDirectorInformaA . ", de la cuenta " . $nombreCuenta;
+            $response .= "<br> y a <b>" . $nombreDirectorInformaA . "</b>, de la cuenta " . $nombreCuenta;
         }
 
         return $response;
@@ -578,13 +578,17 @@ class SolicitudAsignacionEmail extends SugarApi
 
                 // REASIGNACION SOLO SI ES NECESARIO
                 if ($assignedUserProducto !== $idAsesorSolicita) {
-                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateProductoAsesorPrincipal ");
-                    $updateProductoAsesorPrincipal = "
-                        UPDATE uni_productos
-                        SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
-                        WHERE id = '{$idProductoLeasing}'
-                    ";
-                    $GLOBALS['db']->query($updateProductoAsesorPrincipal);
+                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateProductoAsesorPrincipal ". $idAsesorSolicita);
+                    // $updateProductoAsesorPrincipal = "
+                    //     UPDATE uni_productos
+                    //     SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
+                    //     WHERE id = '{$idProductoLeasing}'
+                    // ";
+                    // $GLOBALS['db']->query($updateProductoAsesorPrincipal);
+                    $beanUniProductos = BeanFactory::retrieveBean('uni_Productos', $idProductoLeasing, array('disable_row_level_security' => true));
+                    $beanUniProductos->estatus_atencion = '1';
+                    $beanUniProductos->assigned_user_id = $idAsesorSolicita;
+                    $beanUniProductos->save();
                 }
             }
 
@@ -593,13 +597,17 @@ class SolicitudAsignacionEmail extends SugarApi
             $resultCuenta = $GLOBALS['db']->fetchOne($selectCuenta);
 
             if ($resultCuenta && $resultCuenta['user_id_c'] !== $idAsesorSolicita) {
-                $GLOBALS['log']->fatal("ACTUALIZACION EN updateCuentaAsesorPrincipal ");
-                $updateCuentaAsesorPrincipal = "
-                    UPDATE accounts_cstm
-                    SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
-                    WHERE id_c = '{$idCuenta}'
-                ";
-                $GLOBALS['db']->query($updateCuentaAsesorPrincipal);
+                $GLOBALS['log']->fatal("ACTUALIZACION EN updateCuentaAsesorPrincipal ". $idAsesorSolicita);
+                // $updateCuentaAsesorPrincipal = "
+                //     UPDATE accounts_cstm
+                //     SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
+                //     WHERE id_c = '{$idCuenta}'
+                // ";
+                // $GLOBALS['db']->query($updateCuentaAsesorPrincipal);
+                $beanCuentas = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
+                $beanCuentas->tct_status_atencion_ddw_c = 'Atendido';
+                $beanCuentas->user_id_c = $idAsesorSolicita;
+                $beanCuentas->save();
             }
 
             // BUSQUEDA DE CUENTAS HIJAS RELACIONADAS
@@ -620,13 +628,17 @@ class SolicitudAsignacionEmail extends SugarApi
                 $resultCuentaHija = $GLOBALS['db']->fetchOne($selectCuentaHija);
 
                 if ($resultCuentaHija && $resultCuentaHija['user_id_c'] !== $idAsesorSolicita) {
-                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateRelCuentaHija ");
-                    $updateRelCuentaHija = "
-                        UPDATE accounts_cstm
-                        SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
-                        WHERE id_c = '{$idRelacionCuentaHija}'
-                    ";
-                    $GLOBALS['db']->query($updateRelCuentaHija);
+                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateRelCuentaHija " . $idAsesorSolicita);
+                    // $updateRelCuentaHija = "
+                    //     UPDATE accounts_cstm
+                    //     SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
+                    //     WHERE id_c = '{$idRelacionCuentaHija}'
+                    // ";
+                    // $GLOBALS['db']->query($updateRelCuentaHija);
+                    $beanCuentasHija = BeanFactory::retrieveBean('Accounts', $idRelacionCuentaHija, array('disable_row_level_security' => true));
+                    $beanCuentasHija->tct_status_atencion_ddw_c = 'Atendido';
+                    $beanCuentasHija->user_id_c = $idAsesorSolicita;
+                    $beanCuentasHija->save();
                 }
 
                 // BUSQUEDA DEL PRODUCTO LEASING DE LA CUENTA HIJA
@@ -647,13 +659,17 @@ class SolicitudAsignacionEmail extends SugarApi
 
                     // REASIGNACION SOLO SI ES NECESARIO
                     if ($assignedUserProductoHija !== $idAsesorSolicita) {
-                        $GLOBALS['log']->fatal("ACTUALIZACION EN updateProductoAsesorHija ");
-                        $updateProductoAsesorHija = "
-                            UPDATE uni_productos
-                            SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
-                            WHERE id = '{$idProductoLeasingHija}'
-                        ";
-                        $GLOBALS['db']->query($updateProductoAsesorHija);
+                        $GLOBALS['log']->fatal("ACTUALIZACION EN updateProductoAsesorHija ". $idAsesorSolicita);
+                        // $updateProductoAsesorHija = "
+                        //     UPDATE uni_productos
+                        //     SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
+                        //     WHERE id = '{$idProductoLeasingHija}'
+                        // ";
+                        // $GLOBALS['db']->query($updateProductoAsesorHija);
+                        $beanUniProductoHija = BeanFactory::retrieveBean('uni_Productos', $idProductoLeasingHija, array('disable_row_level_security' => true));
+                        $beanUniProductoHija->estatus_atencion = '1';
+                        $beanUniProductoHija->assigned_user_id = $idAsesorSolicita;
+                        $beanUniProductoHija->save();
                     }
                 }
             }
@@ -672,13 +688,16 @@ class SolicitudAsignacionEmail extends SugarApi
 
                 // REASIGNACION SOLO SI ES NECESARIO
                 if ($assignedUserLead !== $idAsesorSolicita) {
-                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateLeadAsesor ");
-                    $updateLeadAsesor = "
-                        UPDATE leads
-                        SET assigned_user_id = '{$idAsesorSolicita}'
-                        WHERE id = '{$idLead}'
-                    ";
-                    $GLOBALS['db']->query($updateLeadAsesor);
+                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateLeadAsesor ". $idAsesorSolicita);
+                    // $updateLeadAsesor = "
+                    //     UPDATE leads
+                    //     SET assigned_user_id = '{$idAsesorSolicita}'
+                    //     WHERE id = '{$idLead}'
+                    // ";
+                    // $GLOBALS['db']->query($updateLeadAsesor);
+                    $beanLead = BeanFactory::retrieveBean('Leads', $idLead, array('disable_row_level_security' => true));
+                    $beanLead->assigned_user_id = $idAsesorSolicita;
+                    $beanLead->save();
                 }
 
                 // BUSQUEDA DE PUBLICO OBJETIVO (PO) RELACIONADO AL LEAD
@@ -698,13 +717,16 @@ class SolicitudAsignacionEmail extends SugarApi
 
                     // REASIGNACION SOLO SI ES NECESARIO
                     if ($assignedUserPO !== $idAsesorSolicita) {
-                        $GLOBALS['log']->fatal("ACTUALIZACION EN updatePOAsesor ");
-                        $updatePOAsesor = "
-                            UPDATE prospects
-                            SET assigned_user_id = '{$idAsesorSolicita}'
-                            WHERE id = '{$idPO}'
-                        ";
-                        $GLOBALS['db']->query($updatePOAsesor);
+                        $GLOBALS['log']->fatal("ACTUALIZACION EN updatePOAsesor " . $idAsesorSolicita);
+                        // $updatePOAsesor = "
+                        //     UPDATE prospects
+                        //     SET assigned_user_id = '{$idAsesorSolicita}'
+                        //     WHERE id = '{$idPO}'
+                        // ";
+                        // $GLOBALS['db']->query($updatePOAsesor);
+                        $beanPO = BeanFactory::retrieveBean('Prospects', $idPO, array('disable_row_level_security' => true));
+                        $beanPO->assigned_user_id = $idAsesorSolicita;
+                        $beanPO->save();
                     }
                 }
             }
@@ -754,7 +776,7 @@ class SolicitudAsignacionEmail extends SugarApi
                 $emailDirRegional,
                 $nombreDirRegional
             );
-            $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegional . ", para VoBo de la cuenta " . $nombreCuenta;
+            $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegional . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
         }
 
         //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
