@@ -522,7 +522,7 @@
         if(pasa) {
             //Comprobando que el asesor seleccionado destino, no tengo más de 20 registros asignados a el
             var id_user=reAssignarA;
-            App.alert.show('obtieneAsignados', {
+            App.alert.show('reasignando', {
                     level: 'process',
                     title: 'Cargando',
             });
@@ -536,10 +536,6 @@
                     'producto_seleccionado': producto_seleccionado,
                     'promoActual': promoActual,
                 };
-                app.alert.show('reasignando', {
-                    level: 'process',
-                    title: 'Cargando...'
-                });
                 var dnbProfileUrl = app.api.buildURL("AsignacionAsesores", '', {}, {});
                 app.api.call("create", dnbProfileUrl, {data: Params}, {
                     success: _.bind(function (data) {
