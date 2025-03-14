@@ -87,7 +87,7 @@ class SolicitudAsignacionEmail extends SugarApi
                 $emailAsesorSolicita,
                 $nombreAsesorSolicita
             );
-            $response .= "<br>Se envió notificación a: <b>" . $nombreAsesorSolicita . "</b>";
+            $response .= "<br>Se envió notificación a: <b>" . $nombreAsesorSolicita . "</b> ";
         }
         //DIRECTOR INFORMA A
         if (!empty($emailDirectorInformaA)) {
@@ -97,7 +97,7 @@ class SolicitudAsignacionEmail extends SugarApi
                 $emailDirectorInformaA,
                 $nombreDirectorInformaA
             );
-            $response .= "<br> y a <b>" . $nombreDirectorInformaA . "</b>, de la cuenta " . $nombreCuenta;
+            $response .= "y a <b>" . $nombreDirectorInformaA . "</b>, de la cuenta <b>" . $nombreCuenta . "</b>";
         }
 
         return $response;
@@ -689,15 +689,15 @@ class SolicitudAsignacionEmail extends SugarApi
                 // REASIGNACION SOLO SI ES NECESARIO
                 if ($assignedUserLead !== $idAsesorSolicita) {
                     $GLOBALS['log']->fatal("ACTUALIZACION EN updateLeadAsesor ". $idAsesorSolicita);
-                    // $updateLeadAsesor = "
-                    //     UPDATE leads
-                    //     SET assigned_user_id = '{$idAsesorSolicita}'
-                    //     WHERE id = '{$idLead}'
-                    // ";
-                    // $GLOBALS['db']->query($updateLeadAsesor);
-                    $beanLead = BeanFactory::retrieveBean('Leads', $idLead, array('disable_row_level_security' => true));
-                    $beanLead->assigned_user_id = $idAsesorSolicita;
-                    $beanLead->save();
+                    $updateLeadAsesor = "
+                        UPDATE leads
+                        SET assigned_user_id = '{$idAsesorSolicita}'
+                        WHERE id = '{$idLead}'
+                    ";
+                    $GLOBALS['db']->query($updateLeadAsesor);
+                    // $beanLead = BeanFactory::retrieveBean('Leads', $idLead, array('disable_row_level_security' => true));
+                    // $beanLead->assigned_user_id = $idAsesorSolicita;
+                    // $beanLead->save();
                 }
 
                 // BUSQUEDA DE PUBLICO OBJETIVO (PO) RELACIONADO AL LEAD
@@ -724,7 +724,7 @@ class SolicitudAsignacionEmail extends SugarApi
                             WHERE id = '{$idPO}'
                         ";
                         $GLOBALS['db']->query($updatePOAsesor);
-                        // $beanPO = BeanFactory::getBean('Prospects', $idPO, array('disable_row_level_security' => true));
+                        // $beanPO = BeanFactory::retrieveBean('Prospects', $idLead, array('disable_row_level_security' => true));
                         // $beanPO->assigned_user_id = $idAsesorSolicita;
                         // $beanPO->save();
                     }
