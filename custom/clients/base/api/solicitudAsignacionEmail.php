@@ -718,15 +718,15 @@ class SolicitudAsignacionEmail extends SugarApi
                     // REASIGNACION SOLO SI ES NECESARIO
                     if ($assignedUserPO !== $idAsesorSolicita) {
                         $GLOBALS['log']->fatal("ACTUALIZACION EN updatePOAsesor " . $idAsesorSolicita);
-                        // $updatePOAsesor = "
-                        //     UPDATE prospects
-                        //     SET assigned_user_id = '{$idAsesorSolicita}'
-                        //     WHERE id = '{$idPO}'
-                        // ";
-                        // $GLOBALS['db']->query($updatePOAsesor);
-                        $beanPO = BeanFactory::retrieveBean('Prospects', $idPO, array('disable_row_level_security' => true));
-                        $beanPO->assigned_user_id = $idAsesorSolicita;
-                        $beanPO->save();
+                        $updatePOAsesor = "
+                            UPDATE prospects
+                            SET assigned_user_id = '{$idAsesorSolicita}'
+                            WHERE id = '{$idPO}'
+                        ";
+                        $GLOBALS['db']->query($updatePOAsesor);
+                        // $beanPO = BeanFactory::getBean('Prospects', $idPO, array('disable_row_level_security' => true));
+                        // $beanPO->assigned_user_id = $idAsesorSolicita;
+                        // $beanPO->save();
                     }
                 }
             }
