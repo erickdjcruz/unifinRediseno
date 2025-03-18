@@ -578,7 +578,6 @@ class SolicitudAsignacionEmail extends SugarApi
 
                 // REASIGNACION SOLO SI ES NECESARIO
                 if ($assignedUserProducto !== $idAsesorSolicita) {
-                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateProductoAsesorPrincipal ". $idAsesorSolicita);
                     // $updateProductoAsesorPrincipal = "
                     //     UPDATE uni_productos
                     //     SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
@@ -597,7 +596,6 @@ class SolicitudAsignacionEmail extends SugarApi
             $resultCuenta = $GLOBALS['db']->fetchOne($selectCuenta);
 
             if ($resultCuenta && $resultCuenta['user_id_c'] !== $idAsesorSolicita) {
-                $GLOBALS['log']->fatal("ACTUALIZACION EN updateCuentaAsesorPrincipal ". $idAsesorSolicita);
                 // $updateCuentaAsesorPrincipal = "
                 //     UPDATE accounts_cstm
                 //     SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
@@ -628,7 +626,6 @@ class SolicitudAsignacionEmail extends SugarApi
                 $resultCuentaHija = $GLOBALS['db']->fetchOne($selectCuentaHija);
 
                 if ($resultCuentaHija && $resultCuentaHija['user_id_c'] !== $idAsesorSolicita) {
-                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateRelCuentaHija " . $idAsesorSolicita);
                     // $updateRelCuentaHija = "
                     //     UPDATE accounts_cstm
                     //     SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
@@ -659,7 +656,6 @@ class SolicitudAsignacionEmail extends SugarApi
 
                     // REASIGNACION SOLO SI ES NECESARIO
                     if ($assignedUserProductoHija !== $idAsesorSolicita) {
-                        $GLOBALS['log']->fatal("ACTUALIZACION EN updateProductoAsesorHija ". $idAsesorSolicita);
                         // $updateProductoAsesorHija = "
                         //     UPDATE uni_productos
                         //     SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
@@ -688,16 +684,14 @@ class SolicitudAsignacionEmail extends SugarApi
 
                 // REASIGNACION SOLO SI ES NECESARIO
                 if ($assignedUserLead !== $idAsesorSolicita) {
-                    $GLOBALS['log']->fatal("ACTUALIZACION EN updateLeadAsesor ". $idAsesorSolicita);
                     $updateLeadAsesor = "
                         UPDATE leads
                         SET assigned_user_id = '{$idAsesorSolicita}'
                         WHERE id = '{$idLead}'
                     ";
                     $GLOBALS['db']->query($updateLeadAsesor);
-                    // $beanLead = BeanFactory::retrieveBean('Leads', $idLead, array('disable_row_level_security' => true));
-                    // $beanLead->assigned_user_id = $idAsesorSolicita;
-                    // $beanLead->save();
+                    //Establece nuevo registro en tabla de auditoria
+                    $this->insertAuditRecord('leads', $idLead, 'assigned_user_id', 'id', $assignedUserLead, $idAsesorSolicita);
                 }
 
                 // BUSQUEDA DE PUBLICO OBJETIVO (PO) RELACIONADO AL LEAD
@@ -717,20 +711,31 @@ class SolicitudAsignacionEmail extends SugarApi
 
                     // REASIGNACION SOLO SI ES NECESARIO
                     if ($assignedUserPO !== $idAsesorSolicita) {
-                        $GLOBALS['log']->fatal("ACTUALIZACION EN updatePOAsesor " . $idAsesorSolicita);
                         $updatePOAsesor = "
                             UPDATE prospects
                             SET assigned_user_id = '{$idAsesorSolicita}'
                             WHERE id = '{$idPO}'
                         ";
                         $GLOBALS['db']->query($updatePOAsesor);
-                        // $beanPO = BeanFactory::retrieveBean('Prospects', $idLead, array('disable_row_level_security' => true));
-                        // $beanPO->assigned_user_id = $idAsesorSolicita;
-                        // $beanPO->save();
+                        //Establece nuevo registro en tabla de auditoria
+                        $this->insertAuditRecord('prospects', $idPO, 'assigned_user_id', 'id', $assignedUserPO, $idAsesorSolicita);
                     }
                 }
             }
         }
+    }
+
+    public function insertAuditRecord($module, $parent_id, $field_name, $data_type, $before_value, $after_value)
+    {
+        global $current_user;
+        $idAudit = create_guid();
+        $eventAudit = create_guid();
+        $date = TimeDate::getInstance()->nowDb();
+
+        $sqlInsert = "INSERT INTO {$module}_audit (id, parent_id, date_created, created_by, field_name, data_type, before_value_string, after_value_string, before_value_text, after_value_text, event_id, date_updated)
+        VALUES ('{$idAudit}', '{$parent_id}', '{$date}', '{$current_user->id}', '{$field_name}', '{$data_type}', '{$before_value}', '{$after_value}', '', '', '{$eventAudit}', '{$date}')";
+
+        $GLOBALS['db']->query($sqlInsert);
     }
 
     public function voboAsignacionEmail($api, $args)
@@ -1115,7 +1120,7 @@ class SolicitudAsignacionEmail extends SugarApi
                 $response['status'] = '500';
                 $response['description'] .= "<br>Error al enviar notificación de Asignación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
             }
-        }        
+        }
 
         return $response;
     }
