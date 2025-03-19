@@ -9426,9 +9426,7 @@ validaReqUniclickInfo: function () {
 
     _hideBtnSolicitudAsignacion: function () {
         var btnSolicitudAsignacion = this.getField("solicitud_asignacion");
-        var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';
-        var tipodeCuenta = this.model.get("tipo_registro_cuenta_c");
-        var tiposCuentaCPPPValidos = ['2', '3', '4', '5'];
+        var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';       
         var usuarioAsignadoLeasing = this.model.get('user_id_c');
         //OCULTA Y MUESTRA EL BOTON DE SOLICITUD ASIGNACION
         if (btnSolicitudAsignacion) {
@@ -9436,14 +9434,16 @@ validaReqUniclickInfo: function () {
                 //VALIDA USUARIO LEASING
                 var usuario = app.data.createBean('Users', { id: usuarioAsignadoLeasing });
                 usuario.fetch({
-                    success: _.bind(function (modelo) {                        
+                    success: _.bind(function (modelo) {         
+                        var posicionOperativa = App.user.attributes.posicion_operativa_c;               
                         var regionUsuarioLeasing = (modelo.get('region_c') || '').trim().toLowerCase();
                         var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
+                        var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
                         var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
+                        var esDiferenteRegion = !esMismaRegion;
 
-                        //VALIDA CUENTAS TIPO PROSPECTO, CLIENTE, PROVEEDOR Y PERSONA ASIGNADO AL USUARIO-LEASING: 0 - PENDIENTE DE ASIGNAR 
-                        // O SI SON DE LA MISMA REGION
-                        if ((usuarioAsignadoLeasing === idUsuarioPendiente && tiposCuentaCPPPValidos.includes(tipodeCuenta)) || esMismaRegion) {
+                        //VALIDA POSICION OPERATIVA: ASESOR Y SI ES DEL PROCESO 0 - PENDIENTE DE ASIGNAR, MISMA O DIFERENTE REGION
+                        if (posicionOperativa.includes("^3^") && (esPendienteAsignar || esMismaRegion || esDiferenteRegion)) {
                             btnSolicitudAsignacion.show();
                         } else {
                             btnSolicitudAsignacion.hide();
@@ -9457,9 +9457,10 @@ validaReqUniclickInfo: function () {
 
     solicitudAsignacionCuenta: function () {
         console.log("...Solicitud asignacion...");
+        //POSICION OPERATIVA
+        var posicionOperativa = App.user.attributes.posicion_operativa_c;
         //ASESOR LEASING
-        if (App.user.attributes.puestousuario_c === '5') {
-
+        if (posicionOperativa.includes("^3^")) {
             var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';
             var esValidoProcesoCeroPendienteAsignar = false;
             var esValidoProcesoMismaRegion = false;
@@ -9473,7 +9474,7 @@ validaReqUniclickInfo: function () {
                 usuario.fetch({
                     success: _.bind(function (modelo) {
                         var status = modelo.get('status');
-                        var puestoUsuario = modelo.get('puestousuario_c');
+                        var posicionOperativaLocal = App.user.attributes.posicion_operativa_c;
                         var regionUsuarioLeasing = (modelo.get('region_c') || '').trim().toLowerCase();
                         var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
                         var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
@@ -9484,7 +9485,7 @@ validaReqUniclickInfo: function () {
                         
                         //VALIDACION 0-PENDIENTE DE ASIGNAR: Usuario = 0-pendiente o estatus atención = desatendido o estatus usuario = inactivo o puesto usuario <> asesor comercial
                         if (esPendienteAsignar) {                              
-                            esValidoProcesoCeroPendienteAsignar = (estatusAtencion === '2' || status === "Inactive" || puestoUsuario !== '5');   
+                            esValidoProcesoCeroPendienteAsignar = (estatusAtencion === '2' || status === "Inactive" || !posicionOperativaLocal.includes("^3^"));   
                             
                             if (!esValidoProcesoCeroPendienteAsignar) {
                                 app.alert.show('sa_asesor_cero_pendiente_asignar', {
