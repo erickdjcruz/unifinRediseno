@@ -9467,76 +9467,83 @@ validaReqUniclickInfo: function () {
             var esValidoProcesoDiferenteRegion = false;
             //OBTIENE INFORMACION DEL USUARIO LEASING
             var usuarioAsignadoLeasing = this.model.get('user_id_c');
-            console.log("usuarioAsignadoLeasing ", usuarioAsignadoLeasing);
+            console.log("ID_USUARIO_ASIGNADO_LEASING: ", usuarioAsignadoLeasing);
 
             if (usuarioAsignadoLeasing) {
-                var usuario = app.data.createBean('Users', { id: usuarioAsignadoLeasing });
-                usuario.fetch({
-                    success: _.bind(function (modelo) {
-                        var status = modelo.get('status');
-                        var posicionOperativaLocal = App.user.attributes.posicion_operativa_c;
-                        var regionUsuarioLeasing = (modelo.get('region_c') || '').trim().toLowerCase();
-                        var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
-                        var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
-                        var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
-                        var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
-                        var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
-                        var esDiferenteRegion = !esMismaRegion;
-                        
-                        //VALIDACION 0-PENDIENTE DE ASIGNAR: Usuario = 0-pendiente o estatus atención = desatendido o estatus usuario = inactivo o puesto usuario <> asesor comercial
-                        if (esPendienteAsignar) {                              
-                            esValidoProcesoCeroPendienteAsignar = (estatusAtencion === '2' || status === "Inactive" || !posicionOperativaLocal.includes("^3^"));   
-                            
-                            if (!esValidoProcesoCeroPendienteAsignar) {
-                                app.alert.show('sa_asesor_cero_pendiente_asignar', {
-                                    level: 'error',
-                                    autoClose: false,
-                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por 0-Pendiente de Asignar.</b>'
-                                });  
-                            }
-                        }
-                        //VALIDACIONES MISMA REGIÓN: Si región asesor viejo = región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces entra, Si tipo cuenta = cliente entonces entra}
-                        if (!esPendienteAsignar && esMismaRegion) {
-                            esValidoProcesoMismaRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
-                            
-                            if (!esValidoProcesoMismaRegion) {
-                                app.alert.show('sa_asesor_misma_region', {
-                                    level: 'error',
-                                    autoClose: false,
-                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Misma Región.</b>'
-                                });
-                            }
-                        }
+                app.api.call('GET', app.api.buildURL('Users/' + usuarioAsignadoLeasing), null, {
+                    success: _.bind(function (data) {
+                        if (data != "") {
+                            var status = data.status;
+                            var posicionOperativaLocal = App.user.attributes.posicion_operativa_c;
+                            var regionUsuarioLeasing = (data.region_c || '').trim().toLowerCase();
+                            var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
+                            var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
+                            var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
+                            var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
+                            var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
+                            var esDiferenteRegion = !esMismaRegion;
 
-                        //VALIDACIONES DIFERENTE REGIÓN: Si región asesor viejo <> región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces notifica Ricardo Gerardo Si tipo cuenta = cliente entonces VoBo Dir. Regional}
-                        if (!esPendienteAsignar && esDiferenteRegion) {
-                            esValidoProcesoDiferenteRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
-                            
-                            if (!esValidoProcesoDiferenteRegion) {
-                                app.alert.show('sa_asesor_diferente_region', {
-                                    level: 'error',
-                                    autoClose: false,
-                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Diferente Región.</b>'
-                                });
-                            }
-                        }
-                        
-                        // Valida proceso pendiente de asignar
-                        if (esValidoProcesoCeroPendienteAsignar) {
-                            console.log("ProcesoCeroPendienteAsignar");
-                            this.enviarEmailSolicitudAsignacionAPI(true, false, false); 
-                        }
-                        // Valida proceso misma región
-                        if (esValidoProcesoMismaRegion) {
-                            console.log("ProcesoMismaRegion");
-                            this.enviarEmailSolicitudAsignacionAPI(false, true, false);
-                        }
-                        // Valida proceso diferente región
-                        if (esValidoProcesoDiferenteRegion) {
-                            console.log("ProcesoDiferenteRegion");
-                            this.enviarEmailSolicitudAsignacionAPI(false, false, true);
-                        }
+                            //VALIDACION 0-PENDIENTE DE ASIGNAR: Usuario = 0-pendiente o estatus atención = desatendido o estatus usuario = inactivo o puesto usuario <> asesor comercial
+                            if (esPendienteAsignar) {
+                                esValidoProcesoCeroPendienteAsignar = (estatusAtencion === '2' || status === "Inactive" || !posicionOperativaLocal.includes("^3^"));
 
+                                if (!esValidoProcesoCeroPendienteAsignar) {
+                                    app.alert.show('sa_asesor_cero_pendiente_asignar', {
+                                        level: 'error',
+                                        autoClose: false,
+                                        messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por 0-Pendiente de Asignar.</b>'
+                                    });
+                                }
+                            }
+                            //VALIDACIONES MISMA REGIÓN: Si región asesor viejo = región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces entra, Si tipo cuenta = cliente entonces entra}
+                            if (!esPendienteAsignar && esMismaRegion) {
+                                esValidoProcesoMismaRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
+
+                                if (!esValidoProcesoMismaRegion) {
+                                    app.alert.show('sa_asesor_misma_region', {
+                                        level: 'error',
+                                        autoClose: false,
+                                        messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Misma Región.</b>'
+                                    });
+                                }
+                            }
+
+                            //VALIDACIONES DIFERENTE REGIÓN: Si región asesor viejo <> región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces notifica Ricardo Gerardo Si tipo cuenta = cliente entonces VoBo Dir. Regional}
+                            if (!esPendienteAsignar && esDiferenteRegion) {
+                                esValidoProcesoDiferenteRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
+
+                                if (!esValidoProcesoDiferenteRegion) {
+                                    app.alert.show('sa_asesor_diferente_region', {
+                                        level: 'error',
+                                        autoClose: false,
+                                        messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Diferente Región.</b>'
+                                    });
+                                }
+                            }
+
+                            // Valida proceso pendiente de asignar
+                            if (esValidoProcesoCeroPendienteAsignar) {
+                                console.log("ProcesoCeroPendienteAsignar");
+                                this.enviarEmailSolicitudAsignacionAPI(true, false, false);
+                            }
+                            // Valida proceso misma región
+                            if (esValidoProcesoMismaRegion) {
+                                console.log("ProcesoMismaRegion");
+                                this.enviarEmailSolicitudAsignacionAPI(false, true, false);
+                            }
+                            // Valida proceso diferente región
+                            if (esValidoProcesoDiferenteRegion) {
+                                console.log("ProcesoDiferenteRegion");
+                                this.enviarEmailSolicitudAsignacionAPI(false, false, true);
+                            }
+                        }                        
+                    }, this),
+                    error: _.bind(function (error) {
+                        app.alert.show('error_get_usuario_asignacion', {
+                            level: 'error',
+                            autoClose: false,
+                            messages: '<b>Error en el servicio para obtener la información del usuario asignado del producto leasing.</b>'
+                        });
                     }, this)
                 });
             }
