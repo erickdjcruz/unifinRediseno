@@ -9463,6 +9463,7 @@ validaReqUniclickInfo: function () {
             var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';
             var esValidoProcesoCeroPendienteAsignar = false;
             var esValidoProcesoMismaRegion = false;
+            var esValidoProcesoDiferenteRegion = false;
             //OBTIENE INFORMACION DEL USUARIO LEASING
             var usuarioAsignadoLeasing = this.model.get('user_id_c');
             console.log("usuarioAsignadoLeasing ", usuarioAsignadoLeasing);
@@ -9480,6 +9481,7 @@ validaReqUniclickInfo: function () {
                         var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
                         var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
                         var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
+                        var esDiferenteRegion = !esMismaRegion;
                         
                         //VALIDACION 0-PENDIENTE DE ASIGNAR: Usuario = 0-pendiente o estatus atención = desatendido o estatus usuario = inactivo o puesto usuario <> asesor comercial
                         if (esPendienteAsignar) {                              
@@ -9498,10 +9500,23 @@ validaReqUniclickInfo: function () {
                             esValidoProcesoMismaRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
                             
                             if (!esValidoProcesoMismaRegion) {
-                                app.alert.show('sa_cuenta_tipo_cliente', {
+                                app.alert.show('sa_asesor_misma_region', {
                                     level: 'error',
                                     autoClose: false,
                                     messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Misma Región.</b>'
+                                });
+                            }
+                        }
+
+                        //VALIDACIONES DIFERENTE REGIÓN: Si región asesor viejo <> región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces notifica Ricardo Gerardo Si tipo cuenta = cliente entonces VoBo Dir. Regional}
+                        if (!esPendienteAsignar && esDiferenteRegion) {
+                            esValidoProcesoDiferenteRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
+                            
+                            if (!esValidoProcesoDiferenteRegion) {
+                                app.alert.show('sa_asesor_diferente_region', {
+                                    level: 'error',
+                                    autoClose: false,
+                                    messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Diferente Región.</b>'
                                 });
                             }
                         }
@@ -9509,12 +9524,17 @@ validaReqUniclickInfo: function () {
                         // Valida proceso pendiente de asignar
                         if (esValidoProcesoCeroPendienteAsignar) {
                             console.log("ProcesoCeroPendienteAsignar");
-                            this.enviarEmailSolicitudAsignacionAPI(true, false); 
+                            this.enviarEmailSolicitudAsignacionAPI(true, false, false); 
                         }
                         // Valida proceso misma región
                         if (esValidoProcesoMismaRegion) {
                             console.log("ProcesoMismaRegion");
-                            this.enviarEmailSolicitudAsignacionAPI(false, true);
+                            this.enviarEmailSolicitudAsignacionAPI(false, true, false);
+                        }
+                        // Valida proceso diferente región
+                        if (esValidoProcesoMismaRegion) {
+                            console.log("ProcesoDiferenteRegion");
+                            this.enviarEmailSolicitudAsignacionAPI(false, false, true);
                         }
 
                     }, this)
@@ -9531,7 +9551,7 @@ validaReqUniclickInfo: function () {
         }
     },
 
-    enviarEmailSolicitudAsignacionAPI: function(flagPendienteAsignar, flagMismaRegion) {
+    enviarEmailSolicitudAsignacionAPI: function(flagPendienteAsignar, flagMismaRegion, flagDiferenteRegion) {
         console.log("...EnviarEmailSolicitudAsignacionAPI...");
         var btnSolAsignacion = this.getField('solicitud_asignacion');
         btnSolAsignacion.setDisabled(true);
@@ -9559,15 +9579,23 @@ validaReqUniclickInfo: function () {
                 }, this),
             });
         }
-        //PROCESO DE APROBACION MISMA REGION
-        if (flagMismaRegion) {     
-            var argsa = {
+        //PROCESO DE APROBACION MISMA REGION || DIFERENTE REGION
+        if (flagMismaRegion || flagDiferenteRegion) {     
+
+            var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
+            var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
+            //VALIDA SI ES PARA EJECUTIVO DE ESTRATEGIA COMERCIAL/RICARDO GERARDO
+            var esEjecutivoEstrategiaComercial = (flagDiferenteRegion && tipodeCuenta !== '3' && estatusAtencion === '1')? true: false; 
+
+            var argsmdr = {
                 "id_cuenta": this.model.get('id'),
                 "id_asesor_solicita": App.user.attributes.id,
                 "id_asesor_anterior": this.model.get('user_id_c'),
+                "es_diferente_region": flagDiferenteRegion,
+                "es_ejecutivo_estrategia": esEjecutivoEstrategiaComercial
             };    
-            console.log(argsa);       
-            app.api.call("create", app.api.buildURL("voboDirectorRegionalCuentas", null, null, argsa), null, {
+            console.log(argsmdr);
+            app.api.call("create", app.api.buildURL("voboDirectorRegionalCuentas", null, null, argsmdr), null, {
                 success: _.bind(function (response) {
                     app.alert.dismiss('proceso_solicitud_asignacion');
                     btnSolAsignacion.setDisabled(true);
