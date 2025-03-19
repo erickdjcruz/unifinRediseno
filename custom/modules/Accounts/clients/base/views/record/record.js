@@ -9461,6 +9461,7 @@ validaReqUniclickInfo: function () {
         var posicionOperativa = App.user.attributes.posicion_operativa_c;
         //ASESOR LEASING
         if (posicionOperativa.includes("^3^")) {
+            var self = this;
             var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';
             var esValidoProcesoCeroPendienteAsignar = false;
             var esValidoProcesoMismaRegion = false;
@@ -9470,15 +9471,15 @@ validaReqUniclickInfo: function () {
             console.log("ID_USUARIO_ASIGNADO_LEASING: ", usuarioAsignadoLeasing);
 
             if (usuarioAsignadoLeasing) {
-                app.api.call('GET', app.api.buildURL('Users/' + usuarioAsignadoLeasing), null, {
-                    success: _.bind(function (data) {
+                app.api.call('GET', app.api.buildURL('Users/' + usuarioAsignadoLeasing, null, null,), {}, {
+                    success: function (data) {
                         if (data != "") {
                             var status = data.status;
                             var posicionOperativaLocal = App.user.attributes.posicion_operativa_c;
                             var regionUsuarioLeasing = (data.region_c || '').trim().toLowerCase();
                             var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
                             var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
-                            var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
+                            var esPendienteAsignar = usuarioAsignadoLeasing === idUsuarioPendiente;
                             var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
                             var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
                             var esDiferenteRegion = !esMismaRegion;
@@ -9524,27 +9525,27 @@ validaReqUniclickInfo: function () {
                             // Valida proceso pendiente de asignar
                             if (esValidoProcesoCeroPendienteAsignar) {
                                 console.log("ProcesoCeroPendienteAsignar");
-                                this.enviarEmailSolicitudAsignacionAPI(true, false, false);
+                                self.enviarEmailSolicitudAsignacionAPI(true, false, false);
                             }
                             // Valida proceso misma región
                             if (esValidoProcesoMismaRegion) {
                                 console.log("ProcesoMismaRegion");
-                                this.enviarEmailSolicitudAsignacionAPI(false, true, false);
+                                self.enviarEmailSolicitudAsignacionAPI(false, true, false);
                             }
                             // Valida proceso diferente región
                             if (esValidoProcesoDiferenteRegion) {
                                 console.log("ProcesoDiferenteRegion");
-                                this.enviarEmailSolicitudAsignacionAPI(false, false, true);
+                                self.enviarEmailSolicitudAsignacionAPI(false, false, true);
                             }
                         }                        
-                    }, this),
-                    error: _.bind(function (error) {
+                    },
+                    error: function (e) {
                         app.alert.show('error_get_usuario_asignacion', {
                             level: 'error',
                             autoClose: false,
                             messages: '<b>Error en el servicio para obtener la información del usuario asignado del producto leasing.</b>'
                         });
-                    }, this)
+                    }
                 });
             }
 
@@ -9581,7 +9582,7 @@ validaReqUniclickInfo: function () {
                     btnSolAsignacion.setDisabled(true);
                     app.alert.show('alert_correo_sa', {
                         level: 'success',
-                        messages: response,
+                        messages: '<b>' + response + '</b>',
                     });
                 }, this),
             });
@@ -9608,7 +9609,7 @@ validaReqUniclickInfo: function () {
                     btnSolAsignacion.setDisabled(true);
                     app.alert.show('alert_correo_aprobacion', {
                         level: 'success',
-                        messages: response,
+                        messages: '<b>' + response + '</b>',
                     });
                 }, this),
             });
