@@ -744,9 +744,13 @@ class SolicitudAsignacionEmail extends SugarApi
         $idCuenta = $args['id_cuenta'];
         $idAsesorSolicita = $args['id_asesor_solicita'];
         $idAsesorAnterior = $args['id_asesor_anterior'];
+        $esDiferenteRegion = $args['es_diferente_region'];
+        $esEjecutivoEstrategiaComercial = $args['es_ejecutivo_estrategia'];
         $response = "";
-        $linkAutoriza = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionRegion&accion=aceptar&id=' . $idCuenta;
-        $linkRechazo = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionRegion&accion=rechazar&id=' . $idCuenta;
+        $linkAutorizaMismaRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionRegion&accion=aceptar&id=' . $idCuenta;
+        $linkRechazoMismaRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionRegion&accion=rechazar&id=' . $idCuenta;
+        $linkAutorizaDiferenteRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionDifRegion&accion=aceptar&id=' . $idCuenta;
+        $linkRechazoDiferenteRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionDifRegion&accion=rechazar&id=' . $idCuenta;
 
         if (!empty($idCuenta)) {
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
@@ -760,36 +764,111 @@ class SolicitudAsignacionEmail extends SugarApi
             $beanAsesorAnterior = BeanFactory::retrieveBean('Users', $idAsesorAnterior, array('disable_row_level_security' => true));
             $nombreAsesorAnterior = $beanAsesorAnterior->first_name . " " . $beanAsesorAnterior->last_name;
         }
-        //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
-        $id_director_regional = $this->getIdDirectorRegional($beanAsesorSolicita);
-        $GLOBALS['log']->fatal("...id_director_regional..." . $id_director_regional);
-        if (!empty($id_director_regional)) {
-            //INFORMACION DEL DIRECTOR REGIONAL
-            $beanDirRegional = BeanFactory::retrieveBean('Users', $id_director_regional, array('disable_row_level_security' => true));
-            $nombreDirRegional = $beanDirRegional->first_name . " " . $beanDirRegional->last_name;
-            $emailDirRegional = $beanDirRegional->email1;
-        }
-        $GLOBALS['log']->fatal("...nombreDirRegional..." . $nombreDirRegional);
-        //PLANTILLA DE EMAIL PARA VOBO DIRECTOR REGIONAL
-        $body_mail_vobo = $this->buildBodyEmailVoBo($nombreDirRegional, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutoriza, $linkRechazo);
-
-        //EMAIL A DIRECTOR REGIONAL
-        if (!empty($emailDirRegional)) {
-            $this->sendEmailAsesorCuentas(
-                'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
-                $body_mail_vobo,
-                $emailDirRegional,
-                $nombreDirRegional
-            );
-            $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegional . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
-        }
-
         //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
         if (!empty($idCuenta)) {
             $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
-            $beanResumen->asignacion_activa_c = 1;
-            $beanResumen->id_director_region_aprobar_c = $id_director_regional;
             $beanResumen->id_asesor_solicita_c = $idAsesorSolicita;
+        }
+
+        $GLOBALS['log']->fatal("...esDiferenteRegion...". $esDiferenteRegion);
+        //VALIDA SI ES EL PROCESO DE DIFERENTE REGION
+        if ($esDiferenteRegion) {
+            //VALIDA SI ES PARA EL EJECUTIVO DE ESTRATEGIA COMERCIAL - RICARDO GERARDO
+            $GLOBALS['log']->fatal("...PROCESO DIFERENTE REGION...");
+            if ($esEjecutivoEstrategiaComercial) {
+                //LISTA DE CORREO EJECUTIVO DE ESTRATEGIA COMERCIAL
+                global $app_list_strings;
+                $listaIdEjEstrategia = $app_list_strings['ids_aprobador_reasignacion_director_list'];
+                foreach ($listaIdEjEstrategia as $key => $idAprobadorEjecutivoEC) {
+
+                    $GLOBALS['log']->fatal("...list-IdAprobadorEjecutivoEC... ". $idAprobadorEjecutivoEC);
+
+                    if (!empty($idAprobadorEjecutivoEC)) {
+                        $beanEjecutivoEstrategia = BeanFactory::retrieveBean('Users', $idAprobadorEjecutivoEC, array('disable_row_level_security' => true));
+                        $nombreEjecutivoEstrategiaComercial = $beanEjecutivoEstrategia->first_name . " " . $beanEjecutivoEstrategia->last_name;
+                        $emailEjecutivoEstrategiaComercial = $beanEjecutivoEstrategia->email1;
+                    }                
+
+                    $GLOBALS['log']->fatal("...nombreEjecutivoEstrategiaComercial..." . $nombreEjecutivoEstrategiaComercial);
+                    //PLANTILLA DE EMAIL PARA VOBO EJECUTIVO ESTRATEGIA COMERCIAL
+                    $body_mail_vobo_eec = $this->buildBodyEmailVoBo($nombreEjecutivoEstrategiaComercial, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion);
+
+                    //EMAIL A EJECUTIVO ESTRATEGIA COMERCIAL
+                    if (!empty($emailEjecutivoEstrategiaComercial)) {
+                        $this->sendEmailAsesorCuentas(
+                            'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
+                            $body_mail_vobo_eec,
+                            $emailEjecutivoEstrategiaComercial,
+                            $nombreEjecutivoEstrategiaComercial
+                        );
+                        $response .= "<br>Se envió notificación al Ejecutivo de Estrategia Comercial: " . $nombreEjecutivoEstrategiaComercial . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
+                    }
+                    //GUARDA EL ID DEL APROBADOR
+                    $beanResumen->id_director_region_aprobar_c = $idAprobadorEjecutivoEC;
+                }
+
+            } else {
+                //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
+                $id_director_regional_dr = $this->getIdDirectorRegional($beanAsesorSolicita);
+                $GLOBALS['log']->fatal("...DIR. REGIONAL..." . $id_director_regional_dr);
+                if (!empty($id_director_regional_dr)) {
+                    //INFORMACION DEL DIRECTOR REGIONAL
+                    $beanDirRegionalDR = BeanFactory::retrieveBean('Users', $id_director_regional_dr, array('disable_row_level_security' => true));
+                    $nombreDirRegionalDR = $beanDirRegionalDR->first_name . " " . $beanDirRegionalDR->last_name;
+                    $emailDirRegionalDR = $beanDirRegionalDR->email1;
+                }
+                $GLOBALS['log']->fatal("...nombreDirRegional..." . $nombreDirRegionalDR);
+                //PLANTILLA DE EMAIL PARA VOBO DIRECTOR REGIONAL
+                $body_mail_vobo_dr = $this->buildBodyEmailVoBo($nombreDirRegionalDR, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion);
+
+                //EMAIL A DIRECTOR REGIONAL
+                if (!empty($emailDirRegionalDR)) {
+                    $this->sendEmailAsesorCuentas(
+                        'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
+                        $body_mail_vobo_dr,
+                        $emailDirRegionalDR,
+                        $nombreDirRegionalDR
+                    );
+                    $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegionalDR . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
+                }
+                //GUARDA EL ID DEL APROBADOR
+                $beanResumen->id_director_region_aprobar_c = $id_director_regional_dr;
+            }
+
+        } else {
+            /**************************************************** PROCESO MISMA REGION **************************************************** */
+            $GLOBALS['log']->fatal("...PROCESO MISMA REGION...");
+            //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
+            $id_director_regional = $this->getIdDirectorRegional($beanAsesorSolicita);
+            $GLOBALS['log']->fatal("...id_director_regional..." . $id_director_regional);
+            if (!empty($id_director_regional)) {
+                //INFORMACION DEL DIRECTOR REGIONAL
+                $beanDirRegional = BeanFactory::retrieveBean('Users', $id_director_regional, array('disable_row_level_security' => true));
+                $nombreDirRegional = $beanDirRegional->first_name . " " . $beanDirRegional->last_name;
+                $emailDirRegional = $beanDirRegional->email1;
+            }
+            $GLOBALS['log']->fatal("...nombreDirRegional..." . $nombreDirRegional);
+            //PLANTILLA DE EMAIL PARA VOBO DIRECTOR REGIONAL
+            $body_mail_vobo = $this->buildBodyEmailVoBo($nombreDirRegional, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaMismaRegion, $linkRechazoMismaRegion);
+
+            //EMAIL A DIRECTOR REGIONAL
+            if (!empty($emailDirRegional)) {
+                $this->sendEmailAsesorCuentas(
+                    'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
+                    $body_mail_vobo,
+                    $emailDirRegional,
+                    $nombreDirRegional
+                );
+                $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegional . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
+            }
+
+            //GUARDA EL ID DEL APROBADOR
+            $beanResumen->id_director_region_aprobar_c = $id_director_regional;
+        }       
+
+        //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
+        if (!empty($idCuenta)) {
+            $beanResumen->asignacion_activa_c = 1;
             $beanResumen->save();
         }
 
@@ -819,7 +898,7 @@ class SolicitudAsignacionEmail extends SugarApi
         return $id_regional;
     }
 
-    public function buildBodyEmailVoBo($nombre_director_regional, $nombre_asesor_solicta, $nombre_cuenta, $nombre_asesor_anterior, $linkAutoriza, $linkRechazo)
+    public function buildBodyEmailVoBo($nombre_aprobador, $nombre_asesor_solicta, $nombre_cuenta, $nombre_asesor_anterior, $linkAutoriza, $linkRechazo)
     {
         $mailHTML = '<head>
         <title></title>
@@ -951,7 +1030,7 @@ class SolicitudAsignacionEmail extends SugarApi
                                                             <tr>
                                                                 <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                     <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
-                                                                        <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_director_regional . '</strong></p>
+                                                                        <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_aprobador . '</strong></p>
                                                                         <p style="margin: 0; margin-bottom: 16px;">Tu asesor, <strong>' . $nombre_asesor_solicta . ',</strong> solicita la reasignación del Cliente Prospecto: <strong>' . $nombre_cuenta . '.</strong>, actualmente asignado a <strong>' . $nombre_asesor_anterior . '.</strong></p>
                                                                         <p style="margin: 0; margin-bottom: 16px;">Indica tu decisión a continuación:</p>
 
