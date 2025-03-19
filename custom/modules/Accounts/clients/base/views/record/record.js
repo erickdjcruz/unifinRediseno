@@ -9472,7 +9472,6 @@ validaReqUniclickInfo: function () {
                 var usuario = app.data.createBean('Users', { id: usuarioAsignadoLeasing });
                 usuario.fetch({
                     success: _.bind(function (modelo) {
-                        
                         var status = modelo.get('status');
                         var puestoUsuario = modelo.get('puestousuario_c');
                         var regionUsuarioLeasing = (modelo.get('region_c') || '').trim().toLowerCase();
@@ -9532,7 +9531,7 @@ validaReqUniclickInfo: function () {
                             this.enviarEmailSolicitudAsignacionAPI(false, true, false);
                         }
                         // Valida proceso diferente región
-                        if (esValidoProcesoMismaRegion) {
+                        if (esValidoProcesoDiferenteRegion) {
                             console.log("ProcesoDiferenteRegion");
                             this.enviarEmailSolicitudAsignacionAPI(false, false, true);
                         }
