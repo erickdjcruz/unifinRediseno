@@ -9471,8 +9471,8 @@ validaReqUniclickInfo: function () {
             console.log("ID_USUARIO_ASIGNADO_LEASING: ", usuarioAsignadoLeasing);
 
             if (usuarioAsignadoLeasing) {
-                app.api.call('GET', app.api.buildURL('Users/' + usuarioAsignadoLeasing, null, null,), {}, {
-                    success: function (data) {
+                app.api.call('read', app.api.buildURL('Users/' + usuarioAsignadoLeasing, null, null), {}, {
+                    success: _.bind(function (data) {
                         if (data != "") {
                             var status = data.status;
                             var posicionOperativaLocal = App.user.attributes.posicion_operativa_c;
@@ -9538,14 +9538,14 @@ validaReqUniclickInfo: function () {
                                 self.enviarEmailSolicitudAsignacionAPI(false, false, true);
                             }
                         }                        
-                    },
-                    error: function (e) {
+                    }, this),
+                    error: _.bind(function (error) {
                         app.alert.show('error_get_usuario_asignacion', {
                             level: 'error',
                             autoClose: false,
                             messages: '<b>Error en el servicio para obtener la información del usuario asignado del producto leasing.</b>'
                         });
-                    }
+                    }, this)
                 });
             }
 
