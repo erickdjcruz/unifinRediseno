@@ -253,6 +253,9 @@
                             for (var i = 0; i < city_list.length; i++) {
                                 listCiudad[city_list[i].idCiudad] = city_list[i].nameCiudad;
                             }
+                            //FIX BUG ID_CIUDAD
+                            var idCiudad = city_list.find(ciudad => ciudad.idCiudad && ciudad.idCiudad.trim() !== "")?.idCiudad || "";
+
                             cont_dir.nuevaDireccion.listCiudad = listCiudad;
                             cont_dir.nuevaDireccion.listCiudadFull = listCiudad;
 
@@ -266,7 +269,7 @@
                             //cont_dir.populateCiudadesByEstado(cont_dir.nuevaDireccion.estado);
                             //cont_dir.populateColoniasByMunicipio(cont_dir.nuevaDireccion.municipio);
                             cont_dir.nuevaDireccion.colonia = list_colonias[0].idColonia;  
-                            cont_dir.nuevaDireccion.ciudad = listCiudad[0].idCiudad;  
+                            cont_dir.nuevaDireccion.ciudad = idCiudad;
 
                         } else {
                             app.alert.show('cp_not_found', {
