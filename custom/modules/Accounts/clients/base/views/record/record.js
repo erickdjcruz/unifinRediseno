@@ -9518,17 +9518,17 @@
 
                 // Valida proceso pendiente de asignar
                 if (esValidoProcesoCeroPendienteAsignar) {
-                    console.log("ProcesoCeroPendienteAsignar");
+                    console.log("Proceso: 0 - Pendiente de Asignar");
                     this.enviarEmailSolicitudAsignacionAPI(true, false, false);
                 }
                 // Valida proceso misma región
                 if (esValidoProcesoMismaRegion) {
-                    console.log("ProcesoMismaRegion");
+                    console.log("Proceso: Misma Region");
                     this.enviarEmailSolicitudAsignacionAPI(false, true, false);
                 }
                 // Valida proceso diferente región
                 if (esValidoProcesoDiferenteRegion) {
-                    console.log("ProcesoDiferenteRegion");
+                    console.log("Proceso: Diferente Region");
                     this.enviarEmailSolicitudAsignacionAPI(false, false, true);
                 }
             }
@@ -9544,7 +9544,7 @@
     },
 
     enviarEmailSolicitudAsignacionAPI: function (flagPendienteAsignar, flagMismaRegion, flagDiferenteRegion) {
-        console.log("...EnviarEmailSolicitudAsignacionAPI...");
+        console.log("Enviando email solicitud asignacion...");
         var btnSolAsignacion = this.getField('solicitud_asignacion');
         btnSolAsignacion.setDisabled(true);
 
@@ -9567,6 +9567,10 @@
                         level: 'success',
                         messages: '<b>' + response + '</b>',
                     });
+                    // Recargar la página después del éxito
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000); // Espera 2 segundos antes de recargar
                 }, this),
             });
         }
