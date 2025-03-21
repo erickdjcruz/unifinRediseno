@@ -340,8 +340,6 @@
         this.model.on('sync', this.disableNameCliente, this);
         //Muestra mensaje Dynamics265
         this.model.on('sync', this.dynamics365, this);
-        //OCULTA MUESTRA BOTON DE SOLICITUD ASIGNACION
-        this.model.on('sync', this._hideBtnSolicitudAsignacion, this);
         //ASIGNACION AUTOMATICA
         this.context.on('button:solicitud_asignacion:click', this.solicitudAsignacionCuenta, this);
     },
@@ -1405,6 +1403,8 @@
         //Oculta etiquetas 360
         this.$('.record-edit-link-wrapper[data-name="account_vista360"]').remove();
         this.$('div[data-name=account_vista360]').find('div.record-label').addClass('hide');
+        //OCULTA ó MUESTRA BOTON DE SOLICITUD ASIGNACION
+        this._hideBtnSolicitudAsignacion();
     },
 
     editClicked: function () {
@@ -9426,29 +9426,29 @@
     _hideBtnSolicitudAsignacion: function () {
         var btnSolicitudAsignacion = this.getField("solicitud_asignacion");
         var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';
-        var usuarioAsignadoLeasing = this.model.get('user_id_c');
         //OCULTA Y MUESTRA EL BOTON DE SOLICITUD ASIGNACION
         if (btnSolicitudAsignacion) {
             btnSolicitudAsignacion.listenTo(btnSolicitudAsignacion, "render", function () {
                 //VALIDA USUARIO LEASING
-                var usuario = app.data.createBean('Users', { id: usuarioAsignadoLeasing });
-                usuario.fetch({
-                    success: _.bind(function (modelo) {
-                        var regionUsuarioLeasing = (modelo.get('region_c') || '').trim().toLowerCase();
-                        var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
-                        var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
-                        var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
-                        var esDiferenteRegion = !esMismaRegion;
+                var nombreAsesorAsignadoLeasing = contexto_cuenta.ResumenProductos.leasing.nombre_completo_c;
+                var regionUsuarioLeasing = (contexto_cuenta.ResumenProductos.leasing.region_c || '').trim().toLowerCase();
+                var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
+                var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
+                var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
+                var esDiferenteRegion = !esMismaRegion;
 
-                        //VALIDA POSICION OPERATIVA: ASESOR Y SI ES DEL PROCESO 0 - PENDIENTE DE ASIGNAR, MISMA O DIFERENTE REGION
-                        if (esPendienteAsignar || esMismaRegion || esDiferenteRegion) {
-                            btnSolicitudAsignacion.show();
-                        } else {
-                            btnSolicitudAsignacion.hide();
-                        }
-
-                    }, this)
-                });
+                //VALIDA POSICION OPERATIVA: ASESOR Y SI ES DEL PROCESO 0 - PENDIENTE DE ASIGNAR, MISMA O DIFERENTE REGION
+                if (esPendienteAsignar || esMismaRegion || esDiferenteRegion) {
+                    btnSolicitudAsignacion.show();
+                    //MUESTRA EL NOMBRE DEL ASESOR ACTUAL DEL PRODUCTO LEASING EN MISMA Y DIFERENTE REGION
+                    if (!esPendienteAsignar && (esMismaRegion || esDiferenteRegion)) {
+                        $('[data-event="button:solicitud_asignacion:click"]').html("Solicitud de Asignación -&nbsp;<b>" + nombreAsesorAsignadoLeasing + "</b>");
+                    } else {
+                        $('[data-event="button:solicitud_asignacion:click"]').html("Solicitud de Asignación");
+                    }
+                } else {
+                    btnSolicitudAsignacion.hide();
+                }
             });
         }
     },
@@ -9570,7 +9570,7 @@
                     // Recargar la página después del éxito
                     setTimeout(function () {
                         location.reload();
-                    }, 3000); // Espera 2 segundos antes de recargar
+                    }, 5000); // Espera 5 segundos antes de recargar
                 }, this),
             });
         }
