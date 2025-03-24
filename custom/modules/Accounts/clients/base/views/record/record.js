@@ -9433,9 +9433,13 @@
                 var nombreAsesorAsignadoLeasing = contexto_cuenta.ResumenProductos.leasing.nombre_completo_c;
                 var regionUsuarioLeasing = (contexto_cuenta.ResumenProductos.leasing.region_c || '').trim().toLowerCase();
                 var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
-                var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
+                var status = contexto_cuenta.ResumenProductos.leasing.status;
+                var posicionOperativaLeasing = contexto_cuenta.ResumenProductos.leasing.posicion_operativa_c;
+                var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
+                var esUsuarioPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
                 var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
                 var esDiferenteRegion = !esMismaRegion;
+                esPendienteAsignar = (esUsuarioPendienteAsignar || estatusAtencion === '2' || status === "Inactive" || !posicionOperativaLeasing.includes("^3^"));
 
                 //VALIDA POSICION OPERATIVA: ASESOR Y SI ES DEL PROCESO 0 - PENDIENTE DE ASIGNAR, MISMA O DIFERENTE REGION
                 if (esPendienteAsignar || esMismaRegion || esDiferenteRegion) {
@@ -9469,29 +9473,27 @@
 
             if (usuarioAsignadoLeasing) {
                 var status = contexto_cuenta.ResumenProductos.leasing.status;
-                var posicionOperativaLocal = App.user.attributes.posicion_operativa_c;
+                var posicionOperativaLeasing = contexto_cuenta.ResumenProductos.leasing.posicion_operativa_c;
                 var regionUsuarioLeasing = (contexto_cuenta.ResumenProductos.leasing.region_c || '').trim().toLowerCase();
                 var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
                 var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
-                var esPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
+                var esPendienteAsignar = usuarioAsignadoLeasing === idUsuarioPendiente;
                 var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
                 var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
                 var esDiferenteRegion = !esMismaRegion;
 
                 //VALIDACION 0-PENDIENTE DE ASIGNAR: Usuario = 0-pendiente o estatus atención = desatendido o estatus usuario = inactivo o puesto usuario <> asesor comercial
-                if (esPendienteAsignar) {
-                    esValidoProcesoCeroPendienteAsignar = (estatusAtencion === '2' || status === "Inactive" || !posicionOperativaLocal.includes("^3^"));
+                esValidoProcesoCeroPendienteAsignar = esPendienteAsignar || estatusAtencion === '2' || status === "Inactive" || !posicionOperativaLeasing.includes("^3^");
 
-                    if (!esValidoProcesoCeroPendienteAsignar) {
-                        app.alert.show('sa_asesor_cero_pendiente_asignar', {
-                            level: 'error',
-                            autoClose: false,
-                            messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por 0-Pendiente de Asignar.</b>'
-                        });
-                    }
+                if (!esValidoProcesoCeroPendienteAsignar && !esMismaRegion && !esDiferenteRegion) {
+                    app.alert.show('sa_asesor_cero_pendiente_asignar', {
+                        level: 'error',
+                        autoClose: false,
+                        messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por 0-Pendiente de Asignar.</b>'
+                    });
                 }
                 //VALIDACIONES MISMA REGIÓN: Si región asesor viejo = región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces entra, Si tipo cuenta = cliente entonces entra}
-                if (!esPendienteAsignar && esMismaRegion) {
+                if (!esValidoProcesoCeroPendienteAsignar && esMismaRegion) {
                     esValidoProcesoMismaRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
 
                     if (!esValidoProcesoMismaRegion) {
@@ -9504,7 +9506,7 @@
                 }
 
                 //VALIDACIONES DIFERENTE REGIÓN: Si región asesor viejo <> región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces notifica Ricardo Gerardo Si tipo cuenta = cliente entonces VoBo Dir. Regional}
-                if (!esPendienteAsignar && esDiferenteRegion) {
+                if (!esValidoProcesoCeroPendienteAsignar && esDiferenteRegion) { 
                     esValidoProcesoDiferenteRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
 
                     if (!esValidoProcesoDiferenteRegion) {
