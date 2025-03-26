@@ -772,10 +772,11 @@ class SolicitudAsignacionEmail extends SugarApi
 
         $GLOBALS['log']->fatal("...esDiferenteRegion...". $esDiferenteRegion);
         //VALIDA SI ES EL PROCESO DE DIFERENTE REGION
-        if ($esDiferenteRegion) {
+        if ($esDiferenteRegion === true) {
             //VALIDA SI ES PARA EL EJECUTIVO DE ESTRATEGIA COMERCIAL - RICARDO GERARDO
             $GLOBALS['log']->fatal("...PROCESO DIFERENTE REGION...");
-            if ($esEjecutivoEstrategiaComercial) {
+            if ($esEjecutivoEstrategiaComercial === true) {
+                $GLOBALS['log']->fatal("...CON EJECUTIVO ESTRATEGIA COMERCIAL...");
                 //LISTA DE CORREO EJECUTIVO DE ESTRATEGIA COMERCIAL
                 global $app_list_strings;
                 $listaIdEjEstrategia = $app_list_strings['ids_aprobador_reasignacion_director_list'];
@@ -810,7 +811,7 @@ class SolicitudAsignacionEmail extends SugarApi
             } else {
                 //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
                 $id_director_regional_dr = $this->getIdDirectorRegional($beanAsesorSolicita);
-                $GLOBALS['log']->fatal("...DIR. REGIONAL..." . $id_director_regional_dr);
+                $GLOBALS['log']->fatal("...CON_DIR_REGIONAL..." . $id_director_regional_dr);
                 if (!empty($id_director_regional_dr)) {
                     //INFORMACION DEL DIRECTOR REGIONAL
                     $beanDirRegionalDR = BeanFactory::retrieveBean('Users', $id_director_regional_dr, array('disable_row_level_security' => true));
