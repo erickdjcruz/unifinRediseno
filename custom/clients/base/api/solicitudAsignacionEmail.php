@@ -770,7 +770,20 @@ class SolicitudAsignacionEmail extends SugarApi
             $beanResumen->id_asesor_solicita_c = $idAsesorSolicita;
         }
 
-        $GLOBALS['log']->fatal("...esDiferenteRegion...". $esDiferenteRegion);
+        //Datos nombres de cuentas relacionadas para email
+        $selectRelacionesHijas  = "SELECT name from accounts where id in ( 
+            SELECT rrc.account_id1_c as idRelacionCuentaHija
+            FROM rel_relaciones rr
+            INNER JOIN rel_relaciones_accounts_1_c rra ON rra.rel_relaciones_accounts_1rel_relaciones_idb = rr.id
+            INNER JOIN rel_relaciones_cstm rrc ON rrc.id_c = rr.id 
+            WHERE rra.rel_relaciones_accounts_1accounts_ida = '{$idCuenta}' AND rr.deleted = 0)";
+        $relacionesResult = $GLOBALS['db']->query($selectRelacionesHijas);
+        $relacionesHijas = []; // Inicializar arreglo
+        while ($rowRelacion = $GLOBALS['db']->fetchByAssoc($relacionesResult)) {
+            $relacionesHijas[] = $rowRelacion['name']; // Almacenar cada nombre en el arreglo
+        }
+
+        $GLOBALS['log']->fatal("...esDiferenteRegion..." . $esDiferenteRegion);
         //VALIDA SI ES EL PROCESO DE DIFERENTE REGION
         if ($esDiferenteRegion === true) {
             //VALIDA SI ES PARA EL EJECUTIVO DE ESTRATEGIA COMERCIAL - RICARDO GERARDO
@@ -782,17 +795,21 @@ class SolicitudAsignacionEmail extends SugarApi
                 $listaIdEjEstrategia = $app_list_strings['ids_aprobador_reasignacion_director_list'];
                 foreach ($listaIdEjEstrategia as $key => $idAprobadorEjecutivoEC) {
 
-                    $GLOBALS['log']->fatal("...list-IdAprobadorEjecutivoEC... ". $idAprobadorEjecutivoEC);
+                    $GLOBALS['log']->fatal("...list-IdAprobadorEjecutivoEC... " . $idAprobadorEjecutivoEC);
 
                     if (!empty($idAprobadorEjecutivoEC)) {
                         $beanEjecutivoEstrategia = BeanFactory::retrieveBean('Users', $idAprobadorEjecutivoEC, array('disable_row_level_security' => true));
                         $nombreEjecutivoEstrategiaComercial = $beanEjecutivoEstrategia->first_name . " " . $beanEjecutivoEstrategia->last_name;
                         $emailEjecutivoEstrategiaComercial = $beanEjecutivoEstrategia->email1;
-                    }                
+                    }
 
                     $GLOBALS['log']->fatal("...nombreEjecutivoEstrategiaComercial..." . $nombreEjecutivoEstrategiaComercial);
+                    while ($rowRelacion = $GLOBALS['db']->fetchByAssoc($relacionesResult)) {
+                        $relacionesHijas[] = $rowRelacion['name']; // Almacenar cada nombre en el arreglo
+                    }
+
                     //PLANTILLA DE EMAIL PARA VOBO EJECUTIVO ESTRATEGIA COMERCIAL
-                    $body_mail_vobo_eec = $this->buildBodyEmailVoBo($nombreEjecutivoEstrategiaComercial, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion);
+                    $body_mail_vobo_eec = $this->buildBodyEmailVoBo($nombreEjecutivoEstrategiaComercial, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion, $relacionesHijas);
 
                     //EMAIL A EJECUTIVO ESTRATEGIA COMERCIAL
                     if (!empty($emailEjecutivoEstrategiaComercial)) {
@@ -819,8 +836,9 @@ class SolicitudAsignacionEmail extends SugarApi
                     $emailDirRegionalDR = $beanDirRegionalDR->email1;
                 }
                 $GLOBALS['log']->fatal("...nombreDirRegional..." . $nombreDirRegionalDR);
+
                 //PLANTILLA DE EMAIL PARA VOBO DIRECTOR REGIONAL
-                $body_mail_vobo_dr = $this->buildBodyEmailVoBo($nombreDirRegionalDR, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion);
+                $body_mail_vobo_dr = $this->buildBodyEmailVoBo($nombreDirRegionalDR, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion, $relacionesHijas);
 
                 //EMAIL A DIRECTOR REGIONAL
                 if (!empty($emailDirRegionalDR)) {
@@ -850,7 +868,7 @@ class SolicitudAsignacionEmail extends SugarApi
             }
             $GLOBALS['log']->fatal("...nombreDirRegional..." . $nombreDirRegional);
             //PLANTILLA DE EMAIL PARA VOBO DIRECTOR REGIONAL
-            $body_mail_vobo = $this->buildBodyEmailVoBo($nombreDirRegional, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaMismaRegion, $linkRechazoMismaRegion);
+            $body_mail_vobo = $this->buildBodyEmailVoBo($nombreDirRegional, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaMismaRegion, $linkRechazoMismaRegion, $relacionesHijas);
 
             //EMAIL A DIRECTOR REGIONAL
             if (!empty($emailDirRegional)) {
@@ -865,7 +883,7 @@ class SolicitudAsignacionEmail extends SugarApi
 
             //GUARDA EL ID DEL APROBADOR
             $beanResumen->id_director_region_aprobar_c = $id_director_regional;
-        }       
+        }
 
         //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
         if (!empty($idCuenta)) {
@@ -899,7 +917,7 @@ class SolicitudAsignacionEmail extends SugarApi
         return $id_regional;
     }
 
-    public function buildBodyEmailVoBo($nombre_aprobador, $nombre_asesor_solicta, $nombre_cuenta, $nombre_asesor_anterior, $linkAutoriza, $linkRechazo)
+    public function buildBodyEmailVoBo($nombre_aprobador, $nombre_asesor_solicta, $nombre_cuenta, $nombre_asesor_anterior, $linkAutoriza, $linkRechazo, $cuentasHijas)
     {
         $mailHTML = '<head>
         <title></title>
@@ -1032,8 +1050,15 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                 <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                     <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                         <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_aprobador . '</strong></p>
-                                                                        <p style="margin: 0; margin-bottom: 16px;">Tu asesor, <strong>' . $nombre_asesor_solicta . ',</strong> solicita la reasignación del Cliente Prospecto: <strong>' . $nombre_cuenta . '.</strong>, actualmente asignado a <strong>' . $nombre_asesor_anterior . '.</strong></p>
-                                                                        <p style="margin: 0; margin-bottom: 16px;">Indica tu decisión a continuación:</p>
+                                                                        <p style="margin: 0; margin-bottom: 16px;">Tu asesor, <strong>' . $nombre_asesor_solicta . ',</strong> solicita la reasignación del Cliente Prospecto: <strong>' . $nombre_cuenta . '.</strong>, actualmente asignado a <strong>' . $nombre_asesor_anterior . '.</strong></p> 
+                                                                        <br>
+                                                                        <p>Los contactos relacionados son:</p>
+                                                                        <ul>';
+                                                                        for ($i = 0; $i < count($cuentasHijas); $i++) {
+                                                                            $auxHTML = '<li> ' . $cuentasHijas[$i] . "</li>";
+                                                                        }
+                                                                        $mailHTML = $mailHTML . $auxHTML . '</ul>';
+                                                                        $mailHTML = $mailHTML . '<p style="margin: 0; margin-bottom: 16px;">Indica tu decisión a continuación:</p>
 
                                                                         <table border="0" cellpadding="10" cellspacing="0" class="button_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                                                                             <tr>
