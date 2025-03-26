@@ -150,8 +150,7 @@
 			{video:false}
 		}
   },
-
-
+  
 	validarServicioQR:function (  ) {
 		var contextol = this;
 		var input = contexto_cuenta.$('input[type=file]');
@@ -425,6 +424,7 @@
 														var duplicados = 0;
 														var cDuplicado = 0;
 														var cDireccionFiscal = 0;
+														var homologado = 0;
 														var direccion = cont_dir.oDirecciones.direccion;
 														cambioRazonSocial['cambioDirFiscal'] = false;
 														//Itera para validar diferencia en dirección fiscal
@@ -451,11 +451,29 @@
 															duplicado = 0;
 															secuencia = secuencia + 1;
 															if(direccion[key].principal && !direccion[key].inactivo) principal = 1;
+															/*
 															duplicado = (direccion[key].valCodigoPostal == CP) ? duplicado+1 : duplicado;
-															duplicado = (direccion[key].listPais[direccion[key].pais] == Pais) ? duplicado+1 : duplicado;
-															//duplicado = (direccion[key].listEstado[direccion[key].estado] == Estado) ? duplicado+1 : duplicado;
-															duplicado = (direccion[key].listMunicipio[direccion[key].municipio] == Municipio) ? duplicado+1 : duplicado;
-															duplicado = (direccion[key].listColonia[direccion[key].colonia] == Colonia) ? duplicado+1 : duplicado;
+															duplicado = (direccion[key].listPais[direccion[key].pais].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == Pais.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado+1 : duplicado;
+															duplicado = (direccion[key].listEstado[direccion[key].estado].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == Estado.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado+1 : duplicado;
+															duplicado = (direccion[key].listMunicipio[direccion[key].municipio].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == Municipio.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado+1 : duplicado;
+															duplicado = (direccion[key].listColonia[direccion[key].colonia].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == Colonia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado+1 : duplicado;
+															*/
+															//direccion['sinSepomex'] = true;
+															
+															if(_.isEmpty( direccion[key].postal)){
+																duplicado = (direccion[key]?.oldCP == CP) ? duplicado + 1 : duplicado;
+																duplicado = ((direccion[key]?.oldPais ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == (Pais ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado + 1 : duplicado;
+																duplicado = ((direccion[key]?.oldEstado ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == (Estado ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado + 1 : duplicado;
+																duplicado = ((direccion[key]?.oldMunicipio ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == (Municipio ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado + 1 : duplicado;
+																duplicado = ((direccion[key]?.oldColonia ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == (Colonia ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado + 1 : duplicado;
+															}else{
+																duplicado = (direccion[key]?.valCodigoPostal == CP) ? duplicado + 1 : duplicado;
+																duplicado = ((direccion[key]?.valPais ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == (Pais ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado + 1 : duplicado;
+																duplicado = ((direccion[key]?.valEstado ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == (Estado ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado + 1 : duplicado;
+																duplicado = ((direccion[key]?.valMunicipio ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == (Municipio ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado + 1 : duplicado;
+																duplicado = ((direccion[key]?.valColonia ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == (Colonia ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? duplicado + 1 : duplicado;
+															}
+													
 															duplicado = (contextol._limpiezaDatos(direccion[key].calle) == contextol._limpiezaDatos(Calle)) ? duplicado+1 : duplicado;
 															duplicado = (contextol._limpiezaDatos(direccion[key].numext) == contextol._limpiezaDatos(Exterior)) ? duplicado+1 : duplicado;
 															duplicado = (contextol._limpiezaDatos(direccion[key].numint) == contextol._limpiezaDatos(Interior)) ? duplicado+1 : duplicado;
@@ -464,9 +482,9 @@
 																cDireccionFiscal = cDireccionFiscal + 1;
 																indice_indicador = key;
 															}
-															if(duplicado == 8) duplicados = 1;
-															if(duplicado == 8 && cDireccionFiscal == 1) nada = 1;
-															if(duplicado == 8 && cDireccionFiscal == 0) {
+															if(duplicado == 9) duplicados = 1;
+															if(duplicado == 9 && cDireccionFiscal == 1) nada = 1;
+															if(duplicado == 9 && cDireccionFiscal == 0) {
 																var bloqueado = 1;
 																var accesoFiscal = App.user.attributes.tct_alta_clientes_chk_c + App.user.attributes.tct_altaproveedor_chk_c + App.user.attributes.tct_alta_cd_chk_c + App.user.attributes.deudor_factoraje_c;
 																if (accesoFiscal > 0) bloqueado = 0;
@@ -506,7 +524,7 @@
 														Ciudad = ( Ciudad == '' ) ? '_' : Ciudad;
 
 														var strUrl = 'DireccionesQR/' + CP + '/0/' + Colonia +'/'+Municipio+'/'+Estado+'/'+Ciudad;
-                            strUrl = strUrl.replaceAll(' ','+');
+                            							strUrl = strUrl.replaceAll(' ','+');
 														app.api.call('GET', app.api.buildURL(strUrl), null, {
 															success: _.bind(function (data) {
 																Colonia = (Colonia == '_') ? ' ' : Colonia;
@@ -549,9 +567,9 @@
 																		listColonia[i]['idCodigoPostal']=list_colonias[i].idCodigoPostal;
 																		if(list_colonias[i].nameColonia == Colonia) auxColonia = list_colonias[i].idColonia;
 																	}
-																	if(auxColonia==''){
+																	/*if(auxColonia==''){
 																		listColonia['']="";
-																	}
+																	}*/
 																	//Ciudad
 																	var listCiudad = {};
 																	var auxCiudad = '';
@@ -562,8 +580,15 @@
 																		idSinCiudad = (list_ciudades[i].nameCiudad == 'SIN CIUDAD') ? list_ciudades[i].idCiudad : idSinCiudad;
 																	}
 																	
+																	if(auxPais == "") auxPais = Object.keys(listPais)[0];
+																	if(auxEstado == "") auxEstado = Object.keys(listEstado)[0];
+																	if(auxMunicipio == "") auxMunicipio = Object.keys(listMunicipio)[0];
+																	if(auxColonia == "") auxColonia = listColonia[0]?.idColonia; 
+																	if(auxCiudad == "") auxCiudad = Object.keys(listCiudad)[0];
+																	
 																	if(cDireccionFiscal >= 1) {
-																	  if(direccion[indice_indicador].indicador == 2) {
+																	  //if(direccion[indice_indicador].indicador == 2) {
+																		if(direccion[indice_indicador].indicadorSeleccionados.includes('^2^') && duplicados==1){
 																		  direccion[indice_indicador].valCodigoPostal = CP;
 										  								  direccion[indice_indicador].postal = data.idCP;
 																		  direccion[indice_indicador].calle = Calle.trim();
