@@ -880,10 +880,10 @@ class SolicitudAsignacionEmail extends SugarApi
     {
         $equipo_principal_asesor = $beanAsesor->equipo_c;
         $id_regional = "";
-        $qGetDirectorRegional = "SELECT id_c,posicion_operativa_c,uc.equipos_c FROM users u 
+        $qGetDirectorRegional = "SELECT id_c,posicion_operativa_c,uc.equipo_c FROM users u 
         INNER JOIN users_cstm uc 
         ON u.id = uc.id_c
-        AND uc.posicion_operativa_c LIKE '%^2^%' AND uc.equipos_c LIKE '%^{$equipo_principal_asesor}^%'
+        AND uc.posicion_operativa_c LIKE '%^2^%' AND uc.equipo_c = '{$equipo_principal_asesor}'
         WHERE u.status = 'Active' AND u.deleted=0";
 
         $GLOBALS['log']->fatal("Query DIRECTOR REGIONAL");
