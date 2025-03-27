@@ -9586,7 +9586,7 @@
                     btnSolAsignacion.setDisabled(true);
                     app.alert.show('alert_correo_sa', {
                         level: 'success',
-                        messages: '<b>' + response + '</b>',
+                        messages: response,
                     });
                     // Recargar la página después del éxito
                     setTimeout(function () {
@@ -9615,7 +9615,7 @@
                     btnSolAsignacion.setDisabled(true);
                     app.alert.show('alert_correo_aprobacion', {
                         level: 'success',
-                        messages: '<b>' + response + '</b>',
+                        messages: response,
                     });
                 }, this),
             });
