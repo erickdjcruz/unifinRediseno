@@ -9434,7 +9434,7 @@
                 var regionUsuarioLeasing = (contexto_cuenta.ResumenProductos.leasing.region_c || '').trim().toLowerCase();
                 var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
                 var status = contexto_cuenta.ResumenProductos.leasing.status;
-                var posicionOperativaLeasing = contexto_cuenta.ResumenProductos.leasing.posicion_operativa_c;
+                var posicionOperativaLeasing = contexto_cuenta?.ResumenProductos?.leasing?.posicion_operativa_c || "";
                 var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
                 var esUsuarioPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
                 var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
@@ -9473,7 +9473,7 @@
 
             if (usuarioAsignadoLeasing) {
                 var status = contexto_cuenta.ResumenProductos.leasing.status;
-                var posicionOperativaLeasing = contexto_cuenta.ResumenProductos.leasing.posicion_operativa_c;
+                var posicionOperativaLeasing = contexto_cuenta?.ResumenProductos?.leasing?.posicion_operativa_c || "";
                 var regionUsuarioLeasing = (contexto_cuenta.ResumenProductos.leasing.region_c || '').trim().toLowerCase();
                 var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
                 var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
