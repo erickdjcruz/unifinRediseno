@@ -9477,45 +9477,57 @@
                 var regionUsuarioLeasing = (contexto_cuenta.ResumenProductos.leasing.region_c || '').trim().toLowerCase();
                 var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
                 var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
-                var esPendienteAsignar = usuarioAsignadoLeasing === idUsuarioPendiente;
+                var esPendienteAsignar = (usuarioAsignadoLeasing === idUsuarioPendiente);
                 var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
                 var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
                 var esDiferenteRegion = !esMismaRegion;
 
                 //VALIDACION 0-PENDIENTE DE ASIGNAR: Usuario = 0-pendiente o estatus atención = desatendido o estatus usuario = inactivo o puesto usuario <> asesor comercial
-                esValidoProcesoCeroPendienteAsignar = esPendienteAsignar || estatusAtencion === '2' || status === "Inactive" || !posicionOperativaLeasing.includes("^3^");
-
+                esValidoProcesoCeroPendienteAsignar = esPendienteAsignar || estatusAtencion === '2' || status === "Inactive" || !posicionOperativaLeasing.includes("^3^");                  
+                console.log("esValidoProcesoCeroPendienteAsignar ", esValidoProcesoCeroPendienteAsignar);
                 if (!esValidoProcesoCeroPendienteAsignar && !esMismaRegion && !esDiferenteRegion) {
                     app.alert.show('sa_asesor_cero_pendiente_asignar', {
                         level: 'error',
                         autoClose: false,
                         messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por 0-Pendiente de Asignar.</b>'
                     });
+                    return;
                 }
                 //VALIDACIONES MISMA REGIÓN: Si región asesor viejo = región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces entra, Si tipo cuenta = cliente entonces entra}
                 if (!esValidoProcesoCeroPendienteAsignar && esMismaRegion) {
                     esValidoProcesoMismaRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
-
+                    console.log("esValidoProcesoMismaRegion ", esValidoProcesoMismaRegion);
                     if (!esValidoProcesoMismaRegion) {
                         app.alert.show('sa_asesor_misma_region', {
                             level: 'error',
                             autoClose: false,
                             messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Misma Región.</b>'
                         });
+                        return;
                     }
                 }
-
                 //VALIDACIONES DIFERENTE REGIÓN: Si región asesor viejo <> región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces notifica Ricardo Gerardo Si tipo cuenta = cliente entonces VoBo Dir. Regional}
-                if (!esValidoProcesoCeroPendienteAsignar && esDiferenteRegion) { 
+                if (!esValidoProcesoCeroPendienteAsignar && esDiferenteRegion) {
                     esValidoProcesoDiferenteRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
-
+                    console.log("esValidoProcesoDiferenteRegion ", esValidoProcesoDiferenteRegion);
                     if (!esValidoProcesoDiferenteRegion) {
                         app.alert.show('sa_asesor_diferente_region', {
                             level: 'error',
                             autoClose: false,
                             messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Diferente Región.</b>'
                         });
+                        return;
                     }
+                }
+                //VALIDA SI LA POSICION OPERATIVA DEL USUARIO ASIGNADO LEASING ES VACIA
+                console.log("posicionOperativaLeasing ", posicionOperativaLeasing);
+                if (posicionOperativaLeasing === '' && (!esValidoProcesoCeroPendienteAsignar || esValidoProcesoCeroPendienteAsignar)) {
+                    app.alert.show('sa_asesor_asignado_no_comercial', {
+                        level: 'error',
+                        autoClose: false,
+                        messages: '<b>No puedes Solicitar la Asignación de la Cuenta favor de solicitarlo al Ejecutivo de Estrategia Comercial.</b>'
+                    });
+                    return;
                 }
 
                 // Valida proceso pendiente de asignar
@@ -9582,7 +9594,7 @@
             var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
             //VALIDA SI ES PARA EJECUTIVO DE ESTRATEGIA COMERCIAL/RICARDO GERARDO
             var esEjecutivoEstrategiaComercial = (flagDiferenteRegion && tipodeCuenta !== '3' && estatusAtencion === '1') ? true : false;
-
+            console.log("esEjecutivoEstrategiaComercial ", esEjecutivoEstrategiaComercial);
             var argsmdr = {
                 "id_cuenta": this.model.get('id'),
                 "id_asesor_solicita": App.user.attributes.id,
