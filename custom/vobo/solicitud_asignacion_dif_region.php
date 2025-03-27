@@ -38,6 +38,22 @@
 </head>
 <body>
     <?php
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+    header("X-Accel-Buffering: no");
+    // Forzar actualización de caché
+    sugar_cache_clear('all');   // Borra toda la caché
+    sugar_cache_reset();        // Resetea la caché
+    
+    if (!isset($current_user) || empty($current_user->id)) {
+        session_start();
+        if (!isset($_SESSION['authenticated_user_id'])) {
+            header("Location: index.php?module=Users&action=Login");
+            exit;
+        }
+    }
     // Captura el parámetro de la URL
     global $current_user, $sugar_config, $app_list_strings;
     $accion = isset($_GET['accion']) ? $_GET['accion'] : '';
