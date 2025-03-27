@@ -9490,7 +9490,7 @@
                         app.alert.show('sa_asesor_cero_pendiente_asignar', {
                             level: 'error',
                             autoClose: false,
-                            messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por 0-Pendiente de Asignar.</b>'
+                            messages: 'No puedes Solicitar la Asignación de la Cuenta porque <b>no cumple los requisitos de asignación por 0-Pendiente de Asignar.</b>'
                         });
                         return;
                     }
@@ -9501,7 +9501,7 @@
                             app.alert.show('sa_asesor_misma_region', {
                                 level: 'error',
                                 autoClose: false,
-                                messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Misma Región.</b>'
+                                messages: 'No puedes Solicitar la Asignación de la Cuenta porque <b>no cumple los requisitos de asignación por Misma Región.</b>'
                             });
                             return;
                         }
@@ -9513,7 +9513,7 @@
                             app.alert.show('sa_asesor_diferente_region', {
                                 level: 'error',
                                 autoClose: false,
-                                messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no cumple los requisitos de asignación por Diferente Región.</b>'
+                                messages: 'No puedes Solicitar la Asignación de la Cuenta porque <b>no cumple los requisitos de asignación por Diferente Región.</b>'
                             });
                             return;
                         }
@@ -9523,7 +9523,7 @@
                         app.alert.show('sa_asesor_asignado_no_comercial', {
                             level: 'error',
                             autoClose: false,
-                            messages: '<b>No puedes Solicitar la Asignación de la Cuenta favor de solicitarlo al Ejecutivo de Estrategia Comercial.</b>'
+                            messages: 'No puedes Solicitar la Asignación de la Cuenta favor de solicitarlo al <b>Ejecutivo de Estrategia Comercial.</b>'
                         });
                         return;
                     }
@@ -9549,7 +9549,7 @@
                 app.alert.show('sa_asignacion_activa', {
                     level: 'error',
                     autoClose: false,
-                    messages: '<b>La asignación de la cuenta no puede ser solicitada, ya que existe una aprobación en curso.</b>'
+                    messages: 'La asignación de la cuenta no puede ser solicitada, ya que existe una <b>aprobación en curso.</b>'
                 });
                 return false;
             }           
@@ -9558,7 +9558,7 @@
             app.alert.show('sa_asesor_no_comercial', {
                 level: 'error',
                 autoClose: false,
-                messages: '<b>No puedes Solicitar la Asignación de la Cuenta porque no eres un Asesor Leasing.</b>'
+                messages: 'No puedes Solicitar la Asignación de la Cuenta porque <b>NO ERES UN ASESOR LEASING.</b>'
             });
             return false;
         }
