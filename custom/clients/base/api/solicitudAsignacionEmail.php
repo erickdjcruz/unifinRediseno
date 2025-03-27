@@ -578,12 +578,6 @@ class SolicitudAsignacionEmail extends SugarApi
 
                 // REASIGNACION SOLO SI ES NECESARIO
                 if ($assignedUserProducto !== $idAsesorSolicita) {
-                    // $updateProductoAsesorPrincipal = "
-                    //     UPDATE uni_productos
-                    //     SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
-                    //     WHERE id = '{$idProductoLeasing}'
-                    // ";
-                    // $GLOBALS['db']->query($updateProductoAsesorPrincipal);
                     $beanUniProductos = BeanFactory::retrieveBean('uni_Productos', $idProductoLeasing, array('disable_row_level_security' => true));
                     $beanUniProductos->estatus_atencion = '1';
                     $beanUniProductos->assigned_user_id = $idAsesorSolicita;
@@ -596,12 +590,6 @@ class SolicitudAsignacionEmail extends SugarApi
             $resultCuenta = $GLOBALS['db']->fetchOne($selectCuenta);
 
             if ($resultCuenta && $resultCuenta['user_id_c'] !== $idAsesorSolicita) {
-                // $updateCuentaAsesorPrincipal = "
-                //     UPDATE accounts_cstm
-                //     SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
-                //     WHERE id_c = '{$idCuenta}'
-                // ";
-                // $GLOBALS['db']->query($updateCuentaAsesorPrincipal);
                 $beanCuentas = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
                 $beanCuentas->tct_status_atencion_ddw_c = 'Atendido';
                 $beanCuentas->user_id_c = $idAsesorSolicita;
@@ -626,12 +614,6 @@ class SolicitudAsignacionEmail extends SugarApi
                 $resultCuentaHija = $GLOBALS['db']->fetchOne($selectCuentaHija);
 
                 if ($resultCuentaHija && $resultCuentaHija['user_id_c'] !== $idAsesorSolicita) {
-                    // $updateRelCuentaHija = "
-                    //     UPDATE accounts_cstm
-                    //     SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
-                    //     WHERE id_c = '{$idRelacionCuentaHija}'
-                    // ";
-                    // $GLOBALS['db']->query($updateRelCuentaHija);
                     $beanCuentasHija = BeanFactory::retrieveBean('Accounts', $idRelacionCuentaHija, array('disable_row_level_security' => true));
                     $beanCuentasHija->tct_status_atencion_ddw_c = 'Atendido';
                     $beanCuentasHija->user_id_c = $idAsesorSolicita;
@@ -656,12 +638,6 @@ class SolicitudAsignacionEmail extends SugarApi
 
                     // REASIGNACION SOLO SI ES NECESARIO
                     if ($assignedUserProductoHija !== $idAsesorSolicita) {
-                        // $updateProductoAsesorHija = "
-                        //     UPDATE uni_productos
-                        //     SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
-                        //     WHERE id = '{$idProductoLeasingHija}'
-                        // ";
-                        // $GLOBALS['db']->query($updateProductoAsesorHija);
                         $beanUniProductoHija = BeanFactory::retrieveBean('uni_Productos', $idProductoLeasingHija, array('disable_row_level_security' => true));
                         $beanUniProductoHija->estatus_atencion = '1';
                         $beanUniProductoHija->assigned_user_id = $idAsesorSolicita;
@@ -1217,6 +1193,13 @@ class SolicitudAsignacionEmail extends SugarApi
             }
         }
 
+        //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
+        if (!empty($idCuenta)) {
+            $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
+            $beanResumen->asignacion_activa_c = 0;
+            $beanResumen->save();
+        }
+
         return $response;
     }
 
@@ -1695,6 +1678,13 @@ class SolicitudAsignacionEmail extends SugarApi
                 $response['status'] = '500';
                 $response['description'] .= "<br>Error al enviar notificación de Rechazo Asignación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
             }
+        }
+
+        //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
+        if (!empty($idCuenta)) {
+            $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
+            $beanResumen->asignacion_activa_c = 0;
+            $beanResumen->save();
         }
 
         return $response;
