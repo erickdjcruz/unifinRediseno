@@ -343,6 +343,12 @@ class ResumenClienteAPI extends SugarApi
             "pb_grupo" => "",
             "pb_clase" => ""
         );
+        //ASIGNACION AUTOMATICA
+        $arr_principal['asignacion_automatica']=array(
+            "asignacion_activa_c" => "",
+            "id_director_region_aprobar_c" => "",
+            "id_asesor_solicita_c" => ""
+        );
         //String operaciones
         $operaciones_ids = "'".$id_cliente."'";
 
@@ -1028,11 +1034,16 @@ class ResumenClienteAPI extends SugarApi
                 $arr_principal['pb']['pb_division'] = $beanResumen->pb_division_c;
                 $arr_principal['pb']['pb_grupo'] = $beanResumen->pb_grupo_c;
                 $arr_principal['pb']['pb_clase'] = $beanResumen->pb_clase_c;
-        				//Condición del Cliente
-        				$arr_principal['general_cliente']['condicion'] = $app_list_strings['condicion_cliente_list'][$beanResumen->condicion_cliente_c];
-        				$arr_principal['general_cliente']['condicion2'] = $app_list_strings['condicion_cliente_list'][$beanResumen->condicion2_c];
-        				$arr_principal['general_cliente']['condicion3'] = $app_list_strings['condicion_cliente_list'][$beanResumen->condicion3_c];
+        		//Condición del Cliente
+        		$arr_principal['general_cliente']['condicion'] = $app_list_strings['condicion_cliente_list'][$beanResumen->condicion_cliente_c];
+        		$arr_principal['general_cliente']['condicion2'] = $app_list_strings['condicion_cliente_list'][$beanResumen->condicion2_c];
+        		$arr_principal['general_cliente']['condicion3'] = $app_list_strings['condicion_cliente_list'][$beanResumen->condicion3_c];
                 $arr_principal['general_cliente']['tiene_condicion'] = (!empty($arr_principal['general_cliente']['condicion']) || !empty($arr_principal['general_cliente']['condicion2']) || !empty($arr_principal['general_cliente']['condicion3'])) ? true: false;
+
+                //ASIGNACION AUTOMATICA
+                $arr_principal['asignacion_automatica']['asignacion_activa_c'] = $beanResumen->asignacion_activa_c;
+                $arr_principal['asignacion_automatica']['id_director_region_aprobar_c'] = $beanResumen->id_director_region_aprobar_c;
+                $arr_principal['asignacion_automatica']['id_asesor_solicita_c'] = $beanResumen->id_asesor_solicita_c;
             }
         }
 
