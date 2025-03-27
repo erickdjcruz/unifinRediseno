@@ -815,7 +815,7 @@ class SolicitudAsignacionEmail extends SugarApi
                             $emailEjecutivoEstrategiaComercial,
                             $nombreEjecutivoEstrategiaComercial
                         );
-                        $response .= "<br>Se envió notificación al Ejecutivo de Estrategia Comercial: " . $nombreEjecutivoEstrategiaComercial . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
+                        $response .= "<br>Se envió notificación al Ejecutivo de Estrategia Comercial: " . $nombreEjecutivoEstrategiaComercial . ", para VoBo de la Asignación de la cuenta " . $nombreCuenta;
                     }
                     //GUARDA EL ID DEL APROBADOR
                     $beanResumen->id_director_region_aprobar_c = $idAprobadorEjecutivoEC;
@@ -843,7 +843,7 @@ class SolicitudAsignacionEmail extends SugarApi
                         $emailDirRegionalDR,
                         $nombreDirRegionalDR
                     );
-                    $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegionalDR . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
+                    $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegionalDR . ", para VoBo de la Asignación de la cuenta " . $nombreCuenta;
                 }
                 //GUARDA EL ID DEL APROBADOR
                 $beanResumen->id_director_region_aprobar_c = $id_director_regional_dr;
@@ -873,7 +873,7 @@ class SolicitudAsignacionEmail extends SugarApi
                     $emailDirRegional,
                     $nombreDirRegional
                 );
-                $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegional . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
+                $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegional . ", para VoBo de la Asignación de la cuenta " . $nombreCuenta;
             }
             //GUARDA EL ID DEL APROBADOR
             $beanResumen->id_director_region_aprobar_c = $id_director_regional;
