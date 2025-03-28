@@ -1,56 +1,71 @@
 ({
     extendsFrom: 'BaseView',  
 
-    events: {        
+    events: {
+        'submit #comentarioForm': 'enviarComentario'
     },
 
     initialize: function(options){
         this._super('initialize', [options]);
-
+        this.resultado = 0;
+      
         //Extraer la parte después del #
         var hashParams = window.location.hash.split("?")[1];
         var urlParams = new URLSearchParams(hashParams);
 
-        var id = urlParams.get('id') || 'No recibido';
-        var accion = urlParams.get('accion') || 'No recibido';
+        this.id = urlParams.get('id') || 'No recibido';
+        this.accion = urlParams.get('accion') || 'No recibido';
 
-        console.log('ID recibido:', id);
-        console.log('Acción recibida:', accion);
+        console.log('ID recibido:', this.id);
+        console.log('Acción recibida:', this.accion);
         // Mostrar el parámetro en la consola
 
-        // Definir aceptación y rechazo como booleanos
-        this.aceptacion = accion === 'aceptar';
-        this.rechazo = accion === 'rechazar';
-
-        // Guardar en el objeto `this` para que estén disponibles en el HBS
-        this.id = id;
-        this.accion = accion;
-       
-        /*app.api.call("read", app.api.buildURL("Users/" + userId, null, null, {}), null, {
-            success: _.bind(function (data) {
-                var roleReasignacionPromotores = false;
-                if(data.posicion_operativa_c.includes("2")) roleReasignacionPromotores = true;
-                if(roleReasignacionPromotores == true){
-                    this.obtenerProductosUsuario();
-                    this.loadView = true;
-                    this.render();
-                }else{
-                    app.alert.show("asignacion_asesores",{
-                        level: "error",
-                        title: "Error",
-                        messages: "No tiene permisos suficientes para reasignar cuentas",
-                        autoClose: false
-                    });                 
-                    var route = app.router.buildRoute(this.module, null, '');
-                    app.router.navigate(route, {trigger: true});
-                }
-            }, this)
-        })*/
         this._render();
         
     },   
 
-    _render: function () {
+    enviarComentario: function(event) {
+        event.preventDefault(); // Evita recargar la página
+
+        var comentarios = this.$('#comentarios').val().trim();
+
+        // Validación de longitud de comentario
+        if (comentarios.length < 150 || comentarios.length > 500) {
+            this.mostrarMensaje("El comentario debe tener entre 150 y 500 caracteres.", "error");
+            return;
+        }
+
+        var data = {
+            id: this.id,
+            accion: this.accion,
+            comentarios: comentarios
+        };
+
+        // Llamada al API
+        app.api.call("create", app.api.buildURL("customEndpointAsignacion"), data, {
+            success: _.bind(function(response) {
+                if (response.status === '200') {
+                    var mensaje = (this.accion === 'aceptar') ? 
+                        this.aceptacion = 1 :
+                        this.rechazo = 1;
+                    
+                    this.mostrarMensaje(mensaje, "success");
+                } else {
+                    this.mostrarMensaje("Se ha presentado un error.", "error");
+                }
+            }, this),
+            error: _.bind(function() {
+                this.mostrarMensaje("Error en la solicitud.", "error");
+            }, this)
+        });
+    },
+
+    mostrarMensaje: function(texto, tipo) {
+        var mensajeDiv = this.$('#mensaje');
+        mensajeDiv.removeClass().addClass('message ' + tipo).text(texto);
+    },
+
+      _render: function () {
         this._super('_render');
 
         // Actualizar el contenido en el HTML
