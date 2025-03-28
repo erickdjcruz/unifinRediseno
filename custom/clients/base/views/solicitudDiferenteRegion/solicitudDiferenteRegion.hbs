@@ -1,14 +1,19 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Parámetro de la URL</h3>
+        <h3 class="panel-title">Parámetros de la URL</h3>
     </div>
     <div class="panel-body">
-        <p>Valor del parámetro recibido: <strong class="parametro-container">Cargando...</strong></p>
+        <p><strong>ID recibido:</strong> <span class="id-container">Cargando...</span></p>
+        <p><strong>Acción recibida:</strong> <span class="accion-container">Cargando...</span></p>
+        <p><strong>Aceptación:</strong> <span class="aceptacion-container">Cargando...</span></p>
+        <p><strong>Rechazo:</strong> <span class="rechazo-container">Cargando...</span></p>
+
         {{#if aceptacion}}
-        Asignación Procesada
+            <p class="text-success"><strong>Asignación Procesada ✅</strong></p>
         {{/if}}
+
         {{#if rechazo}}
-        Asignación Rechazada
+            <p class="text-danger"><strong>Asignación Rechazada ❌</strong></p>
         {{/if}}
     </div>
 </div>

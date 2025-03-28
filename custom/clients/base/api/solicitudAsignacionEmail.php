@@ -578,12 +578,6 @@ class SolicitudAsignacionEmail extends SugarApi
 
                 // REASIGNACION SOLO SI ES NECESARIO
                 if ($assignedUserProducto !== $idAsesorSolicita) {
-                    // $updateProductoAsesorPrincipal = "
-                    //     UPDATE uni_productos
-                    //     SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
-                    //     WHERE id = '{$idProductoLeasing}'
-                    // ";
-                    // $GLOBALS['db']->query($updateProductoAsesorPrincipal);
                     $beanUniProductos = BeanFactory::retrieveBean('uni_Productos', $idProductoLeasing, array('disable_row_level_security' => true));
                     $beanUniProductos->estatus_atencion = '1';
                     $beanUniProductos->assigned_user_id = $idAsesorSolicita;
@@ -596,12 +590,6 @@ class SolicitudAsignacionEmail extends SugarApi
             $resultCuenta = $GLOBALS['db']->fetchOne($selectCuenta);
 
             if ($resultCuenta && $resultCuenta['user_id_c'] !== $idAsesorSolicita) {
-                // $updateCuentaAsesorPrincipal = "
-                //     UPDATE accounts_cstm
-                //     SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
-                //     WHERE id_c = '{$idCuenta}'
-                // ";
-                // $GLOBALS['db']->query($updateCuentaAsesorPrincipal);
                 $beanCuentas = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
                 $beanCuentas->tct_status_atencion_ddw_c = 'Atendido';
                 $beanCuentas->user_id_c = $idAsesorSolicita;
@@ -626,12 +614,6 @@ class SolicitudAsignacionEmail extends SugarApi
                 $resultCuentaHija = $GLOBALS['db']->fetchOne($selectCuentaHija);
 
                 if ($resultCuentaHija && $resultCuentaHija['user_id_c'] !== $idAsesorSolicita) {
-                    // $updateRelCuentaHija = "
-                    //     UPDATE accounts_cstm
-                    //     SET tct_status_atencion_ddw_c = 'Atendido', user_id_c = '{$idAsesorSolicita}'
-                    //     WHERE id_c = '{$idRelacionCuentaHija}'
-                    // ";
-                    // $GLOBALS['db']->query($updateRelCuentaHija);
                     $beanCuentasHija = BeanFactory::retrieveBean('Accounts', $idRelacionCuentaHija, array('disable_row_level_security' => true));
                     $beanCuentasHija->tct_status_atencion_ddw_c = 'Atendido';
                     $beanCuentasHija->user_id_c = $idAsesorSolicita;
@@ -656,12 +638,6 @@ class SolicitudAsignacionEmail extends SugarApi
 
                     // REASIGNACION SOLO SI ES NECESARIO
                     if ($assignedUserProductoHija !== $idAsesorSolicita) {
-                        // $updateProductoAsesorHija = "
-                        //     UPDATE uni_productos
-                        //     SET estatus_atencion = '1', assigned_user_id = '{$idAsesorSolicita}'
-                        //     WHERE id = '{$idProductoLeasingHija}'
-                        // ";
-                        // $GLOBALS['db']->query($updateProductoAsesorHija);
                         $beanUniProductoHija = BeanFactory::retrieveBean('uni_Productos', $idProductoLeasingHija, array('disable_row_level_security' => true));
                         $beanUniProductoHija->estatus_atencion = '1';
                         $beanUniProductoHija->assigned_user_id = $idAsesorSolicita;
@@ -744,13 +720,13 @@ class SolicitudAsignacionEmail extends SugarApi
         $idCuenta = $args['id_cuenta'];
         $idAsesorSolicita = $args['id_asesor_solicita'];
         $idAsesorAnterior = $args['id_asesor_anterior'];
-        $esDiferenteRegion = $args['es_diferente_region'];
-        $esEjecutivoEstrategiaComercial = $args['es_ejecutivo_estrategia'];
+        $esDiferenteRegion = $args['es_diferente_region'] === 'true' ? 1: 0;
+        $esEjecutivoEstrategiaComercial = $args['es_ejecutivo_estrategia'] === 'true' ? 1: 0;
         $response = "";
-        $linkAutorizaMismaRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionRegion&accion=aceptar&id=' . $idCuenta;
-        $linkRechazoMismaRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionRegion&accion=rechazar&id=' . $idCuenta;
-        $linkAutorizaDiferenteRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionDifRegion&accion=aceptar&id=' . $idCuenta;
-        $linkRechazoDiferenteRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionDifRegion&accion=rechazar&id=' . $idCuenta;
+        $linkAutorizaMismaRegion = $GLOBALS['sugar_config']['site_url'] . '/#Accounts/layout/solicitudMismaRegion?accion=aceptar&id=' . $idCuenta;
+        $linkRechazoMismaRegion = $GLOBALS['sugar_config']['site_url'] . '/#Accounts/layout/solicitudMismaRegion?accion=rechazar&id=' . $idCuenta;
+        $linkAutorizaDiferenteRegion = $GLOBALS['sugar_config']['site_url'] . '/#Accounts/layout/solicitudDiferenteRegion?accion=aceptar&id=' . $idCuenta;
+        $linkRechazoDiferenteRegion = $GLOBALS['sugar_config']['site_url'] . '/#Accounts/layout/solicitudDiferenteRegion?accion=rechazar&id=' . $idCuenta;
 
         if (!empty($idCuenta)) {
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
@@ -783,34 +759,30 @@ class SolicitudAsignacionEmail extends SugarApi
             $relacionesHijas[] = $rowRelacion['name']; // Almacenar cada nombre en el arreglo
         }
 
-        $GLOBALS['log']->fatal("...esDiferenteRegion..." . $esDiferenteRegion);
+        $GLOBALS['log']->fatal("...¿Es_Diferente_Region?... " . $esDiferenteRegion);
         //VALIDA SI ES EL PROCESO DE DIFERENTE REGION
-        if ($esDiferenteRegion === true) {
+        if ($esDiferenteRegion === 1) {
             //VALIDA SI ES PARA EL EJECUTIVO DE ESTRATEGIA COMERCIAL - RICARDO GERARDO
             $GLOBALS['log']->fatal("...PROCESO DIFERENTE REGION...");
-            if ($esEjecutivoEstrategiaComercial === true) {
-                $GLOBALS['log']->fatal("...CON EJECUTIVO ESTRATEGIA COMERCIAL...");
+            if ($esEjecutivoEstrategiaComercial === 1) {
+                $GLOBALS['log']->fatal("...CON EJECUTIVO ESTRATEGIA COMERCIAL... ". $esEjecutivoEstrategiaComercial);
                 //LISTA DE CORREO EJECUTIVO DE ESTRATEGIA COMERCIAL
                 global $app_list_strings;
                 $listaIdEjEstrategia = $app_list_strings['ids_aprobador_reasignacion_director_list'];
                 foreach ($listaIdEjEstrategia as $key => $idAprobadorEjecutivoEC) {
-
-                    $GLOBALS['log']->fatal("...list-IdAprobadorEjecutivoEC... " . $idAprobadorEjecutivoEC);
-
+                    $GLOBALS['log']->fatal("...ListIdAprobadorEjecutivoEC... " . $idAprobadorEjecutivoEC);
                     if (!empty($idAprobadorEjecutivoEC)) {
                         $beanEjecutivoEstrategia = BeanFactory::retrieveBean('Users', $idAprobadorEjecutivoEC, array('disable_row_level_security' => true));
                         $nombreEjecutivoEstrategiaComercial = $beanEjecutivoEstrategia->first_name . " " . $beanEjecutivoEstrategia->last_name;
                         $emailEjecutivoEstrategiaComercial = $beanEjecutivoEstrategia->email1;
                     }
-
-                    $GLOBALS['log']->fatal("...nombreEjecutivoEstrategiaComercial..." . $nombreEjecutivoEstrategiaComercial);
+                    $GLOBALS['log']->fatal("...NombreEjecutivoEstrategiaComercial... " . $nombreEjecutivoEstrategiaComercial);
                     while ($rowRelacion = $GLOBALS['db']->fetchByAssoc($relacionesResult)) {
                         $relacionesHijas[] = $rowRelacion['name']; // Almacenar cada nombre en el arreglo
                     }
-
                     //PLANTILLA DE EMAIL PARA VOBO EJECUTIVO ESTRATEGIA COMERCIAL
                     $body_mail_vobo_eec = $this->buildBodyEmailVoBo($nombreEjecutivoEstrategiaComercial, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion, $relacionesHijas);
-
+                    $GLOBALS['log']->fatal("...EmailEjecutivoEstrategiaComercial... " . $emailEjecutivoEstrategiaComercial);
                     //EMAIL A EJECUTIVO ESTRATEGIA COMERCIAL
                     if (!empty($emailEjecutivoEstrategiaComercial)) {
                         $this->sendEmailAsesorCuentas(
@@ -819,7 +791,7 @@ class SolicitudAsignacionEmail extends SugarApi
                             $emailEjecutivoEstrategiaComercial,
                             $nombreEjecutivoEstrategiaComercial
                         );
-                        $response .= "<br>Se envió notificación al Ejecutivo de Estrategia Comercial: " . $nombreEjecutivoEstrategiaComercial . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
+                        $response .= "<br>Se envió notificación al Ejecutivo de Estrategia Comercial: <b>" . $nombreEjecutivoEstrategiaComercial . "</b>, para VoBo de la Asignación de la cuenta <b>" . $nombreCuenta . "</b>";
                     }
                     //GUARDA EL ID DEL APROBADOR
                     $beanResumen->id_director_region_aprobar_c = $idAprobadorEjecutivoEC;
@@ -828,18 +800,17 @@ class SolicitudAsignacionEmail extends SugarApi
             } else {
                 //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
                 $id_director_regional_dr = $this->getIdDirectorRegional($beanAsesorSolicita);
-                $GLOBALS['log']->fatal("...CON_DIR_REGIONAL..." . $id_director_regional_dr);
+                $GLOBALS['log']->fatal("...ID_DIR_REGIONAL... " . $id_director_regional_dr);
                 if (!empty($id_director_regional_dr)) {
                     //INFORMACION DEL DIRECTOR REGIONAL
                     $beanDirRegionalDR = BeanFactory::retrieveBean('Users', $id_director_regional_dr, array('disable_row_level_security' => true));
                     $nombreDirRegionalDR = $beanDirRegionalDR->first_name . " " . $beanDirRegionalDR->last_name;
                     $emailDirRegionalDR = $beanDirRegionalDR->email1;
                 }
-                $GLOBALS['log']->fatal("...nombreDirRegional..." . $nombreDirRegionalDR);
-
+                $GLOBALS['log']->fatal("...NombreDirRegionalDR... " . $nombreDirRegionalDR);
                 //PLANTILLA DE EMAIL PARA VOBO DIRECTOR REGIONAL
                 $body_mail_vobo_dr = $this->buildBodyEmailVoBo($nombreDirRegionalDR, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion, $relacionesHijas);
-
+                $GLOBALS['log']->fatal("...EmailDirRegionalDR... " . $emailDirRegionalDR);
                 //EMAIL A DIRECTOR REGIONAL
                 if (!empty($emailDirRegionalDR)) {
                     $this->sendEmailAsesorCuentas(
@@ -848,7 +819,7 @@ class SolicitudAsignacionEmail extends SugarApi
                         $emailDirRegionalDR,
                         $nombreDirRegionalDR
                     );
-                    $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegionalDR . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
+                    $response .= "<br>Se envió notificación al Director Regional: <b>" . $nombreDirRegionalDR . "</b>, para VoBo de la Asignación de la cuenta <b>" . $nombreCuenta . "</b>";
                 }
                 //GUARDA EL ID DEL APROBADOR
                 $beanResumen->id_director_region_aprobar_c = $id_director_regional_dr;
@@ -859,17 +830,17 @@ class SolicitudAsignacionEmail extends SugarApi
             $GLOBALS['log']->fatal("...PROCESO MISMA REGION...");
             //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
             $id_director_regional = $this->getIdDirectorRegional($beanAsesorSolicita);
-            $GLOBALS['log']->fatal("...id_director_regional..." . $id_director_regional);
+            $GLOBALS['log']->fatal("...Id_Director_Regional... " . $id_director_regional);
             if (!empty($id_director_regional)) {
                 //INFORMACION DEL DIRECTOR REGIONAL
                 $beanDirRegional = BeanFactory::retrieveBean('Users', $id_director_regional, array('disable_row_level_security' => true));
                 $nombreDirRegional = $beanDirRegional->first_name . " " . $beanDirRegional->last_name;
                 $emailDirRegional = $beanDirRegional->email1;
             }
-            $GLOBALS['log']->fatal("...nombreDirRegional..." . $nombreDirRegional);
+            $GLOBALS['log']->fatal("...NombreDirRegional... " . $nombreDirRegional);
             //PLANTILLA DE EMAIL PARA VOBO DIRECTOR REGIONAL
             $body_mail_vobo = $this->buildBodyEmailVoBo($nombreDirRegional, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaMismaRegion, $linkRechazoMismaRegion, $relacionesHijas);
-
+            $GLOBALS['log']->fatal("...EmailDirRegional... " . $emailDirRegional);
             //EMAIL A DIRECTOR REGIONAL
             if (!empty($emailDirRegional)) {
                 $this->sendEmailAsesorCuentas(
@@ -878,9 +849,8 @@ class SolicitudAsignacionEmail extends SugarApi
                     $emailDirRegional,
                     $nombreDirRegional
                 );
-                $response .= "<br>Se envió notificación al Director Regional: " . $nombreDirRegional . ", para VoBo de la Aignación de la cuenta " . $nombreCuenta;
+                $response .= "<br>Se envió notificación al Director Regional: <b>" . $nombreDirRegional . "</b>, para VoBo de la Asignación de la cuenta <b>" . $nombreCuenta . "</b>";
             }
-
             //GUARDA EL ID DEL APROBADOR
             $beanResumen->id_director_region_aprobar_c = $id_director_regional;
         }
@@ -903,9 +873,6 @@ class SolicitudAsignacionEmail extends SugarApi
         ON u.id = uc.id_c
         AND uc.posicion_operativa_c LIKE '%^2^%' AND uc.equipo_c = '{$equipo_principal_asesor}'
         WHERE u.status = 'Active' AND u.deleted=0";
-
-        $GLOBALS['log']->fatal("Query DIRECTOR REGIONAL");
-        $GLOBALS['log']->fatal($qGetDirectorRegional);
 
         $resultadoRegional = $GLOBALS['db']->query($qGetDirectorRegional);
 
@@ -1051,7 +1018,6 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                     <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                         <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_aprobador . '</strong></p>
                                                                         <p style="margin: 0; margin-bottom: 16px;">Tu asesor, <strong>' . $nombre_asesor_solicta . ',</strong> solicita la reasignación del Cliente Prospecto: <strong>' . $nombre_cuenta . '.</strong>, actualmente asignado a <strong>' . $nombre_asesor_anterior . '.</strong></p> 
-                                                                        <br>
                                                                         <p>Los contactos relacionados son:</p>
                                                                         <ul>';
                                                                         for ($i = 0; $i < count($cuentasHijas); $i++) {
@@ -1164,7 +1130,8 @@ class SolicitudAsignacionEmail extends SugarApi
         $comentarioDirectorRegional = $args['comentarios'];
         $response = [];
         $response['status'] = '';
-        $response['description'] = '';
+        $banderaEmailAsesorAnterior = 0;
+        $banderaEmailAsesorActual = 0;
 
         if (!empty($idCuenta)) {
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
@@ -1194,11 +1161,7 @@ class SolicitudAsignacionEmail extends SugarApi
             );
 
             if ($success1) {
-                $response['status'] = '200';
-                $response['description'] .= "<br>Se envió notificación de Reasignación al Asesor Anterior: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
-            } else {
-                $response['status'] = '500';
-                $response['description'] .= "<br>Error al enviar notificación de Reasignación al Asesor Anterior: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
+                $banderaEmailAsesorAnterior = 1;                
             }
         }
 
@@ -1219,12 +1182,24 @@ class SolicitudAsignacionEmail extends SugarApi
             );
 
             if ($success2) {
-                $response['status'] = '200';
-                $response['description'] .= "<br>Se envió notificación de Asignación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
-            } else {
-                $response['status'] = '500';
-                $response['description'] .= "<br>Error al enviar notificación de Asignación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
-            }
+                $banderaEmailAsesorActual = 1;                
+            }            
+        }
+
+        //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
+        if (!empty($idCuenta)) {
+            $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
+            $beanResumen->asignacion_activa_c = 0;
+            $beanResumen->save();
+        }
+
+        $GLOBALS['log']->fatal("...Autoriza-EnviaEmailAsesorAnterior... ". $banderaEmailAsesorAnterior);
+        $GLOBALS['log']->fatal("...Autoriza-EnviaEmailAsesorActual... ". $banderaEmailAsesorActual);
+
+        if ($banderaEmailAsesorAnterior || $banderaEmailAsesorActual) {
+            $response['status'] = '200';            
+        } else {
+            $response['status'] = '500';            
         }
 
         return $response;
@@ -1675,7 +1650,7 @@ class SolicitudAsignacionEmail extends SugarApi
         $comentarioDirectorRegional = $args['comentarios'];
         $response = [];
         $response['status'] = '';
-        $response['description'] = '';
+        $banderaEmailAsesor = 0;
 
         if (!empty($idCuenta)) {
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
@@ -1699,12 +1674,23 @@ class SolicitudAsignacionEmail extends SugarApi
             );
 
             if ($success) {
-                $response['status'] = '200';
-                $response['description'] .= "<br>Se envió notificación de Rechazo Asignación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
-            } else {
-                $response['status'] = '500';
-                $response['description'] .= "<br>Error al enviar notificación de Rechazo Asignación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
-            }
+                $banderaEmailAsesor = 1;
+            } 
+        }
+
+        //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
+        if (!empty($idCuenta)) {
+            $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
+            $beanResumen->asignacion_activa_c = 0;
+            $beanResumen->save();
+        }
+
+        $GLOBALS['log']->fatal("...Rechaza-EnviaEmailAsesor... ". $banderaEmailAsesor);
+
+        if ($banderaEmailAsesor) {
+            $response['status'] = '200';            
+        } else {
+            $response['status'] = '500';            
         }
 
         return $response;

@@ -8,6 +8,7 @@
     initialize: function(options){
         this._super('initialize', [options]);
         this.resultado = 0;
+      
         //Extraer la parte después del #
         var hashParams = window.location.hash.split("?")[1];
         var urlParams = new URLSearchParams(hashParams);
@@ -64,7 +65,7 @@
         mensajeDiv.removeClass().addClass('message ' + tipo).text(texto);
     },
 
-    _render: function () {
+      _render: function () {
         this._super('_render');
 
         // Actualizar el contenido en el HTML
