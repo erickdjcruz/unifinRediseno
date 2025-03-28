@@ -134,6 +134,8 @@
         //ENDPOINT RECHAZA ASIGNACION
         $response = $apiSolicitudAsignacion->procesoRechazoAsignacion(null, $body);
     }
+
+    echo print_r($response);
     // Mostrar mensaje según la respuesta
     if ($response['status'] == '200') {
         if ($accion === 'aceptar') {
