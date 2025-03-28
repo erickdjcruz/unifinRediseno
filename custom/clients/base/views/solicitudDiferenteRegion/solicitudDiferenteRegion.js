@@ -10,8 +10,8 @@
         //Extraer la parte después del #
         var hashParams = window.location.hash.split("?")[1];
         var urlParams = new URLSearchParams(hashParams);
-        this.idCuenta = urlParams.get('id');
-        this.accion = urlParams.get('accion');
+        this.id = urlParams.get('id') || 'No recibido';
+        this.accion = urlParams.get('accion') || 'No recibido';
 
         console.log('ID recibido:', this.idCuenta);
         console.log('Acción recibida:', this.accion);

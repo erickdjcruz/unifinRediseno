@@ -42,21 +42,67 @@
         };
 
         // Llamada al API
-        app.api.call("create", app.api.buildURL("customEndpointAsignacion"), data, {
-            success: _.bind(function(response) {
-                if (response.status === '200') {
-                    var mensaje = (this.accion === 'aceptar') ? 
-                        this.aceptacion = 1 :
-                        this.rechazo = 1;
-                    
-                    this.mostrarMensaje(mensaje, "success");
-                } else {
-                    this.mostrarMensaje("Se ha presentado un error.", "error");
+        if (this.idCuenta != '') {
+            var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
+            app.api.call('GET', url, {}, {
+                success: _.bind(function (data) {
+                    console.log("DATA RESUMEN ", data);
+                    if (data != '') {
+                        this.asignacionActiva = data.asignacion_activa_c;
+                        this.idDirectorRegional = data.id_director_region_aprobar_c;
+                        this.idAsesorSolicita = data.id_asesor_solicita_c;
+        
+                        if (this.acepta) {
+                            this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, comentarios);
+                        } else {
+                            this.rechazaAsignacion(this.idCuenta, this.idAsesorSolicita, comentarios);
+                        }
+                    }
+                }, this) 
+            });
+        }
+    },
+
+    aceptaAsignacion: function (idCuenta, idAsesorSolicita, comentarios) {
+        console.log("ACEPTA ASIGNACION");
+        var argsAcepta = {
+            "id_cuenta": idCuenta,
+            "id_asesor_solicita": idAsesorSolicita,
+            "comentarios": comentarios
+        };
+        console.log(argsAcepta);
+        app.api.call("create", app.api.buildURL("autorizaAsignacionCuenta", null, null, argsAcepta), null, {
+            success: _.bind(function (response) {
+                console.log(response);
+                if (response.status == '200') {
+                    app.alert.show('alert_autoriza_asignacion', {
+                        level: 'success',
+                        messages: 'Solicitud Autorizada...',
+                    });
                 }
             }, this),
-            error: _.bind(function() {
-                this.mostrarMensaje("Error en la solicitud.", "error");
-            }, this)
+        });
+    },
+
+    rechazaAsignacion: function (idCuenta, idAsesorSolicita, comentarios) {
+        console.log("RECHAZA ASIGNACION");
+        var argsRechaza = {
+            "id_cuenta": idCuenta,
+            "id_asesor_solicita": idAsesorSolicita,
+            "comentarios": comentarios
+        };
+        console.log(argsRechaza);
+        app.api.call("create", app.api.buildURL("rechazoAsignacionCuenta", null, null, argsRechaza), null, {
+            success: _.bind(function (response) {
+                console.log(response);
+                if (response.status == '200') {
+                    app.alert.show('alert_rechaza_asignacion', {
+                        level: 'success',
+                        messages: 'Solicitud Rechazada...',
+                    });
+                }
+
+            }, this),
         });
     },
 
