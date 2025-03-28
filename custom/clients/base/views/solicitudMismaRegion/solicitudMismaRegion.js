@@ -56,7 +56,7 @@
         var comentarios = this.$('#comentarios').val().trim();
 
         // Validación de longitud de comentario
-        if (comentarios.length < 150 || comentarios.length > 500) {
+        if (comentarios.trim().length < 150 || comentarios.trim().length > 500) {
             this.mostrarMensaje("El comentario debe tener entre 150 y 500 caracteres.", "error");
             return;
         }
