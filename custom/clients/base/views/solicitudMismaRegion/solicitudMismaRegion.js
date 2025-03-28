@@ -1,11 +1,11 @@
 ({
-    extendsFrom: 'BaseView',
+    extendsFrom: 'BaseView',  
 
     events: {        
     },
 
     initialize: function(options){
-        this._super("initialize", [options]);
+        this._super('initialize', [options]);
 
         //Extraer la parte después del #
         var hashParams = window.location.hash.split("?")[1];
@@ -47,7 +47,8 @@
             }, this)
         })*/
         this._render();
-    },
+        
+    },   
 
     _render: function () {
         this._super('_render');
@@ -58,5 +59,5 @@
         this.$('.aceptacion-container').text(this.aceptacion ? 1 : 0);
         this.$('.rechazo-container').text(this.rechazo ? 1 : 0);
     }
-
+    
 })
