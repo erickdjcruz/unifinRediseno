@@ -26,15 +26,15 @@
         <h3 class="panel-title text-center">Solicitud de Asignación</h3>
     </div>
     <div class="panel-body" style="padding: 20px;">
-
-        <form id="comentarioForm">
-            <div class="form-group">
-                <label for="comentarios">Agrega comentarios (150 - 500 caracteres):</label>
-                <textarea id="comentarios" name="comentarios" class="form-control" rows="8" columns="50"></textarea>
-            </div>
-            <button id="btnEnviar" type="submit" class="btn btn-primary">Enviar</button>
-        </form>
-        
+        {{#if puedeAprobar}}
+            <form id="comentarioForm">
+                <div class="form-group">
+                    <label for="comentarios">Ingresa el motivo de aprobación/rechazo a  la solicitud de reasingnación  (150 - 500 caracteres):</label>
+                    <textarea id="comentarios" name="comentarios" class="form-control" rows="8" columns="50"></textarea>
+                </div>
+                <button id="btnEnviar" type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        {{/if}}
         <div id="mensaje" class="message text-center" style="margin-top: 15px;">
             {{#if acepta}}
                 <div class="message success">Se autorizó el cambio de asignación exitosamente!</div>

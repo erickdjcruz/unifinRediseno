@@ -15,6 +15,37 @@
 
         this.idCuenta = urlParams.get('id');
         this.accion = urlParams.get('accion');
+        
+        console.log('ID recibido:', this.idCuenta);
+        console.log('Acción recibida:', this.accion);
+
+        // Validaciones de parámetros
+        if ((this.idCuenta==null ||this.id == '' )|| (this.accion==null || this.accion== '')) {
+            this.mostrarMensaje("Valores faltantes para petición", "error");
+            return;
+        }
+        // Validación de acción
+        if (this.accion !== 'aceptar' && this.accion !== 'rechazar') {
+            this.mostrarMensaje("La acción indicada no es válida", "error");
+            return;
+        }
+        // Validar sesión de usuario
+        if (!app.user || !app.user.id) {
+            this.mostrarMensaje("Se requiere iniciar sesión", "error");
+            return;
+        }
+
+        // Validar si el usuario tiene permisos
+        var approvalList = app.lang.getAppListStrings('ids_aprobador_reasignacion_director_list');
+        //this.puedeAprobar = approvalList.includes(app.user.id) || (this.idDirectorRegional === app.user.id);
+        this.puedeAprobar = Object.values(approvalList).includes(app.user.id) || (this.idDirectorRegional === app.user.id);
+
+        
+        if (!this.puedeAprobar) {
+            this.mostrarMensaje("No tiene permisos para realizar esta acción", "error");
+            alert("No tiene permisos para realizar esta acción");
+            return;
+        }
 
         this._render();
     },

@@ -12,6 +12,37 @@
         this.acepta = this.accion === 'aceptar' ? 1 : 0;
         this.rechaza = this.accion === 'rechazar' ? 1 : 0;
 
+        console.log('ID recibido:', this.idCuenta);
+        console.log('Acción recibida:', this.accion);
+
+        // Validaciones de parámetros
+        if ((this.idCuenta==null ||this.id == '' )|| (this.accion==null || this.accion== '')) {
+            this.mostrarMensaje("Valores faltantes para petición", "error");
+            return;
+        }
+        // Validación de acción
+        if (this.accion !== 'aceptar' && this.accion !== 'rechazar') {
+            this.mostrarMensaje("La acción indicada no es válida", "error");
+            return;
+        }
+        // Validar sesión de usuario
+        if (!app.user || !app.user.id) {
+            this.mostrarMensaje("Se requiere iniciar sesión", "error");
+            return;
+        }
+
+        // Validar si el usuario tiene permisos
+        var approvalList = app.lang.getAppListStrings('ids_aprobador_reasignacion_director_list');
+        //this.puedeAprobar = approvalList.includes(app.user.id) || (this.idDirectorRegional === app.user.id);
+        this.puedeAprobar = Object.values(approvalList).includes(app.user.id) || (this.idDirectorRegional === app.user.id);
+
+        
+        if (!this.puedeAprobar) {
+            this.mostrarMensaje("No tiene permisos para realizar esta acción", "error");
+            alert("No tiene permisos para realizar esta acción");
+            return;
+        }
+
         if (this.idCuenta != '') {
             var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
             app.api.call('GET', url, {}, {
