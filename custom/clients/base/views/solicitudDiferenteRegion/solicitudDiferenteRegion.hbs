@@ -1,14 +1,37 @@
+<style>
+    .message {
+        padding: 15px;
+        border-radius: 5px;
+        width: 100%;
+        margin: 20px auto;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+</style>
+
 <div class="panel panel-default" style="max-width: 600px; margin: 20px auto;">
     <div class="panel-heading">
         <h3 class="panel-title text-center">Solicitud de Asignación</h3>
     </div>
-    <div class="panel-body" style="padding: 20px;">        
+    <div class="panel-body" style="padding: 20px;">
         {{#if acepta}}
-            <p class="text-success"><strong>Asignación Procesada ✅</strong></p>
+        <div class="message success">Se autorizó el cambio de asignación exitosamente!</div>
         {{/if}}
 
         {{#if rechaza}}
-            <p class="text-danger"><strong>Asignación Rechazada ❌</strong></p>
+        <div class="message warning">Se rechazo el cambio de asignación.</div>
         {{/if}}
     </div>
 </div>
