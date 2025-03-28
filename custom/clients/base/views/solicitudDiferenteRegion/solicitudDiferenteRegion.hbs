@@ -1,18 +1,13 @@
-<div class="panel panel-default">
+<div class="panel panel-default" style="max-width: 600px; margin: 20px auto;">
     <div class="panel-heading">
-        <h3 class="panel-title">Parámetros de la URL</h3>
+        <h3 class="panel-title text-center">Solicitud de Asignación</h3>
     </div>
-    <div class="panel-body">
-        <p><strong>ID recibido:</strong> <span class="id-container">Cargando...</span></p>
-        <p><strong>Acción recibida:</strong> <span class="accion-container">Cargando...</span></p>
-        <p><strong>Aceptación:</strong> <span class="aceptacion-container">Cargando...</span></p>
-        <p><strong>Rechazo:</strong> <span class="rechazo-container">Cargando...</span></p>
-
-        {{#if aceptacion}}
+    <div class="panel-body" style="padding: 20px;">        
+        {{#if acepta}}
             <p class="text-success"><strong>Asignación Procesada ✅</strong></p>
         {{/if}}
 
-        {{#if rechazo}}
+        {{#if rechaza}}
             <p class="text-danger"><strong>Asignación Rechazada ❌</strong></p>
         {{/if}}
     </div>
