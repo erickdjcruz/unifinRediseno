@@ -723,10 +723,10 @@ class SolicitudAsignacionEmail extends SugarApi
         $esDiferenteRegion = $args['es_diferente_region'] === 'true' ? 1: 0;
         $esEjecutivoEstrategiaComercial = $args['es_ejecutivo_estrategia'] === 'true' ? 1: 0;
         $response = "";
-        $linkAutorizaMismaRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionRegion&accion=aceptar&id=' . $idCuenta;
-        $linkRechazoMismaRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionRegion&accion=rechazar&id=' . $idCuenta;
-        $linkAutorizaDiferenteRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionDifRegion&accion=aceptar&id=' . $idCuenta;
-        $linkRechazoDiferenteRegion = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=solicitudAsignacionDifRegion&accion=rechazar&id=' . $idCuenta;
+        $linkAutorizaMismaRegion = $GLOBALS['sugar_config']['site_url'] . '/#Accounts/layout/solicitudMismaRegion?accion=aceptar&id=' . $idCuenta;
+        $linkRechazoMismaRegion = $GLOBALS['sugar_config']['site_url'] . '/#Accounts/layout/solicitudMismaRegion?accion=rechazar&id=' . $idCuenta;
+        $linkAutorizaDiferenteRegion = $GLOBALS['sugar_config']['site_url'] . '/#Accounts/layout/solicitudDiferenteRegion?accion=aceptar&id=' . $idCuenta;
+        $linkRechazoDiferenteRegion = $GLOBALS['sugar_config']['site_url'] . '/#Accounts/layout/solicitudDiferenteRegion?accion=rechazar&id=' . $idCuenta;
 
         if (!empty($idCuenta)) {
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
