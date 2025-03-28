@@ -9534,7 +9534,7 @@
                         app.alert.show('sa_asesor_diferente_region', {
                             level: 'error',
                             autoClose: false,
-                            messages: '<b>No puedes Solicitar la Asignación sigue en el tiempo de gracia de atención de 15 días.</b>'
+                            messages: 'No puedes Solicitar la Asignación sigue en el tiempo de gracia de atención de 15 días.'
                         });
                     }
     
