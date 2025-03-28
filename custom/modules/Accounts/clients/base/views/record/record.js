@@ -9527,6 +9527,16 @@
                         });
                         return;
                     }
+
+                    if(cont_uni_p.ResumenProductos.leasing.dias < 16 && cont_uni_p.ResumenProductos.leasing.estatus_atencion == '1' ){
+                        esValidoProcesoMismaRegion = false;
+                        esValidoProcesoDiferenteRegion = false;
+                        app.alert.show('sa_asesor_diferente_region', {
+                            level: 'error',
+                            autoClose: false,
+                            messages: '<b>No puedes Solicitar la Asignación sigue en el tiempo de gracia de atención de 15 días.</b>'
+                        });
+                    }
     
                     // Valida proceso pendiente de asignar
                     if (esValidoProcesoCeroPendienteAsignar) {
