@@ -1148,7 +1148,7 @@ class SolicitudAsignacionEmail extends SugarApi
         }
 
         //NOTIFICA LA REASIGNACION DE LA CUENTA AL ASESOR ANTERIOR
-        $body_mail_notifica_asesor_anterior = $this->buildBodyNotificaAsesorAnterior($nombreAsesorSolicita, $nombreCuenta);
+        $body_mail_notifica_asesor_anterior = $this->buildBodyNotificaAsesorAnterior($nombreAsesorAnterior, $nombreCuenta);
         //EMAIL AL ASESOR ANTERIOR
         if (!empty($emailAsesorAnterior)) {
             $success1 = $this->sendEmailAsesorCuentas(
@@ -1419,7 +1419,7 @@ class SolicitudAsignacionEmail extends SugarApi
         return $mailHTML;
     }
 
-    public function buildBodyNotificaAsesorAnterior($nombre_asesor_solicita, $nombre_cuenta)
+    public function buildBodyNotificaAsesorAnterior($nombre_asesor_anterior, $nombre_cuenta)
     {
         $mailHTML = '<head>
             <title></title>
@@ -1551,7 +1551,7 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                 <tr>
                                                                     <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
-                                                                            <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_asesor_solicita . '</strong></p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_asesor_anterior . '</strong></p>
                                                                             <p style="margin: 0; margin-bottom: 16px;">
                                                                                 Me han solicitado la reasignación del prospecto <strong>' . $nombre_cuenta . '</strong> ya que no ha tenido actividad en el CRM en los últimos 30 días. 
                                                                                 Por políticas de la empresa es válido que se haga la reasignación, este correo es para informarte del cambio y estés al tanto de la situación. 
