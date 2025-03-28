@@ -26,20 +26,20 @@
         if (this.idCuenta != '') {
             var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
             app.api.call('GET', url, {}, {
-                success: function (data) {
+                success: _.bind(function (data) {
                     console.log("DATA RESUMEN ", data);
                     if (data != '') {
                         this.asignacionActiva = data.asignacion_activa_c;
                         this.idDirectorRegional = data.id_director_region_aprobar_c;
                         this.idAsesorSolicita = data.id_asesor_solicita_c;
-
+        
                         if (this.acepta) {
                             this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, 'comentarios');
                         } else {
                             this.rechazaAsignacion(this.idCuenta, this.idAsesorSolicita, 'comentarios');
                         }
                     }
-                }
+                }, this) 
             });
         }
         this._render();
