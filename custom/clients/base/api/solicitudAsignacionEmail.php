@@ -1130,7 +1130,8 @@ class SolicitudAsignacionEmail extends SugarApi
         $comentarioDirectorRegional = $args['comentarios'];
         $response = [];
         $response['status'] = '';
-        $response['description'] = '';
+        $banderaEmailAsesorAnterior = 0;
+        $banderaEmailAsesorActual = 0;
 
         if (!empty($idCuenta)) {
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
@@ -1160,11 +1161,7 @@ class SolicitudAsignacionEmail extends SugarApi
             );
 
             if ($success1) {
-                $response['status'] = '200';
-                $response['description'] .= "<br>Se envió notificación de Reasignación al Asesor Anterior: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
-            } else {
-                $response['status'] = '500';
-                $response['description'] .= "<br>Error al enviar notificación de Reasignación al Asesor Anterior: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
+                $banderaEmailAsesorAnterior = 1;                
             }
         }
 
@@ -1185,12 +1182,8 @@ class SolicitudAsignacionEmail extends SugarApi
             );
 
             if ($success2) {
-                $response['status'] = '200';
-                $response['description'] .= "<br>Se envió notificación de Asignación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
-            } else {
-                $response['status'] = '500';
-                $response['description'] .= "<br>Error al enviar notificación de Asignación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
-            }
+                $banderaEmailAsesorActual = 1;                
+            }            
         }
 
         //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
@@ -1198,6 +1191,15 @@ class SolicitudAsignacionEmail extends SugarApi
             $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
             $beanResumen->asignacion_activa_c = 0;
             $beanResumen->save();
+        }
+
+        $GLOBALS['log']->fatal("...Autoriza-EnviaEmailAsesorAnterior... ". $banderaEmailAsesorAnterior);
+        $GLOBALS['log']->fatal("...Autoriza-EnviaEmailAsesorActual... ". $banderaEmailAsesorActual);
+
+        if ($banderaEmailAsesorAnterior || $banderaEmailAsesorActual) {
+            $response['status'] = '200';            
+        } else {
+            $response['status'] = '500';            
         }
 
         return $response;
@@ -1648,7 +1650,7 @@ class SolicitudAsignacionEmail extends SugarApi
         $comentarioDirectorRegional = $args['comentarios'];
         $response = [];
         $response['status'] = '';
-        $response['description'] = '';
+        $banderaEmailAsesor = 0;
 
         if (!empty($idCuenta)) {
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
@@ -1672,12 +1674,8 @@ class SolicitudAsignacionEmail extends SugarApi
             );
 
             if ($success) {
-                $response['status'] = '200';
-                $response['description'] .= "<br>Se envió notificación de Rechazo Asignación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
-            } else {
-                $response['status'] = '500';
-                $response['description'] .= "<br>Error al enviar notificación de Rechazo Asignación a: " . $nombreAsesorSolicita . ", de la cuenta " . $nombreCuenta;
-            }
+                $banderaEmailAsesor = 1;
+            } 
         }
 
         //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
@@ -1685,6 +1683,14 @@ class SolicitudAsignacionEmail extends SugarApi
             $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
             $beanResumen->asignacion_activa_c = 0;
             $beanResumen->save();
+        }
+
+        $GLOBALS['log']->fatal("...Rechaza-EnviaEmailAsesor... ". $banderaEmailAsesor);
+
+        if ($banderaEmailAsesor) {
+            $response['status'] = '200';            
+        } else {
+            $response['status'] = '500';            
         }
 
         return $response;
