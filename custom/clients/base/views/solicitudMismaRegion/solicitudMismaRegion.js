@@ -9,15 +9,12 @@
         this._super('initialize', [options]);
         this.resultado = 0;
 
-        //Extraer la parte después del #
+        //Extrae los parametros
         var hashParams = window.location.hash.split("?")[1];
         var urlParams = new URLSearchParams(hashParams);
 
-        this.idCuenta = urlParams.get('id') || 'No recibido';
-        this.accion = urlParams.get('accion') || 'No recibido';
-
-        console.log('ID recibido:', this.idCuenta);
-        console.log('Acción recibida:', this.accion);
+        this.idCuenta = urlParams.get('id');
+        this.accion = urlParams.get('accion');
 
         this._render();
     },
@@ -37,9 +34,6 @@
         this.acepta = this.accion === 'aceptar' ? 1 : 0;
         this.rechaza = this.accion === 'rechazar' ? 1 : 0;
 
-        console.log('acepta:', this.acepta);
-        console.log('rechaza:', this.rechaza);
-
         // Llamada al API
         if (this.idCuenta != '') {
             var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
@@ -49,8 +43,6 @@
                         this.asignacionActiva = data.asignacion_activa_c;
                         this.idDirectorRegional = data.id_director_region_aprobar_c;
                         this.idAsesorSolicita = data.id_asesor_solicita_c;
-
-                        console.log("idAsesorSolicita ", this.idAsesorSolicita);
 
                         if (this.acepta) {
                             this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, comentarios);
@@ -70,19 +62,22 @@
             "id_asesor_solicita": idAsesorSolicita,
             "comentarios": comentarios
         };
-        console.log(argsAcepta);
         app.api.call("create", app.api.buildURL("autorizaAsignacionCuenta", null, null, argsAcepta), null, {
             success: _.bind(function (response) {
-                console.log(response);
+                // Bloquear el botón
+                this.$('#btnEnviar').prop('disabled', true);
                 if (response.status == '200') {
                     app.alert.show('alert_autoriza_asignacion', {
                         level: 'success',
                         messages: 'Solicitud Autorizada...',
                     });
+                    // Redirigir al módulo de Cuentas
+                    app.router.navigate("#Accounts", { trigger: true });
+
                 } else {
                     app.alert.show('error_rechaza_asignacion', {
                         level: 'error',
-                        messages: 'Error en el servicio de solicitud',
+                        messages: 'Error en el servicio de Solicitud Asignación.',
                     });
                 }
             }, this),
@@ -96,19 +91,22 @@
             "id_asesor_solicita": idAsesorSolicita,
             "comentarios": comentarios
         };
-        console.log(argsRechaza);
         app.api.call("create", app.api.buildURL("rechazoAsignacionCuenta", null, null, argsRechaza), null, {
             success: _.bind(function (response) {
-                console.log(response);
+                // Bloquear el botón
+                this.$('#btnEnviar').prop('disabled', true);
                 if (response.status == '200') {
                     app.alert.show('alert_rechaza_asignacion', {
                         level: 'success',
                         messages: 'Solicitud Rechazada...',
                     });
+                    // Redirigir al módulo de Cuentas
+                    app.router.navigate("#Accounts", { trigger: true });
+
                 } else {
                     app.alert.show('error_rechaza_asignacion', {
                         level: 'error',
-                        messages: 'Error en el servicio de solicitud',
+                        messages: 'Error en el servicio de Solicitud Asignación.',
                     });
                 }
 
