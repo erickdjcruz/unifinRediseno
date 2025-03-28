@@ -1,30 +1,28 @@
 ({
-    extendsFrom: 'BaseView',  
+    extendsFrom: 'BaseView',
 
     events: {
         'submit #comentarioForm': 'enviarComentario'
     },
 
-    initialize: function(options){
+    initialize: function (options) {
         this._super('initialize', [options]);
         this.resultado = 0;
-      
+
         //Extraer la parte después del #
         var hashParams = window.location.hash.split("?")[1];
         var urlParams = new URLSearchParams(hashParams);
 
-        this.id = urlParams.get('id') || 'No recibido';
+        this.idCuenta = urlParams.get('id') || 'No recibido';
         this.accion = urlParams.get('accion') || 'No recibido';
 
-        console.log('ID recibido:', this.id);
+        console.log('ID recibido:', this.idCuenta);
         console.log('Acción recibida:', this.accion);
-        // Mostrar el parámetro en la consola
 
         this._render();
-        
-    },   
+    },
 
-    enviarComentario: function(event) {
+    enviarComentario: function (event) {
         event.preventDefault(); // Evita recargar la página
 
         var comentarios = this.$('#comentarios').val().trim();
@@ -35,30 +33,32 @@
             return;
         }
 
-        var data = {
-            id: this.id,
-            accion: this.accion,
-            comentarios: comentarios
-        };
+        // Definir aceptación y rechazo como booleanos
+        this.acepta = this.accion === 'aceptar' ? 1 : 0;
+        this.rechaza = this.accion === 'rechazar' ? 1 : 0;
+
+        console.log('acepta:', this.acepta);
+        console.log('rechaza:', this.rechaza);
 
         // Llamada al API
         if (this.idCuenta != '') {
             var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
             app.api.call('GET', url, {}, {
                 success: _.bind(function (data) {
-                    console.log("DATA RESUMEN ", data);
                     if (data != '') {
                         this.asignacionActiva = data.asignacion_activa_c;
                         this.idDirectorRegional = data.id_director_region_aprobar_c;
                         this.idAsesorSolicita = data.id_asesor_solicita_c;
-        
+
+                        console.log("idAsesorSolicita ", this.idAsesorSolicita);
+
                         if (this.acepta) {
                             this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, comentarios);
                         } else {
                             this.rechazaAsignacion(this.idCuenta, this.idAsesorSolicita, comentarios);
                         }
                     }
-                }, this) 
+                }, this)
             });
         }
     },
@@ -78,6 +78,11 @@
                     app.alert.show('alert_autoriza_asignacion', {
                         level: 'success',
                         messages: 'Solicitud Autorizada...',
+                    });
+                } else {
+                    app.alert.show('error_rechaza_asignacion', {
+                        level: 'error',
+                        messages: 'Error en el servicio de solicitud',
                     });
                 }
             }, this),
@@ -100,25 +105,24 @@
                         level: 'success',
                         messages: 'Solicitud Rechazada...',
                     });
+                } else {
+                    app.alert.show('error_rechaza_asignacion', {
+                        level: 'error',
+                        messages: 'Error en el servicio de solicitud',
+                    });
                 }
 
             }, this),
         });
     },
 
-    mostrarMensaje: function(texto, tipo) {
+    mostrarMensaje: function (texto, tipo) {
         var mensajeDiv = this.$('#mensaje');
         mensajeDiv.removeClass().addClass('message ' + tipo).text(texto);
     },
 
-      _render: function () {
+    _render: function () {
         this._super('_render');
-
-        // Actualizar el contenido en el HTML
-        this.$('.id-container').text(this.id);
-        this.$('.accion-container').text(this.accion);
-        this.$('.aceptacion-container').text(this.aceptacion ? 1 : 0);
-        this.$('.rechazo-container').text(this.rechazo ? 1 : 0);
     }
-    
+
 })

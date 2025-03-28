@@ -7,17 +7,17 @@
         <form id="comentarioForm">
             <div class="form-group">
                 <label for="comentarios">Agrega comentarios (150 - 500 caracteres):</label>
-                <textarea id="comentarios" name="comentarios" class="form-control" rows="8" columns="30"></textarea>
+                <textarea id="comentarios" name="comentarios" class="form-control" rows="8" columns="50"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
         
         <div id="mensaje" class="message text-center" style="margin-top: 15px;">
-            {{#if aceptacion}}
+            {{#if acepta}}
                 <p class="text-success"><strong>Asignación Procesada ✅</strong></p>
             {{/if}}
 
-            {{#if rechazo}}
+            {{#if rechaza}}
                 <p class="text-danger"><strong>Asignación Rechazada ❌</strong></p>
             {{/if}}
         </div>

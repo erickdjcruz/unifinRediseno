@@ -1,9 +1,6 @@
 ({
     extendsFrom: 'BaseView',
 
-    events: {
-    },
-
     initialize: function (options) {
         this._super("initialize", [options]);
 
@@ -27,19 +24,20 @@
             var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
             app.api.call('GET', url, {}, {
                 success: _.bind(function (data) {
-                    console.log("DATA RESUMEN ", data);
                     if (data != '') {
                         this.asignacionActiva = data.asignacion_activa_c;
                         this.idDirectorRegional = data.id_director_region_aprobar_c;
                         this.idAsesorSolicita = data.id_asesor_solicita_c;
-        
+
+                        console.log("idAsesorSolicita ", this.idAsesorSolicita);
+
                         if (this.acepta) {
-                            this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, 'comentarios');
+                            this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, '');
                         } else {
-                            this.rechazaAsignacion(this.idCuenta, this.idAsesorSolicita, 'comentarios');
+                            this.rechazaAsignacion(this.idCuenta, this.idAsesorSolicita, '');
                         }
                     }
-                }, this) 
+                }, this)
             });
         }
         this._render();
@@ -47,11 +45,6 @@
 
     _render: function () {
         this._super('_render');
-        // Actualizar el contenido en el HTML
-        this.$('.id-container').text(this.idCuenta);
-        this.$('.accion-container').text(this.accion);
-        this.$('.aceptacion-container').text(this.acepta);
-        this.$('.rechazo-container').text(this.rechaza);
     },
 
     aceptaAsignacion: function (idCuenta, idAsesorSolicita, comentarios) {
@@ -69,6 +62,11 @@
                     app.alert.show('alert_autoriza_asignacion', {
                         level: 'success',
                         messages: 'Solicitud Autorizada...',
+                    });
+                } else {
+                    app.alert.show('error_autoriza_asignacion', {
+                        level: 'error',
+                        messages: 'Error en el servicio de solicitud',
                     });
                 }
             }, this),
@@ -91,8 +89,12 @@
                         level: 'success',
                         messages: 'Solicitud Rechazada...',
                     });
+                } else {
+                    app.alert.show('error_rechaza_asignacion', {
+                        level: 'error',
+                        messages: 'Error en el servicio de solicitud',
+                    });
                 }
-
             }, this),
         });
     }
