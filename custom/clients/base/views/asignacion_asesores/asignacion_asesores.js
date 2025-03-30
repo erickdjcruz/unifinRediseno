@@ -53,7 +53,7 @@
                     app.alert.show("asignacion_asesores",{
                         level: "error",
                         title: "Error",
-                        messages: "No tiene permisos suficientes para reasignar cuentas",
+                        messages: "No cuenta con permisos suficientes",
                         autoClose: false
                     });					
                     var route = app.router.buildRoute(this.module, null, '');

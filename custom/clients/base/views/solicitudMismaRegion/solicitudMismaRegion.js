@@ -38,52 +38,75 @@
         // Validar si el usuario tiene permisos
         var approvalList = app.lang.getAppListStrings('ids_aprobador_reasignacion_director_list');
         //this.puedeAprobar = approvalList.includes(app.user.id) || (this.idDirectorRegional === app.user.id);
-        this.puedeAprobar = Object.values(approvalList).includes(app.user.id) || (this.idDirectorRegional === app.user.id);
 
-        
-        if (!this.puedeAprobar) {
-            this.mostrarMensaje("No tiene permisos para realizar esta acción", "error");
-            alert("No tiene permisos para realizar esta acción");
-            return;
+        // Llamada al API
+        if (this.idCuenta != '') {
+            try{
+                var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
+                app.api.call('GET', url, {}, {
+                    success: _.bind(function (data) {
+                        if (data != '') {
+                            this.asignacionActiva = data.asignacion_activa_c;
+                            this.idDirectorRegional = data.id_director_region_aprobar_c;
+                            this.idAsesorSolicita = data.id_asesor_solicita_c;
+
+                            this.puedeAprobar = Object.values(approvalList).includes(app.user.id) || (this.idDirectorRegional === app.user.id);
+                            if (!this.puedeAprobar) {
+                                this.mostrarMensaje("No tiene permisos para realizar esta acción", "error");
+                                alert("No tiene permisos para realizar esta acción");
+                                // Redirigir al módulo de Cuentas
+                                app.router.navigate("#Accounts", { trigger: true });
+                                return;
+                            }else{
+                                this._render();
+                            }                        
+                        }else{
+                            alert("La cuenta no existe, favor de validar");
+                            // Redirigir después de 2 segundos
+                            _.delay(function () {
+                                app.router.navigate("#Accounts", { trigger: true });
+                            }, 2000);
+                            return;
+                        }
+                    }, this)
+                });
+            } catch (err) {
+                console.log(err.message);
+                // Redirigir después de 2 segundos
+                _.delay(function () {
+                    app.router.navigate("#Accounts", { trigger: true });
+                }, 2000);
+                return;
+            }
         }
 
         this._render();
     },
 
     enviarComentario: function (event) {
+        this.mostrarMensaje("", "");
         event.preventDefault(); // Evita recargar la página
 
         var comentarios = this.$('#comentarios').val().trim();
 
         // Validación de longitud de comentario
-        if (comentarios.trim().length < 150 || comentarios.trim().length > 500) {
+        if (comentarios.length < 150 || comentarios.length > 500) {
             this.mostrarMensaje("El comentario debe tener entre 150 y 500 caracteres.", "error");
             return;
+        }else{
+            this.mostrarMensaje("", "");
         }
 
         // Definir aceptación y rechazo como booleanos
         this.acepta = this.accion === 'aceptar' ? 1 : 0;
         this.rechaza = this.accion === 'rechazar' ? 1 : 0;
 
-        // Llamada al API
-        if (this.idCuenta != '') {
-            var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
-            app.api.call('GET', url, {}, {
-                success: _.bind(function (data) {
-                    if (data != '') {
-                        this.asignacionActiva = data.asignacion_activa_c;
-                        this.idDirectorRegional = data.id_director_region_aprobar_c;
-                        this.idAsesorSolicita = data.id_asesor_solicita_c;
-
-                        if (this.acepta) {
-                            this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, comentarios);
-                        } else {
-                            this.rechazaAsignacion(this.idCuenta, this.idAsesorSolicita, comentarios);
-                        }
-                    }
-                }, this)
-            });
+        if (this.acepta) {
+            this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, comentarios);
+        } else {
+            this.rechazaAsignacion(this.idCuenta, this.idAsesorSolicita, comentarios);
         }
+
     },
 
     aceptaAsignacion: function (idCuenta, idAsesorSolicita, comentarios) {
@@ -110,6 +133,10 @@
                         level: 'error',
                         messages: 'Error en el servicio de Solicitud Asignación.',
                     });
+                    // Redirigir después de 1 segundos
+                    _.delay(function () {
+                        app.router.navigate("#Accounts", { trigger: true });
+                    }, 1000);
                 }
             }, this),
         });
@@ -139,6 +166,10 @@
                         level: 'error',
                         messages: 'Error en el servicio de Solicitud Asignación.',
                     });
+                    // Redirigir después de 1 segundos
+                    _.delay(function () {
+                        app.router.navigate("#Accounts", { trigger: true });
+                    }, 1000);
                 }
 
             }, this),
