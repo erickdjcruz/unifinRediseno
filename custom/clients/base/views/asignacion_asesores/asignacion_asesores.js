@@ -513,7 +513,7 @@
 		var seleccionadosFull = [];
         $(this.seleccionados).each(function(index,value) {
 			arr = self.cuentas.find(cuenta => cuenta.id === value);
-            seleccionadosFull.push({tipo:arr.Tipo,id:arr.id,viejo:arr.idu,nuevo:arr.nuevo});
+            seleccionadosFull.push({modulo:arr.modulo,tipo:arr.tipo,id:arr.id,viejo:arr.idu,nuevo:arr.nuevo});
 			if(!_.isEmpty(arr.nuevo)) {
 				pasa = 1;
 			} else {
