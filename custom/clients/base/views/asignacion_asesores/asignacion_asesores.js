@@ -16,6 +16,7 @@
     initialize: function(options){
         this._super("initialize", [options]);
         this.cuentas = '';
+		this.entra = false;
         this.seleccionados = [];
         this.objEtiquetaID = {};
         this.persistNoSeleccionados=[];
@@ -29,15 +30,10 @@
 		asesores = this;
         app.api.call("read", app.api.buildURL("Users/" + userId, null, null, {}), null, {
             success: _.bind(function (data) {
-				var entra = false;
 				var strUrl = 'Users?fields=id,nombre_completo_c&order_by=nombre_completo_c:asc&max_num=-1&filter[][status]=Active&filter[][reports_to_id][$equals]='+userId;
 				var usuarios_aa = App.lang.getAppListStrings('asignacion_asesores_list');
-				for (var key in usuarios_aa) {
-					if (key == userId) {
-						entra = true;
-						strUrl = 'Users?fields=id,nombre_completo_c&order_by=nombre_completo_c:asc&max_num=-1&filter[][status]=Active';
-					}
-				}
+				this.entra = Object.values(usuarios_aa).includes(userId);
+				if(this.entra) strUrl = 'Users?fields=id,nombre_completo_c&order_by=nombre_completo_c:asc&max_num=-1&filter[][status]=Active';
 				app.api.call("GET", app.api.buildURL(strUrl), null, {
 					success: _.bind(function (data1) {
 						if(data1.records.length > 0) {
@@ -50,7 +46,7 @@
 							asesores.usuarios_list = usuario;
 						}
 						var roleReasignacionPromotores = false;
-						if(data.posicion_operativa_c.includes("2") || entra) roleReasignacionPromotores = true;
+						if(data.posicion_operativa_c.includes("2") || this.entra) roleReasignacionPromotores = true;
 						if(roleReasignacionPromotores == true){
 							this.obtenerProductosUsuario();
 							this.loadView = true;
@@ -310,6 +306,7 @@
             $("#crossSeleccionados").val("");
         }
 		var userId = App.user.id;
+		if (this.entra) userId = '';
         var assigneUsr = $("#usuario_actual").val();
         //Condición para controlar la búsqueda cuando no se ha seleccionado Promotor, esto sucede cuando se da click en el icono con el tache
         //dentro del campo Asesor Actual con formato select2
