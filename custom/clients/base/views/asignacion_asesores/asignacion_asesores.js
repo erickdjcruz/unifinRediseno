@@ -346,7 +346,7 @@
                     if (data.total <= 0) {
                         var alertOptions = {
                             title: "No se encontraron registros para el usuario seleccionado del producto: " + producto_seleccionado,
-                            level: "error"
+                            level: "info"
                         };
                         app.alert.show('validation', alertOptions);
                         $('#processing').hide();
