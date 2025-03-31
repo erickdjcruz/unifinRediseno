@@ -27,11 +27,11 @@
     </div>
     <div id="mensaje" class="message"></div>
     <div class="panel-body" style="padding: 20px;">
-        {{#if acepta}}
+        {{#if msgExitoso}}
         <div class="message success">Se autorizó el cambio de asignación exitosamente!</div>
         {{/if}}
 
-        {{#if rechaza}}
+        {{#if msgRechazado}}
         <div class="message warning">Se rechazo el cambio de asignación.</div>
         {{/if}}
     </div>

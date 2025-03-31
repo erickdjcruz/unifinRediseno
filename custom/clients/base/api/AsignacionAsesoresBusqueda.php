@@ -53,30 +53,30 @@ class AsignacionAsesoresBusqueda extends SugarApi
              }
             if($user_id == "undefined"){
 				$total_rows = <<<SQL
-select 'PO' Tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
+select 'PO' modulo, '' tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
 where p.id = pc.id_c and u.id = uc.id_c and p.assigned_user_id = u.id and p.deleted = 0 and pc.estatus_po_c <> 3
 and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
 union
-select 'Lead' Tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
+select 'Lead' modulo, lc.tipo_registro_c tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
 where l.id = lc.id_c and u.id = uc.id_c and l.assigned_user_id = u.id and l.deleted = 0 and lc.subtipo_registro_c <> 4
 and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
 union
-select 'Cuenta' Tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc
+select 'Cuenta' modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc
 where c.id = cc.id_c and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
 and u.reports_to_id = '{$Director}' and tipo_registro_cuenta_c IN({$tipos_query})
 SQL;
             }
 			else{
 				$total_rows = <<<SQL
-select 'PO' Tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
+select 'PO' modulo, '' tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
 where p.id = pc.id_c and u.id = uc.id_c and p.assigned_user_id = u.id and p.deleted = 0 and pc.estatus_po_c <> 3
 and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}' and u.id = '{$user_id}'
 union
-select 'Lead' Tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
+select 'Lead' modulo, lc.tipo_registro_c tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
 where l.id = lc.id_c and u.id = uc.id_c and l.assigned_user_id = u.id and l.deleted = 0 and lc.subtipo_registro_c <> 4
 and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}' and u.id = '{$user_id}'
 union
-select 'Cuenta' Tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc
+select 'Cuenta' modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc
 where c.id = cc.id_c and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
 and u.reports_to_id = '{$Director}' and tipo_registro_cuenta_c IN({$tipos_query}) and u.id = '{$user_id}'
 SQL;
@@ -92,30 +92,30 @@ SQL;
             }
             if($user_id == "undefined"){
 				$query = <<<SQL
-select 'PO' Tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
+select 'PO' modulo, '' tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
 where p.id = pc.id_c and u.id = uc.id_c and p.assigned_user_id = u.id and p.deleted = 0 and pc.estatus_po_c <> 3
 and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
 union
-select 'Lead' Tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
+select 'Lead' modulo, lc.tipo_registro_c tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
 where l.id = lc.id_c and u.id = uc.id_c and l.assigned_user_id = u.id and l.deleted = 0 and lc.subtipo_registro_c <> 4
 and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
 union
-select 'Cuenta' Tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc
+select 'Cuenta' modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc
 where c.id = cc.id_c and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
 and u.reports_to_id = '{$Director}' and tipo_registro_cuenta_c IN({$tipos_query})
 SQL;
             }
 			else{
 				$query = <<<SQL
-select 'PO' Tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
+select 'PO' modulo, '' tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
 where p.id = pc.id_c and u.id = uc.id_c and p.assigned_user_id = u.id and p.deleted = 0 and pc.estatus_po_c <> 3
 and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}' and u.id = '{$user_id}'
 union
-select 'Lead' Tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
+select 'Lead' modulo, lc.tipo_registro_c tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
 where l.id = lc.id_c and u.id = uc.id_c and l.assigned_user_id = u.id and l.deleted = 0 and lc.subtipo_registro_c <> 4
 and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}' and u.id = '{$user_id}'
 union
-select 'Cuenta' Tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc
+select 'Cuenta'  modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc
 where c.id = cc.id_c and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
 and u.reports_to_id = '{$Director}' and tipo_registro_cuenta_c IN({$tipos_query}) and u.id = '{$user_id}'
 SQL;
