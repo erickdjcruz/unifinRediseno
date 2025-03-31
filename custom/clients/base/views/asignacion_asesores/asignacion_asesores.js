@@ -48,22 +48,22 @@
 							}
 							usuario[userId] = App.user.attributes.full_name;
 							asesores.usuarios_list = usuario;
-							var roleReasignacionPromotores = false;
-							if(data.posicion_operativa_c.includes("2") || entra) roleReasignacionPromotores = true;
-							if(roleReasignacionPromotores == true){
-								this.obtenerProductosUsuario();
-								this.loadView = true;
-								this.render();
-							}else{
-								app.alert.show("asignacion_asesores",{
-									level: "error",
-									title: "Error",
-									messages: "No tiene permisos suficientes para reasignar cuentas",
-									autoClose: false
-								});					
-								var route = app.router.buildRoute(this.module, null, '');
-								app.router.navigate(route, {trigger: true});
-							}
+						}
+						var roleReasignacionPromotores = false;
+						if(data.posicion_operativa_c.includes("2") || entra) roleReasignacionPromotores = true;
+						if(roleReasignacionPromotores == true){
+							this.obtenerProductosUsuario();
+							this.loadView = true;
+							this.render();
+						}else{
+							app.alert.show("asignacion_asesores",{
+								level: "error",
+								title: "Error",
+								messages: "No tiene permisos suficientes para reasignar cuentas",
+								autoClose: false
+							});					
+							var route = app.router.buildRoute(this.module, null, '');
+							app.router.navigate(route, {trigger: true});
 						}
 					}, this)
 				});
