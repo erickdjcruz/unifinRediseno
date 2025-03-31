@@ -1193,6 +1193,8 @@ class SolicitudAsignacionEmail extends SugarApi
         if (!empty($idCuenta)) {
             $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
             $beanResumen->asignacion_activa_c = 0;
+            $beanResumen->id_director_region_aprobar_c = '';
+            $beanResumen->id_asesor_solicita_c = '';
             $beanResumen->save();
         }
 
@@ -1690,6 +1692,8 @@ class SolicitudAsignacionEmail extends SugarApi
         if (!empty($idCuenta)) {
             $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
             $beanResumen->asignacion_activa_c = 0;
+            $beanResumen->id_director_region_aprobar_c = '';
+            $beanResumen->id_asesor_solicita_c = '';
             $beanResumen->save();
         }
 

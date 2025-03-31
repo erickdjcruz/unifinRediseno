@@ -9,7 +9,7 @@
         var urlParams = new URLSearchParams(hashParams);
         this.idCuenta = urlParams.get('id');
         this.accion = urlParams.get('accion');
-        
+
         this.acepta = 0;
         this.rechaza = 0;
 
@@ -17,7 +17,7 @@
         console.log('Acción recibida:', this.accion);
 
         // Validaciones de parámetros
-        if ((this.idCuenta==null ||this.id == '' )|| (this.accion==null || this.accion== '')) {
+        if ((this.idCuenta == null || this.id == '') || (this.accion == null || this.accion == '')) {
             this.mostrarMensaje("Valores faltantes para petición", "error");
             return;
         }
@@ -35,9 +35,9 @@
         // Validar si el usuario tiene permisos
         var approvalList = app.lang.getAppListStrings('ids_aprobador_reasignacion_director_list');
         //this.puedeAprobar = approvalList.includes(app.user.id) || (this.idDirectorRegional === app.user.id);
-        
+
         if (this.idCuenta != '') {
-            try{
+            try {
                 var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
                 app.api.call('GET', url, {}, {
                     success: _.bind(function (data) {
@@ -48,6 +48,7 @@
                             this.acepta = this.accion === 'aceptar' ? 1 : 0;
                             this.rechaza = this.accion === 'rechazar' ? 1 : 0;
                             this.puedeAprobar = Object.values(approvalList).includes(app.user.id) || (this.idDirectorRegional === app.user.id);
+
                             if (!this.puedeAprobar) {
                                 this.mostrarMensaje("No tiene permisos para realizar esta acción", "error");
                                 alert("No tiene permisos para realizar esta acción");
@@ -56,14 +57,25 @@
                                     app.router.navigate("#Accounts", { trigger: true });
                                 }, 1000);
                                 return;
-                            }else{
+
+                            } else if (!this.asignacionActiva && !this.idDirectorRegional && !this.idAsesorSolicita) {
+                                this.mostrarMensaje("La cuenta ya fue atendida.", "error");
+                                alert("La cuenta ya fue atendida.");
+
+                                // Redirigir después de 2 segundos
+                                _.delay(function () {
+                                    app.router.navigate("#Accounts", { trigger: true });
+                                }, 2000);
+                                return;
+
+                            } else {
                                 if (this.acepta) {
                                     this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, '');
                                 } else {
                                     this.rechazaAsignacion(this.idCuenta, this.idAsesorSolicita, '');
                                 }
                             }
-                        }else{
+                        } else {
                             alert("La cuenta no existe, favor de validar");
                             // Redirigir después de 2 segundos
                             _.delay(function () {
@@ -82,7 +94,7 @@
                 return;
             }
         }
-        
+
         this._render();
     },
 

@@ -40,7 +40,7 @@
         //this.puedeAprobar = approvalList.includes(app.user.id) || (this.idDirectorRegional === app.user.id);
         // Llamada al API
         if (this.idCuenta != '') {
-            try{
+            try {
                 var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
                 app.api.call('GET', url, {}, {
                     success: _.bind(function (data) {
@@ -56,10 +56,25 @@
                                 // Redirigir al módulo de Cuentas
                                 app.router.navigate("#Accounts", { trigger: true });
                                 return;
-                            }else{
+
+                            } else if (!this.asignacionActiva && !this.idDirectorRegional && !this.idAsesorSolicita) {
+                                // Ocultar el formulario
+                                this.puedeAprobar = false;
+                                this.render();
+
+                                this.mostrarMensaje("La cuenta ya fue atendida.", "error");
+                                alert("La cuenta ya fue atendida.");
+
+                                // Redirigir después de 2 segundos
+                                _.delay(function () {
+                                    app.router.navigate("#Accounts", { trigger: true });
+                                }, 2000);
+                                return;
+                            
+                            } else {
                                 this._render();
-                            }                        
-                        }else{
+                            }
+                        } else {
                             alert("La cuenta no existe, favor de validar");
                             // Redirigir después de 2 segundos
                             _.delay(function () {
@@ -91,7 +106,7 @@
         if (comentarios.length < 150 || comentarios.length > 500) {
             this.mostrarMensaje("El comentario debe tener entre 150 y 500 caracteres.", "error");
             return;
-        }else{
+        } else {
             this.mostrarMensaje("", "");
         }
 
