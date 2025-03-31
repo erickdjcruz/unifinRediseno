@@ -59,11 +59,11 @@
                 <div class="record-label">Asesor Actual</div>
                 <span>
                     <span>
-                        {{#each meta.panels}}
-                            {{#each fields}}
-                                {{field ../../this}}
-                            {{/each}}
-                        {{/each}}
+						<select id="usuario_actual" class="usuario_actual select2 updateusr" style="width: 100%;" data-field="user_actual">
+							{{#each ../usuarios_list}}
+								<option value="{{@key}}" {{ifSelected @key ../reports_to_id}}>{{this}}</option>
+							{{/each}}
+						</select>
                         <p class="help-block"></p>
                     </span>
                 </span>
@@ -73,7 +73,7 @@
                 <span>
                     <span>
                         <input id="filtroCliente" type="text" value="">
-                                <p class="help-block"></p>
+                        <p class="help-block"></p>
                     </span>
                 </span>
             </div>
@@ -112,8 +112,9 @@
             <tr>
                 <th width="10%"><input type="button" value="Seleccionar Todo" id="btn_STodo" class="btn btn-primary"
                                        btnState="Off"/></th>
-                <th width="10%">TIPO</th>
-                <th width="60%">NOMBRE</th>
+                <th width="10%">MÓDULO</th>
+				<th width="10%">TIPO</th>
+                <th width="50%">NOMBRE</th>
                 <th width="10%">ANTERIOR ASESOR</th>
                 <th width="10%">NUEVO ASESOR</th>
             </tr>
@@ -131,7 +132,14 @@
                     <td>
                     <span sfuuid='880' class='list'>
                         <div class='ellipsis_inline' data-placement='bottom'>
-                            <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>{{Tipo}}</span>
+                            <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>{{modulo}}</span>
+                        </div>
+                    </span>
+                    </td>
+                    <td>
+                    <span sfuuid='880' class='list'>
+                        <div class='ellipsis_inline' data-placement='bottom'>
+                            <span style='font-family: Helvetica, Arial, sans-serif; font-size: 12px;'>{{getUnifinListValue 'tipo_registro_cuenta_list' tipo}}</span>
                         </div>
                     </span>
                     </td>
@@ -165,7 +173,7 @@
                 </tr>
             {{/each}}
             <tr>
-                <td colspan="4"></td>
+                <td colspan="5"></td>
                 <td>
                     <div class="btn-group">
                         <a class="btn fa fa-caret-left" id="previous_offset"></a>

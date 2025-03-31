@@ -27,38 +27,46 @@
         this.loadView = false;
         var userId = App.user.id;
 		asesores = this;
-		var strUrl = 'Users?fields=id,nombre_completo_c&order_by=nombre_completo_c:asc&max_num=-1&filter[][status]=Active&filter[][reports_to_id][$equals]='+userId;
-        app.api.call("GET", app.api.buildURL(strUrl), null, {
-            success: _.bind(function (data) {
-				if(data.records.length > 0) {
-					var usuario = {};
-					usuario[''] = '';
-					for(var i = 0; i < data.records.length; i++) {
-						usuario[data.records[i].id] = data.records[i].nombre_completo_c;
-					}
-					usuario[userId] = App.user.attributes.full_name;
-					asesores.usuarios_list = usuario;
-				}
-            }, this)
-        });
         app.api.call("read", app.api.buildURL("Users/" + userId, null, null, {}), null, {
             success: _.bind(function (data) {
-				var roleReasignacionPromotores = false;
-				if(data.posicion_operativa_c.includes("2")) roleReasignacionPromotores = true;
-                if(roleReasignacionPromotores == true){
-                    this.obtenerProductosUsuario();
-                    this.loadView = true;
-                    this.render();
-                }else{
-                    app.alert.show("asignacion_asesores",{
-                        level: "error",
-                        title: "Error",
-                        messages: "No tiene permisos suficientes para reasignar cuentas",
-                        autoClose: false
-                    });					
-                    var route = app.router.buildRoute(this.module, null, '');
-                    app.router.navigate(route, {trigger: true});
-                }
+				var entra = false;
+				var strUrl = 'Users?fields=id,nombre_completo_c&order_by=nombre_completo_c:asc&max_num=-1&filter[][status]=Active&filter[][reports_to_id][$equals]='+userId;
+				var usuarios_aa = App.lang.getAppListStrings('asignacion_asesores_list');
+				for (var key in usuarios_aa) {
+					if (key == userId) {
+						entra = true;
+						strUrl = 'Users?fields=id,nombre_completo_c&order_by=nombre_completo_c:asc&max_num=-1&filter[][status]=Active';
+					}
+				}
+				app.api.call("GET", app.api.buildURL(strUrl), null, {
+					success: _.bind(function (data1) {
+						if(data1.records.length > 0) {
+							var usuario = {};
+							usuario[''] = '';
+							for(var i = 0; i < data1.records.length; i++) {
+								usuario[data1.records[i].id] = data1.records[i].nombre_completo_c;
+							}
+							usuario[userId] = App.user.attributes.full_name;
+							asesores.usuarios_list = usuario;
+							var roleReasignacionPromotores = false;
+							if(data.posicion_operativa_c.includes("2") || entra) roleReasignacionPromotores = true;
+							if(roleReasignacionPromotores == true){
+								this.obtenerProductosUsuario();
+								this.loadView = true;
+								this.render();
+							}else{
+								app.alert.show("asignacion_asesores",{
+									level: "error",
+									title: "Error",
+									messages: "No tiene permisos suficientes para reasignar cuentas",
+									autoClose: false
+								});					
+								var route = app.router.buildRoute(this.module, null, '');
+								app.router.navigate(route, {trigger: true});
+							}
+						}
+					}, this)
+				});
             }, this)
         });
     },
@@ -302,7 +310,7 @@
             $("#crossSeleccionados").val("");
         }
 		var userId = App.user.id;
-        var assigneUsr = this.model.get('users_accounts_1users_ida');
+        var assigneUsr = $("#usuario_actual").val();
         //Condición para controlar la búsqueda cuando no se ha seleccionado Promotor, esto sucede cuando se da click en el icono con el tache
         //dentro del campo Asesor Actual con formato select2
         if(assigneUsr==""){
@@ -346,7 +354,7 @@
                     if (data.total <= 0) {
                         var alertOptions = {
                             title: "No se encontraron registros para el usuario seleccionado del producto: " + producto_seleccionado,
-                            level: "error"
+                            level: "info"
                         };
                         app.alert.show('validation', alertOptions);
                         $('#processing').hide();
@@ -513,7 +521,7 @@
 		var seleccionadosFull = [];
         $(this.seleccionados).each(function(index,value) {
 			arr = self.cuentas.find(cuenta => cuenta.id === value);
-            seleccionadosFull.push({tipo:arr.Tipo,id:arr.id,viejo:arr.idu,nuevo:arr.nuevo});
+            seleccionadosFull.push({modulo:arr.modulo,tipo:arr.tipo,id:arr.id,viejo:arr.idu,nuevo:arr.nuevo});
 			if(!_.isEmpty(arr.nuevo)) {
 				pasa = 1;
 			} else {
