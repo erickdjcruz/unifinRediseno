@@ -70,6 +70,13 @@
 
     aceptaAsignacion: function (idCuenta, idAsesorSolicita, comentarios) {
         console.log("ACEPTA ASIGNACION");
+        this.msgExitoso = 0;
+
+        app.alert.show('procesa_acepta_asignacion', {
+            level: 'process',
+            title: 'Procesando',
+        });
+
         var argsAcepta = {
             "id_cuenta": idCuenta,
             "id_asesor_solicita": idAsesorSolicita,
@@ -77,17 +84,23 @@
         };
         app.api.call("create", app.api.buildURL("autorizaAsignacionCuenta", null, null, argsAcepta), null, {
             success: _.bind(function (response) {
+                app.alert.dismiss('procesa_acepta_asignacion');
                 if (response.status == '200') {
+                    this.msgExitoso = 1;
                     app.alert.show('alert_autoriza_asignacion', {
                         level: 'success',
                         messages: 'Solicitud Autorizada...',
                     });
+
+                    this.render(); // Asegura que el mensaje aparezca en la vista
+
                     // Redirigir después de 2 segundos
                     _.delay(function () {
                         app.router.navigate("#Accounts", { trigger: true });
                     }, 2000);
 
                 } else {
+                    this.msgExitoso = 0;
                     app.alert.show('error_autoriza_asignacion', {
                         level: 'error',
                         messages: 'Error en el servicio de Solicitud Asignación.',
@@ -99,6 +112,13 @@
 
     rechazaAsignacion: function (idCuenta, idAsesorSolicita, comentarios) {
         console.log("RECHAZA ASIGNACION");
+        this.msgRechazado = 0;
+
+        app.alert.show('procesa_rechazo_asignacion', {
+            level: 'process',
+            title: 'Procesando',
+        });
+
         var argsRechaza = {
             "id_cuenta": idCuenta,
             "id_asesor_solicita": idAsesorSolicita,
@@ -106,17 +126,23 @@
         };
         app.api.call("create", app.api.buildURL("rechazoAsignacionCuenta", null, null, argsRechaza), null, {
             success: _.bind(function (response) {
+                app.alert.dismiss('procesa_rechazo_asignacion');
                 if (response.status == '200') {
+                    this.msgRechazado = true;
                     app.alert.show('alert_rechaza_asignacion', {
                         level: 'success',
                         messages: 'Solicitud Rechazada...',
                     });
+
+                    this.render(); // Asegura que el mensaje aparezca en la vista
+
                     // Redirigir después de 2 segundos
                     _.delay(function () {
                         app.router.navigate("#Accounts", { trigger: true });
                     }, 2000);
 
                 } else {
+                    this.msgRechazado = false;
                     app.alert.show('error_rechaza_asignacion', {
                         level: 'error',
                         messages: 'Error en el servicio de Solicitud Asignación.',
