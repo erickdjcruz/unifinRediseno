@@ -53,7 +53,7 @@
                     app.alert.show("asignacion_asesores",{
                         level: "error",
                         title: "Error",
-                        messages: "No tiene permisos suficientes para reasignar cuentas",
+                        messages: "No cuenta con permisos suficientes",
                         autoClose: false
                     });					
                     var route = app.router.buildRoute(this.module, null, '');
@@ -346,7 +346,7 @@
                     if (data.total <= 0) {
                         var alertOptions = {
                             title: "No se encontraron registros para el usuario seleccionado del producto: " + producto_seleccionado,
-                            level: "error"
+                            level: "info"
                         };
                         app.alert.show('validation', alertOptions);
                         $('#processing').hide();
