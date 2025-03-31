@@ -61,11 +61,11 @@ class AsignacionAsesores extends SugarApi
         $IntValue = new DropdownValuesHelper();
         $callApi = new UnifinAPI();
         foreach ($args['data']['seleccionados'] as $row => $value) {
-			$tipo = $value['tipo'];
+			$modulo = $value['modulo'];
             $cuenta = $value['id'];
 			$reAsignado = $value['nuevo'];
 			$promoActual = $value['viejo'];
-			if ($tipo == "Cuenta") {
+			if ($modulo == "Cuenta") {
 				$account = BeanFactory::retrieveBean('Accounts', $cuenta, array('disable_row_level_security' => true));
 				if ($account == null || $user_field == null || $reAsignado == null || $promoActual == null) {
 					array_push($no_actualizados, $cuenta);
@@ -648,7 +648,7 @@ class AsignacionAsesores extends SugarApi
 				}
 			}
 			//Actualiza Publico Objetivo
-			if ($tipo == "PO") {
+			if ($modulo == "PO") {
 				$prospect = BeanFactory::retrieveBean('Prospects', $cuenta, array('disable_row_level_security' => true));
 				if ($prospect == null || $reAsignado == null || $promoActual == null) {
 					array_push($no_actualizados, $cuenta);
@@ -658,7 +658,7 @@ class AsignacionAsesores extends SugarApi
 				}
 			}
 			//Actualiza Leads
-			if ($tipo == "Lead") {
+			if ($modulo == "Lead") {
 				$lead = BeanFactory::retrieveBean('Leads', $cuenta, array('disable_row_level_security' => true));
 				if ($lead == null || $reAsignado == null || $promoActual == null) {
 					array_push($no_actualizados, $cuenta);
