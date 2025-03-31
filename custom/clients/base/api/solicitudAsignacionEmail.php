@@ -1130,6 +1130,8 @@ class SolicitudAsignacionEmail extends SugarApi
         $response['status'] = '';
         $banderaEmailAsesorAnterior = 0;
         $banderaEmailAsesorActual = 0;
+        // Configurar zona horaria de Ciudad de México y obtener la fecha actual
+        $dateTime = new DateTime('now', new DateTimeZone('America/Mexico_City'));
 
         if (!empty($idCuenta)) {
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
@@ -1195,6 +1197,8 @@ class SolicitudAsignacionEmail extends SugarApi
             $beanResumen->asignacion_activa_c = 0;
             $beanResumen->id_director_region_aprobar_c = '';
             $beanResumen->id_asesor_solicita_c = '';
+            $beanResumen->asignacion_automatica_c = 1; 
+            $beanResumen->fecha_asignacion_automatica_c = $dateTime->format('Y-m-d H:i:s');
             $beanResumen->save();
         }
 
@@ -1656,6 +1660,8 @@ class SolicitudAsignacionEmail extends SugarApi
         $response = [];
         $response['status'] = '';
         $banderaEmailAsesor = 0;
+        // Configurar zona horaria de Ciudad de México y obtener la fecha actual
+        $dateTime = new DateTime('now', new DateTimeZone('America/Mexico_City'));
 
         if (!empty($idCuenta)) {
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
@@ -1694,6 +1700,8 @@ class SolicitudAsignacionEmail extends SugarApi
             $beanResumen->asignacion_activa_c = 0;
             $beanResumen->id_director_region_aprobar_c = '';
             $beanResumen->id_asesor_solicita_c = '';
+            $beanResumen->asignacion_automatica_c = 1; 
+            $beanResumen->fecha_asignacion_automatica_c = $dateTime->format('Y-m-d H:i:s');
             $beanResumen->save();
         }
 
