@@ -16,7 +16,7 @@
         console.log('Acción recibida:', this.accion);
 
         // Validaciones de parámetros
-        if ((this.idCuenta==null ||this.id == '' )|| (this.accion==null || this.accion== '')) {
+        if ((this.idCuenta == null || this.id == '') || (this.accion == null || this.accion == '')) {
             this.mostrarMensaje("Valores faltantes para petición", "error");
             return;
         }
@@ -36,7 +36,6 @@
         //this.puedeAprobar = approvalList.includes(app.user.id) || (this.idDirectorRegional === app.user.id);
         this.puedeAprobar = Object.values(approvalList).includes(app.user.id) || (this.idDirectorRegional === app.user.id);
 
-        
         if (!this.puedeAprobar) {
             this.mostrarMensaje("No tiene permisos para realizar esta acción", "error");
             alert("No tiene permisos para realizar esta acción");
@@ -51,6 +50,17 @@
                         this.asignacionActiva = data.asignacion_activa_c;
                         this.idDirectorRegional = data.id_director_region_aprobar_c;
                         this.idAsesorSolicita = data.id_asesor_solicita_c;
+
+                        if (!this.asignacionActiva && this.idDirectorRegional === '' && this.idAsesorSolicita === '') {
+                            this.mostrarMensaje("La cuenta ya fue atendida.", "error");
+                            alert("La cuenta ya fue atendida.");
+
+                            // Redirigir después de 2 segundos
+                            _.delay(function () {
+                                app.router.navigate("#Accounts", { trigger: true });
+                            }, 2000);
+                            return;
+                        }
 
                         if (this.acepta) {
                             this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, '');
@@ -150,5 +160,10 @@
                 }
             }, this),
         });
-    }
+    },
+
+    mostrarMensaje: function (texto, tipo) {
+        var mensajeDiv = this.$('#mensaje');
+        mensajeDiv.removeClass().addClass('message ' + tipo).text(texto);
+    },
 })

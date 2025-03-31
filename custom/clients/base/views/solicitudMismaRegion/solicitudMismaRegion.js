@@ -46,6 +46,35 @@
             return;
         }
 
+        //VALIDA SI HAY UNA SOLICITUD ACTIVA
+        if (this.idCuenta != '') {
+            var url = app.api.buildURL('tct02_Resumen/' + this.idCuenta, null, null,);
+            app.api.call('GET', url, {}, {
+                success: _.bind(function (data) {
+                    if (data != '') {
+                        this.asignacionActiva = data.asignacion_activa_c;
+                        this.idDirectorRegional = data.id_director_region_aprobar_c;
+                        this.idAsesorSolicita = data.id_asesor_solicita_c;
+
+                        if (!this.asignacionActiva && this.idDirectorRegional === '' && this.idAsesorSolicita === '') {
+                            // Ocultar el formulario
+                            this.puedeAprobar = false;
+                            this.render();
+
+                            this.mostrarMensaje("La cuenta ya fue atendida.", "error");
+                            alert("La cuenta ya fue atendida.");
+
+                            // Redirigir después de 2 segundos
+                            _.delay(function () {
+                                app.router.navigate("#Accounts", { trigger: true });
+                            }, 2000);
+                            return;
+                        }
+                    }
+                }, this)
+            });
+        }
+
         this._render();
     },
 
