@@ -9439,7 +9439,8 @@
                 var esUsuarioPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
                 var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
                 var esDiferenteRegion = !esMismaRegion;
-                esPendienteAsignar = (esUsuarioPendienteAsignar || estatusAtencion === '2' || status === "Inactive" || !posicionOperativaLeasing.includes("^3^"));
+                var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
+                esPendienteAsignar = (esUsuarioPendienteAsignar || (tipodeCuenta !== '3' && estatusAtencion === '2') || status === "Inactive" || !posicionOperativaLeasing.includes("^3^"));
 
                 //VALIDA POSICION OPERATIVA: ASESOR Y SI ES DEL PROCESO 0 - PENDIENTE DE ASIGNAR, MISMA O DIFERENTE REGION
                 if (esPendienteAsignar || esMismaRegion || esDiferenteRegion) {
@@ -9485,7 +9486,7 @@
                     var esDiferenteRegion = !esMismaRegion;
     
                     //VALIDACION 0-PENDIENTE DE ASIGNAR: Usuario = 0-pendiente o estatus atención = desatendido o estatus usuario = inactivo o puesto usuario <> asesor comercial
-                    esValidoProcesoCeroPendienteAsignar = esPendienteAsignar || estatusAtencion === '2' || status === "Inactive" || !posicionOperativaLeasing.includes("^3^");                  
+                    esValidoProcesoCeroPendienteAsignar = esPendienteAsignar || (tipodeCuenta !== '3' && estatusAtencion === '2') || status === "Inactive" || !posicionOperativaLeasing.includes("^3^");                  
                     if (!esValidoProcesoCeroPendienteAsignar && !esMismaRegion && !esDiferenteRegion) {
                         app.alert.show('sa_asesor_cero_pendiente_asignar', {
                             level: 'error',
