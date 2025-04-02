@@ -9520,7 +9520,7 @@
                         }
                     }
                     //VALIDA SI LA POSICION OPERATIVA DEL USUARIO ASIGNADO LEASING ES VACIA
-                    if (posicionOperativaLeasing === '' && (!esValidoProcesoCeroPendienteAsignar || esValidoProcesoCeroPendienteAsignar)) {
+                    if (posicionOperativaLeasing === '' && !esPendienteAsignar && (!esValidoProcesoCeroPendienteAsignar || esValidoProcesoCeroPendienteAsignar)) {
                         app.alert.show('sa_asesor_asignado_no_comercial', {
                             level: 'error',
                             autoClose: false,
