@@ -65,6 +65,21 @@ select 'Cuenta' modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, 
 where c.id = cc.id_c and c.id = r.id_c and r.asignacion_activa_c <> 1 and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
 and tipo_registro_cuenta_c IN({$tipos_query})
 SQL;
+				if(!empty($Director)) {
+					$total_rows = <<<SQL
+select 'PO' modulo, '' tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
+where p.id = pc.id_c and u.id = uc.id_c and p.assigned_user_id = u.id and p.deleted = 0 and pc.estatus_po_c <> 3
+and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
+union
+select 'Lead' modulo, lc.tipo_registro_c tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
+where l.id = lc.id_c and u.id = uc.id_c and l.assigned_user_id = u.id and l.deleted = 0 and lc.subtipo_registro_c <> 4
+and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
+union
+select 'Cuenta' modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc, tct02_resumen_cstm r
+where c.id = cc.id_c and c.id = r.id_c and r.asignacion_activa_c <> 1 and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
+and u.reports_to_id = '{$Director}' and tipo_registro_cuenta_c IN({$tipos_query})
+SQL;
+				}
             }
 			else{
 				$total_rows = <<<SQL
@@ -79,21 +94,6 @@ union
 select 'Cuenta' modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc, tct02_resumen_cstm r
 where c.id = cc.id_c and c.id = r.id_c and r.asignacion_activa_c <> 1 and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
 and tipo_registro_cuenta_c IN({$tipos_query}) and u.id = '{$user_id}'
-SQL;
-			}
-			if(!empty($Director)) {
-				$total_rows = <<<SQL
-select 'PO' modulo, '' tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
-where p.id = pc.id_c and u.id = uc.id_c and p.assigned_user_id = u.id and p.deleted = 0 and pc.estatus_po_c <> 3
-and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
-union
-select 'Lead' modulo, lc.tipo_registro_c tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
-where l.id = lc.id_c and u.id = uc.id_c and l.assigned_user_id = u.id and l.deleted = 0 and lc.subtipo_registro_c <> 4
-and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
-union
-select 'Cuenta' modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc, tct02_resumen_cstm r
-where c.id = cc.id_c and c.id = r.id_c and r.asignacion_activa_c <> 1 and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
-and u.reports_to_id = '{$Director}' and tipo_registro_cuenta_c IN({$tipos_query})
 SQL;
 			}
             if(!empty($filtroCliente)) $total_rows .= " AND name LIKE '%{$filtroCliente}%'";
@@ -117,6 +117,21 @@ select 'Cuenta' modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, 
 where c.id = cc.id_c and c.id = r.id_c and r.asignacion_activa_c <> 1 and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
 and tipo_registro_cuenta_c IN({$tipos_query})
 SQL;
+				if(!empty($Director)) {
+					$query = <<<SQL
+select 'PO' modulo, '' tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
+where p.id = pc.id_c and u.id = uc.id_c and p.assigned_user_id = u.id and p.deleted = 0 and pc.estatus_po_c <> 3
+and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
+union
+select 'Lead' modulo, lc.tipo_registro_c tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
+where l.id = lc.id_c and u.id = uc.id_c and l.assigned_user_id = u.id and l.deleted = 0 and lc.subtipo_registro_c <> 4
+and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
+union
+select 'Cuenta' modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc, tct02_resumen_cstm r
+where c.id = cc.id_c and c.id = r.id_c and r.asignacion_activa_c <> 1 and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
+and u.reports_to_id = '{$Director}' and tipo_registro_cuenta_c IN({$tipos_query})
+SQL;
+				}
             }
 			else{
 				$query = <<<SQL
@@ -131,21 +146,6 @@ union
 select 'Cuenta'  modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc, tct02_resumen_cstm r
 where c.id = cc.id_c and c.id = r.id_c and r.asignacion_activa_c <> 1 and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
 and tipo_registro_cuenta_c IN({$tipos_query}) and u.id = '{$user_id}'
-SQL;
-			}
-			if(!empty($Director)) {
-				$query = <<<SQL
-select 'PO' modulo, '' tipo, p.id, pc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from prospects p, prospects_cstm pc, users u, users_cstm uc
-where p.id = pc.id_c and u.id = uc.id_c and p.assigned_user_id = u.id and p.deleted = 0 and pc.estatus_po_c <> 3
-and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
-union
-select 'Lead' modulo, lc.tipo_registro_c tipo, l.id, lc.name_c, u.id idu, uc.nombre_completo_c, '' nuevo from leads l, leads_cstm lc, users u, users_cstm uc
-where l.id = lc.id_c and u.id = uc.id_c and l.assigned_user_id = u.id and l.deleted = 0 and lc.subtipo_registro_c <> 4
-and u.user_name <> 'SINGESTOR' and u.reports_to_id = '{$Director}'
-union
-select 'Cuenta' modulo, cc.tipo_registro_cuenta_c tipo, c.id, c.name, u.id idu, uc.nombre_completo_c, '' nuevo from accounts c, accounts_cstm cc, users u, users_cstm uc, tct02_resumen_cstm r
-where c.id = cc.id_c and c.id = r.id_c and r.asignacion_activa_c <> 1 and u.id = uc.id_c and cc.{$user_field} = u.id and c.deleted = 0 and u.user_name <> 'SINGESTOR'
-and u.reports_to_id = '{$Director}' and tipo_registro_cuenta_c IN({$tipos_query})
 SQL;
 			}
             if(!empty($filtroCliente)) $query .= " AND name LIKE '%{$filtroCliente}%'";
