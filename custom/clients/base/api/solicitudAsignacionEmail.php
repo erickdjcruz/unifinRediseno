@@ -246,7 +246,7 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                     <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                             <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_asesor_solicita . '</strong></p>
-                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor confirma que así sea.</p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor validar que así sea.</p>
                                                                             <br>
                                                                             <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
                                                                             <p style="margin: 0;">Equipo CRM</p>
@@ -808,8 +808,8 @@ class SolicitudAsignacionEmail extends SugarApi
                 }
             } else {
                 //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
-                $id_director_regional_dr = $this->getIdDirectorRegional($beanAsesorSolicita);
-                $GLOBALS['log']->fatal("...ID_DIR_REGIONAL... " . $id_director_regional_dr);
+                $id_director_regional_dr = $this->getIdDirectorRegional($beanAsesorAnterior);
+                $GLOBALS['log']->fatal("...ID_DIR_REGIONAL_ANTERIOR_ORIGEN... " . $id_director_regional_dr);
                 if (!empty($id_director_regional_dr)) {
                     //INFORMACION DEL DIRECTOR REGIONAL
                     $beanDirRegionalDR = BeanFactory::retrieveBean('Users', $id_director_regional_dr, array('disable_row_level_security' => true));
@@ -1357,7 +1357,7 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                     <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                             <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_asesor_solicita . '</strong></p>
-                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor confirma que así sea.</p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor validar que así sea.</p>
                                                                             <br>
                                                                             <p style="margin: 0; margin-bottom: 16px;">Comentario del Director:</p>
                                                                             <p style="margin: 0; margin-bottom: 16px;">' . $comentario_del_director . '</p>
@@ -2085,7 +2085,7 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                     <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                             <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_asesor_solicita . '</strong></p>
-                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor confirma que así sea.</p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor validar que así sea.</p>
                                                                             <br>
                                                                             <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
                                                                             <p style="margin: 0;">Equipo CRM</p>
