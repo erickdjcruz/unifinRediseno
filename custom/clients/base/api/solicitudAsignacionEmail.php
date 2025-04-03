@@ -246,7 +246,7 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                     <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                             <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_asesor_solicita . '</strong></p>
-                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor validar que así sea.</p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor valida que así sea.</p>
                                                                             <br>
                                                                             <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
                                                                             <p style="margin: 0;">Equipo CRM</p>
@@ -1025,13 +1025,16 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                 <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                     <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                         <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_aprobador . '</strong></p>
-                                                                        <p style="margin: 0; margin-bottom: 16px;">Tu asesor, <strong>' . $nombre_asesor_solicta . ',</strong> solicita la reasignación del Cliente Prospecto: <strong>' . $nombre_cuenta . '.</strong>, actualmente asignado a <strong>' . $nombre_asesor_anterior . '.</strong></p> 
-                                                                        <p>Los contactos relacionados son:</p>
-                                                                        <ul>';
-                                                                        for ($i = 0; $i < count($cuentasHijas); $i++) {
-                                                                            $auxHTML = '<li> ' . $cuentasHijas[$i] . "</li>";
+                                                                        <p style="margin: 0; margin-bottom: 16px;">El asesor, <strong>' . $nombre_asesor_solicta . ',</strong> solicita la reasignación del Cliente Prospecto: <strong>' . $nombre_cuenta . '.</strong>, actualmente asignado a <strong>' . $nombre_asesor_anterior . '.</strong></p>'; 
+                                                                        if(count($cuentasHijas)>0){
+                                                                            $mailHTML = $mailHTML . '<p>Los contactos relacionados son:</p>
+                                                                            <ul>';
+                                                                            for ($i = 0; $i < count($cuentasHijas); $i++) {
+                                                                                $auxHTML = '<li> ' . $cuentasHijas[$i] . "</li>";
+                                                                            }
+                                                                            $mailHTML = $mailHTML . $auxHTML . '</ul>';
                                                                         }
-                                                                        $mailHTML = $mailHTML . $auxHTML . '</ul>';
+                                                                        
                                                                         $mailHTML = $mailHTML . '<p style="margin: 0; margin-bottom: 16px;">Indica tu decisión a continuación:</p>
 
                                                                         <table border="0" cellpadding="10" cellspacing="0" class="button_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
@@ -1357,7 +1360,7 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                     <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                             <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_asesor_solicita . '</strong></p>
-                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor validar que así sea.</p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor valida que así sea.</p>
                                                                             <br>
                                                                             <p style="margin: 0; margin-bottom: 16px;">Comentario del Director:</p>
                                                                             <p style="margin: 0; margin-bottom: 16px;">' . $comentario_del_director . '</p>
@@ -2085,7 +2088,7 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                     <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                             <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_asesor_solicita . '</strong></p>
-                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor validar que así sea.</p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada y ya se ha asignado a tu usuario, por favor valida que así sea.</p>
                                                                             <br>
                                                                             <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
                                                                             <p style="margin: 0;">Equipo CRM</p>
