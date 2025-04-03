@@ -236,14 +236,14 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
           'label' => 'Enviar al portal de proveedor',
           'event' => 'button:enviar_portal_proveedores:click',
         ),
+        // 19 => 
+        // array (
+        //   'name' => 'proveedor_quantico',
+        //   'type' => 'rowaction',
+        //   'label' => 'Tarea IE Proveedor Quantico',
+        //   'event' => 'button:proveedor_quantico:click',
+        // ),
         19 => 
-        array (
-          'name' => 'proveedor_quantico',
-          'type' => 'rowaction',
-          'label' => 'Tarea IE Proveedor Quantico',
-          'event' => 'button:proveedor_quantico:click',
-        ),
-        20 => 
         array (
           'name' => 'solicitar_ciec',
           'type' => 'rowaction',

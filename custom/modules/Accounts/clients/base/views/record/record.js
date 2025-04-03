@@ -256,7 +256,7 @@
         this.model.on('sync', this.ocultaGeneraRFC, this);
 
         //Oculta Menú Tarea IE Proveedor Quantico
-        this.model.on('sync', this.ocultaproveedor, this);
+        // this.model.on('sync', this.ocultaproveedor, this);
 
         //Recupera datos para custom fields
         this.get_addresses();
@@ -309,7 +309,7 @@
 
 
         this.context.on('button:open_negociador_quantico:click', this.open_negociador_quantico, this);
-        this.context.on('button:proveedor_quantico:click', this.proveedor_quantico, this);
+        // this.context.on('button:proveedor_quantico:click', this.proveedor_quantico, this);
         /***************Validacion de Campos No viables en los Productos********************/
         this.model.addValidationTask('LeasingUP', _.bind(this.requeridosLeasingUP, this));
         this.model.addValidationTask('FactorajeUP', _.bind(this.requeridosFactorajeUP, this));
@@ -9016,20 +9016,20 @@
     },
 
 
-    ocultaproveedor: function () {
-        var Proveedor = 0;
-        var Boton1 = this.getField("proveedor_quantico");
-        if (this.model.get("esproveedor_c") || this.model.get("tipo_registro_cuenta_c") == 5) Proveedor = 1;
-        if (Boton1) {
-            Boton1.listenTo(Boton1, "render", function () {
-                if (Proveedor) {
-                    Boton1.show();
-                } else {
-                    Boton1.hide();
-                }
-            });
-        }
-    },
+    // ocultaproveedor: function () {
+    //     var Proveedor = 0;
+    //     var Boton1 = this.getField("proveedor_quantico");
+    //     if (this.model.get("esproveedor_c") || this.model.get("tipo_registro_cuenta_c") == 5) Proveedor = 1;
+    //     if (Boton1) {
+    //         Boton1.listenTo(Boton1, "render", function () {
+    //             if (Proveedor) {
+    //                 Boton1.show();
+    //             } else {
+    //                 Boton1.hide();
+    //             }
+    //         });
+    //     }
+    // },
 
     disableNameCliente: function () {
         if (this.model.get('tipo_registro_cuenta_c') == '3') {
@@ -9047,22 +9047,22 @@
         }
     },
 
-    proveedor_quantico: function () {
-        //Creación de tarea de integración de expediente de proveedor en Quantico
-        app.alert.show('proveedor_quantico', {
-            level: 'process',
-            title: 'Creando tarea de integración de expediente en Quantico para el proveedor, por favor espere.',
-        });
-        app.api.call("read", app.api.buildURL("tarea_quantico/" + this.model.get('id'), null, null, {}), null, {
-            success: _.bind(function (data) {
-                app.alert.dismiss('proveedor_quantico');
-                app.alert.show('tarea_quantico', {
-                    level: 'warning',
-                    messages: data,
-                });
-            }, this),
-        });
-    },
+    // proveedor_quantico: function () {
+    //     //Creación de tarea de integración de expediente de proveedor en Quantico
+    //     app.alert.show('proveedor_quantico', {
+    //         level: 'process',
+    //         title: 'Creando tarea de integración de expediente en Quantico para el proveedor, por favor espere.',
+    //     });
+    //     app.api.call("read", app.api.buildURL("tarea_quantico/" + this.model.get('id'), null, null, {}), null, {
+    //         success: _.bind(function (data) {
+    //             app.alert.dismiss('proveedor_quantico');
+    //             app.alert.show('tarea_quantico', {
+    //                 level: 'warning',
+    //                 messages: data,
+    //             });
+    //         }, this),
+    //     });
+    // },
     validaPropRealCR: function (fields, errors, callback) {
         var esPropietario = false;
         var esCLiente = false;

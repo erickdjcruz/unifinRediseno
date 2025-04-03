@@ -23,6 +23,7 @@ global $sugar_config;
 $GLOBALS['bpm_url'] = $sugar_config['bpm_url'];
 $GLOBALS['esb_url'] = $sugar_config['esb_url'];
 $GLOBALS['unifin_url'] = $sugar_config['unifin_url'];
+$GLOBALS['unifin_url_cliente_completo'] = $sugar_config['unifin_url_cliente_completo'];
 
 // JSR Cambios para ip dinámica
 
@@ -284,7 +285,9 @@ class UnifinAPI
                 $TipoCliente = $IntValue->getTipoCliente($objecto->tipo_registro_cuenta_c, $objecto->estatus_c, $objecto->esproveedor_c, $objecto->tipo_relacion_c, $objecto->cedente_factor_c, $objecto->deudor_factor_c);
                 $_ClntFechaNacimiento = $RegimenFiscal == 3 ? $objecto->fechaconstitutiva_c : $objecto->fechadenacimiento_c;
                 /***CVV INICIO***/
-                $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto';
+                // $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto';
+                //NUEVO HOST
+                $host = 'https://' . $GLOBALS['unifin_url_cliente_completo'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto?apikey=17userdev';
                 $cleanValues = array();
                 $fields = array(
                     "oClienteCompleto" => array(
