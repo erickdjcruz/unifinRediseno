@@ -287,7 +287,7 @@ class UnifinAPI
                 /***CVV INICIO***/
                 // $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto';
                 //NUEVO HOST
-                $host = 'https://' . $GLOBALS['unifin_url_cliente_completo'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto?apikey=17userdev';
+                $host = 'https://' . $GLOBALS['unifin_url_cliente_completo'] . '/unics-dev/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto?apikey=userunics-2025';
                 $cleanValues = array();
                 $fields = array(
                     "oClienteCompleto" => array(
