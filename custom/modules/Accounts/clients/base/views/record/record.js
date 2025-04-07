@@ -198,6 +198,9 @@
         this.model.on('change:name', this.cleanName, this);
         this.model.on('change:no_website_c', this.rowebsite, this);
 
+        /* EJC: 2025-03-24
+         Ajuste para tipo de cuenta proveedor, no edite       */
+         this.model.on('sync', this.blockProveedor, this);
         /*
          AF. 12-02-2018
          Ajuste para mostrar direcciones y teléfonos
@@ -3606,15 +3609,15 @@
         if (this.model.get('tipo_registro_cuenta_c') == '5' || this.model.get('esproveedor_c') == true) { //duda
             this.model.set("esproveedor_c", true);
             var tipoProveedor = new String(this.model.get('tipo_proveedor_c'));
-            if (tipoProveedor.length == 0) {
+            //if (tipoProveedor.length == 0) {
                 /*app.alert.show("Proveedor Requerido", {
                  level: "error",
                  title: "Debe seleccionar un un tipo de proveedor al menos",
                  autoClose: false
                  });*/
-                errors['tipo_proveedor_c'] = errors['tipo_proveedor_c'] || {};
-                errors['tipo_proveedor_c'].required = true;
-            }
+                //errors['tipo_proveedor_c'] = errors['tipo_proveedor_c'] || {};
+                //errors['tipo_proveedor_c'].required = true;
+            //}
             //Validacion de Actividad Economica - antes macrosector
             /*if ($('.list_ae').select2('val') == "0" || $('.list_ae').select2('val') == '' || $('.list_ae')[0].innerText.trim() == "" || $('.list_ae').select2('val') == null) {
                 //Entra a modo edición el campo custom

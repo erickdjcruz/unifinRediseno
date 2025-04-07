@@ -159,15 +159,15 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
         array (
           'type' => 'divider',
         ),
-        9 => 
+        /*9 => 
         array (
           'type' => 'rowaction',
           'event' => 'button:dynamics_button:click',
           'name' => 'dynamics_365',
           'label' => 'Enviar a Dynamics 365',
           'acl_action' => 'view',
-        ),
-        10 => 
+        ),*/
+        9 => 
         array (
           'type' => 'rowaction',
           'event' => 'button:cotizador_button:click',
@@ -175,7 +175,7 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
           'label' => 'Cotizador',
           'acl_action' => 'view',
         ),
-        11 => 
+        10 => 
         array (
           'type' => 'rowaction',
           'event' => 'button:expediente_button:click',
@@ -183,7 +183,7 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
           'label' => 'Expediente',
           'acl_action' => 'view',
         ),
-        12 => 
+        11 => 
         array (
           'type' => 'rowaction',
           'event' => 'button:convierte_lead:click',
@@ -192,7 +192,7 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
           'acl_action' => 'view',
           'class' => 'jcmx1',
         ),
-        13 => 
+        12 => 
         array (
           'name' => 'send_survey',
           'type' => 'rowaction',
@@ -200,7 +200,7 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
           'acl_action' => 'send_survey',
           'event' => 'button:send_survey:click',
         ),
-        14 => 
+        13 => 
         array (
           'name' => 'send_poll',
           'type' => 'rowaction',
@@ -208,28 +208,28 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
           'acl_action' => 'send_poll',
           'event' => 'button:send_poll:click',
         ),
-        15 => 
+        14 => 
         array (
           'name' => 'get_account_asesor',
           'type' => 'rowaction',
           'label' => 'Quiero esta Cuenta',
           'event' => 'button:get_account_asesor:click',
         ),
-        16 => 
+        15 => 
         array (
           'name' => 'send_account_asesor',
           'type' => 'rowaction',
           'label' => 'Enviar Cuenta a',
           'event' => 'button:send_account_asesor:click',
         ),
-        17 => 
+        16 => 
         array (
           'name' => 'negociador_quantico',
           'type' => 'rowaction',
           'label' => 'Negociador Quantico',
           'event' => 'button:open_negociador_quantico:click',
         ),
-        18 => 
+        17 => 
         array (
           'name' => 'portal_proveedores',
           'type' => 'rowaction',
