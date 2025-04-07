@@ -269,6 +269,7 @@
                             //cont_dir.populateCiudadesByEstado(cont_dir.nuevaDireccion.estado);
                             //cont_dir.populateColoniasByMunicipio(cont_dir.nuevaDireccion.municipio);
                             cont_dir.nuevaDireccion.colonia = list_colonias[0].idColonia;  
+                            //cont_dir.nuevaDireccion.ciudad = listCiudad[0].idCiudad;
                             cont_dir.nuevaDireccion.ciudad = idCiudad;
 
                         } else {
