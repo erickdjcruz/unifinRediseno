@@ -289,6 +289,21 @@ class UnifinAPI
                 //NUEVO HOST
                 $host = 'https://' . $GLOBALS['unifin_url_cliente_completo'] . '/unics-dev/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto?apikey=userunics-2025';
                 $cleanValues = array();
+
+                $GLOBALS['log']->fatal("NUEVO HOST CIENTE COMPLETO: " . $host);
+
+                if(($objecto->esproveedor_c == 1 || $objecto->tipo_registro_cuenta_c == '5') && ($objecto->actividadeconomica_c == '' || empty($objecto->actividadeconomica_c))){
+                    $actividad_economica = '9999999';
+                }else{
+                    $actividad_economica =$objecto->actividadeconomica_c;
+                }
+
+                if(($objecto->esproveedor_c == 1 || $objecto->tipo_registro_cuenta_c == '5') && ($objecto->sectoreconomico_c == '' || empty($objecto->sectoreconomico_c))){
+                    $sector_economico = '999';
+                }else{
+                    $sector_economico = $objecto->sectoreconomico_c;
+                }
+                
                 $fields = array(
                     "oClienteCompleto" => array(
                         "oPersona" => array(
@@ -297,8 +312,8 @@ class UnifinAPI
                             "_IdRegimenFiscal" => $RegimenFiscal,
                             "_ClntRfc" => $objecto->rfc_c,
                             "_ClntFechaNacimiento" => $_ClntFechaNacimiento == "" ? null : $_ClntFechaNacimiento,
-                            "_actividadEconomica" => $objecto->actividadeconomica_c,
-                            "_sectorEconomico" => $objecto->sectoreconomico_c,
+                            "_actividadEconomica" => $actividad_economica,
+                            "_sectorEconomico" => $sector_economico,
                             "_IdRegimenConyugal" => $RegimenConyugal,
                             "_ClntApellidoPaterno" => $objecto->apellidopaterno_c,
                             "_ClntApellidoMaterno" => $objecto->apellidomaterno_c,
