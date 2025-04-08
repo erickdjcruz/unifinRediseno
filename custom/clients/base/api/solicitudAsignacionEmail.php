@@ -102,10 +102,11 @@ class SolicitudAsignacionEmail extends SugarApi
             $response .= "y a <b>" . $nombreDirectorInformaA . "</b>, de la cuenta <b>" . $nombreCuenta . "</b>";
         }
 
+        $GLOBALS['log']->fatal("...fecha_asignacion_automatica_c 0-pendiente... " . $dateTime->format('Y-m-d H:i:s'));
         //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
         if (!empty($idCuenta)) {
             $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
-            $beanResumen->asignacion_automatica_c = 1; 
+            $beanResumen->asignacion_automatica_c = 1;
             $beanResumen->fecha_asignacion_automatica_c = $dateTime->format('Y-m-d H:i:s');
             $beanResumen->save();
         }
@@ -807,31 +808,58 @@ class SolicitudAsignacionEmail extends SugarApi
                     $beanResumen->id_director_region_aprobar_c = $idAprobadorEjecutivoEC;
                 }
             } else {
-                //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
-                $id_director_regional_dr = $this->getIdDirectorRegional($beanAsesorAnterior);
-                $GLOBALS['log']->fatal("...ID_DIR_REGIONAL_ANTERIOR_ORIGEN... " . $id_director_regional_dr);
-                if (!empty($id_director_regional_dr)) {
+                //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO ANTERIOR-ORIGEN
+                $id_director_regional_dr_anterior = $this->getIdDirectorRegional($beanAsesorAnterior);
+                $GLOBALS['log']->fatal("...ID_DIR_REGIONAL_ANTERIOR_ORIGEN... " . $id_director_regional_dr_anterior);
+                if (!empty($id_director_regional_dr_anterior)) {
                     //INFORMACION DEL DIRECTOR REGIONAL
-                    $beanDirRegionalDR = BeanFactory::retrieveBean('Users', $id_director_regional_dr, array('disable_row_level_security' => true));
+                    $beanDirRegionalDR = BeanFactory::retrieveBean('Users', $id_director_regional_dr_anterior, array('disable_row_level_security' => true));
                     $nombreDirRegionalDR = $beanDirRegionalDR->first_name . " " . $beanDirRegionalDR->last_name;
                     $emailDirRegionalDR = $beanDirRegionalDR->email1;
+
+                    $GLOBALS['log']->fatal("...NombreDirRegionalDR_ANTERIOR_ORIGEN... " . $nombreDirRegionalDR);
+                    //PLANTILLA DE EMAIL PARA VOBO DIRECTOR REGIONAL
+                    $body_mail_vobo_dr = $this->buildBodyEmailVoBo($nombreDirRegionalDR, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion, $relacionesHijas);
+                    $GLOBALS['log']->fatal("...EmailDirRegionalDR_ANTERIOR_ORIGEN... " . $emailDirRegionalDR);
+                    //EMAIL A DIRECTOR REGIONAL
+                    if (!empty($emailDirRegionalDR)) {
+                        $this->sendEmailAsesorCuentas(
+                            'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
+                            $body_mail_vobo_dr,
+                            $emailDirRegionalDR,
+                            $nombreDirRegionalDR
+                        );
+                        $response .= "<br>Se envió notificación al Director Regional: <b>" . $nombreDirRegionalDR . "</b>, para VoBo de la Asignación de la cuenta <b>" . $nombreCuenta . "</b>";
+                    }
+                    //GUARDA EL ID DEL APROBADOR
+                    $beanResumen->id_director_region_aprobar_c = $id_director_regional_dr_anterior;
                 }
-                $GLOBALS['log']->fatal("...NombreDirRegionalDR... " . $nombreDirRegionalDR);
-                //PLANTILLA DE EMAIL PARA VOBO DIRECTOR REGIONAL
-                $body_mail_vobo_dr = $this->buildBodyEmailVoBo($nombreDirRegionalDR, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion, $relacionesHijas);
-                $GLOBALS['log']->fatal("...EmailDirRegionalDR... " . $emailDirRegionalDR);
-                //EMAIL A DIRECTOR REGIONAL
-                if (!empty($emailDirRegionalDR)) {
-                    $this->sendEmailAsesorCuentas(
-                        'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
-                        $body_mail_vobo_dr,
-                        $emailDirRegionalDR,
-                        $nombreDirRegionalDR
-                    );
-                    $response .= "<br>Se envió notificación al Director Regional: <b>" . $nombreDirRegionalDR . "</b>, para VoBo de la Asignación de la cuenta <b>" . $nombreCuenta . "</b>";
+                //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
+                $id_director_regional_dr_solicita = $this->getIdDirectorRegional($beanAsesorSolicita);
+                $GLOBALS['log']->fatal("...ID_DIR_REGIONAL_SOLICITA... " . $id_director_regional_dr_solicita);
+                if (!empty($id_director_regional_dr_solicita)) {
+                    //INFORMACION DEL DIRECTOR REGIONAL
+                    $beanDirRegionalDRS = BeanFactory::retrieveBean('Users', $id_director_regional_dr_solicita, array('disable_row_level_security' => true));
+                    $nombreDirRegionalDRS = $beanDirRegionalDRS->first_name . " " . $beanDirRegionalDRS->last_name;
+                    $emailDirRegionalDRS = $beanDirRegionalDRS->email1;
+
+                    $GLOBALS['log']->fatal("...NombreDirRegionalDRS_SOLICITA... " . $nombreDirRegionalDRS);
+                    //PLANTILLA DE EMAIL PARA VOBO DIRECTOR REGIONAL
+                    $body_mail_vobo_dr = $this->buildBodyEmailVoBo($nombreDirRegionalDRS, $nombreAsesorSolicita, $nombreCuenta, $nombreAsesorAnterior, $linkAutorizaDiferenteRegion, $linkRechazoDiferenteRegion, $relacionesHijas);
+                    $GLOBALS['log']->fatal("...EmailDirRegionalDRS_SOLICITA... " . $emailDirRegionalDRS);
+                    //EMAIL A DIRECTOR REGIONAL
+                    if (!empty($emailDirRegionalDRS)) {
+                        $this->sendEmailAsesorCuentas(
+                            'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
+                            $body_mail_vobo_dr,
+                            $emailDirRegionalDRS,
+                            $nombreDirRegionalDRS
+                        );
+                        $response .= "<br>Se envió notificación al Director Regional: <b>" . $nombreDirRegionalDRS . "</b>, para VoBo de la Asignación de la cuenta <b>" . $nombreCuenta . "</b>";
+                    }
+                    //GUARDA EL ID DEL APROBADOR
+                    $beanResumen->id_director_region_aprobar2_c = $id_director_regional_dr_solicita;
                 }
-                //GUARDA EL ID DEL APROBADOR
-                $beanResumen->id_director_region_aprobar_c = $id_director_regional_dr;
             }
         } else {
             /**************************************************** PROCESO MISMA REGION **************************************************** */
@@ -1025,16 +1053,16 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                 <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                     <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                         <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_aprobador . '</strong></p>
-                                                                        <p style="margin: 0; margin-bottom: 16px;">El asesor, <strong>' . $nombre_asesor_solicta . ',</strong> solicita la reasignación del Cliente Prospecto: <strong>' . $nombre_cuenta . '.</strong>, actualmente asignado a <strong>' . $nombre_asesor_anterior . '.</strong></p>'; 
-                                                                        if(count($cuentasHijas)>0){
+                                                                        <p style="margin: 0; margin-bottom: 16px;">El asesor, <strong>' . $nombre_asesor_solicta . ',</strong> solicita la reasignación del Cliente Prospecto: <strong>' . $nombre_cuenta . '.</strong>, actualmente asignado a <strong>' . $nombre_asesor_anterior . '.</strong></p>';
+                                                                        if (count($cuentasHijas) > 0) {
                                                                             $mailHTML = $mailHTML . '<p>Los contactos relacionados son:</p>
-                                                                            <ul>';
+                                                                                                                                            <ul>';
                                                                             for ($i = 0; $i < count($cuentasHijas); $i++) {
                                                                                 $auxHTML = '<li> ' . $cuentasHijas[$i] . "</li>";
                                                                             }
                                                                             $mailHTML = $mailHTML . $auxHTML . '</ul>';
                                                                         }
-                                                                        
+
                                                                         $mailHTML = $mailHTML . '<p style="margin: 0; margin-bottom: 16px;">Indica tu decisión a continuación:</p>
 
                                                                         <table border="0" cellpadding="10" cellspacing="0" class="button_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
@@ -1135,14 +1163,17 @@ class SolicitudAsignacionEmail extends SugarApi
 
     public function procesoAutorizaAsignacion($api, $args)
     {
-        $GLOBALS['log']->fatal("...procesoAutorizaAsignacion...");
+        $GLOBALS['log']->fatal("++++++++ PROCESO_AUTORIZA_ASIGNACION ++++++++");
         $idCuenta = $args['id_cuenta'];
         $idAsesorSolicita = $args['id_asesor_solicita'];
         $comentarioDirectorRegional = $args['comentarios'];
+        $valorDirectorRegionalDecide = $args['valor_director_decide']; //PARAMETRO DE DIFERENTE REGION
         $response = [];
         $response['status'] = '';
         $banderaEmailAsesorAnterior = 0;
         $banderaEmailAsesorActual = 0;
+        $banderaEmailDirectorAnteriorOrigen = 0;
+        $banderaEmailDirectorSolicitaDestino = 0;
         // Configurar zona horaria de Ciudad de México y obtener la fecha actual
         $dateTime = new DateTime('now', new DateTimeZone('America/Mexico_City'));
 
@@ -1161,67 +1192,199 @@ class SolicitudAsignacionEmail extends SugarApi
             $nombreAsesorAnterior = $beanAsesorAnterior->first_name . " " . $beanAsesorAnterior->last_name;
             $emailAsesorAnterior = $beanAsesorAnterior->email1;
         }
-
-        //NOTIFICA LA REASIGNACION DE LA CUENTA AL ASESOR ANTERIOR
-        $body_mail_notifica_asesor_anterior = $this->buildBodyNotificaAsesorAnterior($nombreAsesorAnterior, $nombreCuenta);
-        //EMAIL AL ASESOR ANTERIOR
-        if (!empty($emailAsesorAnterior)) {
-            $success1 = $this->sendEmailAsesorCuentas(
-                'Reasignación de cliente/prospecto ' . $nombreCuenta,
-                $body_mail_notifica_asesor_anterior,
-                $emailAsesorAnterior,
-                $nombreAsesorAnterior
-            );
-
-            if ($success1) {
-                $banderaEmailAsesorAnterior = 1;
-            }
-        }
-
-        //PROCESO DE REASIGNACION DE LA CUENTA
-        if (!empty($idCuenta) && !empty($idAsesorSolicita)) {
-            $this->procesoReasignacionCuenta($idCuenta, $idAsesorSolicita);
-        }
-
-        //NOTIFICA AL ASESOR SOLICITA QUE SE AUTORIZO LA ASIGNACION
+        //VALIDA SI ES DIFERENTE REGION
         if ($comentarioDirectorRegional === '') {
-            $body_mail_autoriza_diferente_region = $this->buildBodyNotificaAutorizacionDiferenteRegion($nombreAsesorSolicita, $nombreCuenta);
-        } else {
-            $body_mail_autoriza_asignacion = $this->buildBodyNotificaAutorizacionAsesorAsignacion($nombreAsesorSolicita, $nombreCuenta, $comentarioDirectorRegional);
-        }
+            $GLOBALS['log']->fatal("...DIFERENTE_REGION... ". $valorDirectorRegionalDecide);
+            //APROBARON AMBOS DIRECTORES Y SE NOTIFICA LA ASIGNACION
+            if ($valorDirectorRegionalDecide === '2') {
+                //NOTIFICA LA REASIGNACION DE LA CUENTA AL ASESOR ANTERIOR
+                $body_mail_notifica_asesor_anterior = $this->buildBodyNotificaAsesorAnterior($nombreAsesorAnterior, $nombreCuenta);
+                //EMAIL AL ASESOR ANTERIOR
+                if (!empty($emailAsesorAnterior)) {
+                    $success1DR = $this->sendEmailAsesorCuentas(
+                        'Reasignación de cliente/prospecto ' . $nombreCuenta,
+                        $body_mail_notifica_asesor_anterior,
+                        $emailAsesorAnterior,
+                        $nombreAsesorAnterior
+                    );
 
-        //EMAIL AL ASESOR SOLICITA
-        if (!empty($emailAsesorSolicita)) {
-            $success2 = $this->sendEmailAsesorCuentas(
-                'Recarterización de clientes/prospectos ' . $nombreCuenta,
-                $comentarioDirectorRegional === ''? $body_mail_autoriza_diferente_region: $body_mail_autoriza_asignacion,
-                $emailAsesorSolicita,
-                $nombreAsesorSolicita
-            );
+                    if ($success1DR) {
+                        $banderaEmailAsesorAnterior = 1;
+                    }
+                }
+                //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO ANTERIOR-ORIGEN
+                $id_director_regional_dr_anterior = $this->getIdDirectorRegional($beanAsesorAnterior);
+                $GLOBALS['log']->fatal("...ID_DIR_REGIONAL_ANTERIOR_ORIGEN_DR... " . $id_director_regional_dr_anterior);
+                if (!empty($id_director_regional_dr_anterior)) {
+                    //INFORMACION DEL DIRECTOR REGIONAL
+                    $beanDirRegionalDR = BeanFactory::retrieveBean('Users', $id_director_regional_dr_anterior, array('disable_row_level_security' => true));
+                    $nombreDirRegionalDR = $beanDirRegionalDR->first_name . " " . $beanDirRegionalDR->last_name;
+                    $emailDirRegionalDR = $beanDirRegionalDR->email1;
+                    $GLOBALS['log']->fatal("...NombreDirRegionalDR_ANTERIOR_ORIGEN_DR... " . $nombreDirRegionalDR . " " . $emailDirRegionalDR);
+                    //PLANTILLA PARA EL DIRECTOR
+                    $body_mail_notifica_director_autoriza = $this->buildBodyNotificaDirectorDRAutoriza($nombreDirRegionalDR, $nombreCuenta);                    
+                    //EMAIL A DIRECTOR REGIONAL
+                    if (!empty($emailDirRegionalDR)) {
+                        $success2DR = $this->sendEmailAsesorCuentas(
+                            'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
+                            $body_mail_notifica_director_autoriza,
+                            $emailDirRegionalDR,
+                            $nombreDirRegionalDR
+                        );  
+                        
+                        if ($success2DR) {
+                            $banderaEmailDirectorAnteriorOrigen = 1;
+                        }
+                    }                    
+                }
+                //PROCESO DE REASIGNACION DE LA CUENTA
+                if (!empty($idCuenta) && !empty($idAsesorSolicita)) {
+                    $GLOBALS['log']->fatal("...DR_ProcesoReasignacionCuenta... ");
+                    $this->procesoReasignacionCuenta($idCuenta, $idAsesorSolicita);
+                }
+                //NOTIFICA AL ASESOR SOLICITA QUE SE AUTORIZO LA ASIGNACION
+                $body_mail_autoriza_diferente_region = $this->buildBodyNotificaAutorizacionDiferenteRegion($nombreAsesorSolicita, $nombreCuenta);
 
-            if ($success2) {
-                $banderaEmailAsesorActual = 1;
+                //EMAIL AL ASESOR SOLICITA
+                if (!empty($emailAsesorSolicita)) {
+                    $success3DR = $this->sendEmailAsesorCuentas(
+                        'Recarterización de clientes/prospectos ' . $nombreCuenta,
+                        $body_mail_autoriza_diferente_region,
+                        $emailAsesorSolicita,
+                        $nombreAsesorSolicita
+                    );
+
+                    if ($success3DR) {
+                        $banderaEmailAsesorActual = 1;
+                    }
+                }
+                //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
+                $id_director_regional_dr_solicita = $this->getIdDirectorRegional($beanAsesorSolicita);
+                $GLOBALS['log']->fatal("...ID_DIR_REGIONAL_SOLICITA_DR... " . $id_director_regional_dr_solicita);
+                if (!empty($id_director_regional_dr_solicita)) {
+                    //INFORMACION DEL DIRECTOR REGIONAL
+                    $beanDirRegionalDRS = BeanFactory::retrieveBean('Users', $id_director_regional_dr_solicita, array('disable_row_level_security' => true));
+                    $nombreDirRegionalDRS = $beanDirRegionalDRS->first_name . " " . $beanDirRegionalDRS->last_name;
+                    $emailDirRegionalDRS = $beanDirRegionalDRS->email1;
+                    $GLOBALS['log']->fatal("...NombreDirRegionalDRS_SOLICITA_DR... " . $nombreDirRegionalDRS . " " . $emailDirRegionalDRS);
+                    //PLANTILLA PARA EL DIRECTOR
+                    $body_mail_notifica_director_autoriza = $this->buildBodyNotificaDirectorDRAutoriza($nombreDirRegionalDRS, $nombreCuenta);                    
+                    //EMAIL A DIRECTOR REGIONAL
+                    if (!empty($emailDirRegionalDRS)) {
+                        $success4DR = $this->sendEmailAsesorCuentas(
+                            'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
+                            $body_mail_notifica_director_autoriza,
+                            $emailDirRegionalDRS,
+                            $nombreDirRegionalDRS
+                        );       
+                        
+                        if ($success4DR) {
+                            $banderaEmailDirectorSolicitaDestino = 1;
+                        }
+                    }                    
+                }             
             }
-        }
+
+        } else {
+            $GLOBALS['log']->fatal("...MISMA_REGION...");
+            //NOTIFICA LA REASIGNACION DE LA CUENTA AL ASESOR ANTERIOR
+            $body_mail_notifica_asesor_anterior = $this->buildBodyNotificaAsesorAnterior($nombreAsesorAnterior, $nombreCuenta);
+            //EMAIL AL ASESOR ANTERIOR
+            if (!empty($emailAsesorAnterior)) {
+                $success1 = $this->sendEmailAsesorCuentas(
+                    'Reasignación de cliente/prospecto ' . $nombreCuenta,
+                    $body_mail_notifica_asesor_anterior,
+                    $emailAsesorAnterior,
+                    $nombreAsesorAnterior
+                );
+
+                if ($success1) {
+                    $banderaEmailAsesorAnterior = 1;
+                }
+            }
+
+            //PROCESO DE REASIGNACION DE LA CUENTA
+            if (!empty($idCuenta) && !empty($idAsesorSolicita)) {
+                $GLOBALS['log']->fatal("...MISMA_REGION_procesoReasignacionCuenta... ");
+                //FLUJO MISMA REGION
+                $this->procesoReasignacionCuenta($idCuenta, $idAsesorSolicita);
+            }
+
+            //NOTIFICA AL ASESOR SOLICITA QUE SE AUTORIZO LA ASIGNACION
+            $body_mail_autoriza_asignacion = $this->buildBodyNotificaAutorizacionAsesorAsignacion($nombreAsesorSolicita, $nombreCuenta, $comentarioDirectorRegional);
+
+            //EMAIL AL ASESOR SOLICITA
+            if (!empty($emailAsesorSolicita)) {
+                $success2 = $this->sendEmailAsesorCuentas(
+                    'Recarterización de clientes/prospectos ' . $nombreCuenta,
+                    $body_mail_autoriza_asignacion,
+                    $emailAsesorSolicita,
+                    $nombreAsesorSolicita
+                );
+
+                if ($success2) {
+                    $banderaEmailAsesorActual = 1;
+                }
+            }
+        }       
+
+        $GLOBALS['log']->fatal("...fecha_asignacion_automatica_c... " . $dateTime->format('Y-m-d H:i:s'));
 
         //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
         if (!empty($idCuenta)) {
             $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
-            $beanResumen->asignacion_activa_c = 0;
-            $beanResumen->id_director_region_aprobar_c = '';
-            $beanResumen->id_asesor_solicita_c = '';
-            $beanResumen->asignacion_automatica_c = 1; 
-            $beanResumen->fecha_asignacion_automatica_c = $dateTime->format('Y-m-d H:i:s');
+
+            if ($comentarioDirectorRegional === '') {
+                //VAIDA SI ES DIFERENTE REGION
+                if ($valorDirectorRegionalDecide === '2') {
+                    //VALIDA SI AMBOS DIRECTORES YA APROBARON LA ASIGNACION
+                    $beanResumen->asignacion_activa_c = 0;
+                    $beanResumen->id_director_region_aprobar_c = '';
+                    $beanResumen->id_director_region_aprobar2_c = '';
+                    $beanResumen->id_asesor_solicita_c = '';
+                    $beanResumen->asignacion_automatica_c = 1;
+                    $beanResumen->fecha_asignacion_automatica_c = $dateTime->format('Y-m-d H:i:s');
+                    $beanResumen->aprobacion_directores_c = $valorDirectorRegionalDecide;                    
+                } else {
+                    //ASIGNA VALOR APROBACION DIRECTORES                    
+                    $beanResumen->aprobacion_directores_c = $valorDirectorRegionalDecide;
+                }
+            } else {
+                //FLUJO MISMA REGION
+                $beanResumen->asignacion_activa_c = 0;
+                $beanResumen->id_director_region_aprobar_c = '';
+                $beanResumen->id_asesor_solicita_c = '';
+                $beanResumen->asignacion_automatica_c = 1;
+                $beanResumen->fecha_asignacion_automatica_c = $dateTime->format('Y-m-d H:i:s');
+            }
             $beanResumen->save();
         }
 
-        $GLOBALS['log']->fatal("...Autoriza-EnviaEmailAsesorAnterior... " . $banderaEmailAsesorAnterior);
-        $GLOBALS['log']->fatal("...Autoriza-EnviaEmailAsesorActual... " . $banderaEmailAsesorActual);
+        $GLOBALS['log']->fatal("...Autoriza-EnviaEmailAsesorAnterior... " . $banderaEmailAsesorAnterior . " " . $banderaEmailDirectorAnteriorOrigen);
+        $GLOBALS['log']->fatal("...Autoriza-EnviaEmailAsesorActual... " . $banderaEmailAsesorActual . " " . $banderaEmailDirectorSolicitaDestino);
 
-        if ($banderaEmailAsesorAnterior || $banderaEmailAsesorActual) {
-            $response['status'] = '200';
+        if ($comentarioDirectorRegional === '') {
+            //VAIDA SI ES DIFERENTE REGION
+            if ($valorDirectorRegionalDecide === '2') {
+                //VALIDA EL ENVIO DE CORREOS
+                if ($banderaEmailAsesorAnterior || $banderaEmailAsesorActual || $banderaEmailDirectorAnteriorOrigen || $banderaEmailDirectorSolicitaDestino) {
+                    $response['status'] = '200';
+                } else {
+                    $response['status'] = '500';
+                }
+
+            } else {
+                //SIGUE EL FLUJO DE LA PRIMERA APROBACION
+                $response['status'] = '200';
+            }
+
         } else {
-            $response['status'] = '500';
+            //MISMA REGION
+            if ($banderaEmailAsesorAnterior || $banderaEmailAsesorActual) {
+                $response['status'] = '200';
+            } else {
+                $response['status'] = '500';
+            }
         }
 
         return $response;
@@ -1666,60 +1829,158 @@ class SolicitudAsignacionEmail extends SugarApi
 
     public function procesoRechazoAsignacion($api, $args)
     {
-        $GLOBALS['log']->fatal("...procesoRechazoAsignacion...");
+        $GLOBALS['log']->fatal("++++++++ PROCESO_RECHAZO_ASIGNACION ++++++++");
         $idCuenta = $args['id_cuenta'];
         $idAsesorSolicita = $args['id_asesor_solicita'];
         $comentarioDirectorRegional = $args['comentarios'];
         $response = [];
         $response['status'] = '';
         $banderaEmailAsesor = 0;
+        $banderaEmailDirectorAnteriorOrigen = 0;
+        $banderaEmailDirectorSolicitaDestino = 0;
 
         if (!empty($idCuenta)) {
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCuenta, array('disable_row_level_security' => true));
             $nombreCuenta = $beanAccount->name;
+            $idAsesorAnterior = $beanAccount->user_id_c;
         }
         if (!empty($idAsesorSolicita)) {
             $beanAsesorSolicita = BeanFactory::retrieveBean('Users', $idAsesorSolicita, array('disable_row_level_security' => true));
             $nombreAsesorSolicita = $beanAsesorSolicita->first_name . " " . $beanAsesorSolicita->last_name;
             $emailAsesorSolicita = $beanAsesorSolicita->email1;
         }
+        if (!empty($idAsesorAnterior)) {
+            //BEAN PARA OBTENER EL DIRECTOR REGIONAL DEL ASESOR ANTERIOR ORIGEN
+            $beanAsesorAnterior = BeanFactory::retrieveBean('Users', $idAsesorAnterior, array('disable_row_level_security' => true));
+        }
 
-        //NOTIFICA AL ASESOR SOLICITA QUE SE RECHAZO LA ASIGNACION
         if ($comentarioDirectorRegional === '') {
-            $body_mail_rechazo_diferente_region = $this->buildBodyNotificaRechazoDiferenteRegion($nombreAsesorSolicita, $nombreCuenta);
-        } else {
-            $body_mail_rechazo_asignacion = $this->buildBodyNotificaRechazoAsesorAsignacion($nombreAsesorSolicita, $nombreCuenta, $comentarioDirectorRegional);
-        }
-        
-        //EMAIL AL ASESOR SOLICITA
-        if (!empty($emailAsesorSolicita)) {
-            $success = $this->sendEmailAsesorCuentas(
-                'Recarterización de clientes/prospectos ' . $nombreCuenta,
-                $comentarioDirectorRegional === ''? $body_mail_rechazo_diferente_region: $body_mail_rechazo_asignacion,
-                $emailAsesorSolicita,
-                $nombreAsesorSolicita
-            );
+            $GLOBALS['log']->fatal("...DIFERENTE_REGION...");
+            //NOTIFICA AL ASESOR SOLICITA QUE SE RECHAZO LA ASIGNACION
+            $body_mail_rechazo_diferente_region = $this->buildBodyNotificaRechazoDiferenteRegion($nombreAsesorSolicita, $nombreCuenta);            
+            //EMAIL AL ASESOR SOLICITA
+            if (!empty($emailAsesorSolicita)) {
+                $success1DR = $this->sendEmailAsesorCuentas(
+                    'Recarterización de clientes/prospectos ' . $nombreCuenta,
+                    $body_mail_rechazo_diferente_region,
+                    $emailAsesorSolicita,
+                    $nombreAsesorSolicita
+                );
 
-            if ($success) {
-                $banderaEmailAsesor = 1;
+                if ($success1DR) {
+                    $banderaEmailAsesor = 1;
+                }
             }
-        }
+            //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO ANTERIOR-ORIGEN
+            $id_director_regional_dr_anterior = $this->getIdDirectorRegional($beanAsesorAnterior);
+            $GLOBALS['log']->fatal("...ID_DIR_REGIONAL_ANTERIOR_ORIGEN_DR... " . $id_director_regional_dr_anterior);
+            if (!empty($id_director_regional_dr_anterior)) {
+                //INFORMACION DEL DIRECTOR REGIONAL
+                $beanDirRegionalDR = BeanFactory::retrieveBean('Users', $id_director_regional_dr_anterior, array('disable_row_level_security' => true));
+                $nombreDirRegionalDR = $beanDirRegionalDR->first_name . " " . $beanDirRegionalDR->last_name;
+                $emailDirRegionalDR = $beanDirRegionalDR->email1;
+                $GLOBALS['log']->fatal("...NombreDirRegionalDR_ANTERIOR_ORIGEN_DR... " . $nombreDirRegionalDR . " " . $emailDirRegionalDR);
+                //PLANTILLA PARA EL DIRECTOR
+                $body_mail_notifica_director_rechaza = $this->buildBodyNotificaDirectorDRechaza($nombreDirRegionalDR, $nombreCuenta); 
+                
+                //EMAIL A DIRECTOR REGIONAL
+                if (!empty($emailDirRegionalDR)) {
+                    $success2DR = $this->sendEmailAsesorCuentas(
+                        'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
+                        $body_mail_notifica_director_rechaza,
+                        $emailDirRegionalDR,
+                        $nombreDirRegionalDR
+                    );  
+                    
+                    if ($success2DR) {
+                        $banderaEmailDirectorAnteriorOrigen = 1;
+                    }
+                }                    
+            }
+            //OBTIENE EL ID DEL DIRECTOR REGIONAL DEL USUARIO QUIEN SOLICITA
+            $id_director_regional_dr_solicita = $this->getIdDirectorRegional($beanAsesorSolicita);
+            $GLOBALS['log']->fatal("...ID_DIR_REGIONAL_SOLICITA_DR... " . $id_director_regional_dr_solicita);
+            if (!empty($id_director_regional_dr_solicita)) {
+                //INFORMACION DEL DIRECTOR REGIONAL
+                $beanDirRegionalDRS = BeanFactory::retrieveBean('Users', $id_director_regional_dr_solicita, array('disable_row_level_security' => true));
+                $nombreDirRegionalDRS = $beanDirRegionalDRS->first_name . " " . $beanDirRegionalDRS->last_name;
+                $emailDirRegionalDRS = $beanDirRegionalDRS->email1;
+                $GLOBALS['log']->fatal("...NombreDirRegionalDRS_SOLICITA_DR... " . $nombreDirRegionalDRS . " " . $emailDirRegionalDRS);
+                //PLANTILLA PARA EL DIRECTOR
+                $body_mail_notifica_director_rechaza = $this->buildBodyNotificaDirectorDRechaza($nombreDirRegionalDRS, $nombreCuenta); 
+                
+                //EMAIL A DIRECTOR REGIONAL
+                if (!empty($emailDirRegionalDRS)) {
+                    $success3DR = $this->sendEmailAsesorCuentas(
+                        'Aprobación Recarterización de clientes/prospectos ' . $nombreCuenta,
+                        $body_mail_notifica_director_rechaza,
+                        $emailDirRegionalDRS,
+                        $nombreDirRegionalDRS
+                    );       
+                    
+                    if ($success3DR) {
+                        $banderaEmailDirectorSolicitaDestino = 1;
+                    }
+                }                    
+            }     
+            
+        } else {
+            $GLOBALS['log']->fatal("...MISMA_REGION...");
+            //NOTIFICA AL ASESOR SOLICITA QUE SE RECHAZO LA ASIGNACION
+            $body_mail_rechazo_asignacion = $this->buildBodyNotificaRechazoAsesorAsignacion($nombreAsesorSolicita, $nombreCuenta, $comentarioDirectorRegional);
 
+            //EMAIL AL ASESOR SOLICITA
+            if (!empty($emailAsesorSolicita)) {
+                $success = $this->sendEmailAsesorCuentas(
+                    'Recarterización de clientes/prospectos ' . $nombreCuenta,
+                    $body_mail_rechazo_asignacion,
+                    $emailAsesorSolicita,
+                    $nombreAsesorSolicita
+                );
+
+                if ($success) {
+                    $banderaEmailAsesor = 1;
+                }
+            }            
+        }  
         //SE ACTUALIZA DATOS DE CONTROL ASIGNACION
         if (!empty($idCuenta)) {
             $beanResumen = BeanFactory::retrieveBean('tct02_Resumen', $idCuenta, array('disable_row_level_security' => true));
-            $beanResumen->asignacion_activa_c = 0;
-            $beanResumen->id_director_region_aprobar_c = '';
-            $beanResumen->id_asesor_solicita_c = '';
+
+            if ($comentarioDirectorRegional === '') {
+                $GLOBALS['log']->fatal("...DIFERENTE_REGION_LIMPIA_CAMPOS...");
+                //DIFERENTE REGION
+                $beanResumen->asignacion_activa_c = 0;
+                $beanResumen->id_director_region_aprobar_c = '';
+                $beanResumen->id_director_region_aprobar2_c = '';
+                $beanResumen->id_asesor_solicita_c = '';
+                $beanResumen->aprobacion_directores_c = '';  
+            } else {
+                $GLOBALS['log']->fatal("...MISMA_REGION_LIMPIA_CAMPOS...");
+                //MISMA REGION
+                $beanResumen->asignacion_activa_c = 0;
+                $beanResumen->id_director_region_aprobar_c = '';
+                $beanResumen->id_asesor_solicita_c = '';
+            }            
             $beanResumen->save();
         }
 
-        $GLOBALS['log']->fatal("...Rechaza-EnviaEmailAsesor... " . $banderaEmailAsesor);
+        $GLOBALS['log']->fatal("...Rechaza-EnviaEmailAsesor... " . $banderaEmailAsesor . " " . $banderaEmailDirectorAnteriorOrigen . " " . $banderaEmailDirectorSolicitaDestino);
 
-        if ($banderaEmailAsesor) {
-            $response['status'] = '200';
+        if ($comentarioDirectorRegional === '') {
+            //DIFERENTE REGION
+            if ($banderaEmailAsesor || $banderaEmailDirectorAnteriorOrigen || $banderaEmailDirectorSolicitaDestino) {
+                $response['status'] = '200';
+            } else {
+                $response['status'] = '500';
+            }
         } else {
-            $response['status'] = '500';
+            //MISMA REGION
+            if ($banderaEmailAsesor) {
+                $response['status'] = '200';
+            } else {
+                $response['status'] = '500';
+            }
         }
 
         return $response;
@@ -2297,6 +2558,422 @@ class SolicitudAsignacionEmail extends SugarApi
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                             <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombre_asesor_solicita . '</strong></p>
                                                                             <p style="margin: 0; margin-bottom: 16px;">Tu solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue <strong>Rechazada</strong>, para más información contacta a Ricardo Gerardo.</p>
+                                                                            <br>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
+                                                                            <p style="margin: 0;">Equipo CRM</p>
+                                                                            <p style="margin: 0;">Inteligencia de Negocios</p>
+                                                                            <p style="margin: 0;">T: (55)5249 5800 Ext.5737 y 5677</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; padding-top: 15px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:20px;width:100%;">
+                                                                        <div align="center" class="alignment" style="line-height:10px"><img src="cid:Copia_de_Recurso-2unileasingazulLOW" style="display: block; height: auto; border: 0; max-width: 102px; width: 100%;" width="102"/></div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #dde1e9; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:30px;padding-right:30px;padding-top:25px;">
+                                                                        <div style="color:#000000;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:12px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:14.399999999999999px;">
+                                                                            <p style="margin: 0;"><em>Información confidencial y exclusiva para uso interno de Unifin.</em></p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table><!-- End -->
+            </body>';
+
+        return $mailHTML;
+    }
+
+    public function buildBodyNotificaDirectorDRAutoriza($nombre_director, $nombre_cuenta)
+    {
+        $mailHTML = '<head>
+            <title></title>
+            <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+            <meta content="width=device-width, initial-scale=1.0" name="viewport"/><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+            <style>
+                * {
+                    box-sizing: border-box;
+                }
+
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                a[x-apple-data-detectors] {
+                    color: inherit !important;
+                    text-decoration: inherit !important;
+                }
+
+                #MessageViewBody a {
+                    color: inherit;
+                    text-decoration: none;
+                }
+
+                p {
+                    line-height: inherit
+                }
+
+                .desktop_hide,
+                .desktop_hide table {
+                    mso-hide: all;
+                    display: none;
+                    max-height: 0px;
+                    overflow: hidden;
+                }
+
+                .image_block img+div {
+                    display: none;
+                }
+
+                @media (max-width:620px) {
+                    .mobile_hide {
+                        display: none;
+                    }
+
+                    .row-content {
+                        width: 100% !important;
+                    }
+
+                    .stack .column {
+                        width: 100%;
+                        display: block;
+                    }
+
+                    .mobile_hide {
+                        min-height: 0;
+                        max-height: 0;
+                        max-width: 0;
+                        overflow: hidden;
+                        font-size: 0px;
+                    }
+
+                    .desktop_hide,
+                    .desktop_hide table {
+                        display: table !important;
+                        max-height: none !important;
+                    }
+
+                    .row-1 .column-1 .block-1.paragraph_block td.pad>div,
+                    .row-3 .column-1 .block-1.paragraph_block td.pad>div,
+                    .row-5 .column-1 .block-1.paragraph_block td.pad>div {
+                        text-align: center !important;
+                        font-size: 14px !important;
+                    }
+
+                    .row-1 .column-1 .block-1.paragraph_block td.pad,
+                    .row-3 .column-1 .block-1.paragraph_block td.pad,
+                    .row-5 .column-1 .block-1.paragraph_block td.pad {
+                        padding: 20px 35px !important;
+                    }
+
+                    .row-1 .column-1,
+                    .row-3 .column-1,
+                    .row-4 .column-1,
+                    .row-5 .column-1 {
+                        padding: 0 !important;
+                    }
+                }
+            </style>
+            </head>
+            <body style="background-color: #e4e7e7; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+            <table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e4e7e7;" width="100%">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #56adff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:6px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:9px;"> </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Estimado/a, Director <strong>' . $nombre_director . '</strong></p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">La solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue autorizada, por favor valida que así sea.</p>
+                                                                            <br>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
+                                                                            <p style="margin: 0;">Equipo CRM</p>
+                                                                            <p style="margin: 0;">Inteligencia de Negocios</p>
+                                                                            <p style="margin: 0;">T: (55)5249 5800 Ext.5737 y 5677</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; padding-top: 15px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:20px;width:100%;">
+                                                                        <div align="center" class="alignment" style="line-height:10px"><img src="cid:Copia_de_Recurso-2unileasingazulLOW" style="display: block; height: auto; border: 0; max-width: 102px; width: 100%;" width="102"/></div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #dde1e9; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:30px;padding-right:30px;padding-top:25px;">
+                                                                        <div style="color:#000000;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:12px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:14.399999999999999px;">
+                                                                            <p style="margin: 0;"><em>Información confidencial y exclusiva para uso interno de Unifin.</em></p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table><!-- End -->
+            </body>';
+
+        return $mailHTML;
+    }
+
+    public function buildBodyNotificaDirectorDRechaza($nombre_director, $nombre_cuenta)
+    {
+        $mailHTML = '<head>
+            <title></title>
+            <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+            <meta content="width=device-width, initial-scale=1.0" name="viewport"/><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+            <style>
+                * {
+                    box-sizing: border-box;
+                }
+
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                a[x-apple-data-detectors] {
+                    color: inherit !important;
+                    text-decoration: inherit !important;
+                }
+
+                #MessageViewBody a {
+                    color: inherit;
+                    text-decoration: none;
+                }
+
+                p {
+                    line-height: inherit
+                }
+
+                .desktop_hide,
+                .desktop_hide table {
+                    mso-hide: all;
+                    display: none;
+                    max-height: 0px;
+                    overflow: hidden;
+                }
+
+                .image_block img+div {
+                    display: none;
+                }
+
+                @media (max-width:620px) {
+                    .mobile_hide {
+                        display: none;
+                    }
+
+                    .row-content {
+                        width: 100% !important;
+                    }
+
+                    .stack .column {
+                        width: 100%;
+                        display: block;
+                    }
+
+                    .mobile_hide {
+                        min-height: 0;
+                        max-height: 0;
+                        max-width: 0;
+                        overflow: hidden;
+                        font-size: 0px;
+                    }
+
+                    .desktop_hide,
+                    .desktop_hide table {
+                        display: table !important;
+                        max-height: none !important;
+                    }
+
+                    .row-1 .column-1 .block-1.paragraph_block td.pad>div,
+                    .row-3 .column-1 .block-1.paragraph_block td.pad>div,
+                    .row-5 .column-1 .block-1.paragraph_block td.pad>div {
+                        text-align: center !important;
+                        font-size: 14px !important;
+                    }
+
+                    .row-1 .column-1 .block-1.paragraph_block td.pad,
+                    .row-3 .column-1 .block-1.paragraph_block td.pad,
+                    .row-5 .column-1 .block-1.paragraph_block td.pad {
+                        padding: 20px 35px !important;
+                    }
+
+                    .row-1 .column-1,
+                    .row-3 .column-1,
+                    .row-4 .column-1,
+                    .row-5 .column-1 {
+                        padding: 0 !important;
+                    }
+                }
+            </style>
+            </head>
+            <body style="background-color: #e4e7e7; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+            <table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e4e7e7;" width="100%">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #56adff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:6px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:9px;"> </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Estimado/a, Director <strong>' . $nombre_director . '</strong></p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">La solicitud de reasignación del Cliente/Prospecto <strong>' . $nombre_cuenta . '</strong> fue <strong>Rechazada</strong>, para más información contacta a Ricardo Gerardo.</p>
                                                                             <br>
                                                                             <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
                                                                             <p style="margin: 0;">Equipo CRM</p>

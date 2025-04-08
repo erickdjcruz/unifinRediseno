@@ -34,7 +34,6 @@
 
         // Validar si el usuario tiene permisos
         var approvalList = app.lang.getAppListStrings('ids_aprobador_reasignacion_director_list');
-        //this.puedeAprobar = approvalList.includes(app.user.id) || (this.idDirectorRegional === app.user.id);
 
         if (this.idCuenta != '') {
             try {
@@ -43,11 +42,41 @@
                     success: _.bind(function (data) {
                         if (data != '') {
                             this.asignacionActiva = data.asignacion_activa_c;
-                            this.idDirectorRegional = data.id_director_region_aprobar_c;
+                            this.idDirectorRegionalAnteriorOrigen = data.id_director_region_aprobar_c;
+                            this.idDirectorRegionalSolicitaDestino = data.id_director_region_aprobar2_c;
+                            this.aprobacionDirectores = parseInt(data.aprobacion_directores_c) || 0;
                             this.idAsesorSolicita = data.id_asesor_solicita_c;
                             this.acepta = this.accion === 'aceptar' ? 1 : 0;
                             this.rechaza = this.accion === 'rechazar' ? 1 : 0;
-                            this.puedeAprobar = Object.values(approvalList).includes(app.user.id) || (this.idDirectorRegional === app.user.id);
+                            this.esDirRegAnteriorOrigen = this.idDirectorRegionalAnteriorOrigen === app.user.id ? 1 : 0;
+                            this.esDirRegSolicitaDestino = this.idDirectorRegionalSolicitaDestino === app.user.id ? 1 : 0;
+
+                            console.log("ID USUARIO EN SESION ", app.user.id);
+                            console.log("APROBACION DIRECTORES " + this.aprobacionDirectores);
+                            console.log("ID DIR REG ANTERIOR ORIGEN " + this.idDirectorRegionalAnteriorOrigen + " " + this.esDirRegAnteriorOrigen);
+                            console.log("ID DIR REG SOLICITA DESTINO " + this.idDirectorRegionalSolicitaDestino + " " + this.esDirRegSolicitaDestino);
+
+                            //ASIGNA VALOR DEL DIRECTOR QUE DECIDE EN SESIÓN SIN IMPORTAR EL ORDEN DE AUTORIZACION
+                            var esDirValido = this.esDirRegAnteriorOrigen === 1 || this.esDirRegSolicitaDestino === 1;
+
+                            if (esDirValido) {
+                                if (this.aprobacionDirectores === 0) {
+                                    // Primer director que accede
+                                    this.valorDirRegDecide = 1;
+                                } else if (this.aprobacionDirectores === 1) {
+                                    // Segundo director que accede
+                                    this.valorDirRegDecide = 2;
+                                } else {
+                                    // Ambos ya entraron
+                                    this.valorDirRegDecide = 2;
+                                }
+                            } else {
+                                // No es uno de los directores válidos
+                                this.valorDirRegDecide = '';
+                            }
+                            console.log("VALOR DIRECTOR QUIEN DECIDE " + this.valorDirRegDecide);
+                            //VALIDA PERMISOS DE APROBACION
+                            this.puedeAprobar = Object.values(approvalList).includes(app.user.id) || this.idDirectorRegionalAnteriorOrigen === app.user.id || this.idDirectorRegionalSolicitaDestino === app.user.id;
 
                             if (!this.puedeAprobar) {
                                 this.mostrarMensaje("No tiene permisos para realizar esta acción", "error");
@@ -58,9 +87,15 @@
                                 }, 1000);
                                 return;
 
-                            } else if (!this.asignacionActiva && !this.idDirectorRegional && !this.idAsesorSolicita) {
-                                this.mostrarMensaje("La cuenta ya fue atendida.", "error");
-                                alert("La cuenta ya fue atendida.");
+                            } else if (!this.asignacionActiva && !this.idDirectorRegionalAnteriorOrigen && !this.idAsesorSolicita && !this.idDirectorRegionalSolicitaDestino) {
+
+                                if (this.aprobacionDirectores === 2) {
+                                    this.mostrarMensaje("La cuenta ya fue atendida por ambos Directores.", "error");
+                                    alert("La cuenta ya fue atendida por ambos Directores.");
+                                } else {
+                                    this.mostrarMensaje("La cuenta ya fue atendida.", "error");
+                                    alert("La cuenta ya fue atendida.");
+                                }
 
                                 // Redirigir después de 2 segundos
                                 _.delay(function () {
@@ -70,7 +105,7 @@
 
                             } else {
                                 if (this.acepta) {
-                                    this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, '');
+                                    this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, '', this.valorDirRegDecide);
                                 } else {
                                     this.rechazaAsignacion(this.idCuenta, this.idAsesorSolicita, '');
                                 }
@@ -98,7 +133,7 @@
         this._render();
     },
 
-    aceptaAsignacion: function (idCuenta, idAsesorSolicita, comentarios) {
+    aceptaAsignacion: function (idCuenta, idAsesorSolicita, comentarios, valorDirRegDecide) {
         console.log("ACEPTA ASIGNACION");
         this.msgExitoso = 0;
 
@@ -110,8 +145,10 @@
         var argsAcepta = {
             "id_cuenta": idCuenta,
             "id_asesor_solicita": idAsesorSolicita,
-            "comentarios": comentarios
+            "comentarios": comentarios,
+            "valor_director_decide": valorDirRegDecide,
         };
+        console.log(argsAcepta);
         app.api.call("create", app.api.buildURL("autorizaAsignacionCuenta", null, null, argsAcepta), null, {
             success: _.bind(function (response) {
                 app.alert.dismiss('procesa_acepta_asignacion');
