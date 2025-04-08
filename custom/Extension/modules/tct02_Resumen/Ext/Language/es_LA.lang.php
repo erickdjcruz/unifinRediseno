@@ -113,3 +113,5 @@ $mod_strings['LBL_ASIGNACION_ACTIVA_C'] = 'Asignación Activa';
 $mod_strings['LBL_ID_ASESOR_SOLICITA_C'] = 'ID Asesor Solicita Asignacion';
 $mod_strings['LBL_ASIGNACION_AUTOMATICA'] = 'Asignacion Automatica';
 $mod_strings['LBL_FECHA_ASIGNACION_AUTOMATICA'] = 'fecha asignacion automatica';
+$mod_strings['LBL_ID_DIRECTOR_REGION_APROBAR2'] = 'ID Director Región Aprobar 2';
+$mod_strings['LBL_APROBACION_DIRECTORES'] = 'Aprobacion Directores';
