@@ -5,7 +5,7 @@
  * Date: 07/11/2022
  */
 
-
+/*
 $hook_array['after_save'][] = Array(
     2,
     'Establece integración con Dynamics 365',
@@ -21,3 +21,4 @@ $hook_array['before_save'][] = Array(
     'ctaBancaria_Dynamics365',
     'IntegraDynamicsUpdate'
 );
+*/

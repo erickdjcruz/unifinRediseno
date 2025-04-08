@@ -88,7 +88,7 @@ $dependencies['Accounts']['RFC_required'] = array(
         ),
     ),
 );*/
-
+/*
 $dependencies['Accounts']['IVA_required'] = array(
     'hooks' => array("all"),
     'trigger' => 'true',
@@ -105,6 +105,7 @@ $dependencies['Accounts']['IVA_required'] = array(
         ),
     ),
 );
+*/
 //Se añade la dependencia para subtipo de cuenta Integracion de Expediente. Se añade $subtipo_cuenta_c solamente. Actualizacion Proveedor.
 /*	$dependencies['Accounts']['estadocivil_c_required'] = array(
             'hooks' => array("all"),
@@ -161,6 +162,7 @@ $dependencies['Accounts']['fechaNacimiento_required'] = array(
     ),
 );
 //Modificacion 17/07/18 Para exceptuar cuentas de registro.
+//Modificacion 02/04/25 Para cambio dynamics.
 $dependencies['Accounts']['fechaconstitutiva_required'] = array(
     'hooks' => array("all"),
     'trigger' => 'true',
@@ -174,7 +176,7 @@ $dependencies['Accounts']['fechaconstitutiva_required'] = array(
                 'label' => 'fechaconstitutiva_c_label',
                 //'value' => 'and(equal($tipodepersona_c,"Persona Moral"),or(equal($tipo_registro_c,"Cliente"),equal($subtipo_cuenta_c,"Integracion de Expediente")))',
                 //'value' => 'not(or(equal($tipodepersona_c,"Persona Fisica"),equal($tipodepersona_c,"Persona Fisica con Actividad Empresarial"),equal($tipo_registro_c,"Lead"),equal($subtipo_cuenta_c,"Contactado"),equal($subtipo_cuenta_c,"Interesado"),equal($tipo_registro_c,"Persona")))',
-                'value' => 'and(or(equal($tipo_registro_cuenta_c,"3"),equal($subtipo_registro_cuenta_c,"8")),equal($tipodepersona_c,"Persona Moral"))',
+                'value' => 'and(or(equal($tipo_registro_cuenta_c,"3"),equal($subtipo_registro_cuenta_c,"8")),equal($tipodepersona_c,"Persona Moral"),not(equal($esproveedor_c,"1")))',
             ),
         ),
     ),
@@ -807,6 +809,7 @@ $dependencies['Accounts']['Potencial_cuenta_required'] = array(
     ),
 );
 //Dependencia de ZonaGeografica para prospecto e integracion de expediente. Actualizacion 17/07/18 para excepciones
+//Dependencia de ZonaGeografica dynamics 02/04/2025
 $dependencies['Accounts']['Zona_Geografica_required'] = array(
     'hooks' => array("all"),
     'trigger' => 'true',
@@ -819,7 +822,7 @@ $dependencies['Accounts']['Zona_Geografica_required'] = array(
                 'target' => 'zonageografica_c',
                 'label' => 'zonageografica_c_label',
                 //'value' => 'and(equal($subtipo_cuenta_c,"Integracion de Expediente"),equal($tipo_registro_c,"Cliente"))',
-                'value' => 'not(or(equal($subtipo_registro_cuenta_c,"2"),equal($subtipo_registro_cuenta_c,"7"),equal($tipo_registro_cuenta_c,"Lead")))',
+                'value' => 'not(or(equal($esproveedor_c,"1"),equal($tipo_registro_cuenta_c,"4"),equal($tipo_registro_cuenta_c,"5"),equal($subtipo_registro_cuenta_c,"2"),equal($subtipo_registro_cuenta_c,"7"),equal($tipo_registro_cuenta_c,"Lead")))',
             ),
         ),
     ),
