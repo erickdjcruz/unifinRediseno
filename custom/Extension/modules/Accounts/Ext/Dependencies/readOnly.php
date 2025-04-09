@@ -6,63 +6,6 @@ $admin=$current_user->is_admin;
 $cac = $current_user->cac_c;
 $id = $app_list_strings['tct_persona_generica_list']['accid'];
 
-// solo lectura casilla es proveedor, requerimiento dynamics
-$dependencies['Accounts']['esproveedor_c'] = array
-(
-    'hooks' => array("edit"),
-    'trigger' => 'true',
-    'triggerFields' => array('name','id'),
-    'onload' => true,
-    'actions' => array(
-        array(
-            'name' => 'ReadOnly',
-            'params' => array(
-                'target' => 'esproveedor_c',
-                'value' => 'true',
-            ),
-        ),
-    ),
-    'notActions' => array(),
-);
-
-// solo lectura casilla cedente factoraje, requerimiento dynamics
-$dependencies['Accounts']['cedente_factor_c'] = array
-(
-    'hooks' => array("edit"),
-    'trigger' => 'true',
-    'triggerFields' => array('name'),
-    'onload' => true,
-    'actions' => array(
-        array(
-            'name' => 'ReadOnly',
-            'params' => array(
-                'target' => 'cedente_factor_c',
-                'value' => 'true',
-            ),
-        ),
-    ),
-    'notActions' => array(),
-);
-
-// solo lectura casilla deudor factoraje, requerimiento dynamics
-$dependencies['Accounts']['deudor_factor_c'] = array
-(
-    'hooks' => array("edit"),
-    'trigger' => 'true',
-    'triggerFields' => array('name','id'),
-    'onload' => true,
-    'actions' => array(
-        array(
-            'name' => 'ReadOnly',
-            'params' => array(
-                'target' => 'deudor_factor_c',
-                'value' => 'true',
-            ),
-        ),
-    ),
-    'notActions' => array(),
-);
-
 //Dependencia Edición
 $dependencies['Accounts']['readOnly'] = array
 (
@@ -360,3 +303,21 @@ $dependencies['Accounts']['situacion_gpo_empresa_txt_c'] = array
     'notActions' => array(),
 );
 
+// solo lectura casilla es proveedor, requerimiento dynamics
+$dependencies['Accounts']['esproveedor_c'] = array
+(
+    'hooks' => array("edit"),
+    'trigger' => 'true',
+    'triggerFields' => array('name','id'),
+    'onload' => true,
+    'actions' => array(
+        array(
+            'name' => 'ReadOnly',
+            'params' => array(
+                'target' => 'esproveedor_c',
+                'value' => 'true',
+            ),
+        ),
+    ),
+    'notActions' => array(),
+);
