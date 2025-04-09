@@ -323,7 +323,7 @@
         this.model.addValidationTask('tipo_proveedor_compras', _.bind(this.tipoProveedor, this));
         this.model.addValidationTask('AlertaCamposRequeridosUniclick', _.bind(this.validaReqUniclick, this));
         this.model.addValidationTask('validaReqPLDPropReal_CS', _.bind(this.validaPropRealCR, this));
-        this.model.addValidationTask('requestDynamics', _.bind(this.requestDynamics1, this));
+        //this.model.addValidationTask('requestDynamics', _.bind(this.requestDynamics1, this));
         //this.model.addValidationTask('clean_name', _.bind(this.cleanName, this));
         //Funcion para que se pueda o no editar el check de Alianza SOC
         this.model.on('sync', this.userAlianzaSoc, this);
@@ -1788,11 +1788,11 @@
         // }
 
         //Boton de envio a Portal de Proveedores
-        if ((this.model.get('esproveedor_c') == '1' || this.model.get('tipo_registro_cuenta_c') == '5') && App.user.attributes.portal_proveedores_c == '1' && !this.model.get('alta_portal_proveedor_chk_c')) {
+        /*if ((this.model.get('esproveedor_c') == '1' || this.model.get('tipo_registro_cuenta_c') == '5') && App.user.attributes.portal_proveedores_c == '1' && !this.model.get('alta_portal_proveedor_chk_c')) {
             $('[name="portal_proveedores"]').show();
         } else {
             $('[name="portal_proveedores"]').hide();
-        }
+        }*/
     },
 
     /* @author F. Javier Garcia S. 10/07/2018
@@ -2197,7 +2197,7 @@
         // this.context.on('button:save_button:click', this.borraTel, this);
         //this.context.on('button:prospecto_contactado:click',this.validaContactado, this);  //se añade validación para validar campos al convertir prospecto contactado.
         this.context.on('button:convierte_lead:click', this.validalead, this);
-        this.context.on('button:dynamics_button:click', this.requestDynamics, this);
+        //this.context.on('button:dynamics_button:click', this.requestDynamics, this);
 
         this.context.on('button:verificar_cambios:click', this.verificarCambiosRazonSocial, this);
 
