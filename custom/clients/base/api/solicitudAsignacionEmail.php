@@ -1168,6 +1168,7 @@ class SolicitudAsignacionEmail extends SugarApi
         $idAsesorSolicita = $args['id_asesor_solicita'];
         $comentarioDirectorRegional = $args['comentarios'];
         $valorDirectorRegionalDecide = $args['valor_director_decide']; //PARAMETRO DE DIFERENTE REGION
+        $apruebaAsignacion = $args['aprueba_asignacion']; //PARAMETRO DE DIFERENTE REGION
         $response = [];
         $response['status'] = '';
         $banderaEmailAsesorAnterior = 0;
@@ -1194,9 +1195,9 @@ class SolicitudAsignacionEmail extends SugarApi
         }
         //VALIDA SI ES DIFERENTE REGION
         if ($comentarioDirectorRegional === '') {
-            $GLOBALS['log']->fatal("...DIFERENTE_REGION... ". $valorDirectorRegionalDecide);
+            $GLOBALS['log']->fatal("...DIFERENTE_REGION... VALOR_APROBACION_DIRECTORES: ". $valorDirectorRegionalDecide . " - APRUEBA_ASIGNACION: " . $apruebaAsignacion);
             //APROBARON AMBOS DIRECTORES Y SE NOTIFICA LA ASIGNACION
-            if ($valorDirectorRegionalDecide === '2') {
+            if ($apruebaAsignacion === '1') {
                 //NOTIFICA LA REASIGNACION DE LA CUENTA AL ASESOR ANTERIOR
                 $body_mail_notifica_asesor_anterior = $this->buildBodyNotificaAsesorAnterior($nombreAsesorAnterior, $nombreCuenta);
                 //EMAIL AL ASESOR ANTERIOR
@@ -1277,7 +1278,7 @@ class SolicitudAsignacionEmail extends SugarApi
                             $emailDirRegionalDRS,
                             $nombreDirRegionalDRS
                         );       
-                        
+
                         if ($success4DR) {
                             $banderaEmailDirectorSolicitaDestino = 1;
                         }
@@ -1336,7 +1337,7 @@ class SolicitudAsignacionEmail extends SugarApi
 
             if ($comentarioDirectorRegional === '') {
                 //VAIDA SI ES DIFERENTE REGION
-                if ($valorDirectorRegionalDecide === '2') {
+                if ($apruebaAsignacion === '1') {
                     //VALIDA SI AMBOS DIRECTORES YA APROBARON LA ASIGNACION
                     $beanResumen->asignacion_activa_c = 0;
                     $beanResumen->id_director_region_aprobar_c = '';
@@ -1344,7 +1345,7 @@ class SolicitudAsignacionEmail extends SugarApi
                     $beanResumen->id_asesor_solicita_c = '';
                     $beanResumen->asignacion_automatica_c = 1;
                     $beanResumen->fecha_asignacion_automatica_c = $dateTime->format('Y-m-d H:i:s');
-                    $beanResumen->aprobacion_directores_c = $valorDirectorRegionalDecide;                    
+                    $beanResumen->aprobacion_directores_c = '';                    
                 } else {
                     //ASIGNA VALOR APROBACION DIRECTORES                    
                     $beanResumen->aprobacion_directores_c = $valorDirectorRegionalDecide;
@@ -1365,7 +1366,7 @@ class SolicitudAsignacionEmail extends SugarApi
 
         if ($comentarioDirectorRegional === '') {
             //VAIDA SI ES DIFERENTE REGION
-            if ($valorDirectorRegionalDecide === '2') {
+            if ($apruebaAsignacion === '1') {
                 //VALIDA EL ENVIO DE CORREOS
                 if ($banderaEmailAsesorAnterior || $banderaEmailAsesorActual || $banderaEmailDirectorAnteriorOrigen || $banderaEmailDirectorSolicitaDestino) {
                     $response['status'] = '200';
