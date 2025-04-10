@@ -50,30 +50,79 @@
                             this.rechaza = this.accion === 'rechazar' ? 1 : 0;
                             this.esDirRegAnteriorOrigen = this.idDirectorRegionalAnteriorOrigen === app.user.id ? 1 : 0;
                             this.esDirRegSolicitaDestino = this.idDirectorRegionalSolicitaDestino === app.user.id ? 1 : 0;
+                            this.apruebaAsignacion = 0;
 
                             console.log("ID USUARIO EN SESION ", app.user.id);
                             console.log("APROBACION DIRECTORES " + this.aprobacionDirectores);
                             console.log("ID DIR REG ANTERIOR ORIGEN " + this.idDirectorRegionalAnteriorOrigen + " " + this.esDirRegAnteriorOrigen);
-                            console.log("ID DIR REG SOLICITA DESTINO " + this.idDirectorRegionalSolicitaDestino + " " + this.esDirRegSolicitaDestino);
+                            console.log("ID DIR REG SOLICITA DESTINO " + this.idDirectorRegionalSolicitaDestino + " " + this.esDirRegSolicitaDestino);                            
 
-                            //ASIGNA VALOR DEL DIRECTOR QUE DECIDE EN SESIÓN SIN IMPORTAR EL ORDEN DE AUTORIZACION
-                            var esDirValido = this.esDirRegAnteriorOrigen === 1 || this.esDirRegSolicitaDestino === 1;
+                            // Valida las aprobaciones de los directores 
+                            if (this.esDirRegAnteriorOrigen || this.esDirRegSolicitaDestino) {         
+                                if (this.aprobacionDirectores === 1) {
+                                    if (this.esDirRegAnteriorOrigen) {
+                                        // Ya aprobó antes
+                                        app.alert.show('aprobado_previamente', {
+                                            level: 'warning',
+                                            messages: 'La solicitud ya fue atendida por usted previamente.',
+                                            autoClose: false
+                                        });
+                                        this.apruebaAsignacion = 0;
 
-                            if (esDirValido) {
-                                if (this.aprobacionDirectores === 0) {
-                                    // Primer director que accede
-                                    this.valorDirRegDecide = 1;
-                                } else if (this.aprobacionDirectores === 1) {
-                                    // Segundo director que accede
-                                    this.valorDirRegDecide = 2;
-                                } else {
-                                    // Ambos ya entraron
-                                    this.valorDirRegDecide = 2;
+                                        // Redirigir después de 2 segundos
+                                        _.delay(function () {
+                                            app.router.navigate("#Accounts", { trigger: true });
+                                        }, 2000);
+                                        return;
+                                    } else if (this.esDirRegSolicitaDestino) {
+                                        // Segundo director válido
+                                        this.apruebaAsignacion = 1;
+                                    }
+                                } else if (this.aprobacionDirectores === 2) {
+                                    if (this.esDirRegSolicitaDestino) {
+                                        // Ya aprobó antes
+                                        app.alert.show('aprobado_previamente', {
+                                            level: 'warning',
+                                            messages: 'La solicitud ya fue atendida por usted previamente.',
+                                            autoClose: false
+                                        });
+                                        this.apruebaAsignacion = 0;
+
+                                        // Redirigir después de 2 segundos
+                                        _.delay(function () {
+                                            app.router.navigate("#Accounts", { trigger: true });
+                                        }, 2000);
+                                        return;
+                                    } else if (this.esDirRegAnteriorOrigen) {
+                                        // Segundo director válido
+                                        this.apruebaAsignacion = 1;
+                                    }
                                 }
-                            } else {
-                                // No es uno de los directores válidos
-                                this.valorDirRegDecide = '';
+
+                                //Valida las aprobaciones y asigna el valor a aprobacion_directores
+                                if (this.aprobacionDirectores === 0) {
+                                    if (this.esDirRegAnteriorOrigen) {
+                                        this.valorDirRegDecide = 1;
+                                    } else if (this.esDirRegSolicitaDestino) {
+                                        this.valorDirRegDecide = 2;
+                                    }
+                                } else if (this.aprobacionDirectores === 1) {
+                                    // Ya aprobó el director de origen, ahora entra el destino
+                                    if (this.esDirRegSolicitaDestino) {
+                                        this.valorDirRegDecide = 2;
+                                    }
+                                } else if (this.aprobacionDirectores === 2) {
+                                    // Ya aprobó el director de destino, ahora entra el origen
+                                    if (this.esDirRegAnteriorOrigen) {
+                                        this.valorDirRegDecide = 1;
+                                    }
+                                } 
+
+                            } else {                                
+                                this.apruebaAsignacion = 0;
                             }
+                            
+                            console.log("APRUEBA ASIGNACION " + this.apruebaAsignacion);
                             console.log("VALOR DIRECTOR QUIEN DECIDE " + this.valorDirRegDecide);
                             //VALIDA PERMISOS DE APROBACION
                             this.puedeAprobar = Object.values(approvalList).includes(app.user.id) || this.idDirectorRegionalAnteriorOrigen === app.user.id || this.idDirectorRegionalSolicitaDestino === app.user.id;
@@ -89,13 +138,8 @@
 
                             } else if (!this.asignacionActiva && !this.idDirectorRegionalAnteriorOrigen && !this.idAsesorSolicita && !this.idDirectorRegionalSolicitaDestino) {
 
-                                if (this.aprobacionDirectores === 2) {
-                                    this.mostrarMensaje("La cuenta ya fue atendida por ambos Directores.", "error");
-                                    alert("La cuenta ya fue atendida por ambos Directores.");
-                                } else {
-                                    this.mostrarMensaje("La cuenta ya fue atendida.", "error");
-                                    alert("La cuenta ya fue atendida.");
-                                }
+                                this.mostrarMensaje("La cuenta ya fue atendida.", "error");
+                                alert("La cuenta ya fue atendida.");
 
                                 // Redirigir después de 2 segundos
                                 _.delay(function () {
@@ -105,7 +149,7 @@
 
                             } else {
                                 if (this.acepta) {
-                                    this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, '', this.valorDirRegDecide);
+                                    this.aceptaAsignacion(this.idCuenta, this.idAsesorSolicita, '', this.valorDirRegDecide, this.apruebaAsignacion);
                                 } else {
                                     this.rechazaAsignacion(this.idCuenta, this.idAsesorSolicita, '');
                                 }
@@ -133,7 +177,7 @@
         this._render();
     },
 
-    aceptaAsignacion: function (idCuenta, idAsesorSolicita, comentarios, valorDirRegDecide) {
+    aceptaAsignacion: function (idCuenta, idAsesorSolicita, comentarios, valorDirRegDecide, apruebaAsignacion) {
         console.log("ACEPTA ASIGNACION");
         this.msgExitoso = 0;
 
@@ -147,6 +191,7 @@
             "id_asesor_solicita": idAsesorSolicita,
             "comentarios": comentarios,
             "valor_director_decide": valorDirRegDecide,
+            "aprueba_asignacion": apruebaAsignacion
         };
         console.log(argsAcepta);
         app.api.call("create", app.api.buildURL("autorizaAsignacionCuenta", null, null, argsAcepta), null, {
