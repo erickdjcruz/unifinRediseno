@@ -66,19 +66,19 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
       'css_class' => 'btn-invisible btn-link',
       'showOn' => 'edit',
     ),
-    6 => 
+    /*6 => 
     array (
       'type' => 'button',
       'name' => 'rfc_qr_button',
-      'label' => 'Leer CSF',
+      'label' => 'Valida CIEC',
       'css_class' => 'btn_rfc_qr btn btn-primary',
       'showOn' => 'edit',
       'events' => 
       array (
         'click' => 'button:btn_rfc:click',
       ),
-    ),
-    7 => 
+    ),*/
+    6 => 
     array (
       'type' => 'rowaction',
       'event' => 'button:save_button:click',
@@ -88,7 +88,7 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
       'showOn' => 'edit',
       'acl_action' => 'edit',
     ),
-    8 => 
+    7 => 
     array (
       'type' => 'actiondropdown',
       'name' => 'main_dropdown',
