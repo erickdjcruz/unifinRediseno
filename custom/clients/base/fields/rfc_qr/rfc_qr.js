@@ -196,7 +196,7 @@
 				success: _.bind(function (data) {
 					app.alert.dismiss('procesando');
 					
-					if( data.detail == undefined && data.success) {
+					if( data.detail == undefined ) {
 						var indice_indicador = 0;
 						var Completo = '';
 						var RFC = data["rfc"].toUpperCase();
