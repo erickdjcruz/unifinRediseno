@@ -193,7 +193,6 @@
             "valor_director_decide": valorDirRegDecide,
             "aprueba_asignacion": apruebaAsignacion
         };
-        console.log(argsAcepta);
         app.api.call("create", app.api.buildURL("autorizaAsignacionCuenta", null, null, argsAcepta), null, {
             success: _.bind(function (response) {
                 app.alert.dismiss('procesa_acepta_asignacion');
