@@ -349,6 +349,11 @@ class ResumenClienteAPI extends SugarApi
             "id_director_region_aprobar_c" => "",
             "id_asesor_solicita_c" => ""
         );
+        //ACTIVIDAD ECONOMICA SAT
+        $arr_principal['actividad_economica_sat']=array(
+            "id_actividad_economica_sat_c" => "",
+            "actividad_economica_sat_c" => ""
+        );
         //String operaciones
         $operaciones_ids = "'".$id_cliente."'";
 
@@ -1012,7 +1017,7 @@ class ResumenClienteAPI extends SugarApi
                 //Recupera Crédito SOS
                 $arr_principal['credito_sos']['fecha_pago']=$beanResumen->sos_fecha_pago_c;
 
-				        //Recupera Uniclick
+			    //Recupera Uniclick
                 // $arr_principal['uniclick']['tipo_cuenta']=$beanResumen->tct_tipo_cuenta_uc_c;
                 $arr_principal['uniclick']['fecha_pago']= $beanResumen->cauto_fecha_pago;
 
@@ -1044,6 +1049,10 @@ class ResumenClienteAPI extends SugarApi
                 $arr_principal['asignacion_automatica']['asignacion_activa_c'] = $beanResumen->asignacion_activa_c;
                 $arr_principal['asignacion_automatica']['id_director_region_aprobar_c'] = $beanResumen->id_director_region_aprobar_c;
                 $arr_principal['asignacion_automatica']['id_asesor_solicita_c'] = $beanResumen->id_asesor_solicita_c;
+
+                //ACTIVIDAD ECONOMICA SAT
+                $arr_principal['actividad_economica_sat']['id_actividad_economica_sat_c'] = $beanResumen->id_actividad_economica_sat_c;
+                $arr_principal['actividad_economica_sat']['actividad_economica_sat_c'] = $beanResumen->actividad_economica_sat_c;
             }
         }
 
