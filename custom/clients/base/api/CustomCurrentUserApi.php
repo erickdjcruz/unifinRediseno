@@ -82,6 +82,7 @@ class CustomCurrentUserApi extends CurrentUserApi
         $userArray['current_user']['seguimiento_bc_c'] = $current_user->seguimiento_bc_c;
         $userArray['current_user']['define_origen_po_c'] = $current_user->define_origen_po_c;
         $userArray['current_user']['gestion_utility_trailers_po_c'] = $current_user->gestion_utility_trailers_po_c;
+        $userArray['current_user']['gestion_team_leaders_c'] = $current_user->gestion_team_leaders_c;
         return $userArray;
     }
 }
