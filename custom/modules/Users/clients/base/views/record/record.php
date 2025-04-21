@@ -674,6 +674,9 @@ array (
               ),
               69 => 
               array (
+                'readonly' => false,
+                'name' => 'gestion_team_leaders_c',
+                'label' => 'LBL_GESTION_TEAM_LEADERS_C',
               ),
               70 => 
               array (

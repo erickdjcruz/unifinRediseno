@@ -1,5 +1,5 @@
 <?php
- // created: 2025-02-19 16:55:38
+ // created: 2025-04-19 20:27:26
 $dictionary['Prospect']['fields']['telefono_aa_c']['labelValue']='Teléfono del Asesor de Alianza';
 $dictionary['Prospect']['fields']['telefono_aa_c']['full_text_search']=array (
   'enabled' => '0',
@@ -7,7 +7,7 @@ $dictionary['Prospect']['fields']['telefono_aa_c']['full_text_search']=array (
   'searchable' => false,
 );
 $dictionary['Prospect']['fields']['telefono_aa_c']['enforced']='';
-$dictionary['Prospect']['fields']['telefono_aa_c']['dependency']='and(equal($origen_c,"12"),or(equal($detalle_origen_c,"12"),equal($detalle_origen_c,"13"),equal($detalle_origen_c,"114")))';
+$dictionary['Prospect']['fields']['telefono_aa_c']['dependency']='and(equal($origen_c,"12"),or(equal($detalle_origen_c,"12"),equal($detalle_origen_c,"13"),equal($detalle_origen_c,"114"),equal($detalle_origen_c,"115")))';
 $dictionary['Prospect']['fields']['telefono_aa_c']['required_formula']='';
 $dictionary['Prospect']['fields']['telefono_aa_c']['readonly_formula']='';
 
