@@ -54,7 +54,6 @@ class SendEmailPO extends SugarApi
         );
     }
 
-
     public function sendEmailProspect($api, $args)
     {
         global $sugar_config;
@@ -78,7 +77,6 @@ class SendEmailPO extends SugarApi
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
         $telefono_asesor = $beanAsesor->phone_mobile;
         $email_asesor = $beanAsesor->email1;
-
 
         $id_director_regional = $this->getIdDirectorRegional($beanAsesor);
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
@@ -164,6 +162,8 @@ class SendEmailPO extends SugarApi
         $url_unileasing = $sugar_config['url_unileasing_email'];
         $id_prospecto = $args['id_po'];
         $response = '';
+        // Configurar zona horaria de Ciudad de México y obtener la fecha actual
+        $dateTime = new DateTime('now', new DateTimeZone('America/Mexico_City'));
 
         $beanPO = BeanFactory::retrieveBean('Prospects', $id_prospecto, array('disable_row_level_security' => true));
         $email_po = $beanPO->email1;
@@ -234,6 +234,7 @@ class SendEmailPO extends SugarApi
         $GLOBALS['log']->fatal('Reestableciendo banderas');
         //$beanPO->envio_correo_po_c = 0;
         $beanPO->id_director_vobo_c = "";
+        $beanPO->fecha_asignacion_c = $dateTime->format('Y-m-d');
         $beanPO->save();
         $GLOBALS['log']->fatal('Banderas reestablecidas');
 
@@ -1579,7 +1580,6 @@ class SendEmailPO extends SugarApi
             $GLOBALS['log']->fatal(print_r($e, true));
         }
     }
-
 
     public function solicitaCambioOrigen($api, $args)
     {
