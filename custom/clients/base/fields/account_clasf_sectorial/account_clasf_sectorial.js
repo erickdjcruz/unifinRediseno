@@ -56,7 +56,13 @@
             'label_imacro': '',
             'label_div': '',
             'label_grp': '',
-            'label_cls': ''
+            'label_cls': '',
+            'ResumenSAT':{
+                'aes': {
+                    'actividad_economica_sat': '',
+                    'id_actividad_economica_sat': ''
+                }
+            }
         };
 
         this.prevActEconomica = {
@@ -111,7 +117,8 @@
 
         this.ResumenSAT = {
             'aes': {
-                'actividad_economica_sat': ''
+                'actividad_economica_sat': '',
+                'id_actividad_economica_sat': ''
             }
         };
 
@@ -136,6 +143,7 @@
                 success: function (data) {
                     //NUEVO CAMPO DE ACTIVIDAD ECONOMICA SAT
                     clasf_sectorial.ResumenSAT.aes.actividad_economica_sat = data.actividad_economica_sat.actividad_economica_sat_c;
+                    clasf_sectorial.ResumenSAT.aes.id_actividad_economica_sat = data.actividad_economica_sat.id_actividad_economica_sat_c;
 
         			//Etiquetas de PB para Input del HBS en edit
         			// clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
@@ -173,6 +181,12 @@
         if (clasf_sectorial.renderlista != 1) {
             this.cargalistas();
         }
+
+        if (clasf_sectorial.ResumenSAT.aes.id_actividad_economica_sat != '') {
+            clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = clasf_sectorial.ResumenSAT.aes.id_actividad_economica_sat;
+            clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = clasf_sectorial.ResumenSAT.aes.actividad_economica_sat;
+        }
+
         //Funcion para dar estilo select2 a las listas deplegables.
         var $select = $('select.select2');
         $select.select2();

@@ -70,16 +70,16 @@ class IntegracionesCSF extends SugarApi
             $url_digital_csf = $sugar_config['regimenes_sat_url'].'/tax-status/retrieve-pdf/'.$rfc;
             //$GLOBALS['log']->fatal("Inicia petición Robina CSF: ".$url_digital_csf);
             $responseCSF_base64=$this->callDigitalVal($url_digital_csf, $token );
-            
-            //file_put_contents('custom/csf/csforiginal.pdf', chunk_split($base64_CSF));
-            //file_put_contents('custom/csf/csf1.pdf', $responseCSF_base64);
-            //$b64CSFVal = chunk_split(base64_encode(file_get_contents('custom/csf/csf1.pdf')));
-            $response['robina']= "Validación digital de CSF generada correctamente";
+            file_put_contents('custom/csf/csf_'.$rfc.'.pdf', $responseCSF_base64);
+            $b64CSFVal = chunk_split(base64_encode(file_get_contents('custom/csf/csf_'.$rfc.'.pdf')));
 
-            $GLOBALS['log']->fatal( "emptyb64_csf" . !empty($responseCSF_base64) );
+            //file_put_contents('custom/csf/csforiginal.pdf', chunk_split($base64_CSF));
+            //file_put_contents('custom/csf/csf1.pdf', $responseCSF_base64);            
+            $response['robina']= "Validación digital de CSF generada correctamente";
+            $GLOBALS['log']->fatal( "emptyb64_csf: " . !empty($responseCSF_base64) );
             if( !empty($responseCSF_base64) ){
                 //Envia petición hacia alfresco
-                $body_request_alfresco = $this->createBodyRequestAlfresco( $idCliente, $responseCSF_base64, $rfc.'.pdf', $date_issued );
+                $body_request_alfresco = $this->createBodyRequestAlfresco( $idCliente, $b64CSFVal, $rfc.'.pdf', $date_issued );
                 $response_upload_alfresco = $this->callUploadDocument( $url_alfresco, $body_request_alfresco );
                 
                 $GLOBALS['log']->fatal( "Respuesta upload Alfresco:" );
@@ -95,7 +95,7 @@ class IntegracionesCSF extends SugarApi
             $url_digital_val = $sugar_config['regimenes_sat_url'].'/tax-status/retrieve-digital-val-pdf/'.$rfc;
             $GLOBALS['log']->fatal("Inicia petición Robina - digitalval: ".$url_digital_val);
             $response_base64=$this->callDigitalVal($url_digital_val, $token );
-
+            $GLOBALS['log']->fatal( "response_base64: " . !empty($response_base64) );
             if( !empty($response_base64) ){
                 file_put_contents('custom/csf/validator.pdf', $response_base64);
                 $response['robina']= "Validación digital de CSF generada correctamente";
