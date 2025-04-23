@@ -711,10 +711,12 @@
 
     //Función para eliminar opciones del campo origen
     estableceOpcionesOrigenLeads: function () {
+        var origenBloquedado = this.model.get('origen_bloqueado_c');
         var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
         var opciones_detalle_origen = app.lang.getAppListStrings('detalle_origen_list');
         var permisosGestionTeamLeader = App.user.attributes.gestion_team_leaders_c || ""; //OBTIENE EL PERMISO KONNECT
         console.log("permiso_konnect ", permisosGestionTeamLeader.includes("^konnect^"));
+        console.log("Origen_bloqueado ", origenBloquedado);
 
         // Función auxiliar para filtrar opciones
         var filtrarOpciones = function (opciones, listaPermitida) {
@@ -742,50 +744,52 @@
             }
         };
         //Se modifica validación para habilitar origen si usuario tiene define_origen_po_c
-        if (App.user.attributes.define_origen_po_c || App.user.attributes.gestion_utility_trailers_po_c || permisosGestionTeamLeader.includes("^konnect^")) {
-            //Define opciones de origen
-            opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]); //12:Alianzas - 20:Leasing
-            this.model.fields['origen_c'].options = opciones_origen;
-            //Valor actual Origen
-            var valorActualOrigen = this.model.get('origen_c');
-            //Si el valor actual no está en las opciones permitidas, lo actualizamos
-            if (!opciones_origen.hasOwnProperty(valorActualOrigen)) {
-                this.model.unset('origen_c'); // Eliminamos solo si el valor no es válido
-                this.model.set('origen_c', '12');
+        if (!origenBloquedado) {
+            if (App.user.attributes.define_origen_po_c || App.user.attributes.gestion_utility_trailers_po_c || permisosGestionTeamLeader.includes("^konnect^")) {
+                //Define opciones de origen
+                opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]); //12:Alianzas - 20:Leasing
+                this.model.fields['origen_c'].options = opciones_origen;
+                //Valor actual Origen
+                var valorActualOrigen = this.model.get('origen_c');
+                //Si el valor actual no está en las opciones permitidas, lo actualizamos
+                if (!opciones_origen.hasOwnProperty(valorActualOrigen)) {
+                    this.model.unset('origen_c'); // Eliminamos solo si el valor no es válido
+                    this.model.set('origen_c', '12');
+                }
+                //Define opciones de detalle origen
+                if (App.user.attributes.define_origen_po_c && App.user.attributes.gestion_utility_trailers_po_c && permisosGestionTeamLeader.includes("^konnect^") && this.model.get('origen_c') == '12') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115"]); //12:SOC - 13:Creditaria - 114:Utility Trailers - 115:Konnect
+                    this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                    //Forzamos la actualización de las opciones en la vista
+                    actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
+
+                } else if (App.user.attributes.define_origen_po_c && this.model.get('origen_c') == '12') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13"]); //12:SOC - 13:Creditaria
+                    this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                    //Forzamos la actualización de las opciones en la vista
+                    actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
+
+                } else if (App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') == '12') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["114"]); //114:Utility Trailers
+                    this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                    //Forzamos la actualización de las opciones en la vista
+                    actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '114');
+
+                } else if (permisosGestionTeamLeader.includes("^konnect^") && this.model.get('origen_c') == '12') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["115"]); //115:Konnect
+                    this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                    //Forzamos la actualización de las opciones en la vista
+                    actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '115');
+
+                } else if (this.model.get('origen_c') == '20') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["113"]);
+                    this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                    //Forzamos la actualización de las opciones en la vista
+                    actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '113');
+                }
+                //Disparar eventos para forzar la actualización
+                this.model.trigger("change:detalle_origen_c");
             }
-            //Define opciones de detalle origen
-            if (App.user.attributes.define_origen_po_c && App.user.attributes.gestion_utility_trailers_po_c && permisosGestionTeamLeader.includes("^konnect^") && this.model.get('origen_c') == '12') {
-                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115"]); //12:SOC - 13:Creditaria - 114:Utility Trailers - 115:Konnect
-                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
-                //Forzamos la actualización de las opciones en la vista
-                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
-
-            } else if (App.user.attributes.define_origen_po_c && this.model.get('origen_c') == '12') {
-                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13"]); //12:SOC - 13:Creditaria
-                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
-                //Forzamos la actualización de las opciones en la vista
-                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
-
-            } else if (App.user.attributes.gestion_utility_trailers_po_c && this.model.get('origen_c') == '12') {
-                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["114"]); //114:Utility Trailers
-                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
-                //Forzamos la actualización de las opciones en la vista
-                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '114');
-
-            } else if (permisosGestionTeamLeader.includes("^konnect^") && this.model.get('origen_c') == '12') {
-                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["115"]); //115:Konnect
-                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
-                //Forzamos la actualización de las opciones en la vista
-                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '115');
-
-            } else if (this.model.get('origen_c') == '20') {
-                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["113"]);
-                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
-                //Forzamos la actualización de las opciones en la vista
-                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '113');
-            }
-            //Disparar eventos para forzar la actualización
-            this.model.trigger("change:detalle_origen_c");
 
         } else if (this.model.get('origen_c') === '1') {
             console.log("ORIGEN MARKETING");
@@ -1762,7 +1766,7 @@
                 duplicado += ((dirA.ciudad ?? "").trim() === (dirB.ciudad ?? "").trim()) ? 1 : 0;
                 duplicado += ((dirA.colonia ?? "").trim() === (dirB.colonia ?? "").trim()) ? 1 : 0;
                 duplicado += ((dirA.calle ?? "").trim().toLowerCase() === (dirB.calle ?? "").trim().toLowerCase()) ? 1 : 0;
-                duplicado += ((dirA.numext ?? "").trim().toLowerCase() === (dirB.numext ?? "").trim().toLowerCase()) ? 1 : 0;            
+                duplicado += ((dirA.numext ?? "").trim().toLowerCase() === (dirB.numext ?? "").trim().toLowerCase()) ? 1 : 0;
 
                 var inactivoA = parseInt(dirA.inactivo) || 0;
                 var inactivoB = parseInt(dirB.inactivo) || 0;
