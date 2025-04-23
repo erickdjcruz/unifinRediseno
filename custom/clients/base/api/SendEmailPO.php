@@ -1590,8 +1590,11 @@ class SendEmailPO extends SugarApi
         $response['status'] = '';
         $response['description'] = '';
         $beanPO = BeanFactory::retrieveBean('Prospects', $id_prospecto, array('disable_row_level_security' => true));
-        $linkAutoriza = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=cambioOrigenPO&accion=aceptar&id=' . $id_prospecto;
-        $linkRechazo = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=cambioOrigenPO&accion=rechazar&id=' . $id_prospecto;
+        // $linkAutoriza = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=cambioOrigenPO&accion=aceptar&id=' . $id_prospecto;
+        // $linkRechazo = $GLOBALS['sugar_config']['site_url'] . '/?entryPoint=cambioOrigenPO&accion=rechazar&id=' . $id_prospecto;
+        $linkAutoriza = $GLOBALS['sugar_config']['site_url'] . '/#Prospects/layout/cambioOrigenPO?accion=aceptar&id=' . $id_prospecto;
+        $linkRechazo = $GLOBALS['sugar_config']['site_url'] . '/#Prospects/layout/cambioOrigenPO?accion=rechazar&id=' . $id_prospecto;
+
         $nombreEmpresa = $beanPO->empresa_po_c;
         $nombrePO = $beanPO->last_name;
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
@@ -1642,6 +1645,7 @@ class SendEmailPO extends SugarApi
 
     public function notificaCambioOrigen($api, $args)
     {
+        $GLOBALS['log']->fatal("---------- notificaCambioOrigen -----------");
         global $current_user, $sugar_config, $app_list_strings;
         $id_prospecto = isset($args['id_po']) ? $args['id_po'] : '';
         $id_responsable = isset($args['id_usuario']) ? $args['id_usuario'] : '';
