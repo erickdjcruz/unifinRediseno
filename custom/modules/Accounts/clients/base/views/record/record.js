@@ -8695,7 +8695,13 @@
                         'label_imacro': '',
                         'label_div': '',
                         'label_grp': '',
-                        'label_cls': ''
+                        'label_cls': '',
+                        'ResumenSAT':{
+                        'aes': {
+                            'actividad_economica_sat': '',
+                            'id_actividad_economica_sat': ''
+                            }
+                        }
                     };
                     clasf_sectorial.prevActEconomica = {
                         // 'combinaciones': '',
@@ -8728,7 +8734,13 @@
                         'label_imacro': '',
                         'label_div': '',
                         'label_grp': '',
-                        'label_cls': ''
+                        'label_cls': '',
+                        'ResumenSAT':{
+                        'aes': {
+                            'actividad_economica_sat': '',
+                            'id_actividad_economica_sat': ''
+                            }
+                        }
                     };
                     clasf_sectorial.ResumenCliente = data[2].contents;
                     clasf_sectorial.ActividadEconomica.ae.id = campo1;

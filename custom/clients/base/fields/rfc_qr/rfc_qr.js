@@ -170,6 +170,62 @@
 		return `${anio}-${mes}-${dia}, ${horaStr}:${minStr}`;
 	},
 
+	getClasificacionSectorial:function (idActEconomica) {
+		if (idActEconomica != "" && idActEconomica != null && idActEconomica != undefined) {
+            console.log("idActEconomica " + idActEconomica);
+
+            app.api.call('GET', app.api.buildURL('clasificacionSectorialCNVB/' + idActEconomica), null, {
+                success: function (data) {
+                    dataInegi = data;
+                    app.alert.dismiss('obtiene_clasf_sectorial');
+                    // console.log(data);
+                    if (dataInegi != '') {
+                        //Campos CNBV
+						clasf_sectorial.ActividadEconomica.ae = idActEconomica;
+                        clasf_sectorial.ActividadEconomica.ae.id = idActEconomica;
+                        clasf_sectorial.ActividadEconomica.sse.id = dataInegi['id_subsector_economico_cnbv'];
+                        clasf_sectorial.ActividadEconomica.se.id = dataInegi['id_sector_economico_cnbv'];
+                        clasf_sectorial.ActividadEconomica.ms.id = dataInegi['id_macro_sector_cnbv'];
+
+                        //Etiquetas de los campos CNBV para Input del HBS en edit
+                        clasf_sectorial.ActividadEconomica.label_subsector = app.lang.getAppListStrings('subsector_cnbv_list')[clasf_sectorial.ActividadEconomica.sse.id];
+                        clasf_sectorial.ActividadEconomica.label_sector = app.lang.getAppListStrings('sector_cnbv_list')[clasf_sectorial.ActividadEconomica.se.id];
+                        clasf_sectorial.ActividadEconomica.label_macro = app.lang.getAppListStrings('macro_cnbv_list')[clasf_sectorial.ActividadEconomica.ms.id];
+
+                        //Envia los valores de los campos de INEGI a la vista HBS
+                        clasf_sectorial.ResumenCliente.inegi.inegi_clase = dataInegi['id_clase_inegi'];
+                        clasf_sectorial.ResumenCliente.inegi.inegi_subrama = dataInegi['id_subrama_inegi'];
+                        clasf_sectorial.ResumenCliente.inegi.inegi_rama = dataInegi['id_rama_inegi'];
+                        clasf_sectorial.ResumenCliente.inegi.inegi_subsector = dataInegi['id_subsector_inegi'];
+                        clasf_sectorial.ResumenCliente.inegi.inegi_sector = dataInegi['id_sector_inegi'];
+                        clasf_sectorial.ResumenCliente.inegi.inegi_macro = dataInegi['id_macro_inegi'];
+
+                        //Envia los valores al LH para guardarlos en el modulo de Resumen
+                        clasf_sectorial.ActividadEconomica.inegi_clase = dataInegi['id_clase_inegi'];
+                        clasf_sectorial.ActividadEconomica.inegi_subrama = dataInegi['id_subrama_inegi'];
+                        clasf_sectorial.ActividadEconomica.inegi_rama = dataInegi['id_rama_inegi'];
+                        clasf_sectorial.ActividadEconomica.inegi_subsector = dataInegi['id_subsector_inegi'];
+                        clasf_sectorial.ActividadEconomica.inegi_sector = dataInegi['id_sector_inegi'];
+                        clasf_sectorial.ActividadEconomica.inegi_macro = dataInegi['id_macro_inegi'];
+
+                        //Etiquetas de los campos INEGI para Input del HBS en edit
+                        clasf_sectorial.ActividadEconomica.label_clase = app.lang.getAppListStrings('clase_list')[clasf_sectorial.ActividadEconomica.inegi_clase];
+                        clasf_sectorial.ActividadEconomica.label_subrama = app.lang.getAppListStrings('subrama_list')[clasf_sectorial.ActividadEconomica.inegi_subrama];
+                        clasf_sectorial.ActividadEconomica.label_rama = app.lang.getAppListStrings('rama_list')[clasf_sectorial.ActividadEconomica.inegi_rama];
+                        clasf_sectorial.ActividadEconomica.label_isubsector = app.lang.getAppListStrings('subsector_list')[clasf_sectorial.ActividadEconomica.inegi_subsector];
+                        clasf_sectorial.ActividadEconomica.label_isector = app.lang.getAppListStrings('sector_list')[clasf_sectorial.ActividadEconomica.inegi_sector];
+                        clasf_sectorial.ActividadEconomica.label_imacro = app.lang.getAppListStrings('macro_list')[clasf_sectorial.ActividadEconomica.inegi_macro];
+
+                        clasf_sectorial.render();
+                    }
+                },
+                error: function (e) {
+                    throw e;
+                }
+            });
+        }
+	},
+
 	validarServicioCIEC:function (  ) {
 		var contextol = this;
 		
@@ -218,6 +274,17 @@
 						var Regimenes = data["taxRegimes"];
 						var LugarEmision = data["info"]["place_issued"];
 						var FechaEmision = data["info"]["date_issued"];
+
+						//actividades economicas
+						// Filtrar las actividades con preponderancia 1
+						var filteredActivities = data.economicActivities.filter(
+							activity => activity.riched_code_preponderance === 1
+						);
+
+						var activity_sat_id =filteredActivities[0].riched_activity_sat_id;
+						var activity_sat = filteredActivities[0].riched_activity_sat_desc;
+						var code_cnvb = filteredActivities[0].riched_code_cnbv;
+						var code_inegi = filteredActivities[0].riched_code_inegi;						
 	
 						if(RFC != undefined){
 							if(RFC.length == 12) Regimen = "Persona Moral";
@@ -312,11 +379,21 @@
 											},
 											onConfirm: function() {
 												//Comienza integraciones con Alfresco, Quantico y Robina
-												contextol.integraCSF( contexto_cuenta.model.get('id'), RFC, window.result, FechaEmision );
+												contextol.integraCSF( contexto_cuenta.model.get('id'), RFC, FechaEmision );
 												// Actualiza Datos Personales
 												contexto_cuenta.model.set('tipodepersona_c', Regimen);
 												contexto_cuenta.model.set('rfc_c', RFC);
 												contexto_cuenta.model.set( "regimenes_fiscal_sat_c", JSON.stringify(Regimenes) );
+												
+												clasf_sectorial.ActividadEconomica.ae = code_cnvb;
+												clasf_sectorial.ActividadEconomica.inegi_clase = code_inegi;
+
+												clasf_sectorial.ResumenSAT.aes.id_actividad_economica_sat = activity_sat_id;
+												clasf_sectorial.ResumenSAT.aes.actividad_economica_sat = activity_sat;
+						
+												contextol.getClasificacionSectorial(code_cnvb);
+												//clasf_sectorial.render();
+												
 												var fechaEmisionFormat = contextol.formatDate( FechaEmision );
 												var lugarFechaEmision = LugarEmision + ' a ' + fechaEmisionFormat; 
 												contexto_cuenta.model.set('emision_csf_c', lugarFechaEmision);
@@ -1742,6 +1819,35 @@
 			//"idCliente": '88cfd57e-2277-11ea-98a4-00155d96730d',
 			"rfc": RFC,
 			"base64": b64[1],
+			"vigencia": fechaEmision
+		};
+
+		var url = app.api.buildURL('IntegracionesCSF', null, null,);
+		app.api.call('create', url, params, {
+			success: function (response) {
+				app.alert.dismiss('sendCSF');
+				app.alert.show('info_csf', {
+                    level: 'info',
+                    autoClose: false,
+                    messages: '<br>-' + response.robina + '<br><br>-' + response.quantico_validator + '<br><br>-' + response.alfresco
+                });
+				
+			}
+		});
+
+	},
+
+	integraCSF: function( idRegistro, RFC, fechaEmision ){
+		app.alert.show('sendCSF', {
+			level: 'process',
+			title: 'Enviando Constancia de Situación Fiscal...',
+		});
+		
+		var params = {
+			"idCliente": idRegistro,
+			//"idCliente": '88cfd57e-2277-11ea-98a4-00155d96730d',
+			"rfc": RFC,
+			"base64": "",
 			"vigencia": fechaEmision
 		};
 
