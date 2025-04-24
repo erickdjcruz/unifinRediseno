@@ -23,7 +23,7 @@ global $sugar_config;
 $GLOBALS['bpm_url'] = $sugar_config['bpm_url'];
 $GLOBALS['esb_url'] = $sugar_config['esb_url'];
 $GLOBALS['unifin_url'] = $sugar_config['unifin_url'];
-$GLOBALS['unifin_url_cliente_completo'] = $sugar_config['unifin_url_cliente_completo'];
+$GLOBALS['unifin_url_v2'] = $sugar_config['unifin_url_v2'];
 
 // JSR Cambios para ip dinámica
 
@@ -286,8 +286,10 @@ class UnifinAPI
                 $_ClntFechaNacimiento = $RegimenFiscal == 3 ? $objecto->fechaconstitutiva_c : $objecto->fechadenacimiento_c;
                 /***CVV INICIO***/
                 // $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto';
+                // /unics-dev/
+                // /unics-pre/
                 //NUEVO HOST
-                $host = 'https://' . $GLOBALS['unifin_url_cliente_completo'] . '/unics-dev/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto?apikey=userunics-2025';
+                $host = 'https://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto?apikey=userunics-2025';
                 $cleanValues = array();
 
                 $GLOBALS['log']->fatal("NUEVO HOST CIENTE COMPLETO: " . $host);
@@ -910,7 +912,8 @@ SQL;
             global $db;
             global $current_user;
             //$host = "http://200.52.66.204/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaRelacion";
-            $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaRelacion";
+            // /Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaRelacion
+            $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaRelacion";
             //Obtienes los id_cliente de la personas que se estan asociando
             $query = <<<SQL
                 SELECT cliente.idcliente_c id_cliente, relacionado.idcliente_c id_relacionado, rel.deleted deleted
@@ -1026,7 +1029,7 @@ SQL;
     public function actualizaDireccion($object)
     {
         global $db, $current_user;
-        $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaDireccion";
+        $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaDireccion";
         $fields = $this->getDirecciones($object->accounts_dire_direccion_1accounts_ida, $object->id);
         //getDireciones return an array of arrays but for this service we only need one array
         foreach ($fields as $key => $value) {
@@ -1060,7 +1063,7 @@ SQL;
     {
         global $db, $current_user;
         $elimina = 1;
-        $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaDireccion";
+        $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaDireccion";
         $fields = $this->getDirecciones($object->accounts_dire_direccion_1accounts_ida, $object->id, $elimina);
         //getDireciones return an array of arrays but for this service we only need one array
         foreach ($fields as $key => $value) {
@@ -1100,7 +1103,7 @@ SQL;
             $TipoCliente = $IntValue->getTipoCliente($object->tipo_registro_cuenta_c, $object->estatus_c, $object->esproveedor_c, $object->tipo_relacion_c, $object->cedente_factor_c, $object->deudor_factor_c);
             $_ClntFechaNacimiento = $RegimenFiscal == 3 ? $object->fechaconstitutiva_c : $object->fechadenacimiento_c;
 
-            $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaPersona';
+            $host = 'http://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaPersona';
             $fields = array(
                 "oPersona" => array(
                     "_IdCliente" => intval($object->idcliente_c),
@@ -1157,9 +1160,9 @@ SQL;
         global $db, $current_user;
         try {
             if ($estado == 'insertando') {
-                $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaComunicacion';
+                $host = 'http://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaComunicacion';
             } elseif ($estado == 'actualizando') {
-                $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaComunicacion';
+                $host = 'http://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaComunicacion';
             }
 
             $fields = $this->getTelefonos($object->accounts_tel_telefonos_1accounts_ida, $object->id);
@@ -1196,9 +1199,9 @@ SQL;
         global $current_user;
         try {
             if ($estado == 'insertando') {
-                $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaComunicacion';
+                $host = 'http://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaComunicacion';
             } elseif ($estado == 'actualizando') {
-                $host = 'http:/' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaComunicacion';
+                $host = 'http:/' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaComunicacion';
             }
             $fields = $this->getCorreos($object->bean_id, $object->email_address_id);
             foreach ($fields as $key => $value) {
@@ -1218,9 +1221,9 @@ SQL;
         try {
             global $current_user;
             if ($estado == 'insertando') {
-                $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaPLD';
+                $host = 'http://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaPLD';
             } elseif ($estado == 'actualizando') {
-                $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaPLD';
+                $host = 'http://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaPLD';
             }
             $fields = array(
                 "clientePLD" => array(
@@ -1849,7 +1852,7 @@ SQL;
     {
         global $current_user;
         try {
-            $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaCorreos";
+            $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaCorreos";
             $resultado = $this->unifinpostCall($host, $fields);
             return $resultado;
         } catch (Exception $e) {
@@ -1882,7 +1885,7 @@ SQL;
     {
         try {
             global $db, $current_user;
-            $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsCr/WsRest/Uni2CrService.svc/Uni2/ActualizaSolicitud';
+            $host = 'http://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsCr/WsRest/Uni2CrService.svc/Uni2/ActualizaSolicitud';
 
             // CVV Obtiene los datos del clientes
             $query = <<<SQL
