@@ -1315,7 +1315,7 @@
         });
     },
 
-    solicta_cambio_origen: function () {
+    solicta_cambio_origen: function () {        
         /*
           Valida que tenga origen bloqueado
         */
@@ -1328,7 +1328,8 @@
             return false;
         }
 
-        if (!App.user.attributes.define_origen_po_c) {
+        var permisosGestionTeamLeader = App.user.attributes.gestion_team_leaders_c || ""; //OBTIENE EL PERMISO KONNECT
+        if (!App.user.attributes.define_origen_po_c && !permisosGestionTeamLeader.includes("^konnect^")) {
             app.alert.show('not_access', {
                 level: 'error',
                 autoClose: false,
