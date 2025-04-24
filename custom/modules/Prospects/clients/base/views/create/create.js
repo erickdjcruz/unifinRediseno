@@ -714,6 +714,12 @@
                 //Forzamos la actualización de las opciones en la vista
                 actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
 
+            } else if (App.user.attributes.define_origen_po_c && permisosGestionTeamLeader.includes("^konnect^") && this.model.get('origen_c') == '12') {
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "115"]); //12:SOC - 13:Creditaria - 115:Konnect
+                this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                //Forzamos la actualización de las opciones en la vista
+                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
+
             } else if (App.user.attributes.define_origen_po_c && this.model.get('origen_c') == '12') {
                 opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13"]); //12:SOC - 13:Creditaria
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
