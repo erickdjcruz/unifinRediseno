@@ -105,6 +105,7 @@ class GetInfoRFCbyCIEC extends SugarApi
             ];
         }
 
+        
         $url_token = $sugar_config['regimenes_sat_url'].'/auth/login/token';
         $user = $sugar_config['regimenes_sat_user'];
         $password = $sugar_config['regimenes_sat_password'];
@@ -222,11 +223,11 @@ class GetInfoRFCbyCIEC extends SugarApi
                     return $resultado; // Termina aquí y regresa el error
                 }
                 $GLOBALS['log']->fatal("Respuesta final-completa-regresa data");
-                //$resultado['success'] = true;
                 //$resultado['codeerror'] = 0;
                 //$resultado['messageerror'] = 'Consulta realizada correctamente';
                 //$resultado['data'] = json_decode($response, true);
                 $resultado = $response;
+                $resultado['success'] = true;
             } else {
                 $resultado['codeerror'] = 204;
                 $resultado['messageerror'] = "Respuesta sin datos válidos de ID o createdAt";
@@ -235,7 +236,8 @@ class GetInfoRFCbyCIEC extends SugarApi
             $resultado['codeerror'] = 401;
             $resultado['messageerror'] = "No se pudo obtener el token o respuesta inválida";
         }
-
+        
+        //$resultado = json_decode($resultado);
         return $resultado;
     }
 
