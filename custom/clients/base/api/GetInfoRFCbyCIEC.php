@@ -149,7 +149,7 @@ class GetInfoRFCbyCIEC extends SugarApi
                     ]
                 ],
                 "taxpayer" => $rfc,
-                "extractor" => "tax_situations"
+                "extractor" => "tax_status"
             ]);
 
             $GLOBALS['log']->fatal($url_ticket);
