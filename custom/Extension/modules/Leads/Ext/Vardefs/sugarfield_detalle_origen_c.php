@@ -1,6 +1,7 @@
 <?php
- // created: 2022-07-20 11:58:41
+ // created: 2025-04-29 16:27:08
 $dictionary['Lead']['fields']['detalle_origen_c']['labelValue']='Detalle Origen';
+$dictionary['Lead']['fields']['detalle_origen_c']['enforced']='';
 $dictionary['Lead']['fields']['detalle_origen_c']['dependency']='';
 $dictionary['Lead']['fields']['detalle_origen_c']['required_formula']='';
 $dictionary['Lead']['fields']['detalle_origen_c']['readonly_formula']='';
@@ -39,35 +40,16 @@ $dictionary['Lead']['fields']['detalle_origen_c']['visibility_grid']=array (
       26 => '109',
       27 => '110',
     ),
-    2 => 
-    array (
-      0 => '',
-      1 => '1',
-      2 => '6',
-      3 => '10',
-    ),
     3 => 
     array (
     ),
-    4 => 
-    array (
-    ),
-    5 => 
-    array (
-    ),
     6 => 
-    array (
-    ),
-    7 => 
     array (
     ),
     8 => 
     array (
     ),
     9 => 
-    array (
-    ),
-    10 => 
     array (
     ),
     11 => 
@@ -145,6 +127,8 @@ $dictionary['Lead']['fields']['detalle_origen_c']['visibility_grid']=array (
       67 => '101',
       68 => '103',
       69 => '111',
+      70 => '114',
+      71 => '115',
     ),
     13 => 
     array (
@@ -162,10 +146,6 @@ $dictionary['Lead']['fields']['detalle_origen_c']['visibility_grid']=array (
       2 => '68',
       3 => '69',
     ),
-    16 => 
-    array (
-      0 => '102',
-    ),
     17 => 
     array (
     ),
@@ -175,6 +155,9 @@ $dictionary['Lead']['fields']['detalle_origen_c']['visibility_grid']=array (
     19 => 
     array (
       0 => '112',
+    ),
+    20 => 
+    array (
     ),
     '' => 
     array (
