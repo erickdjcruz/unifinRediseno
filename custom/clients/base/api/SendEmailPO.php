@@ -1648,7 +1648,7 @@ class SendEmailPO extends SugarApi
         $GLOBALS['log']->fatal("---------- notificaCambioOrigen -----------");
         global $current_user, $sugar_config, $app_list_strings;
         $id_prospecto = isset($args['id_po']) ? $args['id_po'] : '';
-        $id_responsable = isset($args['id_usuario']) ? $args['id_usuario'] : '';
+        $id_asesor = isset($args['id_usuario']) ? $args['id_usuario'] : '';
         $accion = isset($args['accion']) ? $args['accion'] : '--';
         $response = [];
         $response['status'] = '';
@@ -1658,13 +1658,13 @@ class SendEmailPO extends SugarApi
         $nombrePO = $beanPO->last_name;
         $link_po = $GLOBALS['sugar_config']['site_url'] . '/#Prospects/' . $id_prospecto;
         //Recupera Asesor asignado
-        $id_asesor = $beanPO->assigned_user_id;
+        // $id_asesor = $beanPO->assigned_user_id;        
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $correoAsesor = $beanAsesor->email1;
-
+        $nombreAsesorR = $beanAsesor->first_name . " " . $beanAsesor->last_name;
         //Recupera Asesor responable
-        $beanAsesorR = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
-        $nombreAsesorR = $beanAsesorR->first_name . " " . $beanAsesorR->last_name;
+        // $beanAsesorR = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
+        // $nombreAsesorR = $beanAsesorR->first_name . " " . $beanAsesorR->last_name;
 
         try {
             //Define correo
