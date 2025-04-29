@@ -175,7 +175,7 @@
         this._render();
     },
 
-    aceptaCambioOrigen: function (idPO, idAsesorSolicita) {
+    aceptaCambioOrigen: function (idPO, idAsesor) {
         console.log("...ACEPTA_CAMBIO_ORIGEN...");
         this.msgExitoso = 0;
 
@@ -186,7 +186,7 @@
 
         var argsAcepta = {
             "id_po": idPO,
-            "id_usuario": idAsesorSolicita,
+            "id_usuario": idAsesor,
             "accion": 'Aceptada'
         };
         app.api.call("create", app.api.buildURL("notificaEdicionOrigenPO", null, null, argsAcepta), null, {
@@ -218,7 +218,7 @@
         });
     },
 
-    rechazaCambioOrigen: function (idPO, idAsesorSolicita) {
+    rechazaCambioOrigen: function (idPO, idAsesor) {
         console.log("...RECHAZA_CAMBIO_ORIGEN...");
         this.msgRechazado = 0;
 
@@ -229,7 +229,7 @@
 
         var argsRechaza = {
             "id_po": idPO,
-            "id_usuario": idAsesorSolicita,
+            "id_usuario": idAsesor,
             "accion": 'Rechazada'
         };
         app.api.call("create", app.api.buildURL("notificaEdicionOrigenPO", null, null, argsRechaza), null, {
