@@ -28,20 +28,33 @@
         this.paises_list=App.lang.getAppListStrings('paises_list');
         this.paisId = "2";
         this.paisName = "México";
-        //Eliminando la opción de México, ya que es un registro extranjero
-        Object.keys(this.paises_list).forEach(function (key) {
-            if (key == "2") {
-                delete self.paises_list[key];
-            }
-        });
+        this.permisoCapturaDireccionSepomex = App.user.attributes.captura_direccion_sepomex_c;
+        
+        if (!this.permisoCapturaDireccionSepomex) {
+            this.mostrarMensaje("No tiene permisos para realizar esta acción", "error");
+            alert("No tiene permisos para realizar esta acción");
+            // Redirigir después de 1 segundo
+            _.delay(function () {
+                app.router.navigate("#dir_Sepomex", { trigger: true });
+            }, 1000);
+            return;
 
-        this.getListadoSepomex();
+        } else {
 
+            //Eliminando la opción de México, ya que es un registro extranjero
+            Object.keys(this.paises_list).forEach(function (key) {
+                if (key == "2") {
+                    delete self.paises_list[key];
+                }
+            });
+
+            this.getListadoSepomex();
+        }
     },
 
     _render: function () {
         this._super("_render");
-        if(this.flagClickModal===null){
+        if(this.flagClickModal===null && this.permisoCapturaDireccionSepomex){
             $(".openModalCheckCP").trigger('click');
         }
     },
@@ -565,5 +578,10 @@
 
         }
 
-    }
+    },
+
+    mostrarMensaje: function (texto, tipo) {
+        var mensajeDiv = this.$('#mensaje');
+        mensajeDiv.removeClass().addClass('message ' + tipo).text(texto);
+    },
 })
