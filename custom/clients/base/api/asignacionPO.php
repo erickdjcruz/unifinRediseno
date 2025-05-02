@@ -103,13 +103,17 @@ class asignacionPO extends SugarApi
 
         try
         {
-            $query = "SELECT a.*, m.name nMunicipio , concat(u.first_name, ' ', u.last_name)uName FROM unifin_asignacion_po a
-            INNER JOIN users u on u.id=a.modified_by
-            INNER join dire_municipio m on a.municipio = m.id 
-            WHERE (zona_geografica != '' AND zona_geografica IS NOT NULL) AND
-            (municipio != '' AND municipio IS NOT NULL) AND (equipos IS NULL OR equipos = '' )
-            AND zona_geografica = ".$zonaGeografica."
-            ORDER BY nMunicipio ASC";
+            $query = "SELECT DISTINCT (nMunicipio), id , zona_geografica, municipio, equipos, uName,asignado_id, date_modified from (
+                SELECT a.*, sepomex.municipio nMunicipio , concat(u.first_name, ' ', u.last_name)uName 
+                FROM unifin_asignacion_po a
+                INNER JOIN users u on u.id=a.modified_by
+                INNER JOIN dir_sepomex sepomex on a.municipio = sepomex.id_municipio
+                WHERE (zona_geografica != '' AND zona_geografica IS NOT NULL) AND
+                (sepomex.municipio != '' AND sepomex.municipio IS NOT NULL) AND (equipos IS NULL OR equipos = '' )
+                AND zona_geografica = '".$zonaGeografica."'
+                ORDER BY nMunicipio ASC
+            ) as tzona";
+            $GLOBALS['log']->fatal("QUERYS:".$query);
             $resultado = $db->query($query);
             $restultado_list = [];
 
