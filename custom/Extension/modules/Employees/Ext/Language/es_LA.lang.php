@@ -74,3 +74,4 @@ $mod_strings['LBL_CANCELAR_CASOS'] = 'Cancelar casos';
 $mod_strings['LBL_SEGUIMIENTO_BC'] = 'Seguimiento Buró de Crédito';
 $mod_strings['LBL_GESTION_UTILITY_TRAILERS_PO'] = 'Gestion Utility Trailers PO';
 $mod_strings['LBL_GESTION_TEAM_LEADERS_C'] = 'Gestión Team Leaders';
+$mod_strings['LBL_CAPTURA_DIRECCION_SEPOMEX'] = 'Captura Dirección Sepomex';
