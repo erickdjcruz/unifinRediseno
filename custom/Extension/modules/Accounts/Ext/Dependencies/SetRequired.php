@@ -717,23 +717,23 @@ $dependencies['Accounts']['alta_proveedor_c_readonly'] = array(
     ),
 );
 //Dependencia para el apellido materno en el tipo de cuenta Prospecto e Interesado. Nuevo cambio en la formula para desabilitar el requerido en Lead y Contactado. OK
-$dependencies['Accounts']['ApellidoMaterno_required'] = array(
-    'hooks' => array("all"),
-    'trigger' => 'true',
-    'triggerFields' => array('tipodepersona_c', 'tipo_registro_cuenta_c', 'subtipo_registro_cuenta_c', 'apellidomaterno_c'),
-    'onload' => true,
-    'actions' => array(
-        array(
-            'name' => 'SetRequired',
-            'params' => array(
-                'target' => 'apellidomaterno_c',
-                'label' => 'apellidomaterno_c_label',
-                //'value' => 'and(equal($tipodepersona_c,"Persona Fisica"), equal($tipo_registro_c,"Prospecto"), equal($subtipo_cuenta_c,"Interesado"))',
-                'value' => 'and(or(equal($tipo_registro_cuenta_c,"3"),equal($subtipo_registro_cuenta_c,"8"),equal($subtipo_registro_cuenta_c,"7")),or(equal($tipodepersona_c,"Persona Fisica"),equal($tipodepersona_c,"Persona Fisica con Actividad Empresarial")))',
-            ),
-        ),
-    ),
-);
+// $dependencies['Accounts']['ApellidoMaterno_required'] = array(
+//     'hooks' => array("all"),
+//     'trigger' => 'true',
+//     'triggerFields' => array('tipodepersona_c', 'tipo_registro_cuenta_c', 'subtipo_registro_cuenta_c', 'apellidomaterno_c'),
+//     'onload' => true,
+//     'actions' => array(
+//         array(
+//             'name' => 'SetRequired',
+//             'params' => array(
+//                 'target' => 'apellidomaterno_c',
+//                 'label' => 'apellidomaterno_c_label',
+//                 //'value' => 'and(equal($tipodepersona_c,"Persona Fisica"), equal($tipo_registro_c,"Prospecto"), equal($subtipo_cuenta_c,"Interesado"))',
+//                 'value' => 'and(or(equal($tipo_registro_cuenta_c,"3"),equal($subtipo_registro_cuenta_c,"8"),equal($subtipo_registro_cuenta_c,"7")),or(equal($tipodepersona_c,"Persona Fisica"),equal($tipodepersona_c,"Persona Fisica con Actividad Empresarial")))',
+//             ),
+//         ),
+//     ),
+// );
 
 //Dependencia para el sector economico para el tipo de persona fisica en registro prospecto e interesado
 //Adrian Arauz 13/07/18
