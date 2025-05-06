@@ -204,30 +204,36 @@ class GetInfoRFCbyCIEC extends SugarApi
                         }
                     }
                 }
-                // Última llamada para obtener el resultado final
-                $url_csf = $sugar_config['regimenes_sat_url'] . '/tax-status/retrieve/' . $rfc;
-                $GLOBALS['log']->fatal('url_csf - retrieve: '.$url_csf );
-                $response = $this->callValidateCSF($url_csf, $token);
-                //$GLOBALS['log']->fatal( print_r($response,true) );                    
-                if (isset($response['detail'][0]['msg']) && $response['detail'][0]['msg'] === 'value is not a valid dict') {
-                    $resultado['codeerror'] = 403;
-                    $resultado['messageerror'] = 'No se encontraron datos del RFC';
-                    $GLOBALS['log']->fatal('Error consulta de RFC');
-                    return $resultado; // Termina aquí y regresa el error
-                }
-                
-                if (isset($response['detail']) && $response['detail'] === 'No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.') {
-                    $resultado['codeerror'] = 403;
-                    $resultado['messageerror'] = 'No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.';
-                    $GLOBALS['log']->fatal('No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.');
-                    return $resultado; // Termina aquí y regresa el error
-                }
-                $GLOBALS['log']->fatal("Respuesta final-completa-regresa data");
-                //$resultado['codeerror'] = 0;
-                //$resultado['messageerror'] = 'Consulta realizada correctamente';
-                //$resultado['data'] = json_decode($response, true);
-                $resultado = $response;
-                $resultado['success'] = true;
+
+                if(!$pendiente){
+                    // Última llamada para obtener el resultado final
+                    $url_csf = $sugar_config['regimenes_sat_url'] . '/tax-status/retrieve/' . $rfc;
+                    $GLOBALS['log']->fatal('url_csf - retrieve: '.$url_csf );
+                    $response = $this->callValidateCSF($url_csf, $token);
+                    //$GLOBALS['log']->fatal( print_r($response,true) );                    
+                    if (isset($response['detail'][0]['msg']) && $response['detail'][0]['msg'] === 'value is not a valid dict') {
+                        $resultado['codeerror'] = 403;
+                        $resultado['messageerror'] = 'No se encontraron datos del RFC';
+                        $GLOBALS['log']->fatal('Error consulta de RFC');
+                        return $resultado; // Termina aquí y regresa el error
+                    }
+                    
+                    if (isset($response['detail']) && $response['detail'] === 'No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.') {
+                        $resultado['codeerror'] = 403;
+                        $resultado['messageerror'] = 'No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.';
+                        $GLOBALS['log']->fatal('No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.');
+                        return $resultado; // Termina aquí y regresa el error
+                    }
+                    $GLOBALS['log']->fatal("Respuesta final-completa-regresa data");
+                    //$resultado['codeerror'] = 0;
+                    //$resultado['messageerror'] = 'Consulta realizada correctamente';
+                    //$resultado['data'] = json_decode($response, true);
+                    $resultado = $response;
+                    $resultado['success'] = true;
+                } else {
+                    $resultado['codeerror'] = 204;
+                    $resultado['messageerror'] = "Demasiado tiempo de espera al recuperar información del RFC.";
+                }                
             } else {
                 $resultado['codeerror'] = 204;
                 $resultado['messageerror'] = "Respuesta sin datos válidos de ID o createdAt";
