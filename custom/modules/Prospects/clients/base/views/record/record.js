@@ -1794,7 +1794,7 @@
                 var inactivoB = parseInt(dirB.inactivo) || 0;
                 duplicado += (inactivoA === inactivoB) ? 1 : 0;
 
-                console.log(`Comparando dirección ${keyA} con ${keyB}: duplicado =`, duplicado);
+                // console.log(`Comparando dirección ${keyA} con ${keyB}: duplicado =`, duplicado);
 
                 // Si coinciden 9 atributos, es duplicado
                 if (duplicado === 9) {

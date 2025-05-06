@@ -118,11 +118,11 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
         ),
         3 => 
         array (
-          'type' => 'rowaction',
-          'event' => 'button:solicitud_asignacion:click',
-          'name' => 'solicitud_asignacion',
-          'label' => 'Solicitud de Asignación',
-          'acl_action' => 'view',
+          // 'type' => 'rowaction',
+          // 'event' => 'button:solicitud_asignacion:click',
+          // 'name' => 'solicitud_asignacion',
+          // 'label' => 'Solicitud de Asignación',
+          // 'acl_action' => 'view',
         ),
         4 => 
         array (

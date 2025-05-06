@@ -344,7 +344,7 @@
         //Muestra mensaje Dynamics265
         this.model.on('sync', this.dynamics365, this);
         //ASIGNACION AUTOMATICA
-        this.context.on('button:solicitud_asignacion:click', this.solicitudAsignacionCuenta, this);
+        // this.context.on('button:solicitud_asignacion:click', this.solicitudAsignacionCuenta, this);
     },
 
     /** Asignacion modal */
@@ -620,7 +620,7 @@
                 var inactivoB = parseInt(dirB.inactivo) || 0;
                 duplicado += (inactivoA === inactivoB) ? 1 : 0;
 
-                console.log(`Comparando dirección ${keyA} con ${keyB}: duplicado =`, duplicado);
+                // console.log(`Comparando dirección ${keyA} con ${keyB}: duplicado =`, duplicado);
 
                 // Si coinciden 9 atributos, es duplicado
                 if (duplicado === 9) {
@@ -1407,7 +1407,7 @@
         this.$('.record-edit-link-wrapper[data-name="account_vista360"]').remove();
         this.$('div[data-name=account_vista360]').find('div.record-label').addClass('hide');
         //OCULTA ó MUESTRA BOTON DE SOLICITUD ASIGNACION
-        this._hideBtnSolicitudAsignacion();
+        // this._hideBtnSolicitudAsignacion();
     },
 
     editClicked: function () {
