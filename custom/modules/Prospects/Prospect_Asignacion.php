@@ -22,7 +22,7 @@ class Prospects_AsignacionPO
           //Valida existencia de relación entre estado (zona_geografica) y municipio (municipio_po_c)
           //Se aplica validación para evitar obtener municipio_po_c NULL y traiga resultados de la bd equivocados
           $municipio = ( empty($bean->municipio_po_c) ) ? "" : $bean->municipio_po_c;
-          $queryZonaGeograficaMunicipio = "SELECT * FROM unifin_asignacion_po where zona_geografica='{$bean->zona_geografica_c}' AND municipio='{$bean->municipio_po_c}'";
+          $queryZonaGeograficaMunicipio = "SELECT * FROM unifin_asignacion_po where zona_geografica='{$bean->zona_geografica_c}' AND municipio='{$municipio}'";
 
           $GLOBALS['log']->fatal("QUERY PARA OBTENER ASIGNADO: ".$queryZonaGeograficaMunicipio);
 
