@@ -388,8 +388,8 @@
 												clasf_sectorial.ActividadEconomica.ae = code_cnvb;
 												clasf_sectorial.ActividadEconomica.inegi_clase = code_inegi;
 
-												clasf_sectorial.ResumenSAT.aes.id_actividad_economica_sat = activity_sat_id;
-												clasf_sectorial.ResumenSAT.aes.actividad_economica_sat = activity_sat;
+												clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = activity_sat_id;
+												clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = activity_sat;
 						
 												contextol.getClasificacionSectorial(code_cnvb);
 												//clasf_sectorial.render();
