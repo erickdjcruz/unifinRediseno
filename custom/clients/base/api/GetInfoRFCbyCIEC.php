@@ -177,7 +177,7 @@ class GetInfoRFCbyCIEC extends SugarApi
                 //$url_csf=$sugar_config['regimenes_sat_url'].'/webhook-requests/retrieve/'.$ticket;
                 $url_csf=$sugar_config['regimenes_sat_url'].'/orders/retrieve/'.$ticket;
                 $pendiente = true;
-                $maxTries = 3;
+                $maxTries = 5;
                 $try = 0;
                 $finalStatusCodes = ['T01', 'T02', 'T03', 'T04'];
 
@@ -189,18 +189,18 @@ class GetInfoRFCbyCIEC extends SugarApi
                     // Decodificar el JSON a un arreglo
                     //$latestItem = json_decode($response, true);
                     $status = $response['status'] ?? null;
-                    $GLOBALS['log']->fatal("Status final recibido: $status. Terminando bucle.");
+                    $GLOBALS['log']->fatal("Status final recibido:". $status);
                     if ($status == 'p') {
                         // Opcional: esperar antes de siguiente intento para evitar saturar la API
-                        sleep(2);
-                    }else{
+                        sleep(3);
+                    }else if ($status == 't') {
                         $status_code = $response['status_robina']['status'] ?? null;
+                        $GLOBALS['log']->fatal("Status robina: $status_code. Terminando bucle.");
                         if ( $status_code =='t' ) {
                             $pendiente = false;
-                            $GLOBALS['log']->fatal("Status robina: $status_code. Terminando bucle.");
                         } else {
                             // Opcional: esperar antes de siguiente intento para evitar saturar la API
-                            sleep(2);
+                            sleep(5);
                         }
                     }
                 }
