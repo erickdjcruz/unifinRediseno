@@ -1103,7 +1103,7 @@ SQL;
             $TipoCliente = $IntValue->getTipoCliente($object->tipo_registro_cuenta_c, $object->estatus_c, $object->esproveedor_c, $object->tipo_relacion_c, $object->cedente_factor_c, $object->deudor_factor_c);
             $_ClntFechaNacimiento = $RegimenFiscal == 3 ? $object->fechaconstitutiva_c : $object->fechadenacimiento_c;
 
-            $host = 'http://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaPersona';
+            $host = 'https://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ActualizaPersona?apikey=userunics-2025';
             $fields = array(
                 "oPersona" => array(
                     "_IdCliente" => intval($object->idcliente_c),
@@ -1144,7 +1144,7 @@ SQL;
                 )
             );
             //***CVV FIN***/
-            $Actualizarpersona = $this->unifinpostCall($host, $fields);
+            $Actualizarpersona = $this->unifinPutCall($host, $fields);
         } catch (Exception $e) {
             error_log(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error: " . $e->getMessage());
             $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
