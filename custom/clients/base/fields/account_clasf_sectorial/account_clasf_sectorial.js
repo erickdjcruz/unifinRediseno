@@ -201,7 +201,7 @@
         $(".campogrp").attr('style', 'pointer-events:none;');
         $(".campocls").attr('style', 'pointer-events:none;');
         //Campo SAT Actividad Economica Solo Lectura
-        // $(".campoSAE").attr('style', 'pointer-events:none;');
+        $(".campoSAE").attr('style', 'pointer-events:none;');
 
         //Carga los valores en los campos dependientes de Actividad Económica al momento de hacer el change
         $('.list_ae').change(function (evt) {
