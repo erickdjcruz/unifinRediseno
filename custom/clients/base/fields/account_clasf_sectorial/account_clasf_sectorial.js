@@ -211,7 +211,6 @@
         });
         $('.campoIdSAE input').on('input', function () {
             var valorIdAES = $(this).val();
-            console.log("valorIdAES ", valorIdAES);
             clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = valorIdAES;
         });
         $('.campoSAE input').on('input', function () {
