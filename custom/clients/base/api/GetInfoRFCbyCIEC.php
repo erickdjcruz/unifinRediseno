@@ -212,6 +212,7 @@ class GetInfoRFCbyCIEC extends SugarApi
                     $response = $this->callValidateCSF($url_csf, $token);
                     //$GLOBALS['log']->fatal( print_r($response,true) );                    
                     if (isset($response['detail'][0]['msg']) && $response['detail'][0]['msg'] === 'value is not a valid dict') {
+                        $resultado['success'] = false;
                         $resultado['codeerror'] = 403;
                         $resultado['messageerror'] = 'No se encontraron datos del RFC';
                         $GLOBALS['log']->fatal('Error consulta de RFC');
@@ -219,6 +220,7 @@ class GetInfoRFCbyCIEC extends SugarApi
                     }
                     
                     if (isset($response['detail']) && $response['detail'] === 'No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.') {
+                        $resultado['success'] = false;
                         $resultado['codeerror'] = 403;
                         $resultado['messageerror'] = 'No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.';
                         $GLOBALS['log']->fatal('No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.');
@@ -231,18 +233,22 @@ class GetInfoRFCbyCIEC extends SugarApi
                     $resultado = $response;
                     $resultado['success'] = true;
                 } else {
+                    $resultado['success'] = false;
                     $resultado['codeerror'] = 204;
                     $resultado['messageerror'] = "Demasiado tiempo de espera al recuperar información del RFC.";
                 }                
             } else {
+                $resultado['success'] = false;
                 $resultado['codeerror'] = 204;
                 $resultado['messageerror'] = "Respuesta sin datos válidos de ID o createdAt";
             }
         } else {
+            $resultado['success'] = false;
             $resultado['codeerror'] = 401;
             $resultado['messageerror'] = "No se pudo obtener el token o respuesta inválida";
         }
-        
+
+        $GLOBALS['log']->fatal("Respuesta",$resultado);
         //$resultado = json_decode($resultado);
         return $resultado;
     }

@@ -66,7 +66,7 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
       'css_class' => 'btn-invisible btn-link',
       'showOn' => 'edit',
     ),
-    /*6 => 
+    6 => 
     array (
       'type' => 'button',
       'name' => 'rfc_qr_button',
@@ -77,8 +77,8 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
       array (
         'click' => 'button:btn_rfc:click',
       ),
-    ),*/
-    6 => 
+    ),
+    7 => 
     array (
       'type' => 'rowaction',
       'event' => 'button:save_button:click',
@@ -88,7 +88,7 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
       'showOn' => 'edit',
       'acl_action' => 'edit',
     ),
-    7 => 
+    8 => 
     array (
       'type' => 'actiondropdown',
       'name' => 'main_dropdown',
