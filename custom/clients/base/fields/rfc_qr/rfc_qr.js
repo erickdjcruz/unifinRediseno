@@ -29,8 +29,8 @@
 
   render: function () {
     this._super("render");
-  	//$("div.record-label[data-name='rfc_qr']").attr('style', 'pointer-events:none;');
-  	//$("div.record-label[data-name='rfc_qr']").attr('style', 'display:none;');
+  	$("div.record-label[data-name='rfc_qr']").attr('style', 'pointer-events:none;');
+  	$("div.record-label[data-name='rfc_qr']").attr('style', 'display:none;');
   },
 
 	tieneSoporteUserMedia: function() {
@@ -981,7 +981,7 @@
 						app.alert.show('errorCIEC', {
 							level: 'error',
 							//messages: 'No se pudo identificar una estructura válida para el documento y/o no cumple con la estructura oficial del SAT.\nPor lo tanto, no se pueden validar los datos del contribuyente con los del SAT',
-							messages: 'No se encontro información del RFC, favor de validar la información.',
+							messages: 'No se encontro información CIEC, se obtiene la información del archivo CSF.',
 							autoClose: true
 						});
 	
@@ -995,6 +995,8 @@
 						contexto_cuenta.$('#validar_QR').attr('style', 'margin:10px');
 						contexto_cuenta.$('#btn_Cancelar').removeClass('disabled');
 						contexto_cuenta.$('#btn_Cancelar').attr('style', 'margin:10px');
+
+						contextol.validarServicioQR();
 	
 					}
 				})
@@ -1002,7 +1004,7 @@
 		}else{
 			app.alert.show('errorAlertSinRFC', {
 				level: 'error',
-        		messages: 'Se mecesita valor de RFC. para continuar',
+        		messages: 'Se necesita valor de RFC. para continuar',
         		autoClose: true
       		});
       		return;
