@@ -1093,6 +1093,17 @@
 								var LugarEmision = data["info"]["place_issued"];
 								var FechaEmision = data["info"]["date_issued"];
 
+								//actividades economicas
+								// Filtrar las actividades con preponderancia 1
+								var filteredActivities = data.economicActivities.filter(
+									activity => activity.riched_code_preponderance === 1
+								);
+
+								var activity_sat_id =filteredActivities[0].riched_activity_sat_id;
+								var activity_sat = filteredActivities[0].riched_activity_sat_desc;
+								var code_cnvb = filteredActivities[0].riched_code_cnbv;
+								var code_inegi = filteredActivities[0].riched_code_inegi;
+
 								if(RFC != undefined){
 									if(RFC.length == 12) Regimen = "Persona Moral";
 					  				if(Regimen == "Régimen de las Personas Físicas con Actividades Empresariales y Profesionales") Regimen = "Persona Fisica con Actividad Empresarial";
@@ -1194,6 +1205,14 @@
 														var fechaEmisionFormat = contextol.formatDate( FechaEmision );
 														var lugarFechaEmision = LugarEmision + ' a ' + fechaEmisionFormat; 
 														contexto_cuenta.model.set('emision_csf_c', lugarFechaEmision);
+
+														clasf_sectorial.ActividadEconomica.ae = code_cnvb;
+														clasf_sectorial.ActividadEconomica.inegi_clase = code_inegi;
+
+														clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = activity_sat_id;
+														clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = activity_sat;
+								
+														contextol.getClasificacionSectorial(code_cnvb);
 
 														//contexto_cuenta.model.set('path_img_qr_c', PathQR);
 														cambioRazonSocial['cambioCuenta'] = false;
