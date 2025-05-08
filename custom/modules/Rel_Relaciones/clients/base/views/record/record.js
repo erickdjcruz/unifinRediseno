@@ -534,9 +534,9 @@ extendsFrom: 'RecordView',
                                     if (data.apellidopaterno_c == "") {
                                         RequeridosPR = RequeridosPR + '<b>Apellido Paterno<br></b>';
                                     }
-                                    if (data.apellidomaterno_c == "") {
-                                        RequeridosPR = RequeridosPR + '<b>Apellido Materno<br></b>';
-                                    }
+                                    // if (data.apellidomaterno_c == "") {
+                                    //     RequeridosPR = RequeridosPR + '<b>Apellido Materno<br></b>';
+                                    // }
                                     if (data.genero_c == "") {
                                         RequeridosPR = RequeridosPR + '<b>Género<br></b>';
                                     }
@@ -676,9 +676,9 @@ extendsFrom: 'RecordView',
                         if (data.apellidopaterno_c == "") {
                             Requeridoschange = Requeridoschange + '<b>Apellido Paterno<br></b>';
                         }
-                        if (data.apellidomaterno_c == "") {
-                            Requeridoschange = Requeridoschange + '<b>Apellido Materno<br></b>';
-                        }
+                        // if (data.apellidomaterno_c == "") {
+                        //     Requeridoschange = Requeridoschange + '<b>Apellido Materno<br></b>';
+                        // }
                         if (data.genero_c == "") {
                             Requeridoschange = Requeridoschange + '<b>Género<br></b>';
                         }
@@ -790,9 +790,9 @@ extendsFrom: 'RecordView',
                                     if (data.apellidopaterno_c == "") {
                                         RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Paterno<br></b>';
                                     }
-                                    if (data.apellidomaterno_c == "") {
-                                        RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Materno<br></b>';
-                                    }
+                                    // if (data.apellidomaterno_c == "") {
+                                    //     RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Materno<br></b>';
+                                    // }
                                     if (data.fechadenacimiento_c == "") {
                                         RequeridosProvRec = RequeridosProvRec + '<b>-Fecha de Nacimiento<br></b>';
                                     }
@@ -916,9 +916,9 @@ extendsFrom: 'RecordView',
                                     if (data.apellidopaterno_c == "") {
                                         RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Paterno<br></b>';
                                     }
-                                    if (data.apellidomaterno_c == "") {
-                                        RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Materno<br></b>';
-                                    }
+                                    // if (data.apellidomaterno_c == "") {
+                                    //     RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Materno<br></b>';
+                                    // }
                                     if (data.fechadenacimiento_c == "") {
                                         RequeridosProvRec = RequeridosProvRec + '<b>-Fecha de Nacimiento<br></b>';
                                     }
@@ -1062,9 +1062,9 @@ extendsFrom: 'RecordView',
                                 if (data[0].contents.apellidopaterno_c == "") {
                                     faltantes.push('Apellido Paterno');
                                 }
-                                if (data[0].contents.apellidomaterno_c == "") {
-                                    faltantes.push('Apellido Materno');
-                                }
+                                // if (data[0].contents.apellidomaterno_c == "") {
+                                //     faltantes.push('Apellido Materno');
+                                // }
                                 if (data[0].contents.fechadenacimiento_c == "") {
                                     faltantes.push('Fecha de Nacimiento');
                                 }
@@ -1327,9 +1327,9 @@ extendsFrom: 'RecordView',
                                 if (data[0].contents.apellidopaterno_c == "") {
                                     faltantes.push('Apellido Paterno');
                                 }
-                                if (data[0].contents.apellidomaterno_c == "") {
-                                    faltantes.push('Apellido Materno');
-                                }
+                                // if (data[0].contents.apellidomaterno_c == "") {
+                                //     faltantes.push('Apellido Materno');
+                                // }
                                 if (data[0].contents.estadocivil_c == "") {
                                     faltantes.push('Estado Civil');
                                 }
@@ -1787,9 +1787,9 @@ extendsFrom: 'RecordView',
 								if (data[0].contents.apellidopaterno_c == "") {
 									faltantes.push('Apellido Paterno');
 								}
-								if (data[0].contents.apellidomaterno_c == "") {
-									faltantes.push('Apellido Materno');
-								}
+								// if (data[0].contents.apellidomaterno_c == "") {
+								// 	faltantes.push('Apellido Materno');
+								// }
 								if (data[0].contents.fechadenacimiento_c == "") {
 									faltantes.push('Fecha de Nacimiento');
 								}
@@ -1967,9 +1967,9 @@ extendsFrom: 'RecordView',
 								if (data[0].contents.apellidopaterno_c == "") {
 									faltantes.push('Apellido Paterno');
 								}
-								if (data[0].contents.apellidomaterno_c == "") {
-									faltantes.push('Apellido Materno');
-								}
+								// if (data[0].contents.apellidomaterno_c == "") {
+								// 	faltantes.push('Apellido Materno');
+								// }
                                 if (data[0].contents.fechadenacimiento_c == "") {
 									faltantes.push('Fecha de Nacimiento');
 								}
@@ -2076,9 +2076,9 @@ extendsFrom: 'RecordView',
                                                 if (data[4].contents.apellidopaterno_c == "" || data[4].contents.apellidopaterno_c == null) {
                                                     necesarios = necesarios + '<b>Apellido Paterno<br></b>';
                                                 }
-                                                if (data[4].contents.apellidomaterno_c == "" || data[4].contents.apellidomaterno_c == null) {
-                                                    necesarios = necesarios + '<b>Apellido Materno<br></b>';
-                                                }
+                                                // if (data[4].contents.apellidomaterno_c == "" || data[4].contents.apellidomaterno_c == null) {
+                                                //     necesarios = necesarios + '<b>Apellido Materno<br></b>';
+                                                // }
                                             }
                                             //Valida direcciones y feléfono PF
                                             if (this.model.get('relaciones_activas').includes('Aval') || this.model.get('relaciones_activas').includes('Propietario Real') || this.model.get('relaciones_activas').includes('Proveedor de Recursos CS')) {

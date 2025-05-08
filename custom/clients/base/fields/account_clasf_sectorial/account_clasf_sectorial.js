@@ -59,8 +59,8 @@
             'label_cls': '',
             'ResumenSAT':{
                 'aes': {
-                    'actividad_economica_sat': '',
-                    'id_actividad_economica_sat': ''
+                    'id_actividad_economica_sat': '',
+                    'actividad_economica_sat': ''
                 }
             }
         };
@@ -115,13 +115,6 @@
             },
         };
 
-        this.ResumenSAT = {
-            'aes': {
-                'actividad_economica_sat': '',
-                'id_actividad_economica_sat': ''
-            }
-        };
-
     },
 
     loadData: function () {
@@ -142,16 +135,16 @@
             app.api.call('GET', url, {}, {
                 success: function (data) {
                     //NUEVO CAMPO DE ACTIVIDAD ECONOMICA SAT
-                    clasf_sectorial.ResumenSAT.aes.actividad_economica_sat = data.actividad_economica_sat.actividad_economica_sat_c;
-                    clasf_sectorial.ResumenSAT.aes.id_actividad_economica_sat = data.actividad_economica_sat.id_actividad_economica_sat_c;
+                    clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = data.actividad_economica_sat.id_actividad_economica_sat_c;
+                    clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = data.actividad_economica_sat.actividad_economica_sat_c;
 
         			//Etiquetas de PB para Input del HBS en edit
         			// clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
         			// clasf_sectorial.ActividadEconomica.label_grp = app.lang.getAppListStrings('pb_grupo_list')[clasf_sectorial.ResumenCliente.pb.pb_grupo];
         			// clasf_sectorial.ActividadEconomica.label_cls = app.lang.getAppListStrings('pb_clase_list')[clasf_sectorial.ResumenCliente.pb.pb_clase];
         			// clasf_sectorial.check_uni2 = clasf_sectorial.ResumenCliente.inegi.inegi_acualiza_uni2;
-                    // clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
-                    // _.extend(this, clasf_sectorial.ResumenCliente);
+                    clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
+                    _.extend(this, clasf_sectorial.ResumenCliente);
                     clasf_sectorial.render();
                 }
             });
@@ -173,20 +166,16 @@
         }
         //campo custom account_clasf_sectorial ocualta la Etiqueta
         $("div.record-label[data-name='account_clasf_sectorial']").attr('style', 'display:none;');
+        //OCULTA CAMPO ID_ACTIVIDAD_ECONOMICA_SAT
+        $(".campoIdSAE").attr('style', 'display:none;');
         //Muestra y Oculta campos dependientes de Actividad Economica
-        if ($('.list_ae').select2('val') != "" || clasf_sectorial.ActividadEconomica.ae.id != "") {
+        // if ($('.list_ae').select2('val') != "" || clasf_sectorial.ActividadEconomica.ae.id != "") {
             //$('.list_ae').trigger('change');
-        }
+        // }
         //funcion de cargar listas
         if (clasf_sectorial.renderlista != 1) {
             this.cargalistas();
         }
-
-        if (clasf_sectorial.ResumenSAT.aes.id_actividad_economica_sat != '') {
-            clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = clasf_sectorial.ResumenSAT.aes.id_actividad_economica_sat;
-            clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = clasf_sectorial.ResumenSAT.aes.actividad_economica_sat;
-        }
-
         //Funcion para dar estilo select2 a las listas deplegables.
         var $select = $('select.select2');
         $select.select2();
@@ -212,13 +201,21 @@
         $(".campogrp").attr('style', 'pointer-events:none;');
         $(".campocls").attr('style', 'pointer-events:none;');
         //Campo SAT Actividad Economica Solo Lectura
-        $(".campoSAE").attr('style', 'pointer-events:none;');
+        // $(".campoSAE").attr('style', 'pointer-events:none;');
 
         //Carga los valores en los campos dependientes de Actividad Económica al momento de hacer el change
         $('.list_ae').change(function (evt) {
             clasf_sectorial.fClasfSectorial(evt);
             // clasf_sectorial.MuestraCamposAE(evt);
             // clasf_sectorial.ClasfSectorialApi(evt);
+        });
+        $('.campoIdSAE input').on('input', function () {
+            var valorIdAES = $(this).val();
+            clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = valorIdAES;
+        });
+        $('.campoSAE input').on('input', function () {
+            var valorAES = $(this).val();
+            clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = valorAES;
         });
         // //carga los valores del sector dependientes del sub sector
         // $('.list_sse').change(function (evt) {

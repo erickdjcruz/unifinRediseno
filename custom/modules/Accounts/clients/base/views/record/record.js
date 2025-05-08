@@ -8697,9 +8697,9 @@
                         'label_grp': '',
                         'label_cls': '',
                         'ResumenSAT':{
-                        'aes': {
-                            'actividad_economica_sat': '',
-                            'id_actividad_economica_sat': ''
+                            'aes': {
+                                'id_actividad_economica_sat': '',
+                                'actividad_economica_sat': ''
                             }
                         }
                     };
@@ -8736,9 +8736,9 @@
                         'label_grp': '',
                         'label_cls': '',
                         'ResumenSAT':{
-                        'aes': {
-                            'actividad_economica_sat': '',
-                            'id_actividad_economica_sat': ''
+                            'aes': {
+                                'id_actividad_economica_sat': '',
+                                'actividad_economica_sat': ''
                             }
                         }
                     };
