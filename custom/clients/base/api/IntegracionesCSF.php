@@ -16,7 +16,7 @@ class IntegracionesCSF extends SugarApi
     public function registerApiRest()
     {
         return array(
-            //GET
+            //POST
             'setInfoCSF' => array(
                 //request type
                 'reqType' => 'POST',
@@ -32,7 +32,22 @@ class IntegracionesCSF extends SugarApi
                 //long help to be displayed in the help documentation
                 'longHelp' => '',
             ),
-
+            //POST
+            'setInfoCSF_File' => array(
+                //request type
+                'reqType' => 'POST',
+                'noLoginRequired' => true,
+                //endpoint path
+                'path' => array('FileIntegracionesCSF'),
+                //endpoint variables
+                'pathVars' => array('method'),
+                //method to call
+                'method' => 'FileintegraCSF',
+                //short help string to be displayed in the help documentation
+                'shortHelp' => 'Método que realiza peticiones hacia Alfresco, Quantico y Robina con los datos de la CSF (Constancia de Situación Fiscal) con ARchivo',
+                //long help to be displayed in the help documentation
+                'longHelp' => '',
+            ),
         );
 
     }
@@ -78,6 +93,110 @@ class IntegracionesCSF extends SugarApi
             $response['robina']= "Validación digital de CSF generada correctamente";
             $GLOBALS['log']->fatal( "emptyb64_csf: " . !empty($responseCSF_base64) );
             if( !empty($responseCSF_base64) ){
+                //Envia petición hacia alfresco
+                $body_request_alfresco = $this->createBodyRequestAlfresco( $idCliente, $b64CSFVal, $rfc.'.pdf', $date_issued );
+                $response_upload_alfresco = $this->callUploadDocument( $url_alfresco, $body_request_alfresco );
+                
+                $GLOBALS['log']->fatal( "Respuesta upload Alfresco:" );
+                $GLOBALS['log']->fatal( print_r($response_upload_alfresco,true) );
+                $response['alfresco'] = $response_upload_alfresco['resultDescription'];
+
+                if( !empty( $response_upload_alfresco['data']['folio'] ) ){
+                    $GLOBALS['log']->fatal('Alfresco: El folio obtenido es: '.$response_upload_alfresco['data']['folio']);
+                    $this->generaAnalizate( $idCliente ,$response_upload_alfresco['data']['folio'] );
+                }
+            }
+
+            $url_digital_val = $sugar_config['regimenes_sat_url'].'/tax-status/retrieve-digital-val-pdf/'.$rfc;
+            $GLOBALS['log']->fatal("Inicia petición Robina - digitalval: ".$url_digital_val);
+            $response_base64=$this->callDigitalVal($url_digital_val, $token );
+            $GLOBALS['log']->fatal( "response_base64: " . !empty($response_base64) );
+            if( !empty($response_base64) ){
+                file_put_contents('custom/csf/validator.pdf', $response_base64);
+                $response['robina']= "Validación digital de CSF generada correctamente";
+
+                //Envía Constancia de Situación Fiscal hacia Quantico
+                $url_expediente = $sugar_config['quantico_expediente_url'].'/Expedient_CS/rest/QuanticoDocuments/QuanticoUploadDocument';
+                //$vigencia = "2023-06-22"; 
+
+                /*
+                $body_request_quantico = $this->createBodyRequest( $idCliente, "CSF", $base64_CSF, $vigencia );
+
+                $GLOBALS['log']->fatal("Petición quantico: ".$url_expediente);
+                $GLOBALS['log']->fatal("ID Cliente: ".$idCliente);
+                $response_upload_csf = $this->callUploadDocument( $url_expediente, $body_request_quantico );
+
+                $GLOBALS['log']->fatal( "Respuesta upload CSF:" );
+                $GLOBALS['log']->fatal( print_r($response_upload_csf,true) );
+
+                $response['quantico_csf']= $response_upload_csf['Message'];
+                */
+                //Envía Validación Digital hacia Quantico
+                $b64Val = chunk_split(base64_encode(file_get_contents('custom/csf/validator.pdf')));
+                // recupera pdf validador digital-base64
+                $body_request_quantico_validator = $this->createBodyRequest( $idCliente, "ValDigital", $b64Val, $vigencia );
+                // envio quantico validador
+                $response_upload_valDig = $this->callUploadDocument( $url_expediente, $body_request_quantico_validator );
+
+                $GLOBALS['log']->fatal( "Respuesta upload Validación Digital:" );
+                //$GLOBALS['log']->fatal($url_expediente);
+                //$GLOBALS['log']->fatal( print_r($body_request_quantico_validator,true) );
+                //$GLOBALS['log']->fatal( print_r($response_upload_valDig,true) );
+                
+                $response['quantico_validator']= $response_upload_valDig['Message'];
+
+            }
+            
+            //$GLOBALS['log']->fatal( print_r($response,true) );
+            //$GLOBALS['log']->fatal( $response_base64 );
+
+        }
+
+        return $response;
+
+    }
+
+    public function FileintegraCSF($api, $args){
+
+        require_once("custom/Levementum/UnifinAPI.php");
+        global $sugar_config;
+
+        $idCliente = $args['idCliente'];
+        $rfc = $args['rfc'];
+        $base64_CSF = $args['base64'];
+        $date_issued = $args['vigencia'];
+        $vigencia = gmdate("Y-m-d");
+        
+        $url_token_robina = $sugar_config['regimenes_sat_url'].'/auth/login/token';
+        $user = $sugar_config['regimenes_sat_user'];
+        $password = $sugar_config['regimenes_sat_password'];
+
+        $url_alfresco = $sugar_config['alfresco_url_cfdi'].'/rest/cfdi/uploadDocumentExpDig';
+
+        $response = array();
+        $response['robina'] = "";
+        $response['quantico_csf'] = "";
+        $response['quantico_validator'] = "";
+        $response['alfresco'] = "";
+
+        $instanciaAPI = new UnifinAPI();
+        $responseToken = $instanciaAPI->postSimilarityToken( $url_token_robina, $user, $password  );
+
+        if( !empty($responseToken) ){
+            $token = $responseToken['access_token'];
+            
+            ///tax-status/retrieve-pdf/{rfc} -- http://192.168.150.231:5471/auth/login/token
+            $url_digital_csf = $sugar_config['regimenes_sat_url'].'/tax-status/retrieve-pdf/'.$rfc;
+            $GLOBALS['log']->fatal("Inicia petición Robina CSF: ".$url_digital_csf);
+            $responseCSF_base64=$this->callDigitalVal($url_digital_csf, $token );
+            
+            file_put_contents('custom/csf/csforiginal.pdf', chunk_split($base64_CSF));
+            file_put_contents('custom/csf/csf1.pdf', $responseCSF_base64);
+            $b64CSFVal = chunk_split(base64_encode(file_get_contents('custom/csf/csf1.pdf')));
+            $response['robina']= "Validación digital de CSF generada correctamente";
+
+            $GLOBALS['log']->fatal( "emptyb64_csf" . !empty($b64CSFVal) );
+            if( !empty($b64CSFVal) ){
                 //Envia petición hacia alfresco
                 $body_request_alfresco = $this->createBodyRequestAlfresco( $idCliente, $b64CSFVal, $rfc.'.pdf', $date_issued );
                 $response_upload_alfresco = $this->callUploadDocument( $url_alfresco, $body_request_alfresco );

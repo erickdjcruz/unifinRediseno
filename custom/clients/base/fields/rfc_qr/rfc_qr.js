@@ -1844,7 +1844,7 @@
 			"vigencia": fechaEmision
 		};
 
-		var url = app.api.buildURL('IntegracionesCSF', null, null,);
+		var url = app.api.buildURL('FileIntegracionesCSF', null, null,);
 		app.api.call('create', url, params, {
 			success: function (response) {
 				app.alert.dismiss('sendCSF');
