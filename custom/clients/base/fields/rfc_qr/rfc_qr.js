@@ -385,14 +385,14 @@
 												contexto_cuenta.model.set('rfc_c', RFC);
 												contexto_cuenta.model.set( "regimenes_fiscal_sat_c", JSON.stringify(Regimenes) );
 												
-												clasf_sectorial.ActividadEconomica.ae = code_cnvb;
-												clasf_sectorial.ActividadEconomica.inegi_clase = code_inegi;
+												//clasf_sectorial.ActividadEconomica.ae = code_cnvb;
+												//clasf_sectorial.ActividadEconomica.inegi_clase = code_inegi;
 
 												clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = activity_sat_id;
 												clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = activity_sat;
 						
 												contextol.getClasificacionSectorial(code_cnvb);
-												//clasf_sectorial.render();
+												clasf_sectorial.render();
 												
 												var fechaEmisionFormat = contextol.formatDate( FechaEmision );
 												var lugarFechaEmision = LugarEmision + ' a ' + fechaEmisionFormat; 
@@ -1206,13 +1206,14 @@
 														var lugarFechaEmision = LugarEmision + ' a ' + fechaEmisionFormat; 
 														contexto_cuenta.model.set('emision_csf_c', lugarFechaEmision);
 
-														clasf_sectorial.ActividadEconomica.ae = code_cnvb;
-														clasf_sectorial.ActividadEconomica.inegi_clase = code_inegi;
+														//clasf_sectorial.ActividadEconomica.ae = code_cnvb;
+														//clasf_sectorial.ActividadEconomica.inegi_clase = code_inegi;
 
 														clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = activity_sat_id;
 														clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = activity_sat;
 								
 														contextol.getClasificacionSectorial(code_cnvb);
+														clasf_sectorial.render();
 
 														//contexto_cuenta.model.set('path_img_qr_c', PathQR);
 														cambioRazonSocial['cambioCuenta'] = false;
