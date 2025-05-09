@@ -2304,10 +2304,10 @@
                         errors['curp_c'] = errors['curp_c'] || {};
                         errors['curp_c'].required = true;
                     }
-                    if (this.model.get('apellidomaterno_c') == "" || this.model.get('apellidomaterno_c') == null) {
-                        errors['apellidomaterno_c'] = errors['apellidomaterno_c'] || {};
-                        errors['apellidomaterno_c'].required = true;
-                    }
+                    // if (this.model.get('apellidomaterno_c') == "" || this.model.get('apellidomaterno_c') == null) {
+                    //     errors['apellidomaterno_c'] = errors['apellidomaterno_c'] || {};
+                    //     errors['apellidomaterno_c'].required = true;
+                    // }
                     if (this.model.get('fechadenacimiento_c') == "" || this.model.get('fechadenacimiento_c') == null) {
                         errors['fechadenacimiento_c'] = errors['fechadenacimiento_c'] || {};
                         errors['fechadenacimiento_c'].required = true;
