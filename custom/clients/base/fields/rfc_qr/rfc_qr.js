@@ -393,6 +393,7 @@
 						
 												contextol.getClasificacionSectorial(code_cnvb);
 												clasf_sectorial.render();
+												contexto_cuenta.model.set('account_clasf_sectorial', clasf_sectorial.ActividadEconomica);
 												
 												var fechaEmisionFormat = contextol.formatDate( FechaEmision );
 												var lugarFechaEmision = LugarEmision + ' a ' + fechaEmisionFormat; 
@@ -1214,6 +1215,7 @@
 								
 														contextol.getClasificacionSectorial(code_cnvb);
 														clasf_sectorial.render();
+														contexto_cuenta.model.set('account_clasf_sectorial', clasf_sectorial.ActividadEconomica);
 
 														//contexto_cuenta.model.set('path_img_qr_c', PathQR);
 														cambioRazonSocial['cambioCuenta'] = false;
