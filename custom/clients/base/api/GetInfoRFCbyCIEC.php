@@ -192,7 +192,7 @@ class GetInfoRFCbyCIEC extends SugarApi
                     $GLOBALS['log']->fatal("Status final recibido:". $status);
                     if ($status == 'p') {
                         // Opcional: esperar antes de siguiente intento para evitar saturar la API
-                        sleep(3);
+                        sleep(10);
                     }else if ($status == 't') {
                         $status_code = $response['status_robina']['status'] ?? null;
                         $GLOBALS['log']->fatal("Status robina: $status_code. Terminando bucle.");
@@ -200,7 +200,7 @@ class GetInfoRFCbyCIEC extends SugarApi
                             $pendiente = false;
                         } else {
                             // Opcional: esperar antes de siguiente intento para evitar saturar la API
-                            sleep(5);
+                            sleep(10);
                         }
                     }
                 }
@@ -249,7 +249,7 @@ class GetInfoRFCbyCIEC extends SugarApi
         }
 
         $GLOBALS['log']->fatal("Respuesta",$resultado);
-        //$resultado = json_decode($resultado);
+        
         return $resultado;
     }
 
