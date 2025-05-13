@@ -8747,6 +8747,8 @@
                     clasf_sectorial.ActividadEconomica.sse.id = campo2;
                     clasf_sectorial.ActividadEconomica.se.id = campo3;
                     clasf_sectorial.ActividadEconomica.ms.id = campo4;
+                    clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = clasf_sectorial.ResumenCliente.actividad_economica_sat.id_actividad_economica_sat_c;
+                    clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = clasf_sectorial.ResumenCliente.actividad_economica_sat.actividad_economica_sat_c;
                     clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
                     clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
                     clasf_sectorial.ActividadEconomica.label_grp = app.lang.getAppListStrings('pb_grupo_list')[clasf_sectorial.ResumenCliente.pb.pb_grupo];
