@@ -430,16 +430,40 @@
                 errors['telefono_aa_c'].required = true;
             }
         }
-        /*****CHECK LEAD CANCELAR*********/
-        /*if (this.model.get('lead_cancelado_c') == '1') {
-            if (this.model.get('motivo_cancelacion_c') == '' || this.model.get('motivo_cancelacion_c') == null) {
-
-                campos = campos + '<b>' + app.lang.get("LBL_MOTIVO_CANCELACION_C", "Leads") + '</b><br>';
-                errors['motivo_cancelacion_c'] = errors['motivo_cancelacion_c'] || {};
-                errors['motivo_cancelacion_c'].required = true;
-            }
+        //ACTIVOS DE INTERÉS
+        if (this.model.get('activos_interes_c') == '' || this.model.get('activos_interes_c') == null) {
+            campos = campos + '<b>' + 'Activos de interés' + '</b><br>';
+            errors['activos_interes_c'] = errors['activos_interes_c'] || {};
+            errors['activos_interes_c'].required = true;
         }
-        */
+        //POTENCIAL DE CIERRE
+        if (this.model.get('potencial_cierre_c') == '' || this.model.get('potencial_cierre_c') == null) {
+            campos = campos + '<b>' + 'Potencial de cierre' + '</b><br>';
+            errors['potencial_cierre_c'] = errors['potencial_cierre_c'] || {};
+            errors['potencial_cierre_c'].required = true;
+        }
+        //MES ESTIMADO DE OPERACIÓN
+        if (this.model.get('mes_operacion_c') == '' || this.model.get('mes_operacion_c') == null) {
+            campos = campos + '<b>' + 'Mes estimado de operación' + '</b><br>';
+            errors['mes_operacion_c'] = errors['mes_operacion_c'] || {};
+            errors['mes_operacion_c'].required = true;
+        }
+        //ACTIVIDAD ECONOMICA
+        if (this.model.get('actividad_economica_c') == '' || this.model.get('actividad_economica_c') == '0' || this.model.get('actividad_economica_c') == null) {
+            campos = campos + '<b>' + 'Actividad Económica' + '</b><br>';
+            $('.campoAE .record-label').css('color', '#bb0e1b');
+            $('.list_ae .select2-choice').css('border', '1px solid #bb0e1b');
+
+            errors['actividad_economica_c'] = errors['actividad_economica_c'] || {};
+            errors['actividad_economica_c'].required = true;
+        }
+        //MONTO ESTIMADO
+        var montoEstimado = parseFloat(this.model.get('potencial_lead_c'));
+        if (isNaN(montoEstimado) || montoEstimado <= 0) {
+            campos = campos + '<b>' + 'Monto estimado' + '</b><br>';
+            errors['potencial_lead_c'] = errors['potencial_lead_c'] || {};
+            errors['potencial_lead_c'].required = true;
+        }
         if (campos) {
             app.alert.show("Campos Requeridos", {
                 level: "error",
@@ -612,14 +636,14 @@
         }
         //READONLY DE ORIGEN BLOQUEADO CON ALIANZA SOC/CREDITARIA Y KONNECT || MARKETING - ORGANICO || LEASING - LEASING
         if (!App.user.attributes.gestion_utility_trailers_po_c && (
-                (this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (['12', '13', '115'].includes(this.model.get('detalle_origen_c')))) ||
-                (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
-                (this.model.get('origen_c') === '20' && this.model.get('detalle_origen_c') === '113')
-            )
+            (this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (['12', '13', '115'].includes(this.model.get('detalle_origen_c')))) ||
+            (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
+            (this.model.get('origen_c') === '20' && this.model.get('detalle_origen_c') === '113')
+        )
         ) {
             self.noEditFields.push('origen_c');
             $('[data-name="origen_c"]').css('pointer-events', 'none');
-            self.$('.record-edit-link-wrapper[data-name=origen_c]').remove();        
+            self.$('.record-edit-link-wrapper[data-name=origen_c]').remove();
             self.noEditFields.push('detalle_origen_c');
             $('[data-name="detalle_origen_c"]').css('pointer-events', 'none');
             self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').remove();
