@@ -1067,7 +1067,7 @@
 					app.api.call('create', app.api.buildURL("GetInfoRFCbyCSF"), body, {
 						success: _.bind(function (data) {
 							app.alert.dismiss('procesando');
-							if (data == null) {
+							if (data != null) {
 							if (data.detail == undefined) {
 								var indice_indicador = 0;
 								var Completo = '';
