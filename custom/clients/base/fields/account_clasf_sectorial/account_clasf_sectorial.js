@@ -209,15 +209,17 @@
             // clasf_sectorial.MuestraCamposAE(evt);
             // clasf_sectorial.ClasfSectorialApi(evt);
         });
-        $('.campoIdSAE input').on('input', function () {
-            var valorIdAES = $(this).val();
-            clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = valorIdAES;
-        });
-        $('.campoSAE input').on('input', function () {
-            var valorAES = $(this).val();
-            clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = valorAES;
-        });
-        // //carga los valores del sector dependientes del sub sector
+        //SE AGREGAN LOS INPUT DE LOS CAMPOS DE ACTIVIDAD ECONOMICA SAT CUANDO SEAN EDITABLES PARA SU CAPTURA
+        // $('.campoIdSAE input').on('input', function () {
+        //     var valorIdAES = $(this).val();
+        //     clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = valorIdAES;
+        // });
+        // $('.campoSAE input').on('input', function () {
+        //     var valorAES = $(this).val();
+        //     clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = valorAES;
+        // });
+
+        //carga los valores del sector dependientes del sub sector
         // $('.list_sse').change(function (evt) {
         //     clasf_sectorial.obtenerSubSector();
         // });
