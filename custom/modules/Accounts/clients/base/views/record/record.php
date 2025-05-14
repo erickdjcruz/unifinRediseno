@@ -70,7 +70,7 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
     array (
       'type' => 'button',
       'name' => 'rfc_qr_button',
-      'label' => 'Valida CIEC',
+      'label' => 'Actualiza datos SAT',
       'css_class' => 'btn_rfc_qr btn btn-primary',
       'showOn' => 'edit',
       'events' => 
