@@ -978,8 +978,8 @@
 						app.alert.show('errorCIEC', {
 							level: 'error',
 							//messages: 'No se pudo identificar una estructura válida para el documento y/o no cumple con la estructura oficial del SAT.\nPor lo tanto, no se pueden validar los datos del contribuyente con los del SAT',
-							messages: 'No se encontro información CIEC, se obtiene la información del archivo CSF.',
-							autoClose: true
+							messages: 'No se encontro información por CIEC, favor de actualizar datos por medio de CSF.',
+							autoClose: false
 						});
 
 						contexto_cuenta.$('#activar_camara').removeClass('disabled');
@@ -991,10 +991,10 @@
 						contexto_cuenta.$('#validar_QR').removeClass('disabled');
 						contexto_cuenta.$('#validar_QR').attr('style', 'margin:10px');
 						contexto_cuenta.$('#btn_Cancelar').removeClass('disabled');
-						contexto_cuenta.$('#btn_Cancelar').attr('style', 'margin:10px');
+						contexto_cuenta.$('#btn_Cancelar').attr('style', 'margin:10px')
 
-						contextol.validarServicioQR();
-
+            contextol.validarServicioQR();
+            
 					}
 				})
 			});
@@ -1028,8 +1028,8 @@
 			if (file == "" || file == undefined) {
 				app.alert.show('errorAlert', {
 					level: 'error',
-					messages: 'Favor de elegir un archivo',
-					autoClose: true
+					messages: 'No se tiene un archivo cargado para realizar la validación por CSF.',
+					autoClose: false
 				});
 			} else {
 

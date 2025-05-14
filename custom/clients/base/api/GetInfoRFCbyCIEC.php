@@ -177,7 +177,7 @@ class GetInfoRFCbyCIEC extends SugarApi
                 //$url_csf=$sugar_config['regimenes_sat_url'].'/webhook-requests/retrieve/'.$ticket;
                 $url_csf=$sugar_config['regimenes_sat_url'].'/orders/retrieve/'.$ticket;
                 $pendiente = true;
-                $maxTries = 5;
+                $maxTries = 12;
                 $try = 0;
                 $finalStatusCodes = ['T01', 'T02', 'T03', 'T04'];
 
