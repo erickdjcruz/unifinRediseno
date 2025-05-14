@@ -976,7 +976,7 @@
 						});
 					} else {
 						app.alert.show('errorCIEC', {
-							level: 'error',
+							level: 'warning',
 							//messages: 'No se pudo identificar una estructura válida para el documento y/o no cumple con la estructura oficial del SAT.\nPor lo tanto, no se pueden validar los datos del contribuyente con los del SAT',
 							messages: 'No se encontro información por CIEC, favor de actualizar datos por medio de CSF.',
 							autoClose: false
@@ -1028,7 +1028,7 @@
 			if (file == "" || file == undefined) {
 				app.alert.show('errorAlert', {
 					level: 'error',
-					messages: 'No se tiene un archivo cargado para realizar la validación por CSF.',
+					messages: 'No se tiene un archivo cargado para realizar la actualización por CSF.',
 					autoClose: false
 				});
 			} else {
