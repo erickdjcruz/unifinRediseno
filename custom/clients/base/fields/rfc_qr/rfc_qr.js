@@ -993,7 +993,7 @@
 						contexto_cuenta.$('#btn_Cancelar').removeClass('disabled');
 						contexto_cuenta.$('#btn_Cancelar').attr('style', 'margin:10px')
 
-            contextol.validarServicioQR();
+            			contextol.validarServicioQR();
             
 					}
 				})
@@ -1067,6 +1067,7 @@
 					app.api.call('create', app.api.buildURL("GetInfoRFCbyCSF"), body, {
 						success: _.bind(function (data) {
 							app.alert.dismiss('procesando');
+							if (data.detail == null) {
 							if (data.detail == undefined) {
 								var indice_indicador = 0;
 								var Completo = '';
@@ -1790,6 +1791,25 @@
 										}
 									})
 								});
+							} else {
+								app.alert.show('errorCSF', {
+									level: 'error',
+									messages: 'No se pudo identificar una estructura válida para el documento y/o no cumple con la estructura oficial del SAT.\nPor lo tanto, no se pueden validar los datos del contribuyente con los del SAT',
+									autoClose: true
+								});
+
+								contexto_cuenta.$('#activar_camara').removeClass('disabled');
+								contexto_cuenta.$('#activar_camara').attr('style', '');
+								contexto_cuenta.$('#archivo_qr').removeClass('disabled');
+								contexto_cuenta.$('#archivo_qr').attr('style', '');
+								contexto_cuenta.$('#btnSubir').removeClass('disabled');
+								contexto_cuenta.$('#btnSubir').attr('style', 'margin:10px');
+								contexto_cuenta.$('#validar_QR').removeClass('disabled');
+								contexto_cuenta.$('#validar_QR').attr('style', 'margin:10px');
+								contexto_cuenta.$('#btn_Cancelar').removeClass('disabled');
+								contexto_cuenta.$('#btn_Cancelar').attr('style', 'margin:10px');
+
+							}
 							} else {
 								app.alert.show('errorCSF', {
 									level: 'error',
