@@ -8484,7 +8484,7 @@
         requests.push(requestA);
         //Obtenemos peticion para la cuenta y traer campos para Cuenta 1
         var requestH = app.utils.deepCopy(request);
-        var campos = "actividadeconomica_c,subsectoreconomico_c,sectoreconomico_c,tct_macro_sector_ddw_c";
+        var campos = "actividadeconomica_c";
         var url = app.api.buildURL('Accounts/' + Cuenta + '?fields=' + campos);
         requestH.url = url.substring(4);
         requests.push(requestH);
@@ -8653,9 +8653,9 @@
                 //Cuenta
                 if (data[1].contents != "") {
                     var campo1 = data[1].contents.actividadeconomica_c;
-                    var campo2 = data[1].contents.subsectoreconomico_c;
-                    var campo3 = data[1].contents.sectoreconomico_c;
-                    var campo4 = data[1].contents.tct_macro_sector_ddw_c;
+                    // var campo2 = data[1].contents.subsectoreconomico_c;
+                    // var campo3 = data[1].contents.sectoreconomico_c;
+                    // var campo4 = data[1].contents.tct_macro_sector_ddw_c;
                 }
                 //Validaciones para Clasificacion Sectorial y V360
                 if (data[2].contents != "") {
@@ -8744,15 +8744,24 @@
                     };
                     clasf_sectorial.ResumenCliente = data[2].contents;
                     clasf_sectorial.ActividadEconomica.ae.id = campo1;
-                    clasf_sectorial.ActividadEconomica.sse.id = campo2;
-                    clasf_sectorial.ActividadEconomica.se.id = campo3;
-                    clasf_sectorial.ActividadEconomica.ms.id = campo4;
-                    clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = clasf_sectorial.ResumenCliente.actividad_economica_sat.id_actividad_economica_sat_c;
-                    clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = clasf_sectorial.ResumenCliente.actividad_economica_sat.actividad_economica_sat_c;
+                    // clasf_sectorial.ActividadEconomica.sse.id = campo2;
+                    // clasf_sectorial.ActividadEconomica.se.id = campo3;
+                    // clasf_sectorial.ActividadEconomica.ms.id = campo4;
                     clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
+                    clasf_sectorial.ActividadEconomica.label_subsector = app.lang.getAppListStrings('subsector_cnbv_list')[clasf_sectorial.ActividadEconomica.sse.id];
+                    clasf_sectorial.ActividadEconomica.label_sector = app.lang.getAppListStrings('sector_cnbv_list')[clasf_sectorial.ActividadEconomica.se.id];
+                    clasf_sectorial.ActividadEconomica.label_macro = app.lang.getAppListStrings('macro_cnbv_list')[clasf_sectorial.ActividadEconomica.ms.id];
+                    clasf_sectorial.ActividadEconomica.label_clase = app.lang.getAppListStrings('clase_list')[clasf_sectorial.ResumenCliente.inegi.inegi_clase];
+                    clasf_sectorial.ActividadEconomica.label_subrama = app.lang.getAppListStrings('subrama_list')[clasf_sectorial.ResumenCliente.inegi.inegi_subrama];
+                    clasf_sectorial.ActividadEconomica.label_rama = app.lang.getAppListStrings('rama_list')[clasf_sectorial.ResumenCliente.inegi.inegi_rama];
+                    clasf_sectorial.ActividadEconomica.label_isubsector = app.lang.getAppListStrings('subsector_list')[clasf_sectorial.ResumenCliente.inegi.inegi_subsector];
+                    clasf_sectorial.ActividadEconomica.label_isector = app.lang.getAppListStrings('sector_list')[clasf_sectorial.ResumenCliente.inegi.inegi_sector];
+                    clasf_sectorial.ActividadEconomica.label_imacro = app.lang.getAppListStrings('macro_list')[clasf_sectorial.ResumenCliente.inegi.inegi_macro];
                     clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
                     clasf_sectorial.ActividadEconomica.label_grp = app.lang.getAppListStrings('pb_grupo_list')[clasf_sectorial.ResumenCliente.pb.pb_grupo];
                     clasf_sectorial.ActividadEconomica.label_cls = app.lang.getAppListStrings('pb_clase_list')[clasf_sectorial.ResumenCliente.pb.pb_clase];
+                    clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = clasf_sectorial.ResumenCliente.actividad_economica_sat.id_actividad_economica_sat_c;
+                    clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = clasf_sectorial.ResumenCliente.actividad_economica_sat.actividad_economica_sat_c;
                     clasf_sectorial.check_uni2 = clasf_sectorial.ResumenCliente.inegi.inegi_acualiza_uni2;
                     _.extend(this, clasf_sectorial.ResumenCliente);
                     contexto_cuenta.ActividadEconomica = clasf_sectorial.ActividadEconomica;
