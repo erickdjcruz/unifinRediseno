@@ -1195,7 +1195,7 @@
 													},
 													onConfirm: function () {
 														//Comienza integraciones con Alfresco, Quantico y Robina
-														contextol.integraCSF(contexto_cuenta.model.get('id'), RFC, window.result, FechaEmision);
+														contextol.FileintegraCSF(contexto_cuenta.model.get('id'), RFC, window.result, FechaEmision);
 														// Actualiza Datos Personales
 														contexto_cuenta.model.set('tipodepersona_c', Regimen);
 														contexto_cuenta.model.set('rfc_c', RFC);
@@ -1845,7 +1845,7 @@
 		//imgn.onload
 	},
 
-	integraCSF: function (idRegistro, RFC, base64, fechaEmision) {
+	FileintegraCSF: function (idRegistro, RFC, base64, fechaEmision) {
 		app.alert.show('sendCSF', {
 			level: 'process',
 			title: 'Enviando Constancia de Situación Fiscal...',
