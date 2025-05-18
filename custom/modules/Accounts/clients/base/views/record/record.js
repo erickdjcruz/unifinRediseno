@@ -8762,6 +8762,7 @@
                                     clasf_sectorial.ActividadEconomica.label_isubsector = app.lang.getAppListStrings('subsector_list')[dataInegi['id_subsector_inegi']];
                                     clasf_sectorial.ActividadEconomica.label_isector = app.lang.getAppListStrings('sector_list')[dataInegi['id_sector_inegi']];
                                     clasf_sectorial.ActividadEconomica.label_imacro = app.lang.getAppListStrings('macro_list')[dataInegi['id_macro_inegi']];
+                                    clasf_sectorial.render();
                                 }
                             },
                             error: function (e) {
