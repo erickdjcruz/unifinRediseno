@@ -1,5 +1,5 @@
 <?php
- // created: 2025-04-19 15:04:07
+ // created: 2025-05-21 11:08:52
 $dictionary['User']['fields']['gestion_team_leaders_c']['labelValue']='Gestión Team Leaders';
 $dictionary['User']['fields']['gestion_team_leaders_c']['dependency']='';
 $dictionary['User']['fields']['gestion_team_leaders_c']['required_formula']='';
