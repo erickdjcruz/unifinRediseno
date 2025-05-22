@@ -53,8 +53,15 @@ class GetSolicitudEtapaAnterior extends SugarApi
                 $subetapa = $row['estatus_c'];
             }
 
-            if($etapa != 'R' && !(($etapa == 'SI' && $subetapa = 'K')||($etapa == 'P' && $subetapa = 'K')||($etapa == 'PA' && $subetapa = 'CV'))){
-
+            //$GLOBALS['log']->fatal("etapa: " . $etapa.'   --- subetapa: '.$subetapa);
+            $aplica = false;
+            if($etapa == 'R') {
+                $aplica = true;
+            }else if (($etapa == 'SI' && $subetapa == 'K')||($etapa == 'P' && $subetapa == 'K')||($etapa == 'PA' && $subetapa == 'CV')){
+                $aplica = true;
+            }
+            //$GLOBALS['log']->fatal("aplica: " . $aplica);
+            if(!$aplica){
                 $resultado['success'] = true;
                 $resultado['id_solicitud'] = $id_solicitud;
                 $resultado['etapa'] = null;
