@@ -802,7 +802,7 @@
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '114');
 
                 } else if (App.user.attributes.gestion_utility_trailers_po_c && permisosGestionTeamLeader.includes("^vendors^") && this.model.get('origen_c') == '12') {
-                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["114", "116"]); //114:Utility Trailers - 116:Vendors
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["114", "116"], valorDetalleActual); //114:Utility Trailers - 116:Vendors
                     this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                     //Forzamos la actualización de las opciones en la vista
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '114');
@@ -814,13 +814,13 @@
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '12');
 
                 } else if (App.user.attributes.define_origen_po_c && permisosGestionTeamLeader.includes("^vendors^") && this.model.get('origen_c') == '12') {
-                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "116"]); //12:SOC - 13:Creditaria - 116:Vendors
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "116"], valorDetalleActual); //12:SOC - 13:Creditaria - 116:Vendors
                     this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                     //Forzamos la actualización de las opciones en la vista
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '12');
 
                 } else if (permisosGestionTeamLeader.includes("^konnect^") && permisosGestionTeamLeader.includes("^vendors^") && this.model.get('origen_c') == '12') {
-                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["115", "116"]); //115:Konnect - 116:Vendors
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["115", "116"], valorDetalleActual); //115:Konnect - 116:Vendors
                     this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                     //Forzamos la actualización de las opciones en la vista
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '115');
@@ -844,7 +844,7 @@
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '115');
 
                 } else if (permisosGestionTeamLeader.includes("^vendors^") && this.model.get('origen_c') == '12') {
-                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["116"]); //116:Vendors
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["116"], valorDetalleActual); //116:Vendors
                     this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                     //Forzamos la actualización de las opciones en la vista
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '116');
