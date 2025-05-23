@@ -185,7 +185,7 @@ class ObtenerRelacionesAltaPO extends SugarApi
             $rfc = $beanCuenta->rfc_c;
             $idAsesor = $beanCuenta->user_id_c;
             $origen = ($beanCuenta->origen_cuenta_c == '12')? $beanCuenta->origen_cuenta_c: ''; //ORIGEN ALIANZA
-            $detalleOrigen = ($beanCuenta->detalle_origen_c == '114' || $beanCuenta->detalle_origen_c == '115')? $beanCuenta->detalle_origen_c: ''; //DETALLE ORIGEN UTILITY TRAILERS / KONNECT
+            $detalleOrigen = ($beanCuenta->detalle_origen_c == '114' || $beanCuenta->detalle_origen_c == '115' || $beanCuenta->detalle_origen_c == '116')? $beanCuenta->detalle_origen_c: ''; //DETALLE ORIGEN UTILITY TRAILERS/KONNECT/VENDORS
 
             $telCasa = "";
             $telTrabajo = "";
