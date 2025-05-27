@@ -168,9 +168,9 @@
         //OCULTA CAMPO ID_ACTIVIDAD_ECONOMICA_SAT
         $(".campoIdSAE").attr('style', 'display:none;');
         //Muestra y Oculta campos dependientes de Actividad Economica
-        // if ($('.list_ae').select2('val') != "" || clasf_sectorial.ActividadEconomica.ae.id != "") {
-            //$('.list_ae').trigger('change');
-        // }
+        if ($('.list_ae').select2('val') != "" || clasf_sectorial.ActividadEconomica.ae.id != "") {
+            $('.list_ae').trigger('change');
+        }
         //funcion de cargar listas
         if (clasf_sectorial.renderlista != 1) {
             this.cargalistas();
