@@ -119,10 +119,10 @@
 
     loadData: function () {
         clasf_sectorial = this;
-        // clasf_sectorial.ActividadEconomica.ae.id = this.model.get("actividadeconomica_c");
-        // clasf_sectorial.ActividadEconomica.sse.id = this.model.get("subsectoreconomico_c");
-        // clasf_sectorial.ActividadEconomica.se.id = this.model.get("sectoreconomico_c");
-        // clasf_sectorial.ActividadEconomica.ms.id = this.model.get("tct_macro_sector_ddw_c");
+        clasf_sectorial.ActividadEconomica.ae.id = this.model.get("actividadeconomica_c");
+        clasf_sectorial.ActividadEconomica.sse.id = this.model.get("subsectoreconomico_c");
+        clasf_sectorial.ActividadEconomica.se.id = this.model.get("sectoreconomico_c");
+        clasf_sectorial.ActividadEconomica.ms.id = this.model.get("tct_macro_sector_ddw_c");
         clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
         clasf_sectorial.render();
         if (clasf_sectorial.ActividadEconomica.ae.id != "") {
@@ -137,12 +137,11 @@
                     //NUEVO CAMPO DE ACTIVIDAD ECONOMICA SAT
                     clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = data.actividad_economica_sat.id_actividad_economica_sat_c;
                     clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = data.actividad_economica_sat.actividad_economica_sat_c;
-
         			//Etiquetas de PB para Input del HBS en edit
-        			// clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
-        			// clasf_sectorial.ActividadEconomica.label_grp = app.lang.getAppListStrings('pb_grupo_list')[clasf_sectorial.ResumenCliente.pb.pb_grupo];
-        			// clasf_sectorial.ActividadEconomica.label_cls = app.lang.getAppListStrings('pb_clase_list')[clasf_sectorial.ResumenCliente.pb.pb_clase];
-        			// clasf_sectorial.check_uni2 = clasf_sectorial.ResumenCliente.inegi.inegi_acualiza_uni2;
+        			clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
+        			clasf_sectorial.ActividadEconomica.label_grp = app.lang.getAppListStrings('pb_grupo_list')[clasf_sectorial.ResumenCliente.pb.pb_grupo];
+        			clasf_sectorial.ActividadEconomica.label_cls = app.lang.getAppListStrings('pb_clase_list')[clasf_sectorial.ResumenCliente.pb.pb_clase];
+        			clasf_sectorial.check_uni2 = clasf_sectorial.ResumenCliente.inegi.inegi_acualiza_uni2;
                     clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
                     _.extend(this, clasf_sectorial.ResumenCliente);
                     clasf_sectorial.render();

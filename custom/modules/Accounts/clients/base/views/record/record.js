@@ -8484,7 +8484,7 @@
         requests.push(requestA);
         //Obtenemos peticion para la cuenta y traer campos para Cuenta 1
         var requestH = app.utils.deepCopy(request);
-        var campos = "actividadeconomica_c";
+        var campos = "actividadeconomica_c,subsectoreconomico_c,sectoreconomico_c,tct_macro_sector_ddw_c";
         var url = app.api.buildURL('Accounts/' + Cuenta + '?fields=' + campos);
         requestH.url = url.substring(4);
         requests.push(requestH);
@@ -8653,9 +8653,9 @@
                 //Cuenta
                 if (data[1].contents != "") {
                     var campo1 = data[1].contents.actividadeconomica_c;
-                    // var campo2 = data[1].contents.subsectoreconomico_c;
-                    // var campo3 = data[1].contents.sectoreconomico_c;
-                    // var campo4 = data[1].contents.tct_macro_sector_ddw_c;
+                    var campo2 = data[1].contents.subsectoreconomico_c;
+                    var campo3 = data[1].contents.sectoreconomico_c;
+                    var campo4 = data[1].contents.tct_macro_sector_ddw_c;
                 }
                 //Validaciones para Clasificacion Sectorial y V360
                 if (data[2].contents != "") {
@@ -8744,49 +8744,9 @@
                     };
                     clasf_sectorial.ResumenCliente = data[2].contents;
                     clasf_sectorial.ActividadEconomica.ae.id = campo1;
-                    //PRECARGA LOS DATOS DEPENDIENTES DE LA ACTIVIDAD ECONOMICA AL GUARDAR LA CUENTA, LOS DATOS DEPENDIENTES YA NO SE GUARDAN EN LA BASE DE DATOS
-                    if (clasf_sectorial.ActividadEconomica.ae.id != "" && clasf_sectorial.ActividadEconomica.ae.id != null && clasf_sectorial.ActividadEconomica.ae.id != undefined) {
-                        console.log("R-IdActEconomica " + clasf_sectorial.ActividadEconomica.ae.id);
-                        app.api.call('GET', app.api.buildURL('clasificacionSectorialCNVB/' + clasf_sectorial.ActividadEconomica.ae.id), null, {
-                            success: function (data) {
-                                dataInegi = data;
-                                if (dataInegi != '') {
-                                    //Campos CNBV
-                                    clasf_sectorial.ActividadEconomica.sse.id = dataInegi['id_subsector_economico_cnbv'];
-                                    clasf_sectorial.ActividadEconomica.se.id = dataInegi['id_sector_economico_cnbv'];
-                                    clasf_sectorial.ActividadEconomica.ms.id = dataInegi['id_macro_sector_cnbv'];
-                                    //Envia los valores de los campos de INEGI a la vista HBS
-                                    clasf_sectorial.ResumenCliente.inegi.inegi_clase = dataInegi['id_clase_inegi'];
-                                    clasf_sectorial.ResumenCliente.inegi.inegi_subrama = dataInegi['id_subrama_inegi'];
-                                    clasf_sectorial.ResumenCliente.inegi.inegi_rama = dataInegi['id_rama_inegi'];
-                                    clasf_sectorial.ResumenCliente.inegi.inegi_subsector = dataInegi['id_subsector_inegi'];
-                                    clasf_sectorial.ResumenCliente.inegi.inegi_sector = dataInegi['id_sector_inegi'];
-                                    clasf_sectorial.ResumenCliente.inegi.inegi_macro = dataInegi['id_macro_inegi'];
-                                    clasf_sectorial.ActividadEconomica.inegi_clase = dataInegi['id_clase_inegi'];
-                                    clasf_sectorial.ActividadEconomica.inegi_subrama = dataInegi['id_subrama_inegi'];
-                                    clasf_sectorial.ActividadEconomica.inegi_rama = dataInegi['id_rama_inegi'];
-                                    clasf_sectorial.ActividadEconomica.inegi_subsector = dataInegi['id_subsector_inegi'];
-                                    clasf_sectorial.ActividadEconomica.inegi_sector = dataInegi['id_sector_inegi'];
-                                    clasf_sectorial.ActividadEconomica.inegi_macro = dataInegi['id_macro_inegi'];
-                                    //Etiquetas de los campos CNBV para Input del HBS
-                                    clasf_sectorial.ActividadEconomica.label_subsector = app.lang.getAppListStrings('subsector_cnbv_list')[clasf_sectorial.ActividadEconomica.sse.id];
-                                    clasf_sectorial.ActividadEconomica.label_sector = app.lang.getAppListStrings('sector_cnbv_list')[clasf_sectorial.ActividadEconomica.se.id];
-                                    clasf_sectorial.ActividadEconomica.label_macro = app.lang.getAppListStrings('macro_cnbv_list')[clasf_sectorial.ActividadEconomica.ms.id];                                    
-                                    //Etiquetas de los campos INEGI para Input del HBS
-                                    clasf_sectorial.ActividadEconomica.label_clase = app.lang.getAppListStrings('clase_list')[clasf_sectorial.ActividadEconomica.inegi_clase];
-                                    clasf_sectorial.ActividadEconomica.label_subrama = app.lang.getAppListStrings('subrama_list')[clasf_sectorial.ActividadEconomica.inegi_subrama];
-                                    clasf_sectorial.ActividadEconomica.label_rama = app.lang.getAppListStrings('rama_list')[clasf_sectorial.ActividadEconomica.inegi_rama];
-                                    clasf_sectorial.ActividadEconomica.label_isubsector = app.lang.getAppListStrings('subsector_list')[clasf_sectorial.ActividadEconomica.inegi_subsector];
-                                    clasf_sectorial.ActividadEconomica.label_isector = app.lang.getAppListStrings('sector_list')[clasf_sectorial.ActividadEconomica.inegi_sector];
-                                    clasf_sectorial.ActividadEconomica.label_imacro = app.lang.getAppListStrings('macro_list')[clasf_sectorial.ActividadEconomica.inegi_macro];
-                                    clasf_sectorial.render();
-                                }
-                            },
-                            error: function (e) {
-                                throw e;
-                            }
-                        });
-                    }                    
+                    clasf_sectorial.ActividadEconomica.sse.id = campo2;
+                    clasf_sectorial.ActividadEconomica.se.id = campo3;
+                    clasf_sectorial.ActividadEconomica.ms.id = campo4;                                        
                     clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
                     clasf_sectorial.ActividadEconomica.label_grp = app.lang.getAppListStrings('pb_grupo_list')[clasf_sectorial.ResumenCliente.pb.pb_grupo];
                     clasf_sectorial.ActividadEconomica.label_cls = app.lang.getAppListStrings('pb_clase_list')[clasf_sectorial.ResumenCliente.pb.pb_clase];
