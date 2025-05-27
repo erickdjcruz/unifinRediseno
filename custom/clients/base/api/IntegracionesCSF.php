@@ -91,7 +91,7 @@ class IntegracionesCSF extends SugarApi
             //file_put_contents('custom/csf/csforiginal.pdf', chunk_split($base64_CSF));
             //file_put_contents('custom/csf/csf1.pdf', $responseCSF_base64);            
             $response['robina']= "Validación digital de CSF generada correctamente";
-            $GLOBALS['log']->fatal( "emptyb64_csf: " . !empty($responseCSF_base64) );
+            //$GLOBALS['log']->fatal( "emptyb64_csf: " . !empty($responseCSF_base64) );
             if( !empty($responseCSF_base64) ){
                 //Envia petición hacia alfresco
                 $body_request_alfresco = $this->createBodyRequestAlfresco( $idCliente, $b64CSFVal, $rfc.'.pdf', $date_issued );
@@ -110,7 +110,7 @@ class IntegracionesCSF extends SugarApi
             $url_digital_val = $sugar_config['regimenes_sat_url'].'/tax-status/retrieve-digital-val-pdf/'.$rfc;
             $GLOBALS['log']->fatal("Inicia petición Robina - digitalval: ".$url_digital_val);
             $response_base64=$this->callDigitalVal($url_digital_val, $token );
-            $GLOBALS['log']->fatal( "response_base64: " . !empty($response_base64) );
+            //$GLOBALS['log']->fatal( "response_base64: " . !empty($response_base64) );
             if( !empty($response_base64) ){
                 file_put_contents('custom/csf/validator.pdf', $response_base64);
                 $response['robina']= "Validación digital de CSF generada correctamente";
@@ -195,7 +195,7 @@ class IntegracionesCSF extends SugarApi
             $b64CSFVal = chunk_split(base64_encode(file_get_contents('custom/csf/csf1.pdf')));
             $response['robina']= "Validación digital de CSF generada correctamente";
 
-            $GLOBALS['log']->fatal( "emptyb64_csf" . !empty($b64CSFVal) );
+            //$GLOBALS['log']->fatal( "emptyb64_csf" . !empty($b64CSFVal) );
             if( !empty($b64CSFVal) ){
                 //Envia petición hacia alfresco
                 $body_request_alfresco = $this->createBodyRequestAlfresco( $idCliente, $b64CSFVal, $rfc.'.pdf', $date_issued );
@@ -214,7 +214,7 @@ class IntegracionesCSF extends SugarApi
             $url_digital_val = $sugar_config['regimenes_sat_url'].'/tax-status/retrieve-digital-val-pdf/'.$rfc;
             $GLOBALS['log']->fatal("Inicia petición Robina - digitalval: ".$url_digital_val);
             $response_base64=$this->callDigitalVal($url_digital_val, $token );
-            $GLOBALS['log']->fatal( "response_base64: " . !empty($response_base64) );
+            //$GLOBALS['log']->fatal( "response_base64: " . !empty($response_base64) );
             if( !empty($response_base64) ){
                 file_put_contents('custom/csf/validator.pdf', $response_base64);
                 $response['robina']= "Validación digital de CSF generada correctamente";
