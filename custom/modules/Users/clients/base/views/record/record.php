@@ -674,12 +674,24 @@ array (
               ),
               69 => 
               array (
+                'readonly' => false,
+                'name' => 'gestion_team_leaders_c',
+                'label' => 'LBL_GESTION_TEAM_LEADERS_C',
               ),
               70 => 
               array (
                 'readonly' => false,
                 'name' => 'gestion_utility_trailers_po_c',
                 'label' => 'LBL_GESTION_UTILITY_TRAILERS_PO',
+              ),
+              71 => 
+              array (
+                'readonly' => false,
+                'name' => 'captura_direccion_sepomex_c',
+                'label' => 'LBL_CAPTURA_DIRECCION_SEPOMEX',
+              ),
+              72 => 
+              array (
               ),
             ),
           ),

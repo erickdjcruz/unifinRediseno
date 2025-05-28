@@ -97,4 +97,5 @@ $app_list_strings['subsector_list'] = array(
   '562'=>'Manejo de residuos y servicios de remediación',
   '623'=>'Residencias de asistencia social y para el cuidado de la salud',
   '932'=>'Organismos internacionales y extraterritoriales',
+  '9999' => 'No clasificada',
 );

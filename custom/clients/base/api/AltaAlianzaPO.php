@@ -31,10 +31,7 @@ class AltaAlianzaPO extends SugarApi
                 //long help to be displayed in the help documentation
                 'longHelp' => '',
             ),
-
-
         );
-
     }   
 
     public function altaPOAlianza($api, $args){
@@ -89,13 +86,12 @@ class AltaAlianzaPO extends SugarApi
                     //$marcaCountSQL = "UPDATE prospects_cstm SET count_match_c = '{$suma}' WHERE (`id_c` = '{$idProspect}')";
 
                     //$GLOBALS['db']->query($marcaCountSQL);
-
-
                     $response = array(
-                        "status" => 200, //Falta algún campo
+                        "status" => 410, //Falta algún campo
                         "message" => "El registro con el email " . $args['email1'] . " ya existe",
                         "detail" => $idProspect
                     );
+
                 } else {
 
                     //Crea registro de PO

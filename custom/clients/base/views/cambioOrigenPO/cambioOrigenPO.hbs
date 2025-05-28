@@ -1,0 +1,38 @@
+<style>
+    .message {
+        padding: 15px;
+        border-radius: 5px;
+        width: 100%;
+        margin: 20px auto;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+</style>
+
+<div class="panel panel-default" style="max-width: 600px; margin: 20px auto;">
+    <div class="panel-heading">
+        <h3 class="panel-title text-center">Solicitud Cambio de Origen</h3>
+    </div>
+    <div id="mensaje" class="message"></div>
+    <div class="panel-body" style="padding: 20px;">
+        {{#if msgExitoso}}
+        <div class="message success">Se autorizó el cambio de origen exitosamente!</div>
+        {{/if}}
+
+        {{#if msgRechazado}}
+        <div class="message warning">Se rechazo el cambio de origen.</div>
+        {{/if}}
+    </div>
+</div>

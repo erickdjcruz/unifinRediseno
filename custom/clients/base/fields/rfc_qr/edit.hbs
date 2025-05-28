@@ -1,52 +1,115 @@
+<style>
+	.container {
+		overflow-y: auto;
+		display: block;
+		width: 100%;
+	}
 
-    <style>
-        .container {
-            overflow-y: auto;
-            display: block;
-            width: 100%;
-        }
+	.cuentas {
+		display: table;
+		width: 90%;
+	}
 
-        .cuentas {
-            display: table;
-            width: 90%;
-        }
+	.cuentasContainer {
+		margin-top: 1%;
+		overflow-y: auto;
+		height: 300px;
+	}
 
-        .cuentasContainer {
-            margin-top: 1%;
-            overflow-y: auto;
-            height: 300px;
-        }
+	#containerHeader {
+		font-size: 18px;
+		margin-top: 2%;
+		margin-left: 1%;
+		line-height: 10px;
+	}
 
-        #containerHeader {
-            font-size: 18px;
-            margin-top: 2%;
-            margin-left: 1%;
-            line-height: 10px;
-        }
+	#successful {
+		margin-top: 10%;
+		font-size: 25px;
+		color: #33800d;
+	}
 
-        #successful {
-            margin-top: 10%;
-            font-size: 25px;
-            color: #33800d;
-        }
-		
-    </style>
-	<div id="rfcModal" class="modalrfc" style="display:none">
-		<div class="row-fluid" style="color: #e2efe2;background-color:#22608c;border-color:#22608c;border-radius: 10px;margin-left:15px;margin-right:15px;height: 35px;display: table;width: 96%;">
-            	<div class="span8">
-                	<h1>
-	                    <p style="vertical-align: middle;  margin: 10px;">
-							Validar información de RFC por CSF
-						</p>
-					</h1>
-				</div>
-				<div class="span4" style="text-align:right;">
-					<!-- Bototones el archivo -->
-					<a class="btn btn-danger" id="btn_Cancelar" style="margin:5px">Cancelar</a>
-					<a class="btn btn-success" id="validar_QR" style="margin:5px">Validar CSF</a>
-				</div>
+	/* Modal background container */
+	.modal-container {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 9999;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(0, 0, 0, 0.5);
+		/* oscurece fondo */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	/* Modal principal */
+	.custom-modal {
+		background: #fff;
+		width: 90%;
+		max-width: 600px;
+		max-height: 90vh;
+		overflow-y: auto;
+		border-radius: 10px;
+		box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+	}
+
+	.modal-header {
+		padding: 15px;
+		background-color: #f5f5f5;
+		border-bottom: 1px solid #ddd;
+	}
+
+	.modal-body {
+		padding: 20px;
+	}
+
+	.close {
+		float: right;
+		font-size: 28px;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	.close:hover {
+		color: red;
+	}
+
+	@media (max-width: 480px) {
+		.custom-modal {
+			width: 95%;
+			max-height: 95vh;
+		}
+
+		.modal-header h2 {
+			font-size: 18px;
+		}
+
+		.btn {
+			width: 100%;
+			margin-top: 10px;
+		}
+	}
+</style>
+<div id="rfcModal" class="modalrfc" style="display:none">
+	<div class="row-fluid"
+		style="color: #e2efe2;background-color:#22608c;border-color:#22608c;border-radius: 10px;margin-left:15px;margin-right:15px;height: 35px;display: table;width: 96%;">
+		<div class="span8">
+			<h1>
+				<p style="vertical-align: middle;  margin: 10px;">
+					Actualizar información de RFC
+				</p>
+			</h1>
 		</div>
-		<!--
+		<div class="span4" style="text-align:right;">
+			<!-- Bototones el archivo -->
+			<a class="btn btn-success" id="validar_CIEC" style="margin:5px">Actualizar Constancia</a>
+			<!-- <a class="btn btn-success" id="validar_QR" style="margin:5px">Actualizar por CSF</a> -->
+			<a class="btn btn-danger" id="btn_Cancelar" style="margin:5px">Cancelar</a>
+		</div>
+	</div>
+	<!--
 		<div class="row-fluid span12" >
 			<h3 id="estado"></h3>
 		</div>
@@ -57,7 +120,7 @@
 		<div><br></div>
 		-->
 
-		<!--
+	<!--
 		<div class="row-fluid panel_body" id="div_video" style="display: none;"  >
 			<div class="row-fluid" style="color: #e2efe2;background-color:#22608c;border-color:#22608c; border-radius: 10px;margin-left:15px;margin-right:15px;height: 35px;display: table;width: 96%;">
 				<div class="span8">	
@@ -86,8 +149,8 @@
 			</div>
         </div>
 		-->
-		<div id = "carga">
-			<!--
+	<div id="carga">
+		<!--
 			<div class="row-fluid">
 				<div style="color: #e2efe2;background-color:#22608c;border-color:#22608c;border-radius: 10px;margin-left:15px;margin-right:15px;height: 35px;display: table;width: 96%;">
 					<h4>
@@ -98,28 +161,77 @@
 				</div>
 			</div>
 			-->
-			<div class="record row-fluid panel_body">
-				<div class="span2 record-cell">
-					<div style="margin-left:6px;margin-right:15px;height: 35px;display: table;width: 97%;display:inline-block;">
-						<div class="span8 record-cell">
-							<input type="file" id="btnSubir" style="margin:10px" accept="application/pdf" class="adjunto">
-						</div>
+
+		<div class="record row-fluid panel_body">
+			<div class="span2 record-cell">
+				<div
+					style="margin-left:6px;margin-right:15px;height: 35px;display: table;width: 97%;display:inline-block;">
+					<div class="span8 record-cell">
+						<input type="file" id="btnSubir" style="margin:10px" accept="application/pdf" class="adjunto">
 					</div>
 				</div>
-				<div class="span1 record-cell"><p>&nbsp;</p></div>
-				<div class="span2 record-cell">
-					<img id="img" width= "100" height="50" style="display: none;" ></img>
-				</div>	
-				<div class="span2 record-cell">
-					<textarea id="b64" style="display: none;" ></textarea>
-				</div>
+			</div>
+			<div class="span1 record-cell">
+				<p>&nbsp;</p>
+			</div>
+			<div class="span2 record-cell">
+				<img id="img" width="100" height="50" style="display: none;"></img>
+			</div>
+			<div class="span2 record-cell">
+				<textarea id="b64" style="display: none;"></textarea>
 			</div>
 		</div>
-		<hr style="width:100%">
+
+		<!--<div id="mensaje" class="message text-center" style="margin-top: 15px;">
+				{{#if msgExitoso}}
+					<div class="message success">CIEC previamente validado</div>
+					<b>Puedes descargar el CSF, para valida la información</b><br><br>
+					<table>
+						<tr rowcolumn = '2'>
+							<td><b>Información del Periodo</b></td>
+						</tr>
+						<tr>
+							<td>Inicio: {{period_from}}</td>
+							<td> Fin:  {{period_to}}</td>
+						</tr>
+						<tr rowcolumn = '2'>
+							<td><b>Información Robina: {{status_robina}}</b></td>
+						</tr>
+						<tr>
+							<td>Fecha solicitud:<br> {{createdAt}}</td>
+							<td>Fecha actualización:<br> {{updatedAt}}</td>
+						</tr>
+					</table>
+					
+					<div class="row-fluid">
+						<br>
+						<div class="span6" align="left">
+							<div class="span4" align="left">
+								<a class="btn btn-success  btn-DescargarCsf" id="btn-DescargarCsf">Descargar CSF
+								<i class="fa fa-download" style="color:white"></i></a>
+							</div>
+							<div class="span4" align="left">
+								<a class="btn btn-success  btn-ActualizarEstatus" id="btn-ActualizarEstatus">Actualizar Estatus Robina
+								<i class="fa fa-download" style="color:white"></i></a>
+							</div>
+							<div class="span4" align="left">
+								<a class="btn btn-success  btn-valida_data_fiscal" id="btn-valida_data_fiscal">Valida Datos Fiscales
+								<i class="fa fa-download" style="color:white"></i></a>
+							</div>
+						</div>
+					</div>
+				{{/if}}
+
+				{{#if msgRechazado}}
+					<div class="message warning">CIEC Aún sin validar.</div>
+				{{/if}}
+        	</div>-->
+	</div>
+	<hr style="width:100%">
 </div>
 <!-- Sección para modales -->
-<div id="cambioRazonSocial" class="row-fluid" style="display:none">
-  <div class="modal span12" style="width:100%;height:800px">
+<div id="cambioRazonSocial" class="modal-container" style="display: none;">
+  <div class="custom-modal">
     <!-- Modal content -->
     <div class="modal-content">
       <!-- Modal header -->
@@ -129,12 +241,12 @@
       </div>
       <!-- Modal body -->
       <div class="modal-body">
-          <div  style="color:gray;">
-              <button class="btn btn-large btn-primary action1" type="button">Cambiar nombre</button>
-              <!-- <button class="btn btn-large btn-primary action2" type="button">Cambiar direcci<C3><B3>n fiscal</button> -->
-			  <!-- <button class="btn btn-large btn-primary action3" type="button">Cambiar nombre y direcci<C3><B3>n fiscal</button> -->
-          </div>
-          <br>
+        <div style="color:gray;">
+          <button class="btn btn-large btn-primary action1" type="button">Cambiar nombre</button>
+          <!-- <button class="btn btn-large btn-primary action2" type="button">Cambiar dirección fiscal</button> -->
+          <!-- <button class="btn btn-large btn-primary action3" type="button">Cambiar nombre y dirección fiscal</button> -->
+        </div>
+        <br>
       </div>
     </div>
   </div>

@@ -45,7 +45,7 @@
         this.model.addValidationTask('check_info', _.bind(this.doValidateInfoReq, this));
         //this.model.addValidationTask('macrosector', _.bind(this.macrosector, this));
         // this.model.addValidationTask('sectoreconomico', _.bind(this.sectoreconomico, this));
-        this.model.addValidationTask('checkEmptyFieldsDire', _.bind(this.validadirecc, this));
+        //this.model.addValidationTask('checkEmptyFieldsDire', _.bind(this.validadirecc, this));
         this.model.addValidationTask('change:email', _.bind(this.expmail, this));
         //Valida que el campo Alta Cedente este check en el perfil del usuario. Adrian Arauz 20/09/2018
         this.model.addValidationTask('check_alta_cedente', _.bind(this.validacedente, this));
@@ -114,9 +114,9 @@
             }
         }, this));
 
-		/*RFC_ValidatePadron
-		  Validación de rfc en el padron de contribuyentes
-		*/
+        /*RFC_ValidatePadron
+          Validación de rfc en el padron de contribuyentes
+        */
         //self.rfc_antiguo = "";
         //this.model.on('change:rfc_c', this.cambioRFC, this);
         //this.model.addValidationTask('RFC_validateP', _.bind(this.RFC_ValidatePadron, this));
@@ -198,6 +198,9 @@
         this.model.on('change:name', this.cleanName, this);
         this.model.on('change:no_website_c', this.rowebsite, this);
 
+        /* EJC: 2025-03-24
+         Ajuste para tipo de cuenta proveedor, no edite       */
+         this.model.on('sync', this.blockProveedor, this);
         /*
          AF. 12-02-2018
          Ajuste para mostrar direcciones y teléfonos
@@ -256,7 +259,7 @@
         this.model.on('sync', this.ocultaGeneraRFC, this);
 
         //Oculta Menú Tarea IE Proveedor Quantico
-        this.model.on('sync', this.ocultaproveedor, this);
+        // this.model.on('sync', this.ocultaproveedor, this);
 
         //Recupera datos para custom fields
         this.get_addresses();
@@ -296,12 +299,12 @@
         this.model.on('sync', this.hideButtonsModal_Account, this);
         this.context.on('button:get_account_asesor:click', this.get_Account, this);
         this.context.on('button:send_account_asesor:click', this.set_Account, this);
-    	this.context.on('button:bloquea_cuenta:click', this.bloquea_cuenta, this);
-    	this.context.on('button:desbloquea_cuenta:click', this.desbloquea_cuenta, this);
-    	this.context.on('button:aprobar_noviable:click', this.aprobar_noviable, this);
-    	this.context.on('button:desaprobar_noviable:click', this.rechazar_noviable, this);
+        this.context.on('button:bloquea_cuenta:click', this.bloquea_cuenta, this);
+        this.context.on('button:desbloquea_cuenta:click', this.desbloquea_cuenta, this);
+        this.context.on('button:aprobar_noviable:click', this.aprobar_noviable, this);
+        this.context.on('button:desaprobar_noviable:click', this.rechazar_noviable, this);
         this.context.on('button:reactivar_noviable:click', this.reactivar_noviable, this);
-    	this.model.on('sync', this.bloqueo, this);
+        this.model.on('sync', this.bloqueo, this);
 
         /********* Validacion grupo empresarial ****************/
         this.model.addValidationTask('validaGrupoEmpresarial', _.bind(this.validaGrupoEmpresarial, this));
@@ -309,20 +312,20 @@
 
 
         this.context.on('button:open_negociador_quantico:click', this.open_negociador_quantico, this);
-        this.context.on('button:proveedor_quantico:click', this.proveedor_quantico, this);
+        // this.context.on('button:proveedor_quantico:click', this.proveedor_quantico, this);
         /***************Validacion de Campos No viables en los Productos********************/
         this.model.addValidationTask('LeasingUP', _.bind(this.requeridosLeasingUP, this));
         this.model.addValidationTask('FactorajeUP', _.bind(this.requeridosFactorajeUP, this));
         this.model.addValidationTask('CreditAutoUP', _.bind(this.requeridosCAUP, this));
         this.model.addValidationTask('FleetUP', _.bind(this.requeridosFleetUP, this));
         this.model.addValidationTask('UniclickUP', _.bind(this.requeridosUniclickUP, this));
-        this.model.addValidationTask('UniclickCanal', _.bind(this.requeridosUniclickCanal, this));
+        //this.model.addValidationTask('UniclickCanal', _.bind(this.requeridosUniclickCanal, this));
         this.model.addValidationTask('tipo_proveedor_compras', _.bind(this.tipoProveedor, this));
         this.model.addValidationTask('AlertaCamposRequeridosUniclick', _.bind(this.validaReqUniclick, this));
         this.model.addValidationTask('validaReqPLDPropReal_CS', _.bind(this.validaPropRealCR, this));
-		this.model.addValidationTask('requestDynamics', _.bind(this.requestDynamics1, this));
+        //this.model.addValidationTask('requestDynamics', _.bind(this.requestDynamics1, this));
         //this.model.addValidationTask('clean_name', _.bind(this.cleanName, this));
-	      //Funcion para que se pueda o no editar el check de Alianza SOC
+        //Funcion para que se pueda o no editar el check de Alianza SOC
         this.model.on('sync', this.userAlianzaSoc, this);
         //this.model.on('sync',this.validaReqUniclickInfo,this);
         //Se omite llamada a funcion para deshabilitar ya que se opta por habilitar bloqueo via dependencia
@@ -331,7 +334,6 @@
         this.estableceOpcionesOrigen();
         //Clic solicitar CIEC
         this.context.on('button:solicitar_ciec:click', this.solicitar_ciec_function, this);
-        
         this.context.on('button:alta_po:click', this.muestra_modal_alta_po, this);
         //Oculta Menú Solicitar CIEC
         this.model.on('sync', this.ocultaSolicitarCIEC, this);
@@ -341,6 +343,8 @@
         this.model.on('sync', this.disableNameCliente, this);
         //Muestra mensaje Dynamics265
         this.model.on('sync', this.dynamics365, this);
+        //ASIGNACION AUTOMATICA
+        // this.context.on('button:solicitud_asignacion:click', this.solicitudAsignacionCuenta, this);
     },
 
     /** Asignacion modal */
@@ -424,175 +428,214 @@
         this.layout.trigger("app:view:setAccountModal");
     },
 
-    open_negociador_quantico:function(){
+    open_negociador_quantico: function () {
         //Abrir nueva ventana del entrypoint del Negociador Quantico
         var idCuenta = this.model.get('id');
         window.open("#bwc/index.php?entryPoint=NegociadorQuantico&idPersona=" + idCuenta);
 
     },
 
-/*
-    saveProdPLD: function (fields, errors, callback) {
-
-        if (this.model.get('tipo_registro_cuenta_c') != '') {
-             //Valida cambios
-             if ($.isEmptyObject(errors) && (this.inlineEditMode == false || (this.inlineEditMode && typeof ($('.campo4ddw-cs').select2('val')) == "string"))) {
-
-            // Actualizar modelo de this.ProductosPLD
-            // this.ProductosPLD.arrendamientoPuro.campo1 = $('.campo1txt-ap').val();
-            if (this.ProductosPLD != null && typeof (this.$('.campo4ddw-cs').select2('val')) == "string") {
-
-                // this.ProductosPLD.arrendamientoPuro.campo1 = this.$('.campo1txt-ap').val();
-                this.ProductosPLD.arrendamientoPuro.campo2 = this.$('.campo2ddw-ap').select2('val');
-                this.ProductosPLD.arrendamientoPuro.campo3 = this.$('.campo3rel-ap')[0]['innerText'];
-                this.ProductosPLD.arrendamientoPuro.campo3_id = this.$('.campo3rel-ap').select2('val');
-                this.ProductosPLD.arrendamientoPuro.campo4 = this.$('.campo4ddw-ap').select2('val');
-                //this.ProductosPLD.arrendamientoPuro.campo5 = this.$('.campo5rel-ap')[0]['innerText'];
-                //this.ProductosPLD.arrendamientoPuro.campo5_id = this.$('.campo5rel-ap').select2('val');
-                this.ProductosPLD.arrendamientoPuro.campo6 = this.$('.campo6ddw-ap').select2('val');
-                // this.ProductosPLD.arrendamientoPuro.campo7 = this.$('.campo7ddw-ap').select2('val');
-                // this.ProductosPLD.arrendamientoPuro.campo8 = this.$('.campo8txt-ap').val();
-                // this.ProductosPLD.arrendamientoPuro.campo9 = this.$('.campo9ddw-ap').select2('val');
-                // this.ProductosPLD.arrendamientoPuro.campo10 = this.$('.campo10txt-ap').val();
-                this.ProductosPLD.arrendamientoPuro.campo11 = this.$('.campo11ddw-ap').select2('val');
-                //this.ProductosPLD.arrendamientoPuro.campo13 = this.$('.campo13chk-ap')[0].checked;
-                this.ProductosPLD.arrendamientoPuro.campo14 = this.$('.campo14chk-ap')[0].checked;
-                this.ProductosPLD.arrendamientoPuro.campo16 = this.$('.campo16ddw-ap').select2('val').toString();
-                this.ProductosPLD.arrendamientoPuro.campo17 = this.$('.campo17txt-ap').val();
-                this.ProductosPLD.arrendamientoPuro.campo25 = this.$('.campo25ddw-ap').select2('val');
-                this.ProductosPLD.arrendamientoPuro.campo26 = this.$('.campo26txt-ap').val();
-                // this.ProductosPLD.factorajeFinanciero.campo1 = this.$('.campo1txt-ff').val();
-                this.ProductosPLD.factorajeFinanciero.campo2 = this.$('.campo2ddw-ff').select2('val');
-                this.ProductosPLD.factorajeFinanciero.campo3 = this.$('.campo3rel-ff').val();
-                this.ProductosPLD.factorajeFinanciero.campo3_id = this.$('.campo3rel-ff').select2('val');
-                this.ProductosPLD.factorajeFinanciero.campo4 = this.$('.campo4ddw-ff').select2('val');
-                //this.ProductosPLD.factorajeFinanciero.campo5 = this.$('.campo5rel-ff').val();
-                //this.ProductosPLD.factorajeFinanciero.campo5_id = this.$('.campo5rel-ff').select2('val');
-                this.ProductosPLD.factorajeFinanciero.campo21 = this.$('.campo21ddw-ff').select2('val');
-                this.ProductosPLD.factorajeFinanciero.campo22 = this.$('.campo22int-ff').val();
-                this.ProductosPLD.factorajeFinanciero.campo23 = this.$('.campo23dec-ff').val().replace(/,/gi, "");
-                this.ProductosPLD.factorajeFinanciero.campo16 = this.$('.campo16ddw-ff').select2('val').toString();
-                this.ProductosPLD.factorajeFinanciero.campo17 = this.$('.campo17txt-ff').val();
-                this.ProductosPLD.factorajeFinanciero.campo14 = this.$('.campo14chk-ff')[0].checked;
-                this.ProductosPLD.factorajeFinanciero.campo24 = this.$('.campo24ddw-ff').select2('val');
-                this.ProductosPLD.factorajeFinanciero.campo6 = this.$('.campo6ddw-ff').select2('val');
-                //  this.ProductosPLD.creditoAutomotriz.campo1 = this.$('.campo1txt-ca').val();
-                this.ProductosPLD.creditoAutomotriz.campo2 = this.$('.campo2ddw-ca').select2('val');
-                this.ProductosPLD.creditoAutomotriz.campo3 = this.$('.campo3rel-ca').val();
-                this.ProductosPLD.creditoAutomotriz.campo3_id = this.$('.campo3rel-ca').select2('val');
-                this.ProductosPLD.creditoAutomotriz.campo4 = this.$('.campo4ddw-ca').select2('val');
-                //this.ProductosPLD.creditoAutomotriz.campo5 = this.$('.campo5rel-ca').val();
-                //this.ProductosPLD.creditoAutomotriz.campo5_id = this.$('.campo5rel-ca').select2('val');
-                this.ProductosPLD.creditoAutomotriz.campo6 = this.$('.campo6ddw-ca').select2('val');
-                // this.ProductosPLD.creditoSimple.campo1 = this.$('.campo1txt-cs').val();
-                this.ProductosPLD.creditoSimple.campo2 = this.$('.campo2ddw-cs').select2('val');
-                this.ProductosPLD.creditoSimple.campo3 = this.$('.campo3rel-cs').val();
-                this.ProductosPLD.creditoSimple.campo3_id = this.$('.campo3rel-cs').select2('val');
-                this.ProductosPLD.creditoSimple.campo4 = this.$('.campo4ddw-cs').select2('val');
-                //this.ProductosPLD.creditoSimple.campo5 = this.$('.campo5rel-cs').val();
-                //this.ProductosPLD.creditoSimple.campo5_id = this.$('.campo5rel-cs').select2('val');
-                this.ProductosPLD.creditoSimple.campo18 = this.$('.campo18ddw-cs').select2('val').toString();
-                this.ProductosPLD.creditoSimple.campo19 = this.$('.campo19txt-cs').val();
-                this.ProductosPLD.creditoSimple.campo14 = this.$('.campo14chk-cs')[0].checked;
-                this.ProductosPLD.creditoSimple.campo20 = this.$('.campo20ddw-cs').select2('val');
-                this.ProductosPLD.creditoSimple.campo6 = this.$('.campo6ddw-cs').select2('val');
-                //Campos Credito Revolvente
-                this.ProductosPLD.creditoRevolvente.campo1=this.$('.campo1int-ce').val();
-                this.ProductosPLD.creditoRevolvente.campo2=this.$('.campo2dec-ce').val().replace(/,/gi, "");
-                this.ProductosPLD.creditoRevolvente.campo3=this.$('.campo3ddw-ce').select2('val').toString();
-                this.ProductosPLD.creditoRevolvente.campo5=this.$('.campo5ddw-ce').select2('val').toString();
-                this.ProductosPLD.creditoRevolvente.campo6=this.$('.campo6ddw-ce').select2('val');
-                this.ProductosPLD.creditoRevolvente.campo7=this.$('.campo7ddw-ce').select2('val').toString();
-                this.ProductosPLD.creditoRevolvente.campo8=this.$('.campo8ddw-ce').select2('val');
-                this.ProductosPLD.creditoRevolvente.campo9=this.$('.campo9rel-ce').select2('val');
-                this.ProductosPLD.creditoRevolvente.campo9_id=this.$('.campo9rel-ce').select2('val');
-                this.ProductosPLD.creditoRevolvente.campo10=this.$('.campo10ddw-ce').select2('val');
-                this.ProductosPLD.creditoRevolvente.campo11=this.$('.campo11rel-ce').select2('val');
-                this.ProductosPLD.creditoRevolvente.campo11_id=this.$('.campo11rel-ce').select2('val');
-
-            }
-                //var obj_pld_old=JSON.stringify(this.model.get('accounts_tct_pld_1'));
-                //var obj_pld_new=JSON.stringify(this.ProductosPLD);
-                app.api.call('create', app.api.buildURL('SavePLD'), this.ProductosPLD, {
-                    success: function (data) {
-                        if (data != "") {
-                            console.log("Actualiza pld");
+    /*
+        saveProdPLD: function (fields, errors, callback) {
+    
+            if (this.model.get('tipo_registro_cuenta_c') != '') {
+                 //Valida cambios
+                 if ($.isEmptyObject(errors) && (this.inlineEditMode == false || (this.inlineEditMode && typeof ($('.campo4ddw-cs').select2('val')) == "string"))) {
+    
+                // Actualizar modelo de this.ProductosPLD
+                // this.ProductosPLD.arrendamientoPuro.campo1 = $('.campo1txt-ap').val();
+                if (this.ProductosPLD != null && typeof (this.$('.campo4ddw-cs').select2('val')) == "string") {
+    
+                    // this.ProductosPLD.arrendamientoPuro.campo1 = this.$('.campo1txt-ap').val();
+                    this.ProductosPLD.arrendamientoPuro.campo2 = this.$('.campo2ddw-ap').select2('val');
+                    this.ProductosPLD.arrendamientoPuro.campo3 = this.$('.campo3rel-ap')[0]['innerText'];
+                    this.ProductosPLD.arrendamientoPuro.campo3_id = this.$('.campo3rel-ap').select2('val');
+                    this.ProductosPLD.arrendamientoPuro.campo4 = this.$('.campo4ddw-ap').select2('val');
+                    //this.ProductosPLD.arrendamientoPuro.campo5 = this.$('.campo5rel-ap')[0]['innerText'];
+                    //this.ProductosPLD.arrendamientoPuro.campo5_id = this.$('.campo5rel-ap').select2('val');
+                    this.ProductosPLD.arrendamientoPuro.campo6 = this.$('.campo6ddw-ap').select2('val');
+                    // this.ProductosPLD.arrendamientoPuro.campo7 = this.$('.campo7ddw-ap').select2('val');
+                    // this.ProductosPLD.arrendamientoPuro.campo8 = this.$('.campo8txt-ap').val();
+                    // this.ProductosPLD.arrendamientoPuro.campo9 = this.$('.campo9ddw-ap').select2('val');
+                    // this.ProductosPLD.arrendamientoPuro.campo10 = this.$('.campo10txt-ap').val();
+                    this.ProductosPLD.arrendamientoPuro.campo11 = this.$('.campo11ddw-ap').select2('val');
+                    //this.ProductosPLD.arrendamientoPuro.campo13 = this.$('.campo13chk-ap')[0].checked;
+                    this.ProductosPLD.arrendamientoPuro.campo14 = this.$('.campo14chk-ap')[0].checked;
+                    this.ProductosPLD.arrendamientoPuro.campo16 = this.$('.campo16ddw-ap').select2('val').toString();
+                    this.ProductosPLD.arrendamientoPuro.campo17 = this.$('.campo17txt-ap').val();
+                    this.ProductosPLD.arrendamientoPuro.campo25 = this.$('.campo25ddw-ap').select2('val');
+                    this.ProductosPLD.arrendamientoPuro.campo26 = this.$('.campo26txt-ap').val();
+                    // this.ProductosPLD.factorajeFinanciero.campo1 = this.$('.campo1txt-ff').val();
+                    this.ProductosPLD.factorajeFinanciero.campo2 = this.$('.campo2ddw-ff').select2('val');
+                    this.ProductosPLD.factorajeFinanciero.campo3 = this.$('.campo3rel-ff').val();
+                    this.ProductosPLD.factorajeFinanciero.campo3_id = this.$('.campo3rel-ff').select2('val');
+                    this.ProductosPLD.factorajeFinanciero.campo4 = this.$('.campo4ddw-ff').select2('val');
+                    //this.ProductosPLD.factorajeFinanciero.campo5 = this.$('.campo5rel-ff').val();
+                    //this.ProductosPLD.factorajeFinanciero.campo5_id = this.$('.campo5rel-ff').select2('val');
+                    this.ProductosPLD.factorajeFinanciero.campo21 = this.$('.campo21ddw-ff').select2('val');
+                    this.ProductosPLD.factorajeFinanciero.campo22 = this.$('.campo22int-ff').val();
+                    this.ProductosPLD.factorajeFinanciero.campo23 = this.$('.campo23dec-ff').val().replace(/,/gi, "");
+                    this.ProductosPLD.factorajeFinanciero.campo16 = this.$('.campo16ddw-ff').select2('val').toString();
+                    this.ProductosPLD.factorajeFinanciero.campo17 = this.$('.campo17txt-ff').val();
+                    this.ProductosPLD.factorajeFinanciero.campo14 = this.$('.campo14chk-ff')[0].checked;
+                    this.ProductosPLD.factorajeFinanciero.campo24 = this.$('.campo24ddw-ff').select2('val');
+                    this.ProductosPLD.factorajeFinanciero.campo6 = this.$('.campo6ddw-ff').select2('val');
+                    //  this.ProductosPLD.creditoAutomotriz.campo1 = this.$('.campo1txt-ca').val();
+                    this.ProductosPLD.creditoAutomotriz.campo2 = this.$('.campo2ddw-ca').select2('val');
+                    this.ProductosPLD.creditoAutomotriz.campo3 = this.$('.campo3rel-ca').val();
+                    this.ProductosPLD.creditoAutomotriz.campo3_id = this.$('.campo3rel-ca').select2('val');
+                    this.ProductosPLD.creditoAutomotriz.campo4 = this.$('.campo4ddw-ca').select2('val');
+                    //this.ProductosPLD.creditoAutomotriz.campo5 = this.$('.campo5rel-ca').val();
+                    //this.ProductosPLD.creditoAutomotriz.campo5_id = this.$('.campo5rel-ca').select2('val');
+                    this.ProductosPLD.creditoAutomotriz.campo6 = this.$('.campo6ddw-ca').select2('val');
+                    // this.ProductosPLD.creditoSimple.campo1 = this.$('.campo1txt-cs').val();
+                    this.ProductosPLD.creditoSimple.campo2 = this.$('.campo2ddw-cs').select2('val');
+                    this.ProductosPLD.creditoSimple.campo3 = this.$('.campo3rel-cs').val();
+                    this.ProductosPLD.creditoSimple.campo3_id = this.$('.campo3rel-cs').select2('val');
+                    this.ProductosPLD.creditoSimple.campo4 = this.$('.campo4ddw-cs').select2('val');
+                    //this.ProductosPLD.creditoSimple.campo5 = this.$('.campo5rel-cs').val();
+                    //this.ProductosPLD.creditoSimple.campo5_id = this.$('.campo5rel-cs').select2('val');
+                    this.ProductosPLD.creditoSimple.campo18 = this.$('.campo18ddw-cs').select2('val').toString();
+                    this.ProductosPLD.creditoSimple.campo19 = this.$('.campo19txt-cs').val();
+                    this.ProductosPLD.creditoSimple.campo14 = this.$('.campo14chk-cs')[0].checked;
+                    this.ProductosPLD.creditoSimple.campo20 = this.$('.campo20ddw-cs').select2('val');
+                    this.ProductosPLD.creditoSimple.campo6 = this.$('.campo6ddw-cs').select2('val');
+                    //Campos Credito Revolvente
+                    this.ProductosPLD.creditoRevolvente.campo1=this.$('.campo1int-ce').val();
+                    this.ProductosPLD.creditoRevolvente.campo2=this.$('.campo2dec-ce').val().replace(/,/gi, "");
+                    this.ProductosPLD.creditoRevolvente.campo3=this.$('.campo3ddw-ce').select2('val').toString();
+                    this.ProductosPLD.creditoRevolvente.campo5=this.$('.campo5ddw-ce').select2('val').toString();
+                    this.ProductosPLD.creditoRevolvente.campo6=this.$('.campo6ddw-ce').select2('val');
+                    this.ProductosPLD.creditoRevolvente.campo7=this.$('.campo7ddw-ce').select2('val').toString();
+                    this.ProductosPLD.creditoRevolvente.campo8=this.$('.campo8ddw-ce').select2('val');
+                    this.ProductosPLD.creditoRevolvente.campo9=this.$('.campo9rel-ce').select2('val');
+                    this.ProductosPLD.creditoRevolvente.campo9_id=this.$('.campo9rel-ce').select2('val');
+                    this.ProductosPLD.creditoRevolvente.campo10=this.$('.campo10ddw-ce').select2('val');
+                    this.ProductosPLD.creditoRevolvente.campo11=this.$('.campo11rel-ce').select2('val');
+                    this.ProductosPLD.creditoRevolvente.campo11_id=this.$('.campo11rel-ce').select2('val');
+    
+                }
+                    //var obj_pld_old=JSON.stringify(this.model.get('accounts_tct_pld_1'));
+                    //var obj_pld_new=JSON.stringify(this.ProductosPLD);
+                    app.api.call('create', app.api.buildURL('SavePLD'), this.ProductosPLD, {
+                        success: function (data) {
+                            if (data != "") {
+                                console.log("Actualiza pld");
+                            }
+                            contexto_cuenta.ProductosPLD = pld.formatDetailPLD(contexto_cuenta.ProductosPLD);
+                            pld.ProductosPLD = contexto_cuenta.ProductosPLD;
+                            contexto_cuenta.prev_ProductosPLD = app.utils.deepCopy(contexto_cuenta.ProductosPLD);
+                            pld.render();
+                            callback(null, fields, errors);
+                        },
+                        error: function (e) {
+                            //throw e;
+                            pld.render();
+                            callback(null, fields, errors);
                         }
-                        contexto_cuenta.ProductosPLD = pld.formatDetailPLD(contexto_cuenta.ProductosPLD);
-                        pld.ProductosPLD = contexto_cuenta.ProductosPLD;
-                        contexto_cuenta.prev_ProductosPLD = app.utils.deepCopy(contexto_cuenta.ProductosPLD);
-                        pld.render();
-                        callback(null, fields, errors);
-                    },
-                    error: function (e) {
-                        //throw e;
-                        pld.render();
-                        callback(null, fields, errors);
-                    }
-                });
+                    });
+                } else {
+                    // contexto_cuenta.ProductosPLD = pld.formatDetailPLD(contexto_cuenta.ProductosPLD);
+                    // pld.ProductosPLD = contexto_cuenta.ProductosPLD;
+                    // pld.render();
+                    callback(null, fields, errors);
+                }
             } else {
                 // contexto_cuenta.ProductosPLD = pld.formatDetailPLD(contexto_cuenta.ProductosPLD);
                 // pld.ProductosPLD = contexto_cuenta.ProductosPLD;
                 // pld.render();
                 callback(null, fields, errors);
             }
-        } else {
-            // contexto_cuenta.ProductosPLD = pld.formatDetailPLD(contexto_cuenta.ProductosPLD);
-            // pld.ProductosPLD = contexto_cuenta.ProductosPLD;
-            // pld.render();
-            callback(null, fields, errors);
-        }
-    },
-*/
+        },
+    */
 
     /* F. Javier G. Solar
      OBS299 Validar que las Direcciones no se repitan 21/11/2018
      */
     _direccionDuplicada: function (fields, errors, callback) {
-
         /* SE VALIDA DIRECTAMENTE DE LOS ELEMENTOS DEL HTML POR LA COMPLEJIDAD DE
          OBETENER LAS DESCRIPCIONES DE LOS COMBOS*/
-
         //var objDirecciones = $('.control-group.direccion')
-        var objDirecciones = $('.control-group.direccion')
-        var concatDirecciones = [];
-        var strDireccionTemp = "";
-        for (var i = 0; i < objDirecciones.length - 1; i++) {
-            if (objDirecciones.eq(i).find('select.inactivo option:selected') == 0) {
-                strDireccionTemp = objDirecciones.eq(i).find('.calleExisting').val() +
-                    objDirecciones.eq(i).find('.numExtExisting').val() +
-                    objDirecciones.eq(i).find('.numIntExisting').val() +
-                    objDirecciones.eq(i).find('select.coloniaExisting option:selected').text() +
-                    objDirecciones.eq(i).find('select.municipioExisting option:selected').text() +
-                    objDirecciones.eq(i).find('select.estadoExisting option:selected').text() +
-                    objDirecciones.eq(i).find('select.ciudadExisting option:selected').text() +
-                    objDirecciones.eq(i).find('.postalInputTempExisting').val();
+        // var objDirecciones = $('.control-group.direccion')
+        // var concatDirecciones = [];
+        // var strDireccionTemp = "";
+        // for (var i = 0; i < objDirecciones.length - 1; i++) {
+        //     if (objDirecciones.eq(i).find('select.inactivo option:selected') == 0) {
+        //         strDireccionTemp = objDirecciones.eq(i).find('.calleExisting').val() +
+        //             objDirecciones.eq(i).find('.numExtExisting').val() +
+        //             objDirecciones.eq(i).find('.numIntExisting').val() +
+        //             objDirecciones.eq(i).find('select.coloniaExisting option:selected').text() +
+        //             objDirecciones.eq(i).find('select.municipioExisting option:selected').text() +
+        //             objDirecciones.eq(i).find('select.estadoExisting option:selected').text() +
+        //             objDirecciones.eq(i).find('select.ciudadExisting option:selected').text() +
+        //             objDirecciones.eq(i).find('.postalInputTempExisting').val();
+        //         concatDirecciones.push(strDireccionTemp.replace(/\s/g, "").toUpperCase());
+        //     }
+        // }
+        // // validamos  el arreglo generado
+        // var existe = false;
+        // for (var j = 0; j < concatDirecciones.length; j++) {
+        //     for (var k = j + 1; k < concatDirecciones.length; k++) {
+        //         if (concatDirecciones[j] == concatDirecciones[k]) {
+        //             existe = true;
+        //         }
+        //     }
+        // }
+        // if (existe) {
+        //     app.alert.show('Direcci\u00F3n', {
+        //         level: 'error',
+        //         autoClose: false,
+        //         messages: 'Existe una o mas direcciones repetidas'
+        //     });
+        //     var messages1 = 'Existe una o mas direcciones repetidas';
+        //     errors['xd'] = errors['xd'] || {};
+        //     // errors['xd'].messages1 = true;
+        //     errors['xd'].required = true;
+        // }
+        /********************************************MEJORA DE DUPLICIDAD DE DIRECCIONES******************************************/
+        var direccion = this.oDirecciones.direccion;
+        var keys = Object.keys(direccion); // Obtiene todas las claves
+        var cDuplicado = 0;
+        for (let i = 0; i < keys.length; i++) {
+            let keyA = keys[i]; //Dirección a comparar A
 
-                concatDirecciones.push(strDireccionTemp.replace(/\s/g, "").toUpperCase());
-            }
-        }
+            for (let j = i + 1; j < keys.length; j++) { // Compara con las siguientes direcciones
+                let keyB = keys[j]; //Dirección a comparar B
 
-        // validamos  el arreglo generado
-        var existe = false;
-        for (var j = 0; j < concatDirecciones.length; j++) {
-            for (var k = j + 1; k < concatDirecciones.length; k++) {
+                var duplicado = 0;
+                var dirA = direccion[keyA];
+                var dirB = direccion[keyB];
 
-                if (concatDirecciones[j] == concatDirecciones[k]) {
-                    existe = true;
+                // Compara atributos clave
+                duplicado += ((dirA.valCodigoPostal ?? "").trim() === (dirB.valCodigoPostal ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.pais ?? "").trim() === (dirB.pais ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.estado ?? "").trim() === (dirB.estado ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.municipio ?? "").trim() === (dirB.municipio ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.ciudad ?? "").trim() === (dirB.ciudad ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.colonia ?? "").trim() === (dirB.colonia ?? "").trim()) ? 1 : 0;
+                duplicado += ((dirA.calle ?? "").trim().toLowerCase() === (dirB.calle ?? "").trim().toLowerCase()) ? 1 : 0;
+                duplicado += ((dirA.numext ?? "").trim().toLowerCase() === (dirB.numext ?? "").trim().toLowerCase()) ? 1 : 0;
+
+                var inactivoA = parseInt(dirA.inactivo) || 0;
+                var inactivoB = parseInt(dirB.inactivo) || 0;
+                duplicado += (inactivoA === inactivoB) ? 1 : 0;
+
+                // console.log(`Comparando dirección ${keyA} con ${keyB}: duplicado =`, duplicado);
+
+                // Si coinciden 9 atributos, es duplicado
+                if (duplicado === 9) {
+                    cDuplicado++;
                 }
             }
-
         }
-
-        if (existe) {
+        // Mostrar error si hay direcciones repetidas
+        if (cDuplicado >= 1) {
             app.alert.show('Direcci\u00F3n', {
                 level: 'error',
                 autoClose: false,
-                messages: 'Existe una o mas direcciones repetidas'
+                messages: '<b>Existe una o más direcciones repetidas.</b>'
             });
-            var messages1 = 'Existe una o mas direcciones repetidas';
             errors['xd'] = errors['xd'] || {};
-            // errors['xd'].messages1 = true;
             errors['xd'].required = true;
         }
 
@@ -780,7 +823,7 @@
      */
 
     setActiveTab: function (event) {
-        if ( !$(event.currentTarget).parent().hasClass("LBL_RECORDVIEW_PANEL8") ) {
+        if (!$(event.currentTarget).parent().hasClass("LBL_RECORDVIEW_PANEL8")) {
             //Al remover clase active, a la pestaña se le quita el color azul
             $(".LBL_RECORDVIEW_PANEL8").removeClass("active");
 
@@ -791,10 +834,10 @@
             //Obtenemos id del contenido al que se hace referencia la pestaña
             var idElement = $(event.currentTarget)[0].href.split("#")[1];
             //Clase active agrega espacio para mostrar contenido
-            $("#"+idElement).addClass("active");
+            $("#" + idElement).addClass("active");
             //Al remover clase fade, se muestra el contenido de la pestaña correspondiente
-            $("#"+idElement).removeClass("fade");
-            
+            $("#" + idElement).removeClass("fade");
+
         }
         this._super('setActiveTab', [event]);
     },
@@ -857,7 +900,7 @@
          2.- Puesto es diferente de Agente Tel. y Coordinador de centro de prospección
          3.- Usuario no está en lista de Usuario que pueden editar
          */
-        if ((origen == "2") && (puesto != '27' && puesto != '31') && !listaEdicionOrigen.includes(App.user.attributes.id) ) {
+        if ((origen == "2") && (puesto != '27' && puesto != '31') && !listaEdicionOrigen.includes(App.user.attributes.id)) {
             //Establece como no editables campos de origen
             this.noEditFields.push('origen_cuenta_c');
             this.noEditFields.push('detalle_origen_c');
@@ -915,27 +958,27 @@
 
     handleCancel: function () {
         this._super("handleCancel");
-		    this.$('#rfcModal').hide();
-/*		if(contexto_cuenta.cambioEdit != undefined && contexto_cuenta.cambioEdit != 0 && contexto_cuenta.cambio_previo_mail != undefined ){
-			var rfc_c = this.model._previousAttributes.rfc_c;
-			var tipodepersona_c = this.model._previousAttributes.tipodepersona_c;
-			var razonsocial_c = this.model._previousAttributes.razonsocial_c;
-			var nombre_comercial_c = this.model._previousAttributes.nombre_comercial_c;
-			var fechaconstitutiva_c = this.model._previousAttributes.fechaconstitutiva_c;
-			var primernombre_c = this.model._previousAttributes.primernombre_c;
-			var apellidopaterno_c = this.model._previousAttributes.apellidopaterno_c;
-			var apellidomaterno_c = this.model._previousAttributes.apellidomaterno_c;
-			var fechadenacimiento_c = this.model._previousAttributes.fechadenacimiento_c;
-			var curp_c = this.model._previousAttributes.curp_c;
-			var email = '';
-			if( contexto_cuenta.cambio_previo_mail==1){
-				email = this.model._previousAttributes.email;
-			}else{
-				email = this.model.attributes.email;
-			}
-		}
-*/
-		    //Teléfonos
+        this.$('#rfcModal').hide();
+        /*		if(contexto_cuenta.cambioEdit != undefined && contexto_cuenta.cambioEdit != 0 && contexto_cuenta.cambio_previo_mail != undefined ){
+                    var rfc_c = this.model._previousAttributes.rfc_c;
+                    var tipodepersona_c = this.model._previousAttributes.tipodepersona_c;
+                    var razonsocial_c = this.model._previousAttributes.razonsocial_c;
+                    var nombre_comercial_c = this.model._previousAttributes.nombre_comercial_c;
+                    var fechaconstitutiva_c = this.model._previousAttributes.fechaconstitutiva_c;
+                    var primernombre_c = this.model._previousAttributes.primernombre_c;
+                    var apellidopaterno_c = this.model._previousAttributes.apellidopaterno_c;
+                    var apellidomaterno_c = this.model._previousAttributes.apellidomaterno_c;
+                    var fechadenacimiento_c = this.model._previousAttributes.fechadenacimiento_c;
+                    var curp_c = this.model._previousAttributes.curp_c;
+                    var email = '';
+                    if( contexto_cuenta.cambio_previo_mail==1){
+                        email = this.model._previousAttributes.email;
+                    }else{
+                        email = this.model.attributes.email;
+                    }
+                }
+        */
+        //Teléfonos
         var account_telefonos = app.utils.deepCopy(this.prev_oTelefonos.prev_telefono);
         this.model.set('account_telefonos', account_telefonos);
         this.oTelefonos.telefono = account_telefonos;
@@ -964,26 +1007,26 @@
         this.$('[data-name="promotorfactoraje_c"]').attr('style', '');
         this.$('[data-name="promotorcredit_c"]').attr('style', '');
         this.$('[data-name="promotorfleet_c"]').attr('style', '');
-/*
-		if(contexto_cuenta.cambioEdit != undefined && contexto_cuenta.cambioEdit != 0 && contexto_cuenta.cambio_previo_mail != undefined ){
-			this.model.set( 'rfc_c', rfc_c);
-			this.model.set( 'tipodepersona_c', tipodepersona_c);
-			this.model.set( 'email', email);
-
-			if(tipodepersona_c == "Persona Moral") {
-				this.model.set( 'razonsocial_c', razonsocial_c);
-				this.model.set( 'nombre_comercial_c', nombre_comercial_c);
-				this.model.set( 'fechaconstitutiva_c', fechaconstitutiva_c);
-			}else {
-				this.model.set( 'primernombre_c', primernombre_c);
-				this.model.set( 'apellidopaterno_c', apellidopaterno_c);
-				this.model.set( 'apellidomaterno_c', apellidomaterno_c);
-				this.model.set( 'fechadenacimiento_c', fechadenacimiento_c);
-				this.model.set( 'curp_c', curp_c);
-			}
-			contexto_cuenta.cambio_previo_mail = 0;
-		}
-*/
+        /*
+                if(contexto_cuenta.cambioEdit != undefined && contexto_cuenta.cambioEdit != 0 && contexto_cuenta.cambio_previo_mail != undefined ){
+                    this.model.set( 'rfc_c', rfc_c);
+                    this.model.set( 'tipodepersona_c', tipodepersona_c);
+                    this.model.set( 'email', email);
+        
+                    if(tipodepersona_c == "Persona Moral") {
+                        this.model.set( 'razonsocial_c', razonsocial_c);
+                        this.model.set( 'nombre_comercial_c', nombre_comercial_c);
+                        this.model.set( 'fechaconstitutiva_c', fechaconstitutiva_c);
+                    }else {
+                        this.model.set( 'primernombre_c', primernombre_c);
+                        this.model.set( 'apellidopaterno_c', apellidopaterno_c);
+                        this.model.set( 'apellidomaterno_c', apellidomaterno_c);
+                        this.model.set( 'fechadenacimiento_c', fechadenacimiento_c);
+                        this.model.set( 'curp_c', curp_c);
+                    }
+                    contexto_cuenta.cambio_previo_mail = 0;
+                }
+        */
         //Valores Previos Clasificacion Sectorial - Actividad Economica e INEGI
         clasf_sectorial.ActividadEconomica = app.utils.deepCopy(clasf_sectorial.prevActEconomica);
         clasf_sectorial.ResumenCliente.inegi.inegi_clase = clasf_sectorial.prevActEconomica.inegi_clase;
@@ -995,7 +1038,7 @@
         clasf_sectorial.render();
     },
 
-    handleEdit: function(e, cell) {
+    handleEdit: function (e, cell) {
         var target,
             cellData,
             field;
@@ -1035,9 +1078,9 @@
     Se sobreescribe la función de caja para poder evaluar si los campos de origen se deben de bloquear ya que a nivel de dependencoa
     no estaba tomando los diapradores para bloquear dichos campos
     */
-    focusFirstInput: function() {
+    focusFirstInput: function () {
         var self = this;
-        $(function() {
+        $(function () {
             var $element = (app.drawer && (app.drawer.count() > 0)) ?
                 app.drawer._components[app.drawer.count() - 1].$el
                 : app.$contentEl;
@@ -1212,27 +1255,27 @@
 
         if (App.user.attributes.puestousuario_c != 32 && App.user.attributes.puestousuario_c != 47) {
             //Se agrega validacion para la lista de Vendors y puedan editar el campo Tipo Proveedor Compras C
-            var Banderita=0;
+            var Banderita = 0;
             Object.entries(App.lang.getAppListStrings('equipo_a_eco_y_est_list')).forEach(([key, value]) => {
-                if(value==App.user.attributes.id){
-                    Banderita=1;
+                if (value == App.user.attributes.id) {
+                    Banderita = 1;
                 }
-             });
-            if(Banderita!=1){
+            });
+            if (Banderita != 1) {
                 self.noEditFields.push('tipo_proveedor_compras_c');
                 self.noEditFields.push('vendor_c');
             }
         }
 
-		//Campos Denominación y Régimen Fiscal SAT
-		var listaUsuarios = [];
+        //Campos Denominación y Régimen Fiscal SAT
+        var listaUsuarios = [];
         Object.entries(App.lang.getAppListStrings('actualiza_sat_list')).forEach(([key, value]) => {
             listaUsuarios.push(value);
         });
-        if(!listaUsuarios.includes(app.user.attributes.id)) {
-			self.noEditFields.push('denominacion_c');
-			self.noEditFields.push('regimen_fiscal_sat_c');
-		}
+        if (!listaUsuarios.includes(app.user.attributes.id)) {
+            self.noEditFields.push('denominacion_c');
+            self.noEditFields.push('regimen_fiscal_sat_c');
+        }
         this._super('_renderHtml');
     },
 
@@ -1269,8 +1312,8 @@
         //@Jesus Carrillo
         //Ocultar Div y boton "Prospecto Contactado"
         $('div[data-name=tct_prospecto_contactado_chk_c]').hide();
-         //Oculta campo proveedor
-         $('[name="portal_proveedores"]').hide();
+        //Oculta campo proveedor
+        $('[name="portal_proveedores"]').hide();
 
 
         // Validación para no poder inactivar clientes con contratos activos
@@ -1339,8 +1382,8 @@
         }
 
         //
-		    this.$("div.record-label[data-name='rfc_qr']").attr('style', 'pointer-events:none;');
-		    this.$("div.record-label[data-name='rfc_qr']").attr('style', 'display:none;');
+        //this.$("div.record-label[data-name='rfc_qr']").attr('style', 'pointer-events:none;');
+        //this.$("div.record-label[data-name='rfc_qr']").attr('style', 'display:none;');
 
         // if (app.user.attributes.multilinea_c == 0 || app.user.attributes.multilinea_c == "") {
         //     $('div[data-name=multilinea_c]').css("pointer-events", "none");
@@ -1363,7 +1406,9 @@
         //Oculta etiquetas 360
         this.$('.record-edit-link-wrapper[data-name="account_vista360"]').remove();
         this.$('div[data-name=account_vista360]').find('div.record-label').addClass('hide');
-	},
+        //OCULTA ó MUESTRA BOTON DE SOLICITUD ASIGNACION
+        // this._hideBtnSolicitudAsignacion();
+    },
 
     editClicked: function () {
         this._super("editClicked");
@@ -1372,21 +1417,21 @@
         this.$('[data-name="promotorcredit_c"]').attr('style', 'pointer-events:none');
         this.$('[data-name="promotorfleet_c"]').attr('style', 'pointer-events:none');
         this.$('[data-name="promotorrm_c"]').attr('style', 'pointer-events:none');
-        var roles=App.user.attributes.roles;
-        var roles_seguros=App.lang.getAppListStrings('roles_edicion_ctas_seguros_list');
+        var roles = App.user.attributes.roles;
+        var roles_seguros = App.lang.getAppListStrings('roles_edicion_ctas_seguros_list');
 
-        var seguros=0;
+        var seguros = 0;
         for (const [key, value] of Object.entries(roles_seguros)) {
-            if(roles.includes(value)){
+            if (roles.includes(value)) {
                 seguros = 1;
             }
         }
         var accesoFiscal = App.user.attributes.tct_alta_clientes_chk_c + App.user.attributes.tct_altaproveedor_chk_c + App.user.attributes.tct_alta_cd_chk_c + App.user.attributes.deudor_factoraje_c + seguros;
         if (accesoFiscal == 0 && this.model.get('tipo_registro_cuenta_c') != '4') {
-          this.$('div[data-name=rfc_c]').css("pointer-events", "none");
-          $('[data-name="generar_rfc_c"]').hide();
+            this.$('div[data-name=rfc_c]').css("pointer-events", "none");
+            $('[data-name="generar_rfc_c"]').hide();
         }
-        contexto_cuenta.cambioEdit=1;
+        contexto_cuenta.cambioEdit = 1;
     },
 
     hideconfiinfo: function () {
@@ -1625,16 +1670,16 @@
                 var asesorUC = this.model.get('user_id7_c');
                 myField2.hide();
                 //Antes de mostrar el campo, hay que validar si los valores vienen como string "PROVEEDOR" o como número "5"
-                if(isNaN(Number(leasingprod))){//el valor viene como string
+                if (isNaN(Number(leasingprod))) {//el valor viene como string
                     if (((leasingprod.toLowerCase() == "proveedor" || leasingprod.toLowerCase() == "persona") && userprod.includes('1') && asesorL == logueado) || ((factprod.toLowerCase() == "proveedor" || factprod.toLowerCase() == "persona") && userprod.includes("4") && asesorF == logueado) || ((caprod.toLowerCase() == "proveedor" || caprod.toLowerCase() == "persona") && userprod.includes("3") && asesorCA == logueado) ||
-                    ((fleetprod.toLowerCase() == "proveedor" || fleetprod.toLowerCase() == "persona") && userprod.includes('6') && asesorFL == logueado) || ((ucprod.toLowerCase() == "proveedor" || ucprod.toLowerCase() == "persona") && userprod.includes('8') && asesorUC == logueado)) {
+                        ((fleetprod.toLowerCase() == "proveedor" || fleetprod.toLowerCase() == "persona") && userprod.includes('6') && asesorFL == logueado) || ((ucprod.toLowerCase() == "proveedor" || ucprod.toLowerCase() == "persona") && userprod.includes('8') && asesorUC == logueado)) {
                         myField2.show();
                     } else {
                         myField2.hide();
                     }
-                }else{//el valor viene como número
+                } else {//el valor viene como número
                     if (((leasingprod == "5" || leasingprod == "4") && userprod.includes('1') && asesorL == logueado) || ((factprod == "5" || factprod == "4") && userprod.includes("4") && asesorF == logueado) || ((caprod == "5" || caprod == "4") && userprod.includes("3") && asesorCA == logueado) ||
-                    ((fleetprod == "5" || fleetprod == "4") && userprod.includes('6') && asesorFL == logueado) || ((ucprod == "5" || ucprod == "4") && userprod.includes('8') && asesorUC == logueado)) {
+                        ((fleetprod == "5" || fleetprod == "4") && userprod.includes('6') && asesorFL == logueado) || ((ucprod == "5" || ucprod == "4") && userprod.includes('8') && asesorUC == logueado)) {
                         myField2.show();
                     } else {
                         myField2.hide();
@@ -1660,10 +1705,10 @@
         if (myField4) {
             myField4.listenTo(myField4, "render", function () {
                 myField4.hide();
-                if((this.model.get('esproveedor_c')=='1' || this.model.get('tipo_registro_cuenta_c')=='5') && App.user.attributes.portal_proveedores_c=='1' && !this.model.get('alta_portal_proveedor_chk_c')){
-                  myField4.show();
+                if ((this.model.get('esproveedor_c') == '1' || this.model.get('tipo_registro_cuenta_c') == '5') && App.user.attributes.portal_proveedores_c == '1' && !this.model.get('alta_portal_proveedor_chk_c')) {
+                    myField4.show();
                 } else {
-                  myField4.hide();
+                    myField4.hide();
                 }
             });
         }
@@ -1743,11 +1788,11 @@
         // }
 
         //Boton de envio a Portal de Proveedores
-        if((this.model.get('esproveedor_c')=='1' || this.model.get('tipo_registro_cuenta_c')=='5') && App.user.attributes.portal_proveedores_c=='1' && !this.model.get('alta_portal_proveedor_chk_c')){
+        /*if ((this.model.get('esproveedor_c') == '1' || this.model.get('tipo_registro_cuenta_c') == '5') && App.user.attributes.portal_proveedores_c == '1' && !this.model.get('alta_portal_proveedor_chk_c')) {
             $('[name="portal_proveedores"]').show();
-          } else {
+        } else {
             $('[name="portal_proveedores"]').hide();
-          }
+        }*/
     },
 
     /* @author F. Javier Garcia S. 10/07/2018
@@ -1780,7 +1825,7 @@
     },
 
     _ActualizaEtiquetas: function () {
-        if (this.model.get('tipodepersona_c') != 'Persona Moral' ) {
+        if (this.model.get('tipodepersona_c') != 'Persona Moral') {
             this.$("div.record-label[data-name='pais_nacimiento_c']").text("Pa\u00EDs de nacimiento");
             //Establece etiqueta a campo personalizado de pais y estado
             $('[data-fieldname="account_paises_estados"]').find('.record-label').eq(0).text("Pa\u00EDs de nacimiento");
@@ -2066,7 +2111,7 @@
 
     _doValidateDireccion: function (fields, errors, callback) {
         if (this.model.get('tipo_registro_cuenta_c') == "3" || this.model.get('tipo_registro_cuenta_c') == "5"
-            || (this.model.get('tipo_registro_cuenta_c') == "2" && this.model.get('subtipo_registro_cuenta_c')!="1" ) || this.model.get('esproveedor_c') == true) {
+            || (this.model.get('tipo_registro_cuenta_c') == "2" && this.model.get('subtipo_registro_cuenta_c') != "1") || this.model.get('esproveedor_c') == true) {
             if (_.isEmpty(this.oTelefonos.telefono) && this.model.get('tipo_registro_cuenta_c') == "2") {
                 $('#tabletelefonos').css('border', '2px solid red');
                 errors['account_telefonos1'] = errors['account_telefonos1'] || {};
@@ -2106,7 +2151,7 @@
                         console.log('Validacion Dir.Nacional');
                         var direcciones = this.oDirecciones.direccion;
                         for (i = 0; i < direcciones.length; i++) {
-                            if (direcciones[i].pais == 2 && direcciones[i].inactivo == 0) {
+                            if (direcciones[i].pais == 2 && direcciones[i].inactivo == 0 || direcciones[i].sinSepomex) {
                                 nacional = 1;
                             }
                         }
@@ -2152,7 +2197,7 @@
         // this.context.on('button:save_button:click', this.borraTel, this);
         //this.context.on('button:prospecto_contactado:click',this.validaContactado, this);  //se añade validación para validar campos al convertir prospecto contactado.
         this.context.on('button:convierte_lead:click', this.validalead, this);
-        this.context.on('button:dynamics_button:click', this.requestDynamics, this);
+        //this.context.on('button:dynamics_button:click', this.requestDynamics, this);
 
         this.context.on('button:verificar_cambios:click', this.verificarCambiosRazonSocial, this);
 
@@ -2915,16 +2960,16 @@
         }
     },
 
-    requestDynamics:function(){
+    requestDynamics: function () {
         //Valida que sea proveedor
-        var tipo_cuenta=this.model.get('tipo_registro_cuenta_c');
-        var proveedor=this.model.get('esproveedor_c');
-        var cedente=this.model.get('cedente_factor_c');
-        var deudor=this.model.get('deudor_factor_c');
-        if (tipo_cuenta =='5' || tipo_cuenta=='3' || proveedor || cedente || deudor) {
-            var self=this;
-            var body={
-                "accion":this.model.get('id')
+        var tipo_cuenta = this.model.get('tipo_registro_cuenta_c');
+        var proveedor = this.model.get('esproveedor_c');
+        var cedente = this.model.get('cedente_factor_c');
+        var deudor = this.model.get('deudor_factor_c');
+        if (tipo_cuenta == '5' || tipo_cuenta == '3' || proveedor || cedente || deudor) {
+            var self = this;
+            var body = {
+                "accion": this.model.get('id')
             }
             app.alert.show('infoDynamics', {
                 level: 'process',
@@ -2934,45 +2979,45 @@
             //Consumir servicio de OTP
             app.api.call('create', app.api.buildURL("Dynamics365"), body, {
                 success: _.bind(function (data) {
-					var params = {};
+                    var params = {};
                     app.alert.dismiss('infoDynamics');
-                    if(data!=null){
-                        self.model.set('control_dynamics_365_c',data[0]);
-                        self.model.set('id_cpp_365_chk_c',data[1]);
-						params["error_dynamics365_c"] = "";
+                    if (data != null) {
+                        self.model.set('control_dynamics_365_c', data[0]);
+                        self.model.set('id_cpp_365_chk_c', data[1]);
+                        params["error_dynamics365_c"] = "";
                     }
-					else {
-						params["error_dynamics365_c"] = 'Error al enviar información hacia Dynamics 365: Petición mal realizada (Cuentas por pagar).';
-						app.alert.dismiss('infoDynamics');
-						app.alert.show('error_otp', {
-							level: 'warning',
-							messages: 'Error al enviar información hacia Dynamics 365: Petición mal realizada (Cuentas por pagar).',
-							autoClose: true
-						});
-					}
-					var url1 = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
-					app.api.call('update', url1, params, {
-						success: _.bind(function (data1) {
-						}, this)
-					});
+                    else {
+                        params["error_dynamics365_c"] = 'Error al enviar información hacia Dynamics 365: Petición mal realizada (Cuentas por pagar).';
+                        app.alert.dismiss('infoDynamics');
+                        app.alert.show('error_otp', {
+                            level: 'warning',
+                            messages: 'Error al enviar información hacia Dynamics 365: Petición mal realizada (Cuentas por pagar).',
+                            autoClose: true
+                        });
+                    }
+                    var url1 = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
+                    app.api.call('update', url1, params, {
+                        success: _.bind(function (data1) {
+                        }, this)
+                    });
                 }, this),
                 error: _.bind(function (response) {
-					var params = {};
-					params["error_dynamics365_c"] = response.textStatus+'\n"Error al enviar información hacia Dynamics 365"';
+                    var params = {};
+                    params["error_dynamics365_c"] = response.textStatus + '\n"Error al enviar información hacia Dynamics 365"';
                     app.alert.dismiss('infoDynamics');
                     app.alert.show('error_otp', {
                         level: 'error',
-                        messages: response.textStatus+'\n"Error al enviar información hacia Dynamics 365"',
+                        messages: response.textStatus + '\n"Error al enviar información hacia Dynamics 365"',
                         autoClose: true
                     });
-					var url1 = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
-					app.api.call('update', url1, params, {
-						success: _.bind(function (data1) {
-						}, this)
-					});
-                },this)
+                    var url1 = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
+                    app.api.call('update', url1, params, {
+                        success: _.bind(function (data1) {
+                        }, this)
+                    });
+                }, this)
             });
-        }else {
+        } else {
             app.alert.show('no_envia_dynamics', {
                 level: 'warning',
                 messages: 'La cuenta no cumple con los criterios de Proveedor para enviar a Dynamics 365',
@@ -2982,78 +3027,78 @@
 
     },
 
-    requestDynamics1:function (fields, errors, callback) {
+    requestDynamics1: function (fields, errors, callback) {
         //Valida que sea proveedor
-        var tipo_cuenta=this.model.get('tipo_registro_cuenta_c');
-        var proveedor=this.model.get('esproveedor_c');
-        var cedente=this.model.get('cedente_factor_c');
-        var deudor=this.model.get('deudor_factor_c');
-		var url = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
-		app.api.call('read', url, {}, {
-			success: _.bind(function (resumen) {		
-				if ((tipo_cuenta =='5' || tipo_cuenta=='3' || proveedor || cedente || deudor) && resumen.error_dynamics365_c) {
-					var body={
-						"accion":this.model.get('id')
-					}
-					app.alert.show('infoDynamics', {
-						level: 'process',
-						closeable: false,
-						messages: app.lang.get('LBL_LOADING'),
-					});
-					//Consumir servicio de OTP
-					app.api.call('create', app.api.buildURL("Dynamics365"), body, {
-						success: _.bind(function (data) {
-							var params = {};
-							app.alert.dismiss('infoDynamics');
-							if(data!=null){
-								this.model.set('control_dynamics_365_c',data[0]);
-								this.model.set('id_cpp_365_chk_c',data[1]);
-								params["error_dynamics365_c"] = "";
-							}
-							else {
-								params["error_dynamics365_c"] = 'Error al enviar información hacia Dynamics 365: Petición mal realizada (Cuentas por pagar).';
-								app.alert.dismiss('infoDynamics');
-								app.alert.show('error_otp', {
-									level: 'warning',
-									messages: 'Error al enviar información hacia Dynamics 365: Petición mal realizada (Cuentas por pagar).',
-									autoClose: true
-								});
-							}
-							var url1 = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
-							app.api.call('update', url1, params, {
-								success: _.bind(function (data1) {
-									callback(null, fields, errors);
-								}, this)
-							});
-						}, this),
-						error: _.bind(function (response) {
-							var params = {};
-							params["error_dynamics365_c"] = response.textStatus+'\n"Error al enviar información hacia Dynamics 365"';
-							app.alert.dismiss('infoDynamics');
-							app.alert.show('error_otp', {
-								level: 'warning',
-								messages: response.textStatus+'\n"Error al enviar información hacia Dynamics 365"',
-								autoClose: true
-							});
-							var url1 = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
-							app.api.call('update', url1, params, {
-								success: _.bind(function (data1) {
-									callback(null, fields, errors);
-								}, this)
-							});
-						},this)
-					});
-				}
-				else {
-					callback(null, fields, errors);
-				}
-			}, this)
-		});
+        var tipo_cuenta = this.model.get('tipo_registro_cuenta_c');
+        var proveedor = this.model.get('esproveedor_c');
+        var cedente = this.model.get('cedente_factor_c');
+        var deudor = this.model.get('deudor_factor_c');
+        var url = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
+        app.api.call('read', url, {}, {
+            success: _.bind(function (resumen) {
+                if ((tipo_cuenta == '5' || tipo_cuenta == '3' || proveedor || cedente || deudor) && resumen.error_dynamics365_c) {
+                    var body = {
+                        "accion": this.model.get('id')
+                    }
+                    app.alert.show('infoDynamics', {
+                        level: 'process',
+                        closeable: false,
+                        messages: app.lang.get('LBL_LOADING'),
+                    });
+                    //Consumir servicio de OTP
+                    app.api.call('create', app.api.buildURL("Dynamics365"), body, {
+                        success: _.bind(function (data) {
+                            var params = {};
+                            app.alert.dismiss('infoDynamics');
+                            if (data != null) {
+                                this.model.set('control_dynamics_365_c', data[0]);
+                                this.model.set('id_cpp_365_chk_c', data[1]);
+                                params["error_dynamics365_c"] = "";
+                            }
+                            else {
+                                params["error_dynamics365_c"] = 'Error al enviar información hacia Dynamics 365: Petición mal realizada (Cuentas por pagar).';
+                                app.alert.dismiss('infoDynamics');
+                                app.alert.show('error_otp', {
+                                    level: 'warning',
+                                    messages: 'Error al enviar información hacia Dynamics 365: Petición mal realizada (Cuentas por pagar).',
+                                    autoClose: true
+                                });
+                            }
+                            var url1 = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
+                            app.api.call('update', url1, params, {
+                                success: _.bind(function (data1) {
+                                    callback(null, fields, errors);
+                                }, this)
+                            });
+                        }, this),
+                        error: _.bind(function (response) {
+                            var params = {};
+                            params["error_dynamics365_c"] = response.textStatus + '\n"Error al enviar información hacia Dynamics 365"';
+                            app.alert.dismiss('infoDynamics');
+                            app.alert.show('error_otp', {
+                                level: 'warning',
+                                messages: response.textStatus + '\n"Error al enviar información hacia Dynamics 365"',
+                                autoClose: true
+                            });
+                            var url1 = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
+                            app.api.call('update', url1, params, {
+                                success: _.bind(function (data1) {
+                                    callback(null, fields, errors);
+                                }, this)
+                            });
+                        }, this)
+                    });
+                }
+                else {
+                    callback(null, fields, errors);
+                }
+            }, this)
+        });
     },
 
-    verificarCambiosRazonSocial:function(){
+    verificarCambiosRazonSocial: function () {
 
-        if( this.model.get('valid_cambio_razon_social_c') ){
+        if (this.model.get('valid_cambio_razon_social_c')) {
             //Carga productos para saber si es multiproducto o uniclick
             // Si es uniclick, únicamente Samuel Álvarez tiene permiso de ver los cambios
             //Si es multiproducto, únicamente el equipo de Crédito tiene permiso de ver los cambios
@@ -3093,37 +3138,37 @@
                                 case '14': //Tarjeta Crédito
                                     array_tipo_cuenta_producto['tc'] = tipoCuenta;
                                     break;
-                                
+
                             }
-                            
+
                         }
 
                         var contador_cliente = 0;
                         var contador_cliente_uniclick = 0;
-                        for( var key in array_tipo_cuenta_producto ){
-                            if( array_tipo_cuenta_producto[key] == '3' ){
-                            if( key == 'uniclick' ){
-                                contador_cliente_uniclick += 1;
-                            }else{
-                                contador_cliente += 1;
-                            }
+                        for (var key in array_tipo_cuenta_producto) {
+                            if (array_tipo_cuenta_producto[key] == '3') {
+                                if (key == 'uniclick') {
+                                    contador_cliente_uniclick += 1;
+                                } else {
+                                    contador_cliente += 1;
+                                }
                             }
                         }
-                        
-                        if( contador_cliente_uniclick > 0 && contador_cliente == 0 ){
+
+                        if (contador_cliente_uniclick > 0 && contador_cliente == 0) {
 
                             var lista_verificadores_uniclick = App.lang.getAppListStrings('verificadores_ids_uniclick_list');
                             var arr_permiso_uniclick = [];
                             Object.keys(lista_verificadores_uniclick).forEach(function (key) {
-                                if ( lista_verificadores_uniclick[key] == current_user_id ) {
+                                if (lista_verificadores_uniclick[key] == current_user_id) {
                                     arr_permiso_uniclick.push(1);
                                 }
                             })
                             //ES CLIENTE UNICLICK, SE ESTABLECE ÁREA INTERNA UNICLICK
                             //Establecer como Visor y aprobador a Samuel Álvarez
-                            if( arr_permiso_uniclick.includes(1)){
+                            if (arr_permiso_uniclick.includes(1)) {
                                 this.showModalVerificar();
-                            }else{
+                            } else {
                                 app.alert.show("validar_error", {
                                     level: "error",
                                     title: 'Error',
@@ -3132,32 +3177,32 @@
                                 });
 
                             }
-                        
+
                         }
-                        if( contador_cliente >= 0 ){
+                        if (contador_cliente >= 0) {
                             //ES MULTIPRODUCTO, SE ESTABLECE ÁREA INTERNA CRÉDITO
                             //ESTABLECER COMO VISORES A EQUIPO DE CREDITO
                             var lista_verificadores = App.lang.getAppListStrings('verificadores_ids_list');
                             var arr_permiso = [];
                             Object.keys(lista_verificadores).forEach(function (key) {
-                                if ( lista_verificadores[key]==current_user_id ) {
+                                if (lista_verificadores[key] == current_user_id) {
                                     arr_permiso.push(1);
                                 }
                             });
-                    
-                            if( arr_permiso.includes(1)){
+
+                            if (arr_permiso.includes(1)) {
                                 this.showModalVerificar();
-                            }else{
+                            } else {
                                 app.alert.show("validar_error", {
                                     level: "error",
                                     title: 'Error',
                                     messages: 'No tienes permiso para ejecutar esta acción',
                                     autoClose: false
                                 });
-                            }                    
-                            
+                            }
+
                         }
-                        
+
                         /*if( contador_cliente == 0 && contador_cliente_uniclick == 0){
                             //NO ES CLIENTE EN NINGÚN PRODUCTO
                             console.log('NO ES CLIENTE EN NINGÚN PRODUCTO');
@@ -3171,10 +3216,10 @@
                         }*/
 
                     }
-                
+
                 }, this)
             });
-        }else{
+        } else {
             app.alert.show("validar_error", {
                 level: "error",
                 title: 'Error',
@@ -3185,7 +3230,7 @@
 
     },
 
-    showModalVerificar: function(){
+    showModalVerificar: function () {
         var selfModal = this;
         app.drawer.open({
             layout: 'layout-verificaCambios',
@@ -3193,49 +3238,49 @@
                 context: this.context,
                 model: this.model,
             },
-        },function(context, model,update) {
+        }, function (context, model, update) {
             console.log("CIERRA DRAWER");
-            if( update == 'update' ){
+            if (update == 'update') {
                 //Refresca el modelo para mostrar los valores reestablecidos
                 App.controller.context.attributes.model.fetch();
                 //Manda llamar a función para volver a cargar las direcciones y de esta manera se puedan ver los cambios aprobados
                 selfModal.get_addresses();
 
             }
-            
+
         });
     },
 
     /** BEGIN CUSTOMIZATION: jgarcia@levementum.com 6/12/2015 Description: Persona Fisica and Persona Fisica con Actividad Empresarial must have an email or a Telefono RECORD*/
     _doValidateEmailTelefono: function (fields, errors, callback) {
-        if ((this.model.get('tipo_registro_cuenta_c')=="2" && (this.model.get('subtipo_registro_cuenta_c')=='8' ||this.model.get('subtipo_registro_cuenta_c')=='9'
-        || this.model.get('subtipo_registro_cuenta_c')=='10' ||this.model.get('subtipo_registro_cuenta_c')=='12')) || this.model.get('tipo_registro_cuenta_c')=="3") {
-                        var validPhone = false;
-                        for (var i = 0; i < this.oTelefonos.telefono.length; i++) {
-                            if (this.oTelefonos.telefono[i].estatus=='Activo') {
-                                validPhone= true;
+        if ((this.model.get('tipo_registro_cuenta_c') == "2" && (this.model.get('subtipo_registro_cuenta_c') == '8' || this.model.get('subtipo_registro_cuenta_c') == '9'
+            || this.model.get('subtipo_registro_cuenta_c') == '10' || this.model.get('subtipo_registro_cuenta_c') == '12')) || this.model.get('tipo_registro_cuenta_c') == "3") {
+            var validPhone = false;
+            for (var i = 0; i < this.oTelefonos.telefono.length; i++) {
+                if (this.oTelefonos.telefono[i].estatus == 'Activo') {
+                    validPhone = true;
 
-                            }
-                        }
-                        if (validPhone==false){
-                            $('#tabletelefonos').css('border', '2px solid red');
-                            errors['account_telefonos'] = errors['account_telefonos'] || {};
-                            errors['account_telefonos'].required = true;
-                            }
+                }
+            }
+            if (validPhone == false) {
+                $('#tabletelefonos').css('border', '2px solid red');
+                errors['account_telefonos'] = errors['account_telefonos'] || {};
+                errors['account_telefonos'].required = true;
+            }
 
-        }else if(this.model.get('tipo_registro_cuenta_c') !== '4' || this.model.get('tipo_registro_cuenta_c') !== '5'){
-                    if (_.isEmpty(this.model.get('email')) && _.isEmpty(this.oTelefonos.telefono)) {
-                        app.alert.show("Correo requerido", {
-                            level: "error",
-                            title: "Al menos un correo electr\u00F3nico o un tel\u00E9fono es requerido.",
-                            autoClose: false
-                        });
-                        errors['email'] = errors['email'] || {};
-                        errors['email'].required = true;
-                        $('#tabletelefonos').css('border', '2px solid red');
-                        errors['account_telefonos1'] = errors['account_telefonos1'] || {};
-                        errors['account_telefonos1'].required = true;
-                    }
+        } else if (this.model.get('tipo_registro_cuenta_c') !== '4' || this.model.get('tipo_registro_cuenta_c') !== '5') {
+            if (_.isEmpty(this.model.get('email')) && _.isEmpty(this.oTelefonos.telefono)) {
+                app.alert.show("Correo requerido", {
+                    level: "error",
+                    title: "Al menos un correo electr\u00F3nico o un tel\u00E9fono es requerido.",
+                    autoClose: false
+                });
+                errors['email'] = errors['email'] || {};
+                errors['email'].required = true;
+                $('#tabletelefonos').css('border', '2px solid red');
+                errors['account_telefonos1'] = errors['account_telefonos1'] || {};
+                errors['account_telefonos1'].required = true;
+            }
         }
         callback(null, fields, errors);
     },
@@ -3564,15 +3609,15 @@
         if (this.model.get('tipo_registro_cuenta_c') == '5' || this.model.get('esproveedor_c') == true) { //duda
             this.model.set("esproveedor_c", true);
             var tipoProveedor = new String(this.model.get('tipo_proveedor_c'));
-            if (tipoProveedor.length == 0) {
+            //if (tipoProveedor.length == 0) {
                 /*app.alert.show("Proveedor Requerido", {
                  level: "error",
                  title: "Debe seleccionar un un tipo de proveedor al menos",
                  autoClose: false
                  });*/
-                errors['tipo_proveedor_c'] = errors['tipo_proveedor_c'] || {};
-                errors['tipo_proveedor_c'].required = true;
-            }
+                //errors['tipo_proveedor_c'] = errors['tipo_proveedor_c'] || {};
+                //errors['tipo_proveedor_c'].required = true;
+            //}
             //Validacion de Actividad Economica - antes macrosector
             /*if ($('.list_ae').select2('val') == "0" || $('.list_ae').select2('val') == '' || $('.list_ae')[0].innerText.trim() == "" || $('.list_ae').select2('val') == null) {
                 //Entra a modo edición el campo custom
@@ -3595,21 +3640,23 @@
                 errors['rfc_c'] = errors['rfc_c'] || {};
                 errors['rfc_c'].required = true;
             }
-            if (this.model.get('tipodepersona_c') != 'Persona Moral') {
+            //if (this.model.get('tipodepersona_c') != 'Persona Moral') {
                 /*app.alert.show("Fecha de nacimiento requerida", {
                  level: "error",
                  title: "El campo fecha de nacimiento es requerido",
                  autoClose: false
                  });*/
+                /*
                 if (this.model.get('fechadenacimiento_c') == '' || this.model.get('fechadenacimiento_c') == null) {
                     errors['fechadenacimiento_c'] = errors['fechadenacimiento_c'] || {};
                     errors['fechadenacimiento_c'].required = true;
                 }
+                */
                 /*app.alert.show("Pais de nacimiento requerido", {
                  level: "error",
                  title: "El campo pa\u00EDs de nacimiento es requerido",
                  autoClose: false
-                 });*/
+                 });
                 if (this.model.get('pais_nacimiento_c') == '' || this.model.get('pais_nacimiento_c') == null) {
                     errors['pais_nacimiento_c'] = errors['pais_nacimiento_c'] || {};
                     errors['pais_nacimiento_c'].required = true;
@@ -3618,15 +3665,16 @@
                     errors['estado_nacimiento_c'] = errors['estado_nacimiento_c'] || {};
                     errors['estado_nacimiento_c'].required = true;
                 }
+                */
                 /*app.alert.show("Estado civil requerido", {
                  level: "error",
                  //title: "El campo estado civil es requerido",
                  autoClose: false
                  });*/
-                if (this.model.get('estadocivil_c') == '' || this.model.get('estadocivil_c') == null) {
+                /*if (this.model.get('estadocivil_c') == '' || this.model.get('estadocivil_c') == null) {
                     errors['estadocivil_c'] = errors['estadocivil_c'] || {};
                     errors['estadocivil_c'].required = true;
-                }
+                }*/
 
                 /*app.alert.show("Profesion requerido", {
                  level: "error",
@@ -3637,14 +3685,13 @@
                 //     errors['profesion_c'] = errors['profesion_c'] || {};
                 //     errors['profesion_c'].required = true;
                 // }
-            }
-            else {
+            //} else {
                 /*app.alert.show("Pais de constitucion", {
                  level: "error",
                  title: "El campo pa\u00EDs de constituci\u00F3n es requerido",
                  autoClose: false
                  });*/
-                if (this.model.get('pais_nacimiento_c') == '' || this.model.get('pais_nacimiento_c') == null) {
+                /*if (this.model.get('pais_nacimiento_c') == '' || this.model.get('pais_nacimiento_c') == null) {
                     errors['pais_nacimiento_c'] = errors['pais_nacimiento_c'] || {};
                     errors['pais_nacimiento_c'].required = true;
                 }
@@ -3656,7 +3703,8 @@
                     errors['fechaconstitutiva_c'] = errors['fechaconstitutiva_c'] || {};
                     errors['fechaconstitutiva_c'].required = true;
                 }
-            }
+                */
+            //}
         }
         callback(null, fields, errors);
     },
@@ -3669,7 +3717,7 @@
 
     cleanName: function () {
         //Consume servicio
-        if(this.model.get("name").trim()!='') {
+        if (this.model.get("name").trim() != '') {
             //Recupera variables
             var postData = {
                 'name': this.model.get("name")
@@ -3677,7 +3725,7 @@
             var serviceURI = app.api.buildURL("getCleanName", '', {}, {});
             App.api.call("create", serviceURI, postData, {
                 success: _.bind(function (data) {
-                    if (data['status']=='200') {
+                    if (data['status'] == '200') {
                         this.model.set('clean_name', data['cleanName']);
                     }
                 }, this)
@@ -3773,19 +3821,19 @@
      * */
     setPhoneOffice: function () {
 
-        if (this.oTelefonos != undefined){
-          if(this.oTelefonos.telefono != undefined) {
-            var telefono = this.oTelefonos.telefono;
-            for (var i = 0; i < telefono.length; i++) {
-                if (telefono[i].principal) {
-                    //if (telefono[i].pais!='52'){
-                    //this.model.set('phone_office', "base" + telefono[i].pais + " " + telefono[i].telefono);
-                    //}else{
-                    this.model.set('phone_office', "" + telefono[i].telefono);
-                    //}
+        if (this.oTelefonos != undefined) {
+            if (this.oTelefonos.telefono != undefined) {
+                var telefono = this.oTelefonos.telefono;
+                for (var i = 0; i < telefono.length; i++) {
+                    if (telefono[i].principal) {
+                        //if (telefono[i].pais!='52'){
+                        //this.model.set('phone_office', "base" + telefono[i].pais + " " + telefono[i].telefono);
+                        //}else{
+                        this.model.set('phone_office', "" + telefono[i].telefono);
+                        //}
+                    }
                 }
             }
-          }
         }
     },
 
@@ -3836,24 +3884,24 @@
     },
 
     // sectoreconomico: function (fields, errors, callback) {
-        //Validacion de Sector Economico custom
-        // if (this.model.get('tipodepersona_c') != 'Persona Fisica' && ($('.list_se').select2('val') == '' || $('.list_se')[0].innerText.trim() == '') && (this.model.get('tipo_registro_cuenta_c') == '3' || this.model.get('tipo_registro_cuenta_c') == '5' || this.model.get('esproveedor_c') == true)) {
+    //Validacion de Sector Economico custom
+    // if (this.model.get('tipodepersona_c') != 'Persona Fisica' && ($('.list_se').select2('val') == '' || $('.list_se')[0].innerText.trim() == '') && (this.model.get('tipo_registro_cuenta_c') == '3' || this.model.get('tipo_registro_cuenta_c') == '5' || this.model.get('esproveedor_c') == true)) {
 
-        //     $('.campoSE').find('.record-label').css('color', 'red');
-        //     $('.list_se').find('.select2-choice').css('border-color', 'red');
-        //     errors['sectoreconomico_c'] = "Error: Favor de verificar los errores";
-        //     errors['sectoreconomico_c'].required = true;
-        // }
+    //     $('.campoSE').find('.record-label').css('color', 'red');
+    //     $('.list_se').find('.select2-choice').css('border-color', 'red');
+    //     errors['sectoreconomico_c'] = "Error: Favor de verificar los errores";
+    //     errors['sectoreconomico_c'].required = true;
+    // }
 
-        //Validacion de php SetRequired para Sector Economico custom
-        // if (this.model.get('tipo_registro_cuenta_c') != '1' || this.model.get('tipo_registro_cuenta_c') != '3' || this.model.get('subtipo_registro_cuenta_c') != '2') {
+    //Validacion de php SetRequired para Sector Economico custom
+    // if (this.model.get('tipo_registro_cuenta_c') != '1' || this.model.get('tipo_registro_cuenta_c') != '3' || this.model.get('subtipo_registro_cuenta_c') != '2') {
 
-        //     $('.campoSE').find('.record-label').css('color', 'red');
-        //     $('.list_se').find('.select2-choice').css('border-color', 'red');
-        //     errors['sectoreconomico_c'] = "Error: Favor de verificar los errores";
-        //     errors['sectoreconomico_c'].required = true;
-        // }
-        // callback(null, fields, errors);
+    //     $('.campoSE').find('.record-label').css('color', 'red');
+    //     $('.list_se').find('.select2-choice').css('border-color', 'red');
+    //     errors['sectoreconomico_c'] = "Error: Favor de verificar los errores";
+    //     errors['sectoreconomico_c'].required = true;
+    // }
+    // callback(null, fields, errors);
     // },
 
     validadirecc: function (fields, errors, callback) {
@@ -3920,15 +3968,15 @@
 
         //Valida direcciones duplicadas
         if (direccion.length > 0) {
-            var direcciones=[];
+            var direcciones = [];
             Object.keys(direccion).forEach(key => {
 
                 //Se agrega al arreglo de direcciones para validar duplicadas, solo si la dirección se encuentra Activa
-                if( direccion[key].inactivo == 0 ){
-                    var direccion_string= direccion[key].valCodigoPostal + direccion[key].pais + direccion[key].estado + direccion[key].municipio + direccion[key].ciudad + direccion[key].colonia + direccion[key].calle.trim().toLowerCase() + direccion[key].numint.trim().toLowerCase() + direccion[key].numext.trim().toLowerCase();
+                if (direccion[key].inactivo == 0) {
+                    var direccion_string = direccion[key].valCodigoPostal + direccion[key].pais + direccion[key].estado + direccion[key].municipio + direccion[key].ciudad + direccion[key].colonia + direccion[key].calle.trim().toLowerCase() + direccion[key].numint.trim().toLowerCase() + direccion[key].numext.trim().toLowerCase();
                     direcciones.push(direccion_string);
                 }
-                
+
             });
 
             /*
@@ -3944,8 +3992,8 @@
                 }
             }*/
             //indices=indices.unique();
-            if ( direcciones.length > 0) {
-                if(this.containsDuplicates(direcciones)){
+            if (direcciones.length > 0) {
+                if (this.containsDuplicates(direcciones)) {
                     app.alert.show('error_direccion_duplicada', {
                         level: 'error',
                         autoClose: false,
@@ -3954,15 +4002,15 @@
                     errors['dire_direccion_duplicada'] = errors['dire_direccion_duplicada'] || {};
                     errors['dire_direccion_duplicada'].required = true;
 
-                } 
-                
+                }
+
             }
         }
 
         callback(null, fields, errors);
     },
 
-    containsDuplicates: function(array) {
+    containsDuplicates: function (array) {
         if (array.length !== new Set(array).size) {
             return true;
         }
@@ -4024,8 +4072,8 @@
             var indices = [];
             for (var i = 0; i < telefono.length; i++) {
                 for (var j = 0; j < telefono.length; j++) {
-                    var tel1=telefono[j].telefono.replace(/ /gi, "");
-                    var tel2=telefono[i].telefono.replace(/ /gi, "");
+                    var tel1 = telefono[j].telefono.replace(/ /gi, "");
+                    var tel2 = telefono[i].telefono.replace(/ /gi, "");
                     if (tel1 == tel2 && telefono[j].estatus == 'Activo' && telefono[i].estatus == 'Activo' && i != j) {
                         coincidencia++;
                         indices.push(i);
@@ -4133,11 +4181,11 @@
             for (i = 0; i < input.length; i++) {
 
                 if (expresion.test(input[i].email_address) == false) {
-                    cumple=false;
-                }
-                if(input[i].email_address.includes('@unifin')|| input[i].email_address.includes('@uniclick')){
                     cumple = false;
-                }else{
+                }
+                if (input[i].email_address.includes('@unifin') || input[i].email_address.includes('@uniclick')) {
+                    cumple = false;
+                } else {
                     cumple = true;
                 }
             }
@@ -4222,7 +4270,7 @@
                     errors['estado_nacimiento_c'] = errors['estado_nacimiento_c'] || {};
                     errors['estado_nacimiento_c'].required = true;
                 }
-                if (this.model.get('tipodepersona_c') == 'Persona Moral') {
+                if (this.model.get('tipodepersona_c') == 'Persona Moral' && this.model.get('esproveedor_c') != true) {
                     //Requerido Actividad Economica - antes macro sector
                     /*if ($('.list_ae').select2('val') == "0" || $('.list_ae').select2('val') == "" || $('.list_ae')[0].innerText.trim() == "" || $('.list_ae').select2('val') == null) {
 
@@ -4440,49 +4488,49 @@
     },
 
     valida_requeridos: function (fields, errors, callback) {
-      var roles=App.user.attributes.roles;
-      var roles_seguros=App.lang.getAppListStrings('roles_edicion_ctas_seguros_list');
+        var roles = App.user.attributes.roles;
+        var roles_seguros = App.lang.getAppListStrings('roles_edicion_ctas_seguros_list');
 
-      var seguros=0;
-      for (const [key, value] of Object.entries(roles_seguros)) {
-          if(roles.includes(value)){
-              seguros = 1;
-          }
-      }
-		if(!seguros) {
-			var campos = "";
-			_.each(errors, function (value, key) {
-				_.each(this.model.fields, function (field) {
-					if (_.isEqual(field.name, key)) {
-						if (field.vname) {
-							if (field.vname == 'LBL_PAIS_NACIMIENTO_C' && this.model.get('tipodepersona_c') == 'Persona Moral') {
-								campos = campos + '<b>País de constitución</b><br>';
-							}
-							else {
-								if (field.vname == 'LBL_ESTADO_NACIMIENTO' && this.model.get('tipodepersona_c') == 'Persona Moral') {
-									campos = campos + '<b>Estado de constitución</b><br>';
-								}
-								else {
-									campos = campos + '<b>' + app.lang.get(field.vname, "Accounts") + '</b><br>';
-								}
-							}
-						}
-					}
-				}, this);
-			}, this);
-			//Remueve campos custom: Teléfonos, Direcciones, Correo
-			//campos = campos.replace("<b>Telefonos</b><br>", "");
-			campos = campos.replace("<b>Direcciones</b><br>", "");
-			//campos = campos.replace("<b>Dirección de Correo Electrónico</b><br>", "");
+        var seguros = 0;
+        for (const [key, value] of Object.entries(roles_seguros)) {
+            if (roles.includes(value)) {
+                seguros = 1;
+            }
+        }
+        if (!seguros) {
+            var campos = "";
+            _.each(errors, function (value, key) {
+                _.each(this.model.fields, function (field) {
+                    if (_.isEqual(field.name, key)) {
+                        if (field.vname) {
+                            if (field.vname == 'LBL_PAIS_NACIMIENTO_C' && this.model.get('tipodepersona_c') == 'Persona Moral') {
+                                campos = campos + '<b>País de constitución</b><br>';
+                            }
+                            else {
+                                if (field.vname == 'LBL_ESTADO_NACIMIENTO' && this.model.get('tipodepersona_c') == 'Persona Moral') {
+                                    campos = campos + '<b>Estado de constitución</b><br>';
+                                }
+                                else {
+                                    campos = campos + '<b>' + app.lang.get(field.vname, "Accounts") + '</b><br>';
+                                }
+                            }
+                        }
+                    }
+                }, this);
+            }, this);
+            //Remueve campos custom: Teléfonos, Direcciones, Correo
+            //campos = campos.replace("<b>Telefonos</b><br>", "");
+            campos = campos.replace("<b>Direcciones</b><br>", "");
+            //campos = campos.replace("<b>Dirección de Correo Electrónico</b><br>", "");
 
-			if (campos) {
-				app.alert.show("Campos Requeridos", {
-					level: "error",
-					messages: "Hace falta completar la siguiente información en la <b>Cuenta:</b><br>" + campos,
-					autoClose: false
-				});
-			}
-		}
+            if (campos) {
+                app.alert.show("Campos Requeridos", {
+                    level: "error",
+                    messages: "Hace falta completar la siguiente información en la <b>Cuenta:</b><br>" + campos,
+                    autoClose: false
+                });
+            }
+        }
         callback(null, fields, errors);
     },
 
@@ -4508,7 +4556,7 @@
                 }
 
                 //Pregunta: Especifique AP
-                if (contexto_cuenta.ProductosPLD.arrendamientoPuro.campo17 == '' && contexto_cuenta.ProductosPLD.arrendamientoPuro.campo14==true) {
+                if (contexto_cuenta.ProductosPLD.arrendamientoPuro.campo17 == '' && contexto_cuenta.ProductosPLD.arrendamientoPuro.campo14 == true) {
                     $('.campo17txt-ap').css('border-color', 'red');
                     faltantesAP = faltantesAP + '<b>-Especifique:<br></b>';
                 } else {
@@ -4528,7 +4576,7 @@
                 }
 
                 //Pregunta: Especifique-ff
-                if (contexto_cuenta.ProductosPLD.factorajeFinanciero.campo17 == '' && contexto_cuenta.ProductosPLD.factorajeFinanciero.campo14==true && contexto_cuenta.ProductosPLD.factorajeFinanciero.campo2 == '2') {
+                if (contexto_cuenta.ProductosPLD.factorajeFinanciero.campo17 == '' && contexto_cuenta.ProductosPLD.factorajeFinanciero.campo14 == true && contexto_cuenta.ProductosPLD.factorajeFinanciero.campo2 == '2') {
                     $('.campo17txt-ff').css('border-color', 'red');
                     faltantesFF = faltantesFF + '<b>-Especifique<br></b>';
                 } else {
@@ -4539,7 +4587,7 @@
             if (App.user.attributes.tipodeproducto_c == '3') {
 
                 //Pregunta: Propietario Real-ca
-                if (contexto_cuenta.ProductosPLD.creditoAutomotriz.campo3  == '' && this.model.get('tipodepersona_c') != 'Persona Moral' && contexto_cuenta.ProductosPLD.creditoAutomotriz.campo2 == '2') {
+                if (contexto_cuenta.ProductosPLD.creditoAutomotriz.campo3 == '' && this.model.get('tipodepersona_c') != 'Persona Moral' && contexto_cuenta.ProductosPLD.creditoAutomotriz.campo2 == '2') {
                     $('.campo3rel-ca').find('.select2-choice').css('border-color', 'red');
                     faltantesCA = faltantesCA + '<b>-Propietario Real<br></b>';
                 } else {
@@ -4863,7 +4911,7 @@
     proveedorRecursos: function (fields, errors, callback) {
         if ($('.campo4ddw-ap').select2('val') == "2" || $('.campo4ddw-ca').select2('val') == "2" || $('.campo4ddw-ff').select2('val') == "2" || $('.campo4ddw-cs').select2('val') == "2" || $('.campo10ddw-ce').select2('val') == "2") {
             var Cuenta = this.model.get('id')
-            var apicall = app.api.buildURL('Rel_Relaciones/?filter[0][$or][0][account_id1_c][$equals]=' + Cuenta +'&filter[0][$or][1][rel_relaciones_accounts_1accounts_ida][$equals]=' + Cuenta, null, null);
+            var apicall = app.api.buildURL('Rel_Relaciones/?filter[0][$or][0][account_id1_c][$equals]=' + Cuenta + '&filter[0][$or][1][rel_relaciones_accounts_1accounts_ida][$equals]=' + Cuenta, null, null);
             app.api.call('GET', apicall, {}, {
                 success: _.bind(function (data) {
 
@@ -4871,21 +4919,21 @@
                     var relacionca = 0;
                     var relacionff = 0;
                     var relacioncs = 0;
-                    var relacioncr =0;
+                    var relacioncr = 0;
                     var productos = "";
-                    var esPropietario=false;
-                    var esCLiente=false;
-                    var esTercero=false;
-                    var tieneProvRec=false;
-                    esCLiente=(this.model.get('tipo_registro_cuenta_c')=="3") ? true : false;
-                    tienePR=(contexto_cuenta.ProductosPLD.creditoRevolvente.campo9=='') ? false : true;
-                    esTercero=(contexto_cuenta.ProductosPLD.creditoRevolvente.campo10 =='2') ? true : false;
+                    var esPropietario = false;
+                    var esCLiente = false;
+                    var esTercero = false;
+                    var tieneProvRec = false;
+                    esCLiente = (this.model.get('tipo_registro_cuenta_c') == "3") ? true : false;
+                    tienePR = (contexto_cuenta.ProductosPLD.creditoRevolvente.campo9 == '') ? false : true;
+                    esTercero = (contexto_cuenta.ProductosPLD.creditoRevolvente.campo10 == '2') ? true : false;
                     if (data.records.length > 0) {
                         for (var l = 0; l < data.records.length; l++) {
                             //Producto Arrendamiento Puro
                             if (App.user.attributes.productos_c.includes(1) && $('.campo4ddw-ap').select2('val') == "2") {
 
-                                if (data.records[l].relaciones_activas.includes('Proveedor de Recursos L')&& data.records[l].rel_relaciones_accounts_1accounts_ida==Cuenta) {
+                                if (data.records[l].relaciones_activas.includes('Proveedor de Recursos L') && data.records[l].rel_relaciones_accounts_1accounts_ida == Cuenta) {
                                     relacionl++;
 
                                 }
@@ -4893,32 +4941,32 @@
                             //Producto Credito Automotriz
                             if (App.user.attributes.productos_c.includes(3) && $('.campo4ddw-ca').select2('val') == "2") {
 
-                                if (data.records[l].relaciones_activas.includes('Proveedor de Recursos CA')&& data.records[l].rel_relaciones_accounts_1accounts_ida==Cuenta) {
+                                if (data.records[l].relaciones_activas.includes('Proveedor de Recursos CA') && data.records[l].rel_relaciones_accounts_1accounts_ida == Cuenta) {
                                     relacionca++;
                                 }
                             }
                             //Producto Factoraje Financiero
                             if (App.user.attributes.productos_c.includes(4) && $('.campo4ddw-ff').select2('val') == "2") {
 
-                                if (data.records[l].relaciones_activas.includes('Proveedor de Recursos F')&& data.records[l].rel_relaciones_accounts_1accounts_ida==Cuenta) {
+                                if (data.records[l].relaciones_activas.includes('Proveedor de Recursos F') && data.records[l].rel_relaciones_accounts_1accounts_ida == Cuenta) {
                                     relacionff++;
                                 }
                             }
                             //Producto Credito Simple
                             if ($('.campo4ddw-cs').select2('val') == "2") {
 
-                                if (data.records[l].relaciones_activas.includes('Proveedor de Recursos CS')&& data.records[l].rel_relaciones_accounts_1accounts_ida==Cuenta) {
+                                if (data.records[l].relaciones_activas.includes('Proveedor de Recursos CS') && data.records[l].rel_relaciones_accounts_1accounts_ida == Cuenta) {
                                     relacioncs++;
                                 }
                             }
                             //Credito Envolvente
                             if ((App.user.attributes.productos_c.includes(8) || App.user.attributes.productos_c.includes(14)) && $('.campo10ddw-ce').select2('val') == "2") {
-                                if (data.records[l].relaciones_activas.includes('Proveedor de los Recursos CR') && data.records[l].rel_relaciones_accounts_1accounts_ida==Cuenta) {
+                                if (data.records[l].relaciones_activas.includes('Proveedor de los Recursos CR') && data.records[l].rel_relaciones_accounts_1accounts_ida == Cuenta) {
                                     relacioncr++;
-                                    tieneProvRec=true;
+                                    tieneProvRec = true;
                                 }
-                                if (data.records[l].relaciones_activas.includes('Propietario Real') && data.records[l].account_id1_c==Cuenta) {
-                                    esPropietario=true;
+                                if (data.records[l].relaciones_activas.includes('Propietario Real') && data.records[l].account_id1_c == Cuenta) {
+                                    esPropietario = true;
                                 }
                             }
                         }
@@ -4962,7 +5010,7 @@
                         $('.campo4ddw-cs').find('.select2-choice').css('border-color', '');
                     }
                     //Validacion Credito revolvente
-                    if((!esPropietario && esTercero) || (esCLiente && esTercero) && !tieneProvRec){
+                    if ((!esPropietario && esTercero) || (esCLiente && esTercero) && !tieneProvRec) {
                         $('.campo10ddw-ce').find('.select2-choice').css('border-color', 'red');
                         productos = productos + '<b>Crédito Revolvente</b><br>';
                         errors['error_CR'] = errors['error_FPR'] || {};
@@ -5047,30 +5095,30 @@
                     //Bloquear el registro completo y mostrar alerta
                     $(".record-cell").attr("style", "pointer-events:none");
                     $('[name="edit_button"].rowaction').hide();
-                    
+
                     this.ocultaOpcionesSubpanel();
 
                     /**LLAMADA A NUEVA VISTA */
                     if (Modernizr.touch) {
-                      app.$contentEl.addClass("content-overflow-visible");
+                        app.$contentEl.addClass("content-overflow-visible");
                     }
                     /**check whether the view already exists in the layout.
                      * If not we will create a new view and will add to the components list of the record layout
                      * */
                     var quickCreateView = this.layout.getComponent(
-                      "alert-account-no-contactar"
+                        "alert-account-no-contactar"
                     );
                     if (!quickCreateView) {
-                      /** Create a new view object */
-                      quickCreateView = app.view.createView({
-                        context: this.context,
-                        name: "alert-account-no-contactar",
-                        layout: this.layout,
-                        module: "Accounts",
-                      });
-                      /** add the new view to the components list of the record layout*/
-                      this.layout._components.push(quickCreateView);
-                      this.layout.$el.append(quickCreateView.$el);
+                        /** Create a new view object */
+                        quickCreateView = app.view.createView({
+                            context: this.context,
+                            name: "alert-account-no-contactar",
+                            layout: this.layout,
+                            module: "Accounts",
+                        });
+                        /** add the new view to the components list of the record layout*/
+                        this.layout._components.push(quickCreateView);
+                        this.layout.$el.append(quickCreateView.$el);
                     }
                     /**triggers an event to show the pop up quick create view*/
                     this.layout.trigger("app:view:alert-account-no-contactar");
@@ -5081,7 +5129,7 @@
         //}
     },
 
-    ocultaOpcionesSubpanel: function (){
+    ocultaOpcionesSubpanel: function () {
 
         //Obtiene atributo de CAC
         var esCac = App.user.attributes.cac_c;
@@ -5100,51 +5148,51 @@
             .find(".filtered.tabbable")
             .find(".btn.dropdown-toggle")
             .hide();
-        
+
         //Para cuentas bloqueadas, si el usuario pertenece al CAC, si tiene permiso de crear Casos
-        if( esCac == 1 ){
+        if (esCac == 1) {
             $(".subpanels-layout")
-            .find('.filtered.tabbable[data-subpanel-link="cases"]')
-            .find('[name="create_button"]')
-            .show();
+                .find('.filtered.tabbable[data-subpanel-link="cases"]')
+                .find('[name="create_button"]')
+                .show();
 
             $(".subpanels-layout")
-            .find('.filtered.tabbable[data-subpanel-link="cases"]')
-            .find(".btn.dropdown-toggle")
-            .show();
+                .find('.filtered.tabbable[data-subpanel-link="cases"]')
+                .find(".btn.dropdown-toggle")
+                .show();
         }
-        
-        
+
+
     },
 
     blockRecordNoViable: function () {
         var userpuesto = app.user.attributes.puestousuario_c;
-        var puestos = ['5','11','16','53','54'];
+        var puestos = ['5', '11', '16', '53', '54'];
 
         var idCuenta = this.model.get('id');
         var listCondicion = App.lang.getAppListStrings('status_management_list');
         var listRazon = App.lang.getAppListStrings('razon_list');
 
 
-            app.api.call('GET', app.api.buildURL('GetProductosCuentas/' + idCuenta), null, {
-                success: function (data) {
-                    valProd = data;
+        app.api.call('GET', app.api.buildURL('GetProductosCuentas/' + idCuenta), null, {
+            success: function (data) {
+                valProd = data;
 
-                    var bloquemsg = false;
-                    var estatusmsg = "";
-                    var razonmsg = "";
-                    _.each(valProd, function (value, key) {
-                        if(userpuesto.includes(puestos) || app.user.id == valProd[key]['user_id_c']){
-                        if(valProd[key]['aprueba1_c'] == '1' && valProd[key]['aprueba2_c'] == '1'){
-                            var strUrl = 'tct4_Condiciones?filter[][condicion]='+valProd[key].status_management_c+'&filter[][razon]='+valProd[key].razon_c;
-		    				app.api.call("GET", app.api.buildURL(strUrl), null, {
-		    					success: _.bind(function (data1) {
-		    						if(data1.records.length > 0) {
+                var bloquemsg = false;
+                var estatusmsg = "";
+                var razonmsg = "";
+                _.each(valProd, function (value, key) {
+                    if (userpuesto.includes(puestos) || app.user.id == valProd[key]['user_id_c']) {
+                        if (valProd[key]['aprueba1_c'] == '1' && valProd[key]['aprueba2_c'] == '1') {
+                            var strUrl = 'tct4_Condiciones?filter[][condicion]=' + valProd[key].status_management_c + '&filter[][razon]=' + valProd[key].razon_c;
+                            app.api.call("GET", app.api.buildURL(strUrl), null, {
+                                success: _.bind(function (data1) {
+                                    if (data1.records.length > 0) {
                                         razon = Productos[key].razon_c;
-                                        motivo = (Productos[key].motivo_c == null) ? "":Productos[key].motivo_c;
+                                        motivo = (Productos[key].motivo_c == null) ? "" : Productos[key].motivo_c;
 
                                         _.each(data1.records, function (valor, llave) {
-                                            if(data1.records[llave].razon == razon && data1.records[llave].motivo == motivo && data1.records[llave].bloquea){
+                                            if (data1.records[llave].razon == razon && data1.records[llave].motivo == motivo && data1.records[llave].bloquea) {
                                                 bloquemsg = true;
                                                 estatusmsg = data1.records[llave].condicion;
                                                 razonmsg = data1.records[llave].razon;
@@ -5152,28 +5200,28 @@
 
                                         });
 
-                                        if(bloquemsg){
+                                        if (bloquemsg) {
                                             $('.record.tab-layout').attr('style', 'pointer-events:none');
                                             $('.subpanel').attr('style', 'pointer-events:none');
                                             app.alert.show("cuentas_no_contactar", {
                                                 level: "error",
                                                 title: "Cuenta No Contactable",
-                                                messages: "La cuenta se encuentra "+listCondicion[estatusmsg]+" debido a "+listRazon[razonmsg]+" . <br>Es necesario reactivar la cuenta, para retomar actividad comercial",
+                                                messages: "La cuenta se encuentra " + listCondicion[estatusmsg] + " debido a " + listRazon[razonmsg] + " . <br>Es necesario reactivar la cuenta, para retomar actividad comercial",
                                                 autoClose: false
                                             });
                                         }
 
                                     }
                                 }, this)
-		    				});
+                            });
                         }
-                        }
-                    });
-                },
-                error: function (e) {
-                    throw e;
-                }
-            });
+                    }
+                });
+            },
+            error: function (e) {
+                throw e;
+            }
+        });
     },
 
 
@@ -5199,11 +5247,11 @@
         this.editaCiudad = false;
         for (const [key, value] of Object.entries(edicionCiudadList)) {
             //console.log('value:'+value);
-            if(App.user.id == value){
+            if (App.user.id == value) {
                 this.editaCiudad = true;
-            } 
+            }
         }
-        
+
         //Recupera información
         if (!_.isEmpty(idCuenta) && idCuenta != "") {
             app.api.call('GET', app.api.buildURL('Accounts/' + idCuenta + '/link/accounts_dire_direccion_1?filter[0][indicador][$not_equals]=64'), null, {
@@ -5216,7 +5264,8 @@
                         var tipoSeleccionados = '^' + listMapIndicador[tipo].replace(/,/gi, "^,^") + '^';
                         var indicador = data.records[i].indicador;
                         var indicadorSeleccionados = '^' + listMapIndicador[indicador].replace(/,/gi, "^,^") + '^';
-                        
+
+                        /*
                         var valCodigoPostal = data.records[i].dire_direccion_dire_codigopostal_name;
                         var idCodigoPostal = data.records[i].dire_direccion_dire_codigopostaldire_codigopostal_ida;
                         var valPais = data.records[i].dire_direccion_dire_pais_name;
@@ -5229,6 +5278,32 @@
                         var idCiudad = data.records[i].dire_direccion_dire_ciudaddire_ciudad_ida;
                         var valColonia = data.records[i].dire_direccion_dire_colonia_name;
                         var idColonia = data.records[i].dire_direccion_dire_coloniadire_colonia_ida;
+                        */
+                        //Se obtiene campo description para obtener los id (recordar que el description guarda los id separados por pipeline | 
+                        //ejemplo: "{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}"
+
+                        var description = data.records[i].description;
+
+                        var ids = description.split('|');
+
+                        var identificadorPais = ids[0];
+                        var identificadorEstado = ids[1];
+                        var identificadorCiudad = ids[2];
+                        var identificadorMunicipio = ids[3];
+                        var identificadorColonia = ids[4];
+
+                        var valCodigoPostal = data.records[i].codigo_postal_c;
+                        var idCodigoPostal = data.records[i].dir_sepomex_dire_direcciondir_sepomex_ida;
+                        var valPais = data.records[i].pais_c;
+                        var idPais = identificadorPais;
+                        var valEstado = data.records[i].estado_c;
+                        var idEstado = identificadorEstado;
+                        var valMunicipio = data.records[i].municipio_c;
+                        var idMunicipio = identificadorMunicipio;
+                        var valCiudad = data.records[i].ciudad_c;
+                        var idCiudad = identificadorCiudad;
+                        var valColonia = data.records[i].colonia_c;
+                        var idColonia = identificadorColonia;
                         var calle = data.records[i].calle;
                         var numExt = data.records[i].numext;
                         var numInt = data.records[i].numint;
@@ -5239,14 +5314,14 @@
                         var direccionCompleta = data.records[i].name;
                         var bloqueado = (indicadorSeleccionados.indexOf('2') != -1) ? 1 : 0;
                         var accesoFiscal = App.user.attributes.tct_alta_clientes_chk_c + App.user.attributes.tct_altaproveedor_chk_c + App.user.attributes.tct_alta_cd_chk_c + App.user.attributes.deudor_factoraje_c;
-                        bloqueado = (this.model.get('tipo_registro_cuenta_c') == 4 || this.model.get('tipo_registro_cuenta_c') == 5 )? 0: bloqueado;
+                        bloqueado = (this.model.get('tipo_registro_cuenta_c') == 4 || this.model.get('tipo_registro_cuenta_c') == 5) ? 0 : bloqueado;
                         var editaCiudad = contexto_cuenta.editaCiudad;
-                        if(this.model.get('tipo_registro_cuenta_c') == '3' && this.model.get('subtipo_registro_cuenta_c') != '11' && this.model.get('origen_cuenta_c') != '11' && indicadorSeleccionados.includes('^2^') ){
+                        if (this.model.get('tipo_registro_cuenta_c') == '3' && this.model.get('subtipo_registro_cuenta_c') != '11' && this.model.get('origen_cuenta_c') != '11' && indicadorSeleccionados.includes('^2^')) {
                             bloqueado = 1;
                         }
                         var validaDireccion = data.records[i].cambio_direccion_c;
-                        if(!validaDireccion){
-                            validaDireccion = (contexto_cuenta.model.get('cambio_dirfiscal_c') != undefined && indicadorSeleccionados.includes('^2^') ) ? contexto_cuenta.model.get('cambio_dirfiscal_c') : validaDireccion; 
+                        if (!validaDireccion) {
+                            validaDireccion = (contexto_cuenta.model.get('cambio_dirfiscal_c') != undefined && indicadorSeleccionados.includes('^2^')) ? contexto_cuenta.model.get('cambio_dirfiscal_c') : validaDireccion;
                         }
 
                         //Parsea a objeto direccion
@@ -5287,15 +5362,32 @@
                             "secuencia": secuencia,
                             "id": idDireccion,
                             "direccionCompleta": direccionCompleta,
-							"bloqueado": bloqueado,
+                            "bloqueado": bloqueado,
                             "editaCiudad": editaCiudad,
-                            "validaDireccion":validaDireccion
+                            "validaDireccion": validaDireccion
                         };
+
+                        if (_.isEmpty(idCodigoPostal)) {
+                            app.alert.show("no_match_sepomex", {
+                                level: "info",
+                                messages: 'Una dirección no está homologada con sepomex.<br>Favor de verificar.',
+                                autoClose: false
+                            });
+                            direccion['sinSepomex'] = true;
+
+                            direccion['oldCP'] = data.records[i].dire_direccion_dire_codigopostal_name;
+                            direccion['oldPais'] = data.records[i].dire_direccion_dire_pais_name;
+                            direccion['oldEstado'] = data.records[i].dire_direccion_dire_estado_name;
+                            direccion['oldMunicipio'] = data.records[i].dire_direccion_dire_municipio_name;
+                            direccion['oldCiudad'] = data.records[i].dire_direccion_dire_ciudad_name;
+                            direccion['oldColonia'] = data.records[i].dire_direccion_dire_colonia_name;
+
+                        }
 
                         //Agregar dirección
                         contexto_cuenta.oDirecciones.direccion.push(direccion);
 
-                        if(valCodigoPostal!=""){
+                        if (valCodigoPostal != "") {
 
                             //recupera información asociada a CP
                             var strUrl = 'DireccionesCP/' + valCodigoPostal + '/' + i;
@@ -5306,6 +5398,7 @@
                                     var list_municipios = data.municipios;
                                     //var city_list = App.metadata.getCities();
                                     var city_list = data.ciudades_metadata;
+                                    var list_ciudades = data.ciudades;
                                     var list_estados = data.estados;
                                     var list_colonias = data.colonias;
                                     //Poarsea valores para listas
@@ -5333,24 +5426,31 @@
                                     //Colonia
                                     listColonia = {};
                                     for (var i = 0; i < list_colonias.length; i++) {
-                                        listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
+                                        //listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
+                                        listColonia[i] = {};
+                                        listColonia[i]['idColonia'] = list_colonias[i].idColonia;
+                                        listColonia[i]['nameColonia'] = list_colonias[i].nameColonia;
+                                        listColonia[i]['idCodigoPostal'] = list_colonias[i].idCodigoPostal;
                                     }
 
                                     //Se ordena la lista de colonias
+                                    /*
                                     var  arrayColonias = Object.entries(listColonia);
                                     // Ordenar el array por valores de manera ascendente
                                     arrayColonias.sort(function (a, b) {
                                         return a[1].localeCompare(b[1]);
                                     });
+                                    */
                                     // Se establece el arreglo ya ordenado
-                                    listColonia = Object.fromEntries(arrayColonias);
+                                    //listColonia = Object.fromEntries(arrayColonias);
 
                                     contexto_cuenta.oDirecciones.direccion[data.indice].listColonia = listColonia;
                                     contexto_cuenta.oDirecciones.direccion[data.indice].listColoniaFull = listColonia;
                                     //Ciudad
-                                    listCiudad = {}
-                                    idSinCiudad='';
-                                    ciudades = Object.values(city_list);
+                                    //listCiudad = {}
+                                    idSinCiudad = '';
+                                    //ciudades = Object.values(city_list);
+                                    /*
                                     for (var [key, value] of Object.entries(contexto_cuenta.oDirecciones.direccion[data.indice].listEstado)) {
                                         for (var i = 0; i < ciudades.length; i++) {
                                             if (ciudades[i].estado_id == key) {
@@ -5359,17 +5459,22 @@
                                             }
                                         }
                                     }
+                                    */
+                                    listCiudad = {};
+                                    for (var i = 0; i < list_ciudades.length; i++) {
+                                        listCiudad[list_ciudades[i].idCiudad] = list_ciudades[i].nameCiudad;
+                                    }
 
                                     //Se ordena la lista de ciudades
-                                    var  arrayCiudades = Object.entries(listCiudad);
+                                    var arrayCiudades = Object.entries(listCiudad);
                                     arrayCiudades.sort(function (a, b) {
                                         return a[1].localeCompare(b[1]);
                                     });
                                     // Se establece el arreglo ya ordenado
                                     listCiudad = Object.fromEntries(arrayCiudades);
-                                    
-                                    contexto_cuenta.oDirecciones.direccion[data.indice].ciudad = (contexto_cuenta.oDirecciones.direccion[data.indice].ciudad=='') ? idSinCiudad : contexto_cuenta.oDirecciones.direccion[data.indice].ciudad;
-                                    contexto_cuenta.oDirecciones.direccion[data.indice].valCiudad = (contexto_cuenta.oDirecciones.direccion[data.indice].valCiudad =='') ? 'SIN CIUDAD' : contexto_cuenta.oDirecciones.direccion[data.indice].valCiudad;
+
+                                    contexto_cuenta.oDirecciones.direccion[data.indice].ciudad = (contexto_cuenta.oDirecciones.direccion[data.indice].ciudad == '') ? idSinCiudad : contexto_cuenta.oDirecciones.direccion[data.indice].ciudad;
+                                    contexto_cuenta.oDirecciones.direccion[data.indice].valCiudad = (contexto_cuenta.oDirecciones.direccion[data.indice].valCiudad == '') ? 'SIN CIUDAD' : contexto_cuenta.oDirecciones.direccion[data.indice].valCiudad;
                                     contexto_cuenta.oDirecciones.direccion[data.indice].listCiudad = listCiudad;
                                     contexto_cuenta.oDirecciones.direccion[data.indice].listCiudadFull = listCiudad;
 
@@ -5379,7 +5484,7 @@
 
                                     //Construye JSON para controlar cambio de dirección fiscal
                                     //var json_direccion = {};
-                                    if( Number(data['indice']) + 1 == contexto_cuenta.length_direcciones ){
+                                    if (Number(data['indice']) + 1 == contexto_cuenta.length_direcciones) {
                                         try {
                                             json_direccion = JSON.parse(contexto_cuenta.model.get('json_direccion_audit_c'));
                                         } catch (error) {
@@ -5389,7 +5494,7 @@
                                         //json_direccion['json_dire_actualizar'] = cont_dir.oDirecciones.direccion;
                                         //contexto_cuenta.model.set('json_direccion_audit_c',JSON.stringify(json_direccion));
                                     }
-                                    
+
                                     //Aplica render a campo custom
                                     cont_dir.render();
 
@@ -5411,11 +5516,11 @@
 
             //Direcciones
             this.prev_oDirecciones.prev_direccion = app.utils.deepCopy(this.oDirecciones.direccion);
-            
+
             //Actualiza campo que guarda json de direcciones
             var json_direcciones_campo = this.model.get('json_direccion_audit_c');
-            
-            if( json_direcciones_campo != "" ){
+
+            if (json_direcciones_campo != "") {
                 var json_direcciones = JSON.parse(json_direcciones_campo);
 
                 json_direcciones['json_dire_actualizar'] = this.oDirecciones.direccion;
@@ -5424,11 +5529,11 @@
                 json_direcciones['fecha_cambio'] = fecha_actual;
                 this.model.set('json_direccion_audit_c', JSON.stringify(json_direcciones));
             }
-            
+
             this.model.set('account_direcciones', this.oDirecciones.direccion);
-            
+
             this.model.set('account_direccion_buro_credito', contexto_dire_buro.direccionBuro);
-            
+
         }
         //Callback a validation task
         callback(null, fields, errors);
@@ -5879,19 +5984,19 @@
                 faltantesleasup += 1;
             }
             if ($('.chk_l_nv')[0].checked == true && $('.list_l_nv_razon').select2('val') == "1" &&
-            ($('.list_l_nv_razon_fp').select2('val') == "" || $('.list_l_nv_razon_fp').select2('val') == null || $('.list_l_nv_razon_fp').select2('val') == "0")) {
+                ($('.list_l_nv_razon_fp').select2('val') == "" || $('.list_l_nv_razon_fp').select2('val') == null || $('.list_l_nv_razon_fp').select2('val') == "0")) {
 
                 $('.list_l_nv_razon_fp').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                 faltantesleasup += 1;
             }
             if ($('.chk_l_nv')[0].checked == true && $('.list_l_nv_razon').select2('val') == "2" &&
-            ($('.list_l_nv_razon_cf').select2('val') == "" || $('.list_l_nv_razon_cf').select2('val') == null || $('.list_l_nv_razon_cf').select2('val') == "0")) {
+                ($('.list_l_nv_razon_cf').select2('val') == "" || $('.list_l_nv_razon_cf').select2('val') == null || $('.list_l_nv_razon_cf').select2('val') == "0")) {
 
                 $('.list_l_nv_razon_cf').find('.select2-choice').css('border-color', 'red'); //Condiciones Financieras
                 faltantesleasup += 1;
             }
             if ($('.chk_l_nv')[0].checked == true && $('.list_l_nv_razon').select2('val') == "7" &&
-            ($('.list_l_nv_razon_ni').select2('val') == "" || $('.list_l_nv_razon_ni').select2('val') == null || $('.list_l_nv_razon_ni').select2('val') == "0")) {
+                ($('.list_l_nv_razon_ni').select2('val') == "" || $('.list_l_nv_razon_ni').select2('val') == null || $('.list_l_nv_razon_ni').select2('val') == "0")) {
 
                 $('.list_l_nv_razon_ni').find('.select2-choice').css('border-color', 'red'); //Razón No se encuentra interesado
                 faltantesleasup += 1;
@@ -5910,21 +6015,21 @@
                 faltantesleasup += 1;
             }
             if ($('.chk_l_nv')[0].checked == true && $('.list_l_nv_razon').select2('val') == "4" &&
-            ($('.list_l_nv_producto').select2('val') == "" || $('.list_l_nv_producto').select2('val') == null || $('.list_l_nv_producto').select2('val') == "0")) {
+                ($('.list_l_nv_producto').select2('val') == "" || $('.list_l_nv_producto').select2('val') == null || $('.list_l_nv_producto').select2('val') == "0")) {
 
                 $('.list_l_nv_producto').find('.select2-choice').css('border-color', 'red'); //¿Qué producto?
                 faltantesleasup += 1;
             }
             if (($('.list_l_nv_razon').select2('val') == "4" || $('.list_l_nv_razon option:selected').text() == "4" || $('.list_l_nv_razon')[0].innerText.trim() == "4") &&
-            ($('.list_l_nv_producto').select2('val') == "4" || $('.list_l_nv_producto option:selected').text() == "4" || $('.list_l_nv_producto')[0].innerText.trim() == "4") &&
-            $('.chk_l_nv')[0].checked && $('.txt_l_nv_otro').val().trim() == "") {
+                ($('.list_l_nv_producto').select2('val') == "4" || $('.list_l_nv_producto option:selected').text() == "4" || $('.list_l_nv_producto')[0].innerText.trim() == "4") &&
+                $('.chk_l_nv')[0].checked && $('.txt_l_nv_otro').val().trim() == "") {
 
                 $('.txt_l_nv_otro').css('border-color', 'red'); //TXT ¿Qué producto?
                 faltantesleasup += 1;
             }
             if (($('.list_l_nv_razon').select2('val') == "4" || $('.list_l_nv_razon option:selected').text() == "4" || $('.list_l_nv_razon')[0].innerText.trim() == "4") &&
-            ($('.list_l_nv_producto').select2('val') == "4" || $('.list_l_nv_producto option:selected').text() == "4" || $('.list_l_nv_producto')[0].innerText.trim() == "4") &&
-            $('.chk_l_nv')[0].checked && $('.txt_l_nv_otro').val().trim() == "") {
+                ($('.list_l_nv_producto').select2('val') == "4" || $('.list_l_nv_producto option:selected').text() == "4" || $('.list_l_nv_producto')[0].innerText.trim() == "4") &&
+                $('.chk_l_nv')[0].checked && $('.txt_l_nv_otro').val().trim() == "") {
                 $('.txt_l_nv_otro').css('border-color', 'red'); //TXT ¿Qué producto?
                 faltantesleasup += 1;
             }
@@ -5940,10 +6045,10 @@
         }
 
         var productos = App.user.attributes.productos_c; //USUARIOS CON LOS SIGUIENTES PRODUCTOS
-        if(ResumenProductos.leasing != undefined && (document.getElementById("list_l_estatus_lm") != undefined || document.getElementById("list_l_estatus_lm") != null) ){
+        if (ResumenProductos.leasing != undefined && (document.getElementById("list_l_estatus_lm") != undefined || document.getElementById("list_l_estatus_lm") != null)) {
 
-            if( ( (productos.includes("1") && (App.user.attributes.id == ResumenProductos.leasing.assigned_user_id))
-                    && (!ResumenProductos.leasing.notificacion_noviable_c) ) || App.user.attributes.bloqueo_cuentas_c == 1 ){
+            if (((productos.includes("1") && (App.user.attributes.id == ResumenProductos.leasing.assigned_user_id))
+                && (!ResumenProductos.leasing.notificacion_noviable_c)) || App.user.attributes.bloqueo_cuentas_c == 1) {
                 var faltantelm = 0;
                 var selectlm = document.getElementById("list_l_estatus_lm");
                 var selectlrazon = document.getElementById("list_l_so_razon");
@@ -5952,67 +6057,67 @@
                 var detalle_flag = false;
                 var validador2 = false;
 
-                var errorLM ="";
+                var errorLM = "";
 
-                if( selectlm.value != "" && (selectlm.value =="4" || selectlm.value =="5") ){
-                    if ( selectlrazon.value == '' ) {
+                if (selectlm.value != "" && (selectlm.value == "4" || selectlm.value == "5")) {
+                    if (selectlrazon.value == '') {
                         $('.list_l_so_razon').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                         faltantelm += 1;
-                        errorLM +="Razón <br>";
+                        errorLM += "Razón <br>";
                     }
 
                     if ($('.list_l_respval_1').select2('val') == null || $('.list_l_respval_1').select2('val') == "" || $('.list_l_respval_1').select2('val') == "0") {
                         $('.list_l_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                        errorLM +="Responsable de Validación 1 <br>";
+                        errorLM += "Responsable de Validación 1 <br>";
                         faltantelm += 1;
                     }
 
-                    for(var i = 0; i < contexto_cuenta.datacondiciones.records.length; i++) {
-                        if ( contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value
+                    for (var i = 0; i < contexto_cuenta.datacondiciones.records.length; i++) {
+                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value
                             && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value
-                            && contexto_cuenta.datacondiciones.records[i].motivo != "" ){
-                            if ( selectlmotivo.value == "") {
+                            && contexto_cuenta.datacondiciones.records[i].motivo != "") {
+                            if (selectlmotivo.value == "") {
                                 $('.list_l_so_motivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                                 //$('.list_l_so_motivo').css('border-color', 'red'); //TXT ¿Qué producto?
                                 //errorLM +="Motivo <br>";
                                 motivo_flag = true;
                             }
                         }
-                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value ){
-                            if (contexto_cuenta.datacondiciones.records[i].detalle == true ) {
-                                if ( $('.txt_l_so_detalle').val().trim() == "") {
+                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value) {
+                            if (contexto_cuenta.datacondiciones.records[i].detalle == true) {
+                                if ($('.txt_l_so_detalle').val().trim() == "") {
                                     $('.txt_l_so_detalle').css('border-color', 'red'); //TXT ¿Qué producto?
                                     //errorLM +="Detalle <br>";
                                     detalle_flag = true;
                                 }
                             }
                         }
-                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value ){
-                            if (contexto_cuenta.datacondiciones.records[i].notifica == true && ($('.list_l_respval_2').select2('val') == "" || $('.list_l_respval_2').select2('val') == "0") ) {
+                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value) {
+                            if (contexto_cuenta.datacondiciones.records[i].notifica == true && ($('.list_l_respval_2').select2('val') == "" || $('.list_l_respval_2').select2('val') == "0")) {
                                 $('.list_l_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                                 //errorLM +="Responsable de Validación 2 <br>";
                                 validador2 = true;
                             }
                         }
                     }
-                    if(motivo_flag){
-                        errorLM +="Motivo <br>";
+                    if (motivo_flag) {
+                        errorLM += "Motivo <br>";
                         faltantelm += 1;
                     }
-                    if(detalle_flag){
-                        errorLM +="Detalle <br>";
+                    if (detalle_flag) {
+                        errorLM += "Detalle <br>";
                         faltantelm += 1;
                     }
-                    if(validador2){
-                        errorLM +="Responsable de Validación 2 <br>";
+                    if (validador2) {
+                        errorLM += "Responsable de Validación 2 <br>";
                         faltantelm += 1;
                     }
-                    if(validador2){
-                        if ( ($('.list_l_respval_2').select2('val') != null || $('.list_l_respval_2').select2('val') != "" || $('.list_l_respval_2').select2('val') != "0" || $('.list_l_respval_2').select2('val') == null)
-                        && ($('.list_l_respval_1').select2('val') != null || $('.list_l_respval_1').select2('val') != "" || $('.list_l_respval_1').select2('val') != "0") &&  ($('.list_l_respval_2').select2('val') == $('.list_l_respval_1').select2('val'))) {
+                    if (validador2) {
+                        if (($('.list_l_respval_2').select2('val') != null || $('.list_l_respval_2').select2('val') != "" || $('.list_l_respval_2').select2('val') != "0" || $('.list_l_respval_2').select2('val') == null)
+                            && ($('.list_l_respval_1').select2('val') != null || $('.list_l_respval_1').select2('val') != "" || $('.list_l_respval_1').select2('val') != "0") && ($('.list_l_respval_2').select2('val') == $('.list_l_respval_1').select2('val'))) {
                             $('.list_l_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                             $('.list_l_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                            errorLM +="Los Responsables de Validación no pueden ser iguales para <b>No Viable Leasing </b>. <br>";
+                            errorLM += "Los Responsables de Validación no pueden ser iguales para <b>No Viable Leasing </b>. <br>";
                             errors['error_leasingUP'] = errors['error_leasingUP'] || {};
                             errors['error_leasingUP'].required = true;
                             faltantelm += 1;
@@ -6028,7 +6133,7 @@
                 if (faltantelm > 0) {
                     app.alert.show("Faltantes No viable - Lead Management", {
                         level: "error",
-                        title: ' Para el cambio de estatus <b> '+app.lang.getAppListStrings('status_management_list')[selectlm.value] +' en Leasing </b> <br> Hace falta llenar los campos: <br>'+errorLM ,
+                        title: ' Para el cambio de estatus <b> ' + app.lang.getAppListStrings('status_management_list')[selectlm.value] + ' en Leasing </b> <br> Hace falta llenar los campos: <br>' + errorLM,
                         autoClose: false
                     });
                     errors['error_leasingUP'] = errors['error_leasingUP'] || {};
@@ -6036,11 +6141,11 @@
                 }
             }
         }
-            /*if (faltantesleasup == 0 && $('.chk_l_nv')[0].checked == true && cont_uni_p.ResumenProductos.leasing.status_management_c != "3") {
-                this.model.set('promotorleasing_c', '9 - No Viable');
-                this.model.set('user_id_c', 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb');
-                cont_uni_p.ResumenProductos.leasing.assigned_user_id = 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb'; //'9 - No Viable' en Uni_Productos
-            }*/
+        /*if (faltantesleasup == 0 && $('.chk_l_nv')[0].checked == true && cont_uni_p.ResumenProductos.leasing.status_management_c != "3") {
+            this.model.set('promotorleasing_c', '9 - No Viable');
+            this.model.set('user_id_c', 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb');
+            cont_uni_p.ResumenProductos.leasing.assigned_user_id = 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb'; //'9 - No Viable' en Uni_Productos
+        }*/
 
         callback(null, fields, errors);
     },
@@ -6053,19 +6158,19 @@
                 faltantesFactorajeUP += 1;
             }
             if ($('.chk_f_nv')[0].checked == true && $('.list_f_nv_razon').select2('val') == "1" &&
-            ($('.list_f_nv_razon_fp').select2('val') == "" || $('.list_f_nv_razon_fp').select2('val') == null || $('.list_f_nv_razon_fp').select2('val') == "0")) {
+                ($('.list_f_nv_razon_fp').select2('val') == "" || $('.list_f_nv_razon_fp').select2('val') == null || $('.list_f_nv_razon_fp').select2('val') == "0")) {
 
                 $('.list_f_nv_razon_fp').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                 faltantesFactorajeUP += 1;
             }
             if ($('.chk_f_nv')[0].checked == true && $('.list_f_nv_razon').select2('val') == "2" &&
-            ($('.list_f_nv_razon_cf').select2('val') == "" || $('.list_f_nv_razon_cf').select2('val') == null || $('.list_f_nv_razon_cf').select2('val') == "0")) {
+                ($('.list_f_nv_razon_cf').select2('val') == "" || $('.list_f_nv_razon_cf').select2('val') == null || $('.list_f_nv_razon_cf').select2('val') == "0")) {
 
                 $('.list_f_nv_razon_cf').find('.select2-choice').css('border-color', 'red'); //Condiciones Financieras
                 faltantesFactorajeUP += 1;
             }
             if ($('.chk_f_nv')[0].checked == true && $('.list_f_nv_razon').select2('val') == "7" &&
-            ($('.list_f_nv_razon_ni').select2('val') == "" || $('.list_f_nv_razon_ni').select2('val') == null || $('.list_f_nv_razon_ni').select2('val') == "0")) {
+                ($('.list_f_nv_razon_ni').select2('val') == "" || $('.list_f_nv_razon_ni').select2('val') == null || $('.list_f_nv_razon_ni').select2('val') == "0")) {
 
                 $('.list_f_nv_razon_ni').find('.select2-choice').css('border-color', 'red'); //Razón No se encuentra interesado
                 faltantesFactorajeUP += 1;
@@ -6084,7 +6189,7 @@
                 faltantesFactorajeUP += 1;
             }
             if ($('.chk_f_nv')[0].checked == true && $('.list_f_nv_razon').select2('val') == "4" &&
-            ($('.list_f_nv_producto').select2('val') == "" || $('.list_f_nv_producto').select2('val') == null || $('.list_f_nv_producto').select2('val') == "0")) {
+                ($('.list_f_nv_producto').select2('val') == "" || $('.list_f_nv_producto').select2('val') == null || $('.list_f_nv_producto').select2('val') == "0")) {
 
                 $('.list_f_nv_producto').find('.select2-choice').css('border-color', 'red'); //¿Qué producto?
                 faltantesFactorajeUP += 1;
@@ -6107,103 +6212,103 @@
 
         var productos = App.user.attributes.productos_c; //USUARIOS CON LOS SIGUIENTES PRODUCTOS
 
-        if( (document.getElementById("list_fac_estatus_lm") != undefined || document.getElementById("list_fac_estatus_lm") != null) &&
-            ResumenProductos.factoring != undefined){
+        if ((document.getElementById("list_fac_estatus_lm") != undefined || document.getElementById("list_fac_estatus_lm") != null) &&
+            ResumenProductos.factoring != undefined) {
 
-        if( ( (productos.includes("4")&& (App.user.attributes.id == ResumenProductos.factoring.assigned_user_id))
-            && (!ResumenProductos.factoring.notificacion_noviable_c) )|| App.user.attributes.bloqueo_cuentas_c == 1 ){
-            var faltantelm = 0;
-            var selectlm = document.getElementById("list_fac_estatus_lm");
-            var selectlrazon = document.getElementById("list_f_razon_lm");
-            var selectlmotivo = document.getElementById("list_f_so_motivo");
-            var errorLM ="";
-            var motivo_flag = false;
-            var detalle_flag = false;
-            var validador2 = false;
+            if (((productos.includes("4") && (App.user.attributes.id == ResumenProductos.factoring.assigned_user_id))
+                && (!ResumenProductos.factoring.notificacion_noviable_c)) || App.user.attributes.bloqueo_cuentas_c == 1) {
+                var faltantelm = 0;
+                var selectlm = document.getElementById("list_fac_estatus_lm");
+                var selectlrazon = document.getElementById("list_f_razon_lm");
+                var selectlmotivo = document.getElementById("list_f_so_motivo");
+                var errorLM = "";
+                var motivo_flag = false;
+                var detalle_flag = false;
+                var validador2 = false;
 
-            if( selectlm.value != "" && (selectlm.value =="4" || selectlm.value =="5")  ){
-                if (selectlrazon.value == '' ) {
-                    $('.list_f_razon_lm').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                    faltantelm += 1;
-                    errorLM +="Razón <br>";
-                }
-                /*if ($('.chk_f_nv')[0].checked == true && selectlmotivo.value == '' && (selectlm.value =="4" || selectlm.value =="5")) {
-                    $('.selectlmotivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                    faltantelm += 1;
-                }*/
-                if (($('.list_f_respval_1').select2('val') == null || $('.list_f_respval_1').select2('val') == "" || $('.list_f_respval_1').select2('val') == "0") ) {
-                    $('.list_f_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                    faltantelm += 1;
-                    errorLM +="Responsable de Validación 1 <br>";
-                }
-
-                for(var i = 0; i < this.datacondiciones.records.length; i++) {
-                    if ( contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value
-                        && this.datacondiciones.records[i].razon == selectlrazon.value
-                        && this.datacondiciones.records[i].motivo != "" ){
-                        if ( selectlmotivo.value == "") {
-                            $('.list_f_so_motivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                            //$('.list_l_so_motivo').css('border-color', 'red'); //TXT ¿Qué producto?
-                            motivo_flag = true;
-                        }
+                if (selectlm.value != "" && (selectlm.value == "4" || selectlm.value == "5")) {
+                    if (selectlrazon.value == '') {
+                        $('.list_f_razon_lm').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
+                        faltantelm += 1;
+                        errorLM += "Razón <br>";
                     }
-                    if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value
-                        && this.datacondiciones.records[i].razon == selectlrazon.value
-                        && this.datacondiciones.records[i].motivo == selectlmotivo.value ){
-                        if (this.datacondiciones.records[i].detalle == true ) {
-                            if ( $('.txt_f_so_detalle').val().trim() == "") {
-                                $('.txt_f_so_detalle').css('border-color', 'red'); //TXT ¿Qué producto?
-                                detalle_flag = true;
+                    /*if ($('.chk_f_nv')[0].checked == true && selectlmotivo.value == '' && (selectlm.value =="4" || selectlm.value =="5")) {
+                        $('.selectlmotivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
+                        faltantelm += 1;
+                    }*/
+                    if (($('.list_f_respval_1').select2('val') == null || $('.list_f_respval_1').select2('val') == "" || $('.list_f_respval_1').select2('val') == "0")) {
+                        $('.list_f_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
+                        faltantelm += 1;
+                        errorLM += "Responsable de Validación 1 <br>";
+                    }
+
+                    for (var i = 0; i < this.datacondiciones.records.length; i++) {
+                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value
+                            && this.datacondiciones.records[i].razon == selectlrazon.value
+                            && this.datacondiciones.records[i].motivo != "") {
+                            if (selectlmotivo.value == "") {
+                                $('.list_f_so_motivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
+                                //$('.list_l_so_motivo').css('border-color', 'red'); //TXT ¿Qué producto?
+                                motivo_flag = true;
+                            }
+                        }
+                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value
+                            && this.datacondiciones.records[i].razon == selectlrazon.value
+                            && this.datacondiciones.records[i].motivo == selectlmotivo.value) {
+                            if (this.datacondiciones.records[i].detalle == true) {
+                                if ($('.txt_f_so_detalle').val().trim() == "") {
+                                    $('.txt_f_so_detalle').css('border-color', 'red'); //TXT ¿Qué producto?
+                                    detalle_flag = true;
+                                }
+                            }
+                        }
+                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value) {
+                            if (contexto_cuenta.datacondiciones.records[i].notifica == true && ($('.list_f_respval_2').select2('val') == "" || $('.list_f_respval_2').select2('val') == "0")) {
+                                $('.list_f_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
+                                validador2 = true;
                             }
                         }
                     }
-                    if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value ){
-                        if (contexto_cuenta.datacondiciones.records[i].notifica == true && ($('.list_f_respval_2').select2('val') == "" || $('.list_f_respval_2').select2('val') == "0") ) {
+                    if (motivo_flag) {
+                        errorLM += "Motivo <br>";
+                        faltantelm += 1;
+                    }
+                    if (detalle_flag) {
+                        errorLM += "Detalle <br>";
+                        faltantelm += 1;
+                    }
+                    if (validador2) {
+                        errorLM += "Responsable de Validación 2 <br>";
+                        faltantelm += 1;
+                    }
+                    if (validador2) {
+                        if (($('.list_f_respval_2').select2('val') != null || $('.list_f_respval_2').select2('val') != "" || $('.list_f_respval_2').select2('val') != "0")
+                            && ($('.list_f_respval_1').select2('val') != null || $('.list_f_respval_1').select2('val') != "" || $('.list_f_respval_1').select2('val') != "0") && ($('.list_l_respval_2').select2('val') == $('.list_l_respval_1').select2('val'))) {
                             $('.list_f_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                            validador2 = true;
+                            $('.list_f_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
+                            app.alert.show("Faltantes No viable - Lead Management", {
+                                level: "error",
+                                title: 'Los Responsables de Validación no pueden ser iguales para <b>No Viable Factoraje. </b>.',
+                                autoClose: false
+                            });
+                            errors['error_FactorajeUP'] = errors['error_FactorajeUP'] || {};
+                            errors['error_FactorajeUP'].required = true;
+                            faltantelm += 1;
                         }
                     }
                 }
-                if(motivo_flag){
-                        errorLM +="Motivo <br>";
-                        faltantelm += 1;
-                    }
-                    if(detalle_flag){
-                        errorLM +="Detalle <br>";
-                        faltantelm += 1;
-                    }
-                    if(validador2){
-                        errorLM +="Responsable de Validación 2 <br>";
-                        faltantelm += 1;
-                    }
-                if(validador2){
-                    if ( ($('.list_f_respval_2').select2('val') != null || $('.list_f_respval_2').select2('val') != "" || $('.list_f_respval_2').select2('val') != "0")
-                        && ($('.list_f_respval_1').select2('val') != null || $('.list_f_respval_1').select2('val') != "" || $('.list_f_respval_1').select2('val') != "0") &&  ($('.list_l_respval_2').select2('val') == $('.list_l_respval_1').select2('val'))) {
-                        $('.list_f_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                        $('.list_f_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                        app.alert.show("Faltantes No viable - Lead Management", {
-                            level: "error",
-                            title: 'Los Responsables de Validación no pueden ser iguales para <b>No Viable Factoraje. </b>.',
-                            autoClose: false
-                        });
-                        errors['error_FactorajeUP'] = errors['error_FactorajeUP'] || {};
-                        errors['error_FactorajeUP'].required = true;
-                        faltantelm += 1;
-                    }
+
+                if (faltantelm > 0) {
+                    app.alert.show("Faltantes No viable - Lead Management", {
+                        level: "error",
+                        title: 'Para el cambio de estatus <b>' + app.lang.getAppListStrings('status_management_list')[selectlm.value] + ' en Factoraje </b> <br> Hace falta llenar los campos :<br>' + errorLM,
+                        autoClose: false
+                    });
+                    errors['error_FactorajeUP'] = errors['error_FactorajeUP'] || {};
+                    errors['error_FactorajeUP'].required = true;
                 }
             }
-
-            if (faltantelm > 0) {
-                app.alert.show("Faltantes No viable - Lead Management", {
-                    level: "error",
-                    title: 'Para el cambio de estatus <b>'+app.lang.getAppListStrings('status_management_list')[selectlm.value] +' en Factoraje </b> <br> Hace falta llenar los campos :<br>'+errorLM ,
-                    autoClose: false
-                });
-                errors['error_FactorajeUP'] = errors['error_FactorajeUP'] || {};
-                errors['error_FactorajeUP'].required = true;
-            }
         }
-    }
 
         callback(null, fields, errors);
     },
@@ -6216,19 +6321,19 @@
                 faltantesCAUP += 1;
             }
             if ($('.chk_ca_nv')[0].checked == true && $('.list_ca_nv_razon').select2('val') == "1" &&
-            ($('.list_ca_nv_razon_fp').select2('val') == "" || $('.list_ca_nv_razon_fp').select2('val') == null || $('.list_ca_nv_razon_fp').select2('val') == "0")) {
+                ($('.list_ca_nv_razon_fp').select2('val') == "" || $('.list_ca_nv_razon_fp').select2('val') == null || $('.list_ca_nv_razon_fp').select2('val') == "0")) {
 
                 $('.list_ca_nv_razon_fp').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                 faltantesCAUP += 1;
             }
             if ($('.chk_ca_nv')[0].checked == true && $('.list_ca_nv_razon').select2('val') == "2" &&
-            ($('.list_ca_nv_razon_cf').select2('val') == "" || $('.list_ca_nv_razon_cf').select2('val') == null || $('.list_ca_nv_razon_cf').select2('val') == "0")) {
+                ($('.list_ca_nv_razon_cf').select2('val') == "" || $('.list_ca_nv_razon_cf').select2('val') == null || $('.list_ca_nv_razon_cf').select2('val') == "0")) {
 
                 $('.list_ca_nv_razon_cf').find('.select2-choice').css('border-color', 'red'); //Condiciones Financieras
                 faltantesCAUP += 1;
             }
             if ($('.chk_ca_nv')[0].checked == true && $('.list_ca_nv_razon').select2('val') == "7" &&
-            ($('.list_ca_nv_razon_ni').select2('val') == "" || $('.list_ca_nv_razon_ni').select2('val') == null || $('.list_ca_nv_razon_ni').select2('val') == "0")) {
+                ($('.list_ca_nv_razon_ni').select2('val') == "" || $('.list_ca_nv_razon_ni').select2('val') == null || $('.list_ca_nv_razon_ni').select2('val') == "0")) {
 
                 $('.list_ca_nv_razon_ni').find('.select2-choice').css('border-color', 'red'); //Razón No se encuentra interesado
                 faltantesCAUP += 1;
@@ -6247,14 +6352,14 @@
                 faltantesCAUP += 1;
             }
             if ($('.chk_ca_nv')[0].checked == true && $('.list_ca_nv_razon').select2('val') == "4" &&
-            ($('.list_ca_nv_producto').select2('val') == "" || $('.list_ca_nv_producto').select2('val') == null || $('.list_ca_nv_producto').select2('val') == "0")) {
+                ($('.list_ca_nv_producto').select2('val') == "" || $('.list_ca_nv_producto').select2('val') == null || $('.list_ca_nv_producto').select2('val') == "0")) {
 
                 $('.list_ca_nv_producto').find('.select2-choice').css('border-color', 'red'); //¿Qué producto?
                 faltantesCAUP += 1;
             }
             if (($('.list_ca_nv_razon').select2('val') == "4" || $('.list_ca_nv_razon option:selected').text() == "4" || $('.list_ca_nv_razon')[0].innerText.trim() == "4") &&
-            ($('.list_ca_nv_producto').select2('val') == "4" || $('.list_ca_nv_producto option:selected').text() == "4" || $('.list_ca_nv_producto')[0].innerText.trim() == "4") &&
-            $('.chk_ca_nv')[0].checked && $('.txt_ca_nv_otro').val().trim() == "") {
+                ($('.list_ca_nv_producto').select2('val') == "4" || $('.list_ca_nv_producto option:selected').text() == "4" || $('.list_ca_nv_producto')[0].innerText.trim() == "4") &&
+                $('.chk_ca_nv')[0].checked && $('.txt_ca_nv_otro').val().trim() == "") {
 
                 $('.txt_ca_nv_otro').css('border-color', 'red'); //TXT ¿Qué producto?
                 faltantesCAUP += 1;
@@ -6270,17 +6375,17 @@
             }
         }
 
-            /*if (faltantesCAUP == 0 && $('.chk_ca_nv')[0].checked == true && cont_uni_p.ResumenProductos.credito_auto.status_management_c != "3") {
-                this.model.set('promotorcredit_c', '9 - No Viable');
-                this.model.set('user_id2_c', 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb');
-                cont_uni_p.ResumenProductos.credito_auto.assigned_user_id = 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb'; //'9 - No Viable' en Uni_Productos
-            }*/
-            var productos = App.user.attributes.productos_c; //USUARIOS CON LOS SIGUIENTES PRODUCTOS
-            if((document.getElementById("list_ca_estatus_lm") != undefined || document.getElementById("list_ca_estatus_lm") != null)
-                && ResumenProductos.credito_auto != undefined){
+        /*if (faltantesCAUP == 0 && $('.chk_ca_nv')[0].checked == true && cont_uni_p.ResumenProductos.credito_auto.status_management_c != "3") {
+            this.model.set('promotorcredit_c', '9 - No Viable');
+            this.model.set('user_id2_c', 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb');
+            cont_uni_p.ResumenProductos.credito_auto.assigned_user_id = 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb'; //'9 - No Viable' en Uni_Productos
+        }*/
+        var productos = App.user.attributes.productos_c; //USUARIOS CON LOS SIGUIENTES PRODUCTOS
+        if ((document.getElementById("list_ca_estatus_lm") != undefined || document.getElementById("list_ca_estatus_lm") != null)
+            && ResumenProductos.credito_auto != undefined) {
 
-            if(((productos.includes("3")&& (App.user.attributes.id == ResumenProductos.credito_auto.assigned_user_id))
-                && (!ResumenProductos.credito_auto.notificacion_noviable_c)) || App.user.attributes.bloqueo_cuentas_c == 1 ){
+            if (((productos.includes("3") && (App.user.attributes.id == ResumenProductos.credito_auto.assigned_user_id))
+                && (!ResumenProductos.credito_auto.notificacion_noviable_c)) || App.user.attributes.bloqueo_cuentas_c == 1) {
                 var selectlm = document.getElementById("list_ca_estatus_lm");
                 var selectlrazon = document.getElementById("list_ca_so_razon");
                 var selectlmotivo = document.getElementById("list_ca_so_motivo");
@@ -6288,67 +6393,67 @@
                 var motivo_flag = false;
                 var detalle_flag = false;
                 var validador2 = false;
-                var errorLM ="";
+                var errorLM = "";
 
-                if(selectlm.value != "" && (selectlm.value =="4" || selectlm.value =="5") ){
-                    if ( selectlrazon.value == '') {
+                if (selectlm.value != "" && (selectlm.value == "4" || selectlm.value == "5")) {
+                    if (selectlrazon.value == '') {
                         $('.list_ca_so_razon').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                         faltantelm += 1;
-                        errorLM +="Razón <br>";
+                        errorLM += "Razón <br>";
                     }
                     /*if ($('.chk_ca_nv')[0].checked == true && selectlmotivo.value == '' && (selectlm.value =="4" || selectlm.value =="5")) {
                         $('.selectlmotivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                         faltantelm += 1;
                     }*/
-                    if (($('.list_ca_respval_1').select2('val') == null || $('.list_ca_respval_1').select2('val') == "" || $('.list_ca_respval_1').select2('val') == "0") ) {
+                    if (($('.list_ca_respval_1').select2('val') == null || $('.list_ca_respval_1').select2('val') == "" || $('.list_ca_respval_1').select2('val') == "0")) {
                         $('.list_ca_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                         faltantelm += 1;
-                        errorLM +="Responsable de Validación 1 <br>";
+                        errorLM += "Responsable de Validación 1 <br>";
                     }
 
-                    for(var i = 0; i < this.datacondiciones.records.length; i++) {
-                        if ( this.datacondiciones.records[i].condicion == selectlm.value
+                    for (var i = 0; i < this.datacondiciones.records.length; i++) {
+                        if (this.datacondiciones.records[i].condicion == selectlm.value
                             && this.datacondiciones.records[i].razon == selectlrazon.value
-                            && this.datacondiciones.records[i].motivo != "" ){
-                            if ( selectlmotivo.value == "") {
+                            && this.datacondiciones.records[i].motivo != "") {
+                            if (selectlmotivo.value == "") {
                                 $('.list_ca_so_motivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                                 //$('.list_l_so_motivo').css('border-color', 'red'); //TXT ¿Qué producto?
                                 fmotivo_flag = true;
                             }
                         }
-                        if ( this.datacondiciones.records[i].condicion == selectlm.value
+                        if (this.datacondiciones.records[i].condicion == selectlm.value
                             && this.datacondiciones.records[i].razon == selectlrazon.value
-                            && this.datacondiciones.records[i].motivo == selectlmotivo.value ){
-                            if (this.datacondiciones.records[i].detalle == true ) {
-                                if ( $('.txt_ca_so_detalle').val().trim() == "") {
+                            && this.datacondiciones.records[i].motivo == selectlmotivo.value) {
+                            if (this.datacondiciones.records[i].detalle == true) {
+                                if ($('.txt_ca_so_detalle').val().trim() == "") {
                                     $('.txt_ca_so_detalle').css('border-color', 'red'); //TXT ¿Qué producto?
                                     detalle_flag = true;
                                 }
                             }
                         }
-                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value ){
-                            if (contexto_cuenta.datacondiciones.records[i].notifica == true && ($('.list_ca_respval_2').select2('val') == "" || $('.list_ca_respval_2').select2('val') == "0") ) {
+                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value) {
+                            if (contexto_cuenta.datacondiciones.records[i].notifica == true && ($('.list_ca_respval_2').select2('val') == "" || $('.list_ca_respval_2').select2('val') == "0")) {
                                 $('.list_ca_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                                 validador2 = true;
                             }
                         }
                     }
 
-                    if(motivo_flag){
-                        errorLM +="Motivo <br>";
+                    if (motivo_flag) {
+                        errorLM += "Motivo <br>";
                         faltantelm += 1;
                     }
-                    if(detalle_flag){
-                        errorLM +="Detalle <br>";
+                    if (detalle_flag) {
+                        errorLM += "Detalle <br>";
                         faltantelm += 1;
                     }
-                    if(validador2){
-                        errorLM +="Responsable de Validación 2 <br>";
+                    if (validador2) {
+                        errorLM += "Responsable de Validación 2 <br>";
                         faltantelm += 1;
                     }
-                    if(validador2){
-                        if ( ($('.list_ca_respval_2').select2('val') != null || $('.list_ca_respval_2').select2('val') != "" || $('.list_ca_respval_2').select2('val') != "0")
-                            && ($('.list_ca_respval_1').select2('val') != null || $('.list_ca_respval_1').select2('val') != "" || $('.list_ca_respval_1').select2('val') == "0") &&  ($('.list_ca_respval_2').select2('val') == $('.list_ca_respval_1').select2('val'))) {
+                    if (validador2) {
+                        if (($('.list_ca_respval_2').select2('val') != null || $('.list_ca_respval_2').select2('val') != "" || $('.list_ca_respval_2').select2('val') != "0")
+                            && ($('.list_ca_respval_1').select2('val') != null || $('.list_ca_respval_1').select2('val') != "" || $('.list_ca_respval_1').select2('val') == "0") && ($('.list_ca_respval_2').select2('val') == $('.list_ca_respval_1').select2('val'))) {
                             $('.list_ca_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                             $('.list_ca_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                             app.alert.show("Faltantes No viable - Lead Management", {
@@ -6365,7 +6470,7 @@
                 if (faltantelm > 0) {
                     app.alert.show("Faltantes No viable - Lead Management", {
                         level: "error",
-                        title: ' Para el cambio de estatus <b> '+ app.lang.getAppListStrings('status_management_list')[selectlm.value] +'  Crédito Automotriz.</b>  <br> Hace falta llenar los campos :<br>'+errorLM ,
+                        title: ' Para el cambio de estatus <b> ' + app.lang.getAppListStrings('status_management_list')[selectlm.value] + '  Crédito Automotriz.</b>  <br> Hace falta llenar los campos :<br>' + errorLM,
                         autoClose: false
                     });
                     errors['error_CAUP'] = errors['error_CAUP'] || {};
@@ -6385,19 +6490,19 @@
                 faltantesFleetUP += 1;
             }
             if ($('.chk_fl_nv')[0].checked == true && $('.list_fl_nv_razon').select2('val') == "1" &&
-            ($('.list_fl_nv_razon_fp').select2('val') == "" || $('.list_fl_nv_razon_fp').select2('val') == null || $('.list_fl_nv_razon_fp').select2('val') == "0")) {
+                ($('.list_fl_nv_razon_fp').select2('val') == "" || $('.list_fl_nv_razon_fp').select2('val') == null || $('.list_fl_nv_razon_fp').select2('val') == "0")) {
 
                 $('.list_fl_nv_razon_fp').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                 faltantesFleetUP += 1;
             }
             if ($('.chk_fl_nv')[0].checked == true && $('.list_fl_nv_razon').select2('val') == "2" &&
-            ($('.list_fl_nv_razon_cf').select2('val') == "" || $('.list_fl_nv_razon_cf').select2('val') == null || $('.list_fl_nv_razon_cf').select2('val') == "0")) {
+                ($('.list_fl_nv_razon_cf').select2('val') == "" || $('.list_fl_nv_razon_cf').select2('val') == null || $('.list_fl_nv_razon_cf').select2('val') == "0")) {
 
                 $('.list_fl_nv_razon_cf').find('.select2-choice').css('border-color', 'red'); //Condiciones Financieras
                 faltantesFleetUP += 1;
             }
             if ($('.chk_fl_nv')[0].checked == true && $('.list_fl_nv_razon').select2('val') == "7" &&
-            ($('.list_fl_nv_razon_ni').select2('val') == "" || $('.list_fl_nv_razon_ni').select2('val') == null || $('.list_fl_nv_razon_ni').select2('val') == "0")) {
+                ($('.list_fl_nv_razon_ni').select2('val') == "" || $('.list_fl_nv_razon_ni').select2('val') == null || $('.list_fl_nv_razon_ni').select2('val') == "0")) {
 
                 $('.list_fl_nv_razon_ni').find('.select2-choice').css('border-color', 'red'); //Razón No se encuentra interesado
                 faltantesFleetUP += 1;
@@ -6416,14 +6521,14 @@
                 faltantesFleetUP += 1;
             }
             if ($('.chk_fl_nv')[0].checked == true && $('.list_fl_nv_razon').select2('val') == "4" &&
-            ($('.list_fl_nv_producto').select2('val') == "" || $('.list_fl_nv_producto').select2('val') == null || $('.list_fl_nv_producto').select2('val') == "0")) {
+                ($('.list_fl_nv_producto').select2('val') == "" || $('.list_fl_nv_producto').select2('val') == null || $('.list_fl_nv_producto').select2('val') == "0")) {
 
                 $('.list_fl_nv_producto').find('.select2-choice').css('border-color', 'red'); //¿Qué producto?
                 faltantesFleetUP += 1;
             }
-            if (($('.list_fl_nv_razon').select2('val') == "4" || $('.list_fl_nv_razon option:selected').text() == "4" ) &&
-            ($('.list_fl_nv_producto').select2('val') == "4" || $('.list_fl_nv_producto option:selected').text() == "4" || $('.list_fl_nv_producto')[0].innerText.trim() == "4") &&
-            $('.chk_fl_nv')[0].checked && $('.txt_fl_nv_otro').val().trim() == "") {
+            if (($('.list_fl_nv_razon').select2('val') == "4" || $('.list_fl_nv_razon option:selected').text() == "4") &&
+                ($('.list_fl_nv_producto').select2('val') == "4" || $('.list_fl_nv_producto option:selected').text() == "4" || $('.list_fl_nv_producto')[0].innerText.trim() == "4") &&
+                $('.chk_fl_nv')[0].checked && $('.txt_fl_nv_otro').val().trim() == "") {
 
                 $('.txt_fl_nv_otro').css('border-color', 'red'); //TXT ¿Qué producto?
                 faltantesFleetUP += 1;
@@ -6439,17 +6544,17 @@
             }
         }
 
-            /*if (faltantesFleetUP == 0 && $('.chk_fl_nv')[0].checked == true && cont_uni_p.ResumenProductos.fleet.status_management_c != "3") {
-                this.model.set('promotorfleet_c', '9 - No Viable');
-                this.model.set('user_id6_c', 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb');
-                cont_uni_p.ResumenProductos.fleet.assigned_user_id = 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb'; //'9 - No Viable' en Uni_Productos
-            }*/
+        /*if (faltantesFleetUP == 0 && $('.chk_fl_nv')[0].checked == true && cont_uni_p.ResumenProductos.fleet.status_management_c != "3") {
+            this.model.set('promotorfleet_c', '9 - No Viable');
+            this.model.set('user_id6_c', 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb');
+            cont_uni_p.ResumenProductos.fleet.assigned_user_id = 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb'; //'9 - No Viable' en Uni_Productos
+        }*/
         var productos = App.user.attributes.productos_c; //USUARIOS CON LOS SIGUIENTES PRODUCTOS
-        if((document.getElementById("list_fl_estatus_lm") != undefined || document.getElementById("list_fl_estatus_lm") != null)
-        && ResumenProductos.fleet != undefined){
+        if ((document.getElementById("list_fl_estatus_lm") != undefined || document.getElementById("list_fl_estatus_lm") != null)
+            && ResumenProductos.fleet != undefined) {
 
-            if(((productos.includes("6")&& (App.user.attributes.id == ResumenProductos.fleet.assigned_user_id))
-            && (!ResumenProductos.fleet.notificacion_noviable_c)) || App.user.attributes.bloqueo_cuentas_c == 1 ){
+            if (((productos.includes("6") && (App.user.attributes.id == ResumenProductos.fleet.assigned_user_id))
+                && (!ResumenProductos.fleet.notificacion_noviable_c)) || App.user.attributes.bloqueo_cuentas_c == 1) {
 
                 var faltantelm = 0;
                 var selectlm = document.getElementById("list_fl_estatus_lm");
@@ -6458,14 +6563,14 @@
                 var motivo_flag = false;
                 var detalle_flag = false;
                 var validador2 = false;
-                var errorLM ="";
+                var errorLM = "";
 
-                if(selectlm.value != "" && (selectlm.value =="4" || selectlm.value =="5") ){
+                if (selectlm.value != "" && (selectlm.value == "4" || selectlm.value == "5")) {
 
-                    if ( selectlrazon.value == '') {
+                    if (selectlrazon.value == '') {
                         $('.list_fl_so_razon').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                         faltantelm += 1;
-                        errorLM +="Razón <br>";
+                        errorLM += "Razón <br>";
                     }
                     /*if ($('.chk_fl_nv')[0].checked == true && selectlmotivo.value == '' && (selectlm.value =="4" || selectlm.value =="5")) {
                         $('.selectlmotivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
@@ -6474,14 +6579,14 @@
                     if (($('.list_fl_respval_1').select2('val') == null || $('.list_fl_respval_1').select2('val') == "" || $('.list_fl_respval_1').select2('val') == "0")) {
                         $('.list_fl_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                         faltantelm += 1;
-                        errorLM +="Responsable de Validación 1 <br>";
+                        errorLM += "Responsable de Validación 1 <br>";
                     }
 
-                    for(var i = 0; i < this.datacondiciones.records.length; i++) {
+                    for (var i = 0; i < this.datacondiciones.records.length; i++) {
                         if (this.datacondiciones.records[i].condicion == selectlm.value
                             && this.datacondiciones.records[i].razon == selectlrazon.value
-                            && this.datacondiciones.records[i].motivo != "" ){
-                            if ( selectlmotivo.value == "") {
+                            && this.datacondiciones.records[i].motivo != "") {
+                            if (selectlmotivo.value == "") {
                                 $('.list_fl_so_motivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                                 //$('.list_l_so_motivo').css('border-color', 'red'); //TXT ¿Qué producto?
                                 motivo_flag = true;
@@ -6489,54 +6594,54 @@
                         }
                         if (this.datacondiciones.records[i].condicion == selectlm.value
                             && this.datacondiciones.records[i].razon == selectlrazon.value
-                            && this.datacondiciones.records[i].motivo == selectlmotivo.value ){
-                            if (this.datacondiciones.records[i].detalle == true ) {
-                                if ( $('.txt_fl_so_detalle').val().trim() == "") {
+                            && this.datacondiciones.records[i].motivo == selectlmotivo.value) {
+                            if (this.datacondiciones.records[i].detalle == true) {
+                                if ($('.txt_fl_so_detalle').val().trim() == "") {
                                     $('.txt_fl_so_detalle').css('border-color', 'red'); //TXT ¿Qué producto?
                                     detalle_flag = true;
                                 }
                             }
                         }
-                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value ){
-                            if (contexto_cuenta.datacondiciones.records[i].notifica == true && ($('.list_fl_respval_2').select2('val') == "" || $('.list_fl_respval_2').select2('val') == "0") ) {
+                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value) {
+                            if (contexto_cuenta.datacondiciones.records[i].notifica == true && ($('.list_fl_respval_2').select2('val') == "" || $('.list_fl_respval_2').select2('val') == "0")) {
                                 $('.list_fl_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                                 validador2 = true;
                             }
                         }
                     }
-                    if(motivo_flag){
-                        errorLM +="Motivo <br>";
+                    if (motivo_flag) {
+                        errorLM += "Motivo <br>";
                         faltantelm += 1;
                     }
-                    if(detalle_flag){
-                        errorLM +="Detalle <br>";
+                    if (detalle_flag) {
+                        errorLM += "Detalle <br>";
                         faltantelm += 1;
                     }
-                    if(validador2){
-                        errorLM +="Responsable de Validación 2 <br>";
+                    if (validador2) {
+                        errorLM += "Responsable de Validación 2 <br>";
                         faltantelm += 1;
                     }
-                    if(validador2){
-                    if ( ($('.list_fl_respval_2').select2('val') != null || $('.list_fl_respval_2').select2('val') != "" || $('.list_fl_respval_2').select2('val') != "0")
-                        && ($('.list_fl_respval_1').select2('val') != null || $('.list_fl_respval_1').select2('val') != "" || $('.list_fl_respval_1').select2('val') != "0") && ($('.list_fl_respval_2').select2('val') == $('.list_fl_respval_1').select2('val'))) {
-                        $('.list_l_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                        $('.list_fl_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                        app.alert.show("Faltantes No viable - Lead Management", {
-                            level: "error",
-                            title: 'Los Responsables de Validación no pueden ser iguales para <b>No Viable Fleet </b>.',
-                            autoClose: false
-                        });
-                        errors['error_FLeetUP'] = errors['error_FLeetUP'] || {};
-                        errors['error_FLeetUP'].required = true;
-                        faltantelm += 1;
-                    }
+                    if (validador2) {
+                        if (($('.list_fl_respval_2').select2('val') != null || $('.list_fl_respval_2').select2('val') != "" || $('.list_fl_respval_2').select2('val') != "0")
+                            && ($('.list_fl_respval_1').select2('val') != null || $('.list_fl_respval_1').select2('val') != "" || $('.list_fl_respval_1').select2('val') != "0") && ($('.list_fl_respval_2').select2('val') == $('.list_fl_respval_1').select2('val'))) {
+                            $('.list_l_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
+                            $('.list_fl_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
+                            app.alert.show("Faltantes No viable - Lead Management", {
+                                level: "error",
+                                title: 'Los Responsables de Validación no pueden ser iguales para <b>No Viable Fleet </b>.',
+                                autoClose: false
+                            });
+                            errors['error_FLeetUP'] = errors['error_FLeetUP'] || {};
+                            errors['error_FLeetUP'].required = true;
+                            faltantelm += 1;
+                        }
                     }
                 }
                 if (faltantelm > 0) {
                     app.alert.show("Faltantes No viable - Lead Management", {
                         level: "error",
-                        title: ' Para el cambio de estatus <b> '+app.lang.getAppListStrings('status_management_list')[selectlm.value]
-                        +' en Fleet.</b> <br> Hace falta llenar los campos :<br>'+errorLM ,
+                        title: ' Para el cambio de estatus <b> ' + app.lang.getAppListStrings('status_management_list')[selectlm.value]
+                            + ' en Fleet.</b> <br> Hace falta llenar los campos :<br>' + errorLM,
                         autoClose: false
                     });
                     errors['error_FLeetUP'] = errors['error_FLeetUP'] || {};
@@ -6557,19 +6662,19 @@
                 faltantesUniclickUP += 1;
             }
             if ($('.chk_u_nv')[0].checked == true && $('.list_u_nv_razon').select2('val') == "1" &&
-            ($('.list_u_nv_razon_fp').select2('val') == "" || $('.list_u_nv_razon_fp').select2('val') == null || $('.list_u_nv_razon_fp').select2('val') == "0")) {
+                ($('.list_u_nv_razon_fp').select2('val') == "" || $('.list_u_nv_razon_fp').select2('val') == null || $('.list_u_nv_razon_fp').select2('val') == "0")) {
 
                 $('.list_u_nv_razon_fp').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                 faltantesUniclickUP += 1;
             }
             if ($('.chk_u_nv')[0].checked == true && $('.list_u_nv_razon').select2('val') == "2" &&
-            ($('.list_u_nv_razon_cf').select2('val') == "" || $('.list_u_nv_razon_cf').select2('val') == null || $('.list_u_nv_razon_cf').select2('val') == "0")) {
+                ($('.list_u_nv_razon_cf').select2('val') == "" || $('.list_u_nv_razon_cf').select2('val') == null || $('.list_u_nv_razon_cf').select2('val') == "0")) {
 
                 $('.list_u_nv_razon_cf').find('.select2-choice').css('border-color', 'red'); //Condiciones Financieras
                 faltantesUniclickUP += 1;
             }
             if ($('.chk_u_nv')[0].checked == true && $('.list_u_nv_razon').select2('val') == "7" &&
-            ($('.list_u_nv_razon_ni').select2('val') == "" || $('.list_u_nv_razon_ni').select2('val') == null || $('.list_u_nv_razon_ni').select2('val') == "0")) {
+                ($('.list_u_nv_razon_ni').select2('val') == "" || $('.list_u_nv_razon_ni').select2('val') == null || $('.list_u_nv_razon_ni').select2('val') == "0")) {
 
                 $('.list_u_nv_razon_ni').find('.select2-choice').css('border-color', 'red'); //Razón No se encuentra interesado
                 faltantesUniclickUP += 1;
@@ -6588,14 +6693,14 @@
                 faltantesUniclickUP += 1;
             }
             if ($('.chk_u_nv')[0].checked == true && $('.list_u_nv_razon').select2('val') == "4" &&
-            ($('.list_u_nv_producto').select2('val') == "" || $('.list_u_nv_producto').select2('val') == null || $('.list_u_nv_producto').select2('val') == "0")) {
+                ($('.list_u_nv_producto').select2('val') == "" || $('.list_u_nv_producto').select2('val') == null || $('.list_u_nv_producto').select2('val') == "0")) {
 
                 $('.list_u_nv_producto').find('.select2-choice').css('border-color', 'red'); //¿Qué producto?
                 faltantesUniclickUP += 1;
             }
             if (($('.list_u_nv_razon').select2('val') == "4" || $('.list_u_nv_razon option:selected').text() == "4" || $('.list_u_nv_razon')[0].innerText.trim() == "4") &&
-            ($('.list_u_nv_producto').select2('val') == "4" || $('.list_u_nv_producto option:selected').text() == "4" || $('.list_u_nv_producto')[0].innerText.trim() == "4") &&
-            $('.chk_u_nv')[0].checked && $('.txt_u_nv_otro').val().trim() == "") {
+                ($('.list_u_nv_producto').select2('val') == "4" || $('.list_u_nv_producto option:selected').text() == "4" || $('.list_u_nv_producto')[0].innerText.trim() == "4") &&
+                $('.chk_u_nv')[0].checked && $('.txt_u_nv_otro').val().trim() == "") {
 
                 $('.txt_u_nv_otro').css('border-color', 'red'); //TXT ¿Qué producto?
                 faltantesUniclickUP += 1;
@@ -6611,18 +6716,18 @@
             }
         }
 
-            /*if (faltantesUniclickUP == 0 && $('.chk_u_nv')[0].checked == true && cont_uni_p.ResumenProductos.uniclick.status_management_c != "3") {
-                this.model.set('promotoruniclick_c', '9 - Sin Gestor');
-                this.model.set('user_id7_c', 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb');
-                cont_uni_p.ResumenProductos.uniclick.assigned_user_id = 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb'; //'9 - No Viable' en Uni_Productos
-            }*/
+        /*if (faltantesUniclickUP == 0 && $('.chk_u_nv')[0].checked == true && cont_uni_p.ResumenProductos.uniclick.status_management_c != "3") {
+            this.model.set('promotoruniclick_c', '9 - Sin Gestor');
+            this.model.set('user_id7_c', 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb');
+            cont_uni_p.ResumenProductos.uniclick.assigned_user_id = 'cc736f7a-4f5f-11e9-856a-a0481cdf89eb'; //'9 - No Viable' en Uni_Productos
+        }*/
         var productos = App.user.attributes.productos_c; //USUARIOS CON LOS SIGUIENTES PRODUCTOS
 
-        if((document.getElementById("list_u_estatus_lm") != undefined || document.getElementById("list_u_estatus_lm") != null)
-                && ResumenProductos.uniclick != undefined) {
+        if ((document.getElementById("list_u_estatus_lm") != undefined || document.getElementById("list_u_estatus_lm") != null)
+            && ResumenProductos.uniclick != undefined) {
 
-            if(((productos.includes("8")&& (App.user.attributes.id == ResumenProductos.uniclick.assigned_user_id))
-                && (!ResumenProductos.uniclick.notificacion_noviable_c)) || App.user.attributes.bloqueo_cuentas_c == 1 ){
+            if (((productos.includes("8") && (App.user.attributes.id == ResumenProductos.uniclick.assigned_user_id))
+                && (!ResumenProductos.uniclick.notificacion_noviable_c)) || App.user.attributes.bloqueo_cuentas_c == 1) {
                 var faltantelm = 0;
                 var selectlm = document.getElementById("list_u_estatus_lm");
                 var selectlrazon = document.getElementById("list_u_so_razon");
@@ -6630,29 +6735,29 @@
                 var motivo_flag = false;
                 var detalle_flag = false;
                 var validador2 = false;
-                var errorLM ="";
+                var errorLM = "";
 
-                if(selectlm.value != "" && (selectlm.value =="4" || selectlm.value =="5") ){
+                if (selectlm.value != "" && (selectlm.value == "4" || selectlm.value == "5")) {
                     if (selectlrazon.value == '') {
                         $('.list_u_so_razon').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                         faltantelm += 1;
-                        errorLM +="Razón <br>";
+                        errorLM += "Razón <br>";
                     }
                     /*if ($('.chk_u_nv')[0].checked == true && selectlmotivo.value == '' && (selectlm.value =="4" || selectlm.value =="5")) {
                         $('.selectlmotivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                         faltantelm += 1;
                     }*/
-                    if (($('.list_u_respval_1').select2('val') == null || $('.list_u_respval_1').select2('val') == "" || $('.list_u_respval_1').select2('val') == "0") ) {
+                    if (($('.list_u_respval_1').select2('val') == null || $('.list_u_respval_1').select2('val') == "" || $('.list_u_respval_1').select2('val') == "0")) {
                         $('.list_u_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                         faltantelm += 1;
-                        errorLM +="Responsable de Validación 1 <br>";
+                        errorLM += "Responsable de Validación 1 <br>";
                     }
 
-                    for(var i = 0; i < this.datacondiciones.records.length; i++) {
-                        if ( this.datacondiciones.records[i].condicion == selectlm.value
+                    for (var i = 0; i < this.datacondiciones.records.length; i++) {
+                        if (this.datacondiciones.records[i].condicion == selectlm.value
                             && this.datacondiciones.records[i].razon == selectlrazon.value
-                            && this.datacondiciones.records[i].motivo != "" ){
-                            if ( selectlmotivo == "") {
+                            && this.datacondiciones.records[i].motivo != "") {
+                            if (selectlmotivo == "") {
                                 $('.list_u_so_motivo').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                                 //$('.list_l_so_motivo').css('border-color', 'red'); //TXT ¿Qué producto?
                                 motivo_flag = true;
@@ -6660,53 +6765,53 @@
                         }
                         if (this.datacondiciones.records[i].condicion == selectlm.value
                             && this.datacondiciones.records[i].razon == selectlrazon.value
-                            && this.datacondiciones.records[i].motivo == selectlmotivo.value ){
-                            if (this.datacondiciones.records[i].detalle == true ) {
-                                if ( $('.txt_u_so_detalle').val().trim() == "") {
+                            && this.datacondiciones.records[i].motivo == selectlmotivo.value) {
+                            if (this.datacondiciones.records[i].detalle == true) {
+                                if ($('.txt_u_so_detalle').val().trim() == "") {
                                     $('.txt_u_so_detalle').css('border-color', 'red'); //TXT ¿Qué producto?
                                     detalle_flag = true;
                                 }
                             }
                         }
 
-                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value ){
-                            if (contexto_cuenta.datacondiciones.records[i].notifica == true && ($('.list_l_respval_2').select2('val') == "" || $('.list_l_respval_2').select2('val') == "0") ) {
+                        if (contexto_cuenta.datacondiciones.records[i].condicion == selectlm.value && contexto_cuenta.datacondiciones.records[i].razon == selectlrazon.value && contexto_cuenta.datacondiciones.records[i].motivo == selectlmotivo.value) {
+                            if (contexto_cuenta.datacondiciones.records[i].notifica == true && ($('.list_l_respval_2').select2('val') == "" || $('.list_l_respval_2').select2('val') == "0")) {
                                 $('.list_u_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
                                 validador2 = true;
                             }
                         }
                     }
-                    if(motivo_flag){
-                        errorLM +="Motivo <br>";
+                    if (motivo_flag) {
+                        errorLM += "Motivo <br>";
                         faltantelm += 1;
                     }
-                    if(detalle_flag){
-                        errorLM +="Detalle <br>";
+                    if (detalle_flag) {
+                        errorLM += "Detalle <br>";
                         faltantelm += 1;
                     }
-                    if(validador2){
-                        errorLM +="Responsable de Validación 2 <br>";
+                    if (validador2) {
+                        errorLM += "Responsable de Validación 2 <br>";
                         faltantelm += 1;
                     }
-                    if(validador2){
-                    if ( ($('.list_u_respval_2').select2('val') != null || $('.list_u_respval_2').select2('val') != "" || $('.list_u_respval_2').select2('val') != "0")
-                    && ($('.list_u_respval_1').select2('val') != null || $('.list_u_respval_1').select2('val') != "" || $('.list_u_respval_1').select2('val') != "0") &&  ($('.list_u_respval_2').select2('val') == $('.list_u_respval_1').select2('val'))) {
-                    $('.list_u_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                    $('.list_u_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
-                    app.alert.show("Faltantes No viable - Lead Management", {
-                            level: "error",
-                            title: 'Los Responsables de Validación no pueden ser iguales para <b>Uniclick </b>.',
-                            autoClose: false
-                        });
-                        errors['error_UniclickUP'] = errors['error_UniclickUP'] || {};
-                        errors['error_UniclickUP'].required = true;
-                        faltantelm += 1;
-                    }
+                    if (validador2) {
+                        if (($('.list_u_respval_2').select2('val') != null || $('.list_u_respval_2').select2('val') != "" || $('.list_u_respval_2').select2('val') != "0")
+                            && ($('.list_u_respval_1').select2('val') != null || $('.list_u_respval_1').select2('val') != "" || $('.list_u_respval_1').select2('val') != "0") && ($('.list_u_respval_2').select2('val') == $('.list_u_respval_1').select2('val'))) {
+                            $('.list_u_respval_2').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
+                            $('.list_u_respval_1').find('.select2-choice').css('border-color', 'red'); //Fuera de Perfil (Razón)
+                            app.alert.show("Faltantes No viable - Lead Management", {
+                                level: "error",
+                                title: 'Los Responsables de Validación no pueden ser iguales para <b>Uniclick </b>.',
+                                autoClose: false
+                            });
+                            errors['error_UniclickUP'] = errors['error_UniclickUP'] || {};
+                            errors['error_UniclickUP'].required = true;
+                            faltantelm += 1;
+                        }
                     }
                     if (faltantelm > 0) {
                         app.alert.show("Faltantes No viable - Lead Management", {
                             level: "error",
-                            title: 'Para el cambio de estatus <b> '+app.lang.getAppListStrings('status_management_list')[selectlm.value] +' en Uniclick</b> <br> Hace falta llenar los campos :<br>'+errorLM ,
+                            title: 'Para el cambio de estatus <b> ' + app.lang.getAppListStrings('status_management_list')[selectlm.value] + ' en Uniclick</b> <br> Hace falta llenar los campos :<br>' + errorLM,
                             autoClose: false
                         });
                         errors['error_UniclickUP'] = errors['error_UniclickUP'] || {};
@@ -6772,12 +6877,16 @@
     /*************Valida Genero *****************/
     validaGenero: function (fields, errors, callback) {
         var genero = this.model.get('genero_c');
-        if ((genero == "" || genero == null) && (this.model.get('tipodepersona_c') == "Persona Fisica" ||
-            this.model.get('tipodepersona_c') == "Persona Fisica con Actividad Empresarial")) {
-            errors['genero_c'] = errors['genero_c'] || {};
-            errors['genero_c'].required = true;
-            callback(null, fields, errors);
-        } else {
+        if(!(this.model.get('tipo_registro_cuenta_c') == '4' || this.model.get('tipo_registro_cuenta_c') == '5' || this.model.get('esproveedor_c') == true)){
+            if ((genero == "" || genero == null) && (this.model.get('tipodepersona_c') == "Persona Fisica" ||
+                this.model.get('tipodepersona_c') == "Persona Fisica con Actividad Empresarial") ) {
+                errors['genero_c'] = errors['genero_c'] || {};
+                errors['genero_c'].required = true;
+                callback(null, fields, errors);
+            } else {
+                callback(null, fields, errors);
+            }
+        }else{
             callback(null, fields, errors);
         }
     },
@@ -6810,59 +6919,59 @@
     },
 
     requeridosUniclickCanal: function (fields, errors, callback) {
-      var roles=App.user.attributes.roles;
-      var roles_seguros=App.lang.getAppListStrings('roles_edicion_ctas_seguros_list');
+        var roles = App.user.attributes.roles;
+        var roles_seguros = App.lang.getAppListStrings('roles_edicion_ctas_seguros_list');
 
-      var seguros=0;
-      for (const [key, value] of Object.entries(roles_seguros)) {
-          if(roles.includes(value)){
-              seguros = 1;
-          }
-      }
-		if(!seguros) {
-			var faltantesUniclickCanal = 0;
-			var userprod = (app.user.attributes.productos_c).replace(/\^/g, "");
-			if ($('.list_u_canal').select2('val') == "0"  && userprod.includes('8')) {
-				$('.list_u_canal').find('.select2-choice').css('border-color', 'red');
-				faltantesUniclickCanal += 1;
-			}
-			else {
-				$('.list_u_canal').find('.select2-choice').css('border-color', 'black');
-			}
+        var seguros = 0;
+        for (const [key, value] of Object.entries(roles_seguros)) {
+            if (roles.includes(value)) {
+                seguros = 1;
+            }
+        }
+        if (!seguros) {
+            var faltantesUniclickCanal = 0;
+            var userprod = (app.user.attributes.productos_c).replace(/\^/g, "");
+            if ($('.list_u_canal').select2('val') == "0" && userprod.includes('8')) {
+                $('.list_u_canal').find('.select2-choice').css('border-color', 'red');
+                faltantesUniclickCanal += 1;
+            }
+            else {
+                $('.list_u_canal').find('.select2-choice').css('border-color', 'black');
+            }
 
-			if (faltantesUniclickCanal > 0) {
-				app.alert.show("Faltante canal Uniclick", {
-					level: "error",
-					title: 'Hace falta seleccionar algún canal para el producto Uniclick',
-					autoClose: false
-				});
-				errors['error_UniclickUP'] = errors['error_UniclickUP'] || {};
-				errors['error_UniclickUP'].required = true;
-			}
-		}
+            if (faltantesUniclickCanal > 0) {
+                app.alert.show("Faltante canal Uniclick", {
+                    level: "error",
+                    title: 'Hace falta seleccionar algún canal para el producto Uniclick',
+                    autoClose: false
+                });
+                errors['error_UniclickUP'] = errors['error_UniclickUP'] || {};
+                errors['error_UniclickUP'].required = true;
+            }
+        }
         callback(null, fields, errors);
     },
 
     ocultaGeneraRFC: function () {
         //Oculta Botón Generar RFC
-        var roles=App.user.attributes.roles;
-        var roles_seguros=App.lang.getAppListStrings('roles_edicion_ctas_seguros_list');
+        var roles = App.user.attributes.roles;
+        var roles_seguros = App.lang.getAppListStrings('roles_edicion_ctas_seguros_list');
 
-        var seguros=0;
+        var seguros = 0;
         for (const [key, value] of Object.entries(roles_seguros)) {
-            if(roles.includes(value)){
+            if (roles.includes(value)) {
                 seguros = 1;
             }
         }
         var accesoFiscal = App.user.attributes.tct_alta_clientes_chk_c + App.user.attributes.tct_altaproveedor_chk_c + App.user.attributes.tct_alta_cd_chk_c + App.user.attributes.deudor_factoraje_c + seguros;
         if (accesoFiscal == 0 && this.model.get('tipo_registro_cuenta_c') != '4') {
-          this.$('div[data-name=rfc_c]').css("pointer-events", "none");
-          this.$('div[data-name="generar_rfc_c"]').hide();
+            this.$('div[data-name=rfc_c]').css("pointer-events", "none");
+            this.$('div[data-name="generar_rfc_c"]').hide();
         }
     },
 
     tipoProveedor: function (fields, errors, callback) {
-        if ((this.model.get('esproveedor_c') || this.model.get('tipo_registro_cuenta_c') == '5') && (App.user.attributes.puestousuario_c == 32 || App.user.attributes.puestousuario_c == 47) && (this.model.get('tipo_proveedor_compras_c') == null || this.model.get('tipo_proveedor_compras_c') == '') ) {
+        if ((this.model.get('esproveedor_c') || this.model.get('tipo_registro_cuenta_c') == '5') && (App.user.attributes.puestousuario_c == 32 || App.user.attributes.puestousuario_c == 47) && (this.model.get('tipo_proveedor_compras_c') == null || this.model.get('tipo_proveedor_compras_c') == '')) {
             app.alert.show("tipo_proveedor_compras_c", {
                 level: "error",
                 title: 'Hace falta seleccionar un valor para el campo Tipo de proveedor compras',
@@ -6957,21 +7066,21 @@
 
     validaRFC: function (fields, errors, callback) {
         if (this.model.get('tipodepersona_c') != "" && this.model.get('tipodepersona_c') != "Persona Moral") {
-            if (this.model.get('rfc_c')!="" && this.model.get('rfc_c') != 'XXXX010101XXX' && this.model.get('fechadenacimiento_c')!=""){
+            if (this.model.get('rfc_c') != "" && this.model.get('rfc_c') != 'XXXX010101XXX' && this.model.get('fechadenacimiento_c') != "") {
                 //Obtiene valor de la fecha y resconstruye
-                var fecha= this.model.get('fechadenacimiento_c');
-                var convert= fecha.split('-');
-                var ano= convert[0];
-                ano= ano.substring(2);
-                var mes= convert[1];
-                var dia= convert[2];
-                var complete="";
-                complete=complete.concat(ano,mes,dia);
+                var fecha = this.model.get('fechadenacimiento_c');
+                var convert = fecha.split('-');
+                var ano = convert[0];
+                ano = ano.substring(2);
+                var mes = convert[1];
+                var dia = convert[2];
+                var complete = "";
+                complete = complete.concat(ano, mes, dia);
                 //ValidacionRFC
-                var rfc=this.model.get('rfc_c');
-                rfc= rfc.substring(4, 10);
+                var rfc = this.model.get('rfc_c');
+                rfc = rfc.substring(4, 10);
 
-                if (rfc!=complete) {
+                if (rfc != complete) {
                     app.alert.show("Error_validacion_RFC", {
                         level: "error",
                         messages: 'La fecha no coincide con el RFC favor de corregir',
@@ -6981,22 +7090,22 @@
                     errors['Error_validacion_RFC'].required = true;
                 }
             }
-        }else{
-            if (this.model.get('rfc_c')!="" && this.model.get('rfc_c') != 'XXX010101XXX' && this.model.get('fechaconstitutiva_c')!=""){
+        } else {
+            if (this.model.get('rfc_c') != "" && this.model.get('rfc_c') != 'XXX010101XXX' && this.model.get('fechaconstitutiva_c') != "") {
                 //Obtiene valor de la fecha y resconstruye
-                var fecha= this.model.get('fechaconstitutiva_c');
-                var convert= fecha.split('-');
-                var ano= convert[0];
-                ano= ano.substring(2);
-                var mes= convert[1];
-                var dia= convert[2];
-                var complete="";
-                complete=complete.concat(ano,mes,dia);
+                var fecha = this.model.get('fechaconstitutiva_c');
+                var convert = fecha.split('-');
+                var ano = convert[0];
+                ano = ano.substring(2);
+                var mes = convert[1];
+                var dia = convert[2];
+                var complete = "";
+                complete = complete.concat(ano, mes, dia);
                 //ValidacionRFC
-                var rfc=this.model.get('rfc_c');
-                rfc= rfc.substring(3, 9);
+                var rfc = this.model.get('rfc_c');
+                rfc = rfc.substring(3, 9);
 
-                if (rfc!=complete) {
+                if (rfc != complete) {
                     app.alert.show("Error_validacion_RFC_Moral", {
                         level: "error",
                         messages: 'La fecha no coincide con el RFC favor de corregir',
@@ -7020,33 +7129,33 @@
 
         app.api.call('read', consulta, {}, {
             success: _.bind(function (data) {
-                if((this.model.get('tct_no_contactar_chk_c')) || data.bloqueo_credito_c || data.bloqueo_cumple_c) {
-					var params = {};
-					if(this.model.get('tct_no_contactar_chk_c')){
+                if ((this.model.get('tct_no_contactar_chk_c')) || data.bloqueo_credito_c || data.bloqueo_cumple_c) {
+                    var params = {};
+                    if (this.model.get('tct_no_contactar_chk_c')) {
                         params["bloqueo_cartera_c"] = 1;
-                        params["user_id1_c"]=App.user.id;
+                        params["user_id1_c"] = App.user.id;
                     }
-					if(data.bloqueo_credito_c){
+                    if (data.bloqueo_credito_c) {
                         params["bloqueo2_c"] = 1;
-                        params["user_id3_c"]=App.user.id;
+                        params["user_id3_c"] = App.user.id;
                     }
-                    if(data.bloqueo_cumple_c){
+                    if (data.bloqueo_cumple_c) {
                         params["bloqueo3_c"] = 1;
-                        params["user_id5_c"]=App.user.id;
+                        params["user_id5_c"] = App.user.id;
                     }
-                    
-					var actualiza = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
-					app.api.call('update', actualiza, params, {
-						success: _.bind(function (data) {
+
+                    var actualiza = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
+                    app.api.call('update', actualiza, params, {
+                        success: _.bind(function (data) {
                             app.alert.dismiss('loadingBloqueo');
-							app.alert.show('alert_change_success', {
-								level: 'success',
-								messages: 'Cuenta Bloqueada',
-							});
-							$('[name="bloquea_cuenta"]').hide();
-							location.reload();
-						}, this)
-					});
+                            app.alert.show('alert_change_success', {
+                                level: 'success',
+                                messages: 'Cuenta Bloqueada',
+                            });
+                            $('[name="bloquea_cuenta"]').hide();
+                            location.reload();
+                        }, this)
+                    });
                 }
                 app.alert.dismiss('loadingBloqueo');
             }, this)
@@ -7059,102 +7168,102 @@
             level: 'process',
             title: 'Cargando',
         });
-		var consulta = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
+        var consulta = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
         app.api.call('read', consulta, {}, {
             success: _.bind(function (data) {
                 app.alert.dismiss('loadingDesbloqueo');
-                if((this.model.get('tct_no_contactar_chk_c')) || data.bloqueo_credito_c || data.bloqueo_cumple_c || data.bloqueo2_c || data.bloqueo3_c || data.bloqueo_cartera_c) {
-					var params = {};
+                if ((this.model.get('tct_no_contactar_chk_c')) || data.bloqueo_credito_c || data.bloqueo_cumple_c || data.bloqueo2_c || data.bloqueo3_c || data.bloqueo_cartera_c) {
+                    var params = {};
                     var actualiza = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
-                    
-                    if(data.bloqueo_cartera_c) params["bloqueo_cartera_c"] = 0;
-                    if(data.bloqueo2_c) params["bloqueo2_c"] = 0;
-					if(data.bloqueo3_c) params["bloqueo3_c"] = 0;
 
-					if(this.model.get('tct_no_contactar_chk_c') || data.bloqueo_cartera_c) {
-						this.model.set("tct_no_contactar_chk_c", false);
-						this.model.save();
-						params["condicion_cliente_c"] = "";
-						params["razon_c"] = "";
-						params["motivo_c"] = "";
-						params["detalle_c"] = "";
-						params["user_id_c"] = "";
-						params["user_id1_c"] = "";
-					}
-					if(data.bloqueo_credito_c || data.bloqueo2_c) {
-						params["bloqueo_credito_c"] = 0;
-						params["condicion2_c"] = "";
-						params["razon2_c"] = "";
-						params["motivo2_c"] = "";
-						params["detalle2_c"] = "";
-						params["user_id2_c"] = "";
-						params["user_id3_c"] = "";
-					}
-					if(data.bloqueo_cumple_c || data.bloqueo3_c) {
-						params["bloqueo_cumple_c"] = 0;
-						params["condicion3_c"] = "";
-						params["razon3_c"] = "";
-						params["motivo3_c"] = "";
-						params["detalle3_c"] = "";
-						params["user_id4_c"] = "";
-						params["user_id5_c"] = "";
-					}
-					//Consulta Grupo Empresarial
-					app.api.call("read", app.api.buildURL("Accounts/" + this.model.get('id') + "/link/members", null, null, {}), null, {
-						success: _.bind(function (data1) {
-							if (data1.records.length > 0) {
-								app.alert.show('errorAlert2', {
-									level: 'confirmation',
-									messages: "¿Desea desbloquear todas las cuentas del grupo empresarial?",
-									autoClose: false,
-									onCancel: function() {
-										app.api.call('update', actualiza, params, {
-											success: _.bind(function (data2) {
-												app.alert.show('alert_change_success', {
-													level: 'success',
-													messages: 'Cuenta Desbloqueada',
-												});
-												$('[name="bloquea_cuenta"]').hide();
-												$('[name="desbloquea_cuenta"]').hide();
-												location.reload();
-											}, this)
-										});
-									},
-									onConfirm: function() {
-										if(data.grupo_c) {
-											params["grupo_c"] = 0;
-										} else {
-											params["grupo_c"] = 1;
-										}
-										app.api.call('update', actualiza, params, {
-											success: _.bind(function (data2) {
-												app.alert.show('alert_change_success', {
-													level: 'success',
-													messages: 'Cuenta Desbloqueada',
-												});
-												$('[name="bloquea_cuenta"]').hide();
-												$('[name="desbloquea_cuenta"]').hide();
-												location.reload();
-											}, this)
-										});
-									},
-								});
-							} else {
-								app.api.call('update', actualiza, params, {
-									success: _.bind(function (data2) {
-										app.alert.show('alert_change_success', {
-											level: 'success',
-											messages: 'Cuenta Desbloqueada',
-										});
-										$('[name="bloquea_cuenta"]').hide();
-										$('[name="desbloquea_cuenta"]').hide();
-										location.reload();
-									}, this)
-								});
-							}
-						}, this)
-					});
-				}
+                    if (data.bloqueo_cartera_c) params["bloqueo_cartera_c"] = 0;
+                    if (data.bloqueo2_c) params["bloqueo2_c"] = 0;
+                    if (data.bloqueo3_c) params["bloqueo3_c"] = 0;
+
+                    if (this.model.get('tct_no_contactar_chk_c') || data.bloqueo_cartera_c) {
+                        this.model.set("tct_no_contactar_chk_c", false);
+                        this.model.save();
+                        params["condicion_cliente_c"] = "";
+                        params["razon_c"] = "";
+                        params["motivo_c"] = "";
+                        params["detalle_c"] = "";
+                        params["user_id_c"] = "";
+                        params["user_id1_c"] = "";
+                    }
+                    if (data.bloqueo_credito_c || data.bloqueo2_c) {
+                        params["bloqueo_credito_c"] = 0;
+                        params["condicion2_c"] = "";
+                        params["razon2_c"] = "";
+                        params["motivo2_c"] = "";
+                        params["detalle2_c"] = "";
+                        params["user_id2_c"] = "";
+                        params["user_id3_c"] = "";
+                    }
+                    if (data.bloqueo_cumple_c || data.bloqueo3_c) {
+                        params["bloqueo_cumple_c"] = 0;
+                        params["condicion3_c"] = "";
+                        params["razon3_c"] = "";
+                        params["motivo3_c"] = "";
+                        params["detalle3_c"] = "";
+                        params["user_id4_c"] = "";
+                        params["user_id5_c"] = "";
+                    }
+                    //Consulta Grupo Empresarial
+                    app.api.call("read", app.api.buildURL("Accounts/" + this.model.get('id') + "/link/members", null, null, {}), null, {
+                        success: _.bind(function (data1) {
+                            if (data1.records.length > 0) {
+                                app.alert.show('errorAlert2', {
+                                    level: 'confirmation',
+                                    messages: "¿Desea desbloquear todas las cuentas del grupo empresarial?",
+                                    autoClose: false,
+                                    onCancel: function () {
+                                        app.api.call('update', actualiza, params, {
+                                            success: _.bind(function (data2) {
+                                                app.alert.show('alert_change_success', {
+                                                    level: 'success',
+                                                    messages: 'Cuenta Desbloqueada',
+                                                });
+                                                $('[name="bloquea_cuenta"]').hide();
+                                                $('[name="desbloquea_cuenta"]').hide();
+                                                location.reload();
+                                            }, this)
+                                        });
+                                    },
+                                    onConfirm: function () {
+                                        if (data.grupo_c) {
+                                            params["grupo_c"] = 0;
+                                        } else {
+                                            params["grupo_c"] = 1;
+                                        }
+                                        app.api.call('update', actualiza, params, {
+                                            success: _.bind(function (data2) {
+                                                app.alert.show('alert_change_success', {
+                                                    level: 'success',
+                                                    messages: 'Cuenta Desbloqueada',
+                                                });
+                                                $('[name="bloquea_cuenta"]').hide();
+                                                $('[name="desbloquea_cuenta"]').hide();
+                                                location.reload();
+                                            }, this)
+                                        });
+                                    },
+                                });
+                            } else {
+                                app.api.call('update', actualiza, params, {
+                                    success: _.bind(function (data2) {
+                                        app.alert.show('alert_change_success', {
+                                            level: 'success',
+                                            messages: 'Cuenta Desbloqueada',
+                                        });
+                                        $('[name="bloquea_cuenta"]').hide();
+                                        $('[name="desbloquea_cuenta"]').hide();
+                                        location.reload();
+                                    }, this)
+                                });
+                            }
+                        }, this)
+                    });
+                }
             }, this)
         });
     },
@@ -7164,16 +7273,16 @@
 
         app.api.call('GET', app.api.buildURL('GetProductosCuentas/' + this.model.get('id')), null, {
             success: function (data) {
-				Productos = data;
+                Productos = data;
                 apruebaGeneral2 = false;
                 apruebaGeneral1 = false;
                 _.each(Productos, function (value, key) {
-					if(Productos[key].no_viable && (Productos[key].user_id1_c == app.user.id || Productos[key].user_id2_c == app.user.id)) {
-						var params = {};
-						var strUrl = 'tct4_Condiciones?filter[][condicion]='+Productos[key].status_management_c+'&filter[][razon]='+Productos[key].razon_c;
-						app.api.call("GET", app.api.buildURL(strUrl), null, {
-							success: _.bind(function (data1) {
-								if(data1.records.length > 0) {
+                    if (Productos[key].no_viable && (Productos[key].user_id1_c == app.user.id || Productos[key].user_id2_c == app.user.id)) {
+                        var params = {};
+                        var strUrl = 'tct4_Condiciones?filter[][condicion]=' + Productos[key].status_management_c + '&filter[][razon]=' + Productos[key].razon_c;
+                        app.api.call("GET", app.api.buildURL(strUrl), null, {
+                            success: _.bind(function (data1) {
+                                if (data1.records.length > 0) {
                                     var bloqueo = false;
                                     var razon = "";
                                     var motivo = "";
@@ -7182,70 +7291,70 @@
 
                                     _.each(data1.records, function (valor, llave) {
                                         razon = Productos[key].razon_c;
-                                        motivo = (Productos[key].motivo_c == null) ? "":Productos[key].motivo_c;
-                                        aprueba2 = (Productos[key].aprueba2_c == "0") ? false:true;
-                                        aprueba1 = (Productos[key].aprueba1_c == "0") ? false:true;
-                                        reactivacion = (Productos[key].reactivacion_c == "0") ? false:true;
+                                        motivo = (Productos[key].motivo_c == null) ? "" : Productos[key].motivo_c;
+                                        aprueba2 = (Productos[key].aprueba2_c == "0") ? false : true;
+                                        aprueba1 = (Productos[key].aprueba1_c == "0") ? false : true;
+                                        reactivacion = (Productos[key].reactivacion_c == "0") ? false : true;
 
-                                        if(!reactivacion ){
-                                            if(razon != "" && motivo == "" ){
-                                                if(data1.records[llave].razon == razon && data1.records[llave].bloquea) {
+                                        if (!reactivacion) {
+                                            if (razon != "" && motivo == "") {
+                                                if (data1.records[llave].razon == razon && data1.records[llave].bloquea) {
 
-                                                    if(app.user.id == Productos[key].user_id1_c ){
+                                                    if (app.user.id == Productos[key].user_id1_c) {
                                                         params["aprueba1_c"] = 1;
                                                         apruebaGeneral1 = true;
-                                                        if(aprueba2){
+                                                        if (aprueba2) {
                                                             bloqueo = true;
                                                         }
                                                     }
-                                                    if(app.user.id == Productos[key].user_id2_c ){
+                                                    if (app.user.id == Productos[key].user_id2_c) {
                                                         params["aprueba2_c"] = 1;
                                                         apruebaGeneral2 = true;
-                                                        if(aprueba1){
+                                                        if (aprueba1) {
                                                             bloqueo = true;
                                                         }
                                                     }
                                                 }
                                             }
-                                            if(razon != "" && motivo != "" ){
-                                                if((data1.records[llave].razon == razon) && (data1.records[llave].motivo == motivo)
-                                                && data1.records[llave].bloquea) {
+                                            if (razon != "" && motivo != "") {
+                                                if ((data1.records[llave].razon == razon) && (data1.records[llave].motivo == motivo)
+                                                    && data1.records[llave].bloquea) {
                                                     //bloqueo = true;
-                                                    if(app.user.id == Productos[key].user_id1_c ){
+                                                    if (app.user.id == Productos[key].user_id1_c) {
                                                         params["aprueba1_c"] = 1;
                                                         apruebaGeneral1 = true;
-										                if(aprueba2){
+                                                        if (aprueba2) {
                                                             bloqueo = true;
                                                         }
                                                     }
-                                                    if(app.user.id == Productos[key].user_id2_c ){
+                                                    if (app.user.id == Productos[key].user_id2_c) {
                                                         params["aprueba2_c"] = 1;
                                                         apruebaGeneral2 = true;
-										                if(aprueba1){
+                                                        if (aprueba1) {
                                                             bloqueo = true;
                                                         }
                                                     }
                                                 }
                                             }
-                                        }else{
-                                            if((data1.records[llave].razon == razon) && (data1.records[llave].motivo == motivo)
+                                        } else {
+                                            if ((data1.records[llave].razon == razon) && (data1.records[llave].motivo == motivo)
                                                 && data1.records[llave].bloquea) {
-                                                    bloqueo = true;
-                                                    params["aprueba1_c"] = false;
-										            params["aprueba1_c"] = false;
+                                                bloqueo = true;
+                                                params["aprueba1_c"] = false;
+                                                params["aprueba1_c"] = false;
 
-                                                }
+                                            }
                                         }
                                     });
-                                    if( bloqueo) {
+                                    if (bloqueo) {
 
-										params["status_management_c"] = Productos[key].status_management_c;
-										params["razon_c"] = Productos[key].razon_c;
-										params["motivo_c"] = Productos[key].motivo_c;
-										params["detalle_c"] = Productos[key].detalle_c;
-										params["user_id_c"] = Productos[key].user_id_c;
-										params["user_id1_c"] = Productos[key].user_id1_c;
-										params["user_id2_c"] = Productos[key].user_id2_c;
+                                        params["status_management_c"] = Productos[key].status_management_c;
+                                        params["razon_c"] = Productos[key].razon_c;
+                                        params["motivo_c"] = Productos[key].motivo_c;
+                                        params["detalle_c"] = Productos[key].detalle_c;
+                                        params["user_id_c"] = Productos[key].user_id_c;
+                                        params["user_id1_c"] = Productos[key].user_id1_c;
+                                        params["user_id2_c"] = Productos[key].user_id2_c;
                                         params["aprueba1_c"] = 1;
                                         params["aprueba2_c"] = 1;
                                         params["estatus_atencion"] = '3';
@@ -7254,16 +7363,16 @@
                                         params["notificacion_noviable_c"] = 1;
                                         params["user_id"] = app.user.id;
 
-										/*_.each(Productos, function (value1, key1) {
-											var actualiza = app.api.buildURL('uni_Productos/' + Productos[key1].id, null, null);
-											app.api.call('update', actualiza, params, {
-												success: _.bind(function (data2) {
-												}, this)
-											});
-										});*/
+                                        /*_.each(Productos, function (value1, key1) {
+                                            var actualiza = app.api.buildURL('uni_Productos/' + Productos[key1].id, null, null);
+                                            app.api.call('update', actualiza, params, {
+                                                success: _.bind(function (data2) {
+                                                }, this)
+                                            });
+                                        });*/
                                         _.each(Productos, function (value1, key1) {
-                                            params["id_Producto"] =  Productos[key1].id;
-                                            var uni = app.api.buildURL('actualizaProductosPermisos', null, null,params);
+                                            params["id_Producto"] = Productos[key1].id;
+                                            var uni = app.api.buildURL('actualizaProductosPermisos', null, null, params);
                                             var resp;
                                             app.api.call('create', uni, null, {
                                                 success: function (data) {
@@ -7280,33 +7389,33 @@
                                         location.reload();
                                         //cont_uni_p.render();
 
-									} else {
-                                        if(apruebaGeneral2 || apruebaGeneral1){
-                                            params["aprueba1_c"] = (apruebaGeneral1)? 1:0 ;
-                                            params["aprueba2_c"] = (apruebaGeneral2)? 1:0 ;
+                                    } else {
+                                        if (apruebaGeneral2 || apruebaGeneral1) {
+                                            params["aprueba1_c"] = (apruebaGeneral1) ? 1 : 0;
+                                            params["aprueba2_c"] = (apruebaGeneral2) ? 1 : 0;
                                             params["estatus_atencion"] = '1';
-                                        }else{
+                                        } else {
                                             params["aprueba1_c"] = 1;
                                             params["aprueba2_c"] = 1;
                                             params["estatus_atencion"] = '3';
                                         }
                                         params["user_id"] = app.user.id;
-										//if(Productos[key].user_id1_c == app.user.id) params["aprueba1_c"] = 1;
-										//if(Productos[key].user_id2_c == app.user.id) params["aprueba2_c"] = 1;
-                                        params["id_Producto"] =  Productos[key].id;
+                                        //if(Productos[key].user_id1_c == app.user.id) params["aprueba1_c"] = 1;
+                                        //if(Productos[key].user_id2_c == app.user.id) params["aprueba2_c"] = 1;
+                                        params["id_Producto"] = Productos[key].id;
                                         params["tipoupdate"] = '2';
                                         params["reactivacion_c"] = 0;
                                         params["status_management_c"] = Productos[key].status_management_c;
-										params["razon_c"] = Productos[key].razon_c;
-										params["motivo_c"] = Productos[key].motivo_c;
-										params["detalle_c"] = Productos[key].detalle_c;
-										params["user_id_c"] = Productos[key].user_id_c;
-										params["user_id1_c"] = Productos[key].user_id1_c;
-										params["user_id2_c"] = Productos[key].user_id2_c;
+                                        params["razon_c"] = Productos[key].razon_c;
+                                        params["motivo_c"] = Productos[key].motivo_c;
+                                        params["detalle_c"] = Productos[key].detalle_c;
+                                        params["user_id_c"] = Productos[key].user_id_c;
+                                        params["user_id1_c"] = Productos[key].user_id1_c;
+                                        params["user_id2_c"] = Productos[key].user_id2_c;
                                         params["notificacion_noviable_c"] = 1;
 
                                         //var actualiza = app.api.buildURL('actualizaProductosPermisos/' + Productos[key].id, null, null);
-                                        var uni = app.api.buildURL('actualizaProductosPermisos', null, null,params);
+                                        var uni = app.api.buildURL('actualizaProductosPermisos', null, null, params);
                                         var resp;
                                         app.api.call('create', uni, null, {
                                             success: function (data) {
@@ -7322,21 +7431,21 @@
                                             }
                                         });
 
-										/*var actualiza = app.api.buildURL('uni_Productos/' + Productos[key].id, null, null);
-										app.api.call('update', actualiza, params, {
-											success: _.bind(function (data2) {
-												app.alert.show('alert_change_success', {
-													level: 'success',
-													messages: 'Cuenta Bloqueada',
-												});
-											}, this)
-										});
+                                        /*var actualiza = app.api.buildURL('uni_Productos/' + Productos[key].id, null, null);
+                                        app.api.call('update', actualiza, params, {
+                                            success: _.bind(function (data2) {
+                                                app.alert.show('alert_change_success', {
+                                                    level: 'success',
+                                                    messages: 'Cuenta Bloqueada',
+                                                });
+                                            }, this)
+                                        });
                                         */
-									}
-								}
+                                    }
+                                }
                                 //location.reload();
-							}, this)
-						});
+                            }, this)
+                        });
                     }
                 });
             },
@@ -7350,44 +7459,44 @@
     Función para controlar la visualización de los botones para bloquear o desbloquear cuentas
     */
     bloqueo: function () {
-        if(app.user.attributes.tct_no_contactar_chk_c=='1' || app.user.attributes.bloqueo_credito_c=='1' || app.user.attributes.bloqueo_cumple_c=='1'){
-            if(app.user.attributes.tct_no_contactar_chk_c=='1') {
-				this.condicion_permiso=1;
-			}
-            if(app.user.attributes.bloqueo_credito_c=='1') {
-				this.condicion_permiso=2;
-			}
-            if(app.user.attributes.bloqueo_cumple_c=='1') {
-				this.condicion_permiso=3;
+        if (app.user.attributes.tct_no_contactar_chk_c == '1' || app.user.attributes.bloqueo_credito_c == '1' || app.user.attributes.bloqueo_cumple_c == '1') {
+            if (app.user.attributes.tct_no_contactar_chk_c == '1') {
+                this.condicion_permiso = 1;
             }
-            this.ids_responsables=[];
+            if (app.user.attributes.bloqueo_credito_c == '1') {
+                this.condicion_permiso = 2;
+            }
+            if (app.user.attributes.bloqueo_cumple_c == '1') {
+                this.condicion_permiso = 3;
+            }
+            this.ids_responsables = [];
             App.alert.show('loadingShowHideBotonesBloqueo', {
                 level: 'process',
                 title: 'Cargando',
             });
-			var url_condiciones = 'tct4_Condiciones?filter[][condicion]='+this.condicion_permiso;
-			app.api.call("GET", app.api.buildURL(url_condiciones), null, {
-				success: _.bind(function (data) {
-                    if(data.records.length > 0) {
+            var url_condiciones = 'tct4_Condiciones?filter[][condicion]=' + this.condicion_permiso;
+            app.api.call("GET", app.api.buildURL(url_condiciones), null, {
+                success: _.bind(function (data) {
+                    if (data.records.length > 0) {
                         //Obtiene el identificador del equipo de responsables para poder obtener a sus respectivos miembros para que esos tengan el acceso para bloquear/desbloquear
                         //Se asume que el equipo de responsables será el MISMO en caso de que sea la misma condición
-                        var id_equipo_responsables="";
-                        for (var i=0; i<data.records.length;i++) {
+                        var id_equipo_responsables = "";
+                        for (var i = 0; i < data.records.length; i++) {
 
-                            if(data.records[i].user_id_c != ""){
-                                id_equipo_responsables=data.records[i].user_id_c;
+                            if (data.records[i].user_id_c != "") {
+                                id_equipo_responsables = data.records[i].user_id_c;
                             }
                         }
 
-                        if(id_equipo_responsables != ""){
-                            var paramsUser={
+                        if (id_equipo_responsables != "") {
+                            var paramsUser = {
                                 "filter": [
                                     {
-                                      "status": {
-                                        "$in" : ["Active"],
-                                      }
+                                        "status": {
+                                            "$in": ["Active"],
+                                        }
                                     }
-                                  ]
+                                ]
                             };
                             app.api.call("read", app.api.buildURL("Teams/" + id_equipo_responsables + "/link/users", null, null, paramsUser), null, {
                                 success: _.bind(function (data_members) {
@@ -7396,109 +7505,109 @@
                                             this.ids_responsables.push(data_members.records[j].id);
                                         }
                                         // Cuentas No Contactar
-                                        var id_cuenta_resumen=this._currentUrl.split('/')[1];
+                                        var id_cuenta_resumen = this._currentUrl.split('/')[1];
                                         var consulta = app.api.buildURL('tct02_Resumen/' + id_cuenta_resumen, null, null);
                                         app.api.call('read', consulta, {}, {
                                             success: _.bind(function (dataResumen) {
                                                 app.alert.dismiss('loadingShowHideBotonesBloqueo');
                                                 //Obtener los usuarios del equipo de responsables de validación correspondientes a la condición del usuario logueado
                                                 //En caso de que la cuenta ya haya sido bloqueada de manera definitiva, mostrar la alerta, en otro caso se muestra el botón
-                                                if(this.ids_responsables.includes(app.user.id)){
+                                                if (this.ids_responsables.includes(app.user.id)) {
                                                     //Control para mostrar botón de bloqueo
-                                                    if(
+                                                    if (
                                                         (contexto_cuenta.model.get('tct_no_contactar_chk_c') && !dataResumen.bloqueo_cartera_c) ||
                                                         (dataResumen.bloqueo_credito_c && !dataResumen.bloqueo2_c) ||
                                                         (dataResumen.bloqueo_cumple_c && !dataResumen.bloqueo3_c)
-                                                    ){
+                                                    ) {
                                                         $('[name="bloquea_cuenta"]').removeClass('hidden');
                                                     }
-                                                    if(
+                                                    if (
                                                         (contexto_cuenta.model.get('tct_no_contactar_chk_c') && dataResumen.bloqueo_cartera_c) ||
                                                         (dataResumen.bloqueo_credito_c && dataResumen.bloqueo2_c) ||
                                                         (dataResumen.bloqueo_cumple_c && dataResumen.bloqueo3_c)
-                                                    ){
-                                                        var nombre_usuario="";
-                                                        if(this.model.get('tct_no_contactar_chk_c')){
-                                                            nombre_usuario=dataResumen.validacion_c;
+                                                    ) {
+                                                        var nombre_usuario = "";
+                                                        if (this.model.get('tct_no_contactar_chk_c')) {
+                                                            nombre_usuario = dataResumen.validacion_c;
                                                         }
-                                                        if(dataResumen.bloqueo_credito_c){
-                                                            nombre_usuario=dataResumen.validacion2_c;
+                                                        if (dataResumen.bloqueo_credito_c) {
+                                                            nombre_usuario = dataResumen.validacion2_c;
                                                         }
-                                                        if(dataResumen.bloqueo_cumple_c){
-                                                            nombre_usuario=dataResumen.validacion3_c;
+                                                        if (dataResumen.bloqueo_cumple_c) {
+                                                            nombre_usuario = dataResumen.validacion3_c;
                                                         }
 
                                                         app.alert.show('Cuenta bloqueada', {
                                                             level: 'error',
-                                                            messages: 'Esta cuenta ya ha sido validada y bloqueada por <b>'+nombre_usuario+'</b>',
-                                                         });
+                                                            messages: 'Esta cuenta ya ha sido validada y bloqueada por <b>' + nombre_usuario + '</b>',
+                                                        });
                                                     }
                                                     //Control para mostrar botón de desbloqueo
-                                                    if(
+                                                    if (
                                                         (contexto_cuenta.model.get('tct_no_contactar_chk_c') || dataResumen.bloqueo_cartera_c) ||
                                                         (dataResumen.bloqueo_credito_c || dataResumen.bloqueo2_c) ||
                                                         (dataResumen.bloqueo_cumple_c || dataResumen.bloqueo3_c)
-                                                    ){
+                                                    ) {
                                                         $('[name="desbloquea_cuenta"]').removeClass('hidden');
                                                     }
                                                 }
                                             }, this)
-                                        });   
+                                        });
                                     }
                                 }, this)
                             });
                         }
-					}
-				}, this)
-			});
+                    }
+                }, this)
+            });
         }
 
-		// No viable
+        // No viable
         var Productos = [];
         var reactivacion = false;
         app.api.call('GET', app.api.buildURL('GetProductosCuentas/' + this.model.get('id')), null, {
             success: function (data) {
-				Productos = data;
+                Productos = data;
                 _.each(Productos, function (value, key) {
-                    var ap1 = (Productos[key].aprueba1_c == "0") ? false :true;
-                    var ap2 = (Productos[key].aprueba2_c == "0") ? false :true;
-                    var react = (Productos[key].reactivacion_c == "0") ? false :true;
+                    var ap1 = (Productos[key].aprueba1_c == "0") ? false : true;
+                    var ap2 = (Productos[key].aprueba2_c == "0") ? false : true;
+                    var react = (Productos[key].reactivacion_c == "0") ? false : true;
 
-                    if(App.user.attributes.bloqueo_cuentas_c == '1' ){
-                        if(ap1 && ap2){
+                    if (App.user.attributes.bloqueo_cuentas_c == '1') {
+                        if (ap1 && ap2) {
                             $('[name="reactivar_noviable"]').removeClass('hidden');
                         }
-                    }else{
-                        if( react && !reactivacion ){
+                    } else {
+                        if (react && !reactivacion) {
                             /*if((!ap1 && !ap2) && (Productos[key].user_id_c == app.user.id )) {
                                 $('[name="reactivar_noviable"]').removeClass('hidden');
                             }*/
                             reactivacion = true;
                         }
 
-                        if( reactivacion || !ap1 || !ap2){
-                            if(!ap1 && (Productos[key].user_id1_c == app.user.id) && (Productos[key].status_management_c == '4' || Productos[key].status_management_c == '5')) {
+                        if (reactivacion || !ap1 || !ap2) {
+                            if (!ap1 && (Productos[key].user_id1_c == app.user.id) && (Productos[key].status_management_c == '4' || Productos[key].status_management_c == '5')) {
                                 $('[name="aprobar_noviable"]').removeClass('hidden');
                                 $('[name="desaprobar_noviable"]').removeClass('hidden');
-                                if(react){
+                                if (react) {
                                     $('[name="aprobar_noviable"]')[0].text = "Rechazar Reactivación";
                                     $('[name="desaprobar_noviable"]')[0].text = "Confirmar Reactivación";
-                                    $('[name="aprobar_noviable"]')[0].className= "btn btn-danger";
-                                    $('[name="desaprobar_noviable"]')[0].className= "btn btn-success";
+                                    $('[name="aprobar_noviable"]')[0].className = "btn btn-danger";
+                                    $('[name="desaprobar_noviable"]')[0].className = "btn btn-success";
                                 }
                             }
-                            if(!ap2 && (Productos[key].user_id2_c == app.user.id)  && (Productos[key].status_management_c == '4' || Productos[key].status_management_c == '5')) {
+                            if (!ap2 && (Productos[key].user_id2_c == app.user.id) && (Productos[key].status_management_c == '4' || Productos[key].status_management_c == '5')) {
                                 $('[name="aprobar_noviable"]').removeClass('hidden');
                                 $('[name="desaprobar_noviable"]').removeClass('hidden');
-                                if(react){
+                                if (react) {
                                     $('[name="aprobar_noviable"]')[0].text = "Rechazar Reactivación";
                                     $('[name="desaprobar_noviable"]')[0].text = "Confirmar Reactivación";
-                                    $('[name="aprobar_noviable"]')[0].className= "btn btn-danger";
-                                    $('[name="desaprobar_noviable"]')[0].className= "btn btn-success";
+                                    $('[name="aprobar_noviable"]')[0].className = "btn btn-danger";
+                                    $('[name="desaprobar_noviable"]')[0].className = "btn btn-success";
                                 }
                             }
-                        }else{
-                            if((ap1 && ap2) && (Productos[key].user_id_c == app.user.id )) {
+                        } else {
+                            if ((ap1 && ap2) && (Productos[key].user_id_c == app.user.id)) {
                                 $('[name="reactivar_noviable"]').removeClass('hidden');
                             }
                         }
@@ -7511,12 +7620,12 @@
         });
     },
 
-    rechazar_noviable: function (){
+    rechazar_noviable: function () {
         var noviable = 0;
         var Productos = [];
 
         var params = {};
-		params["razon_c"] = ''; //razon lm
+        params["razon_c"] = ''; //razon lm
         params["motivo_c"] = ''; //motivo lm
         params["detalle_c"] = ''; //detalle lm
         params["user_id1_c"] = '';  //user id1
@@ -7530,11 +7639,11 @@
         params["estatus_atencion"] = '1';
 
         //var uni = app.api.buildURL('actualizaProductosPermisos/');
-        var uni = app.api.buildURL('actualizaProductosPermisos', null, null,params);
+        var uni = app.api.buildURL('actualizaProductosPermisos', null, null, params);
         var resp;
         app.api.call('create', uni, null, {
             success: function (data) {
-				resp = data;
+                resp = data;
                 /*if(resp > 0){
                     app.alert.show('Rechazar No viable cuenta', {
                        level: 'info',
@@ -7555,17 +7664,17 @@
         });
     },
 
-    reactivar_noviable: function (){
+    reactivar_noviable: function () {
 
         var params = {};
 
         params["status_management_c"] = '1';
         params["id_Account"] = this.model.get('id');
         params["user_id"] = app.user.id;
-        if(App.user.attributes.bloqueo_cuentas_c == 1){
+        if (App.user.attributes.bloqueo_cuentas_c == 1) {
             params["tipoupdate"] = '4';
-        }else{
-          params["tipoupdate"] = '3';
+        } else {
+            params["tipoupdate"] = '3';
         }
         params["reactivacion_c"] = true;
         //params["estatus_atencion"] = '1';
@@ -7576,11 +7685,11 @@
         });
 
         //var uni = app.api.buildURL('actualizaProductosPermisos/');
-        var uni = app.api.buildURL('actualizaProductosPermisos', null, null,params);
+        var uni = app.api.buildURL('actualizaProductosPermisos', null, null, params);
         var resp;
         app.api.call('create', uni, null, {
             success: function (data) {
-				resp = data;
+                resp = data;
                 /*if(resp > 0){
                     app.alert.show('Rechazar No viable cuenta', {
                        level: 'info',
@@ -7601,34 +7710,34 @@
         });
     },
 
-	userAlianzaSoc: function () {
+    userAlianzaSoc: function () {
         //Recupera variables
         //var chksock = this.model.get('alianza_soc_chk_c');
         var productos = App.user.attributes.productos_c; //lista de productos del usuario,
-		var idUser = App.user.attributes.id; //Id del usuario,
-		var puesto = App.user.attributes.puestousuario_c; //27=> Agente Tel, 31=> Coordinador CP,
+        var idUser = App.user.attributes.id; //Id del usuario,
+        var puesto = App.user.attributes.puestousuario_c; //27=> Agente Tel, 31=> Coordinador CP,
         //var listaProductosSock = [];    //Recupera Ids de usuarios que pueden editar origen
         //listaProductosSock = app.lang.getAppListStrings('producto_soc_usuario_list');
-		var readonly = true;
+        var readonly = true;
 
-		/*Object.entries(App.lang.getAppListStrings('producto_soc_usuario_list')).forEach(([key, value]) => {
+        /*Object.entries(App.lang.getAppListStrings('producto_soc_usuario_list')).forEach(([key, value]) => {
             if(this.model.get(value) == idUser && productos.includes(key) ){
-				readonly = false;
-			}
+                readonly = false;
+            }
         });
         */
-		Object.entries(App.lang.getAppListStrings('soc_usuario_list')).forEach(([key, value]) => {
-            if(value == idUser){
-				readonly = false;
-			}
+        Object.entries(App.lang.getAppListStrings('soc_usuario_list')).forEach(([key, value]) => {
+            if (value == idUser) {
+                readonly = false;
+            }
         });
 
-		if(readonly){
-			this.$("[data-name='alianza_soc_chk_c']").attr('style', 'pointer-events:none;');
-		}
+        if (readonly) {
+            this.$("[data-name='alianza_soc_chk_c']").attr('style', 'pointer-events:none;');
+        }
     },
 
-    deshabilitaOrigenCuenta:function(){
+    deshabilitaOrigenCuenta: function () {
         var today = new Date();
         var yyyy = today.getFullYear();
         var mm = today.getMonth() + 1; // Months start at 0!
@@ -7637,52 +7746,52 @@
         if (dd < 10) dd = '0' + dd;
         if (mm < 10) mm = '0' + mm;
 
-        var hoy = yyyy+'-'+mm+'-'+dd;
-        var fecha_actual= new Date(hoy);
-        var fecha_bloqueo=new Date(this.model.get("fecha_bloqueo_origen_c"));
+        var hoy = yyyy + '-' + mm + '-' + dd;
+        var fecha_actual = new Date(hoy);
+        var fecha_bloqueo = new Date(this.model.get("fecha_bloqueo_origen_c"));
 
-        if(fecha_actual<=fecha_bloqueo){
+        if (fecha_actual <= fecha_bloqueo) {
             $('.record-cell[data-name="origen_cuenta_c"]').find('.normal.index').find('.edit').addClass('disabled');
             $('.record-cell[data-name="origen_cuenta_c"]').find('.normal.index').find('.select2-container').addClass('select2-container-disabled');
-            $('.record-cell[data-name="origen_cuenta_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled',"");
-            $('.record-cell[data-name="origen_cuenta_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled',"");
+            $('.record-cell[data-name="origen_cuenta_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled', "");
+            $('.record-cell[data-name="origen_cuenta_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled', "");
             $('.record-cell[data-name="origen_cuenta_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
             $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('.edit').addClass('disabled');
             $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('.select2-container').addClass('select2-container-disabled');
-            $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled',"");
-            $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled',"");
+            $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled', "");
+            $('.record-cell[data-name="detalle_origen_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled', "");
             $('.record-cell[data-name="detalle_origen_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
             $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('.edit').addClass('disabled');
             $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('.select2-container').addClass('select2-container-disabled');
-            $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled',"");
-            $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled',"");
+            $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled', "");
+            $('.record-cell[data-name="prospeccion_propia_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled', "");
             $('.record-cell[data-name="prospeccion_propia_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
             $('.record-cell[data-name="medio_detalle_origen_c"]').find('.normal.index').find('.edit').addClass('disabled');
             $('.record-cell[data-name="medio_detalle_origen_c"]').find('.normal.index').find('.select2-container').addClass('select2-container-disabled');
-            $('.record-cell[data-name="medio_detalle_origen_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled',"");
-            $('.record-cell[data-name="medio_detalle_origen_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled',"");
+            $('.record-cell[data-name="medio_detalle_origen_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled', "");
+            $('.record-cell[data-name="medio_detalle_origen_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled', "");
             $('.record-cell[data-name="medio_detalle_origen_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
             $('.record-cell[data-name="punto_contacto_origen_c"]').find('.normal.index').find('.edit').addClass('disabled');
             $('.record-cell[data-name="punto_contacto_origen_c"]').find('.normal.index').find('.select2-container').addClass('select2-container-disabled');
-            $('.record-cell[data-name="punto_contacto_origen_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled',"");
-            $('.record-cell[data-name="punto_contacto_origen_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled',"");
+            $('.record-cell[data-name="punto_contacto_origen_c"]').find('.normal.index').find('.select2-container').find('.select2-focusser').attr('disabled', "");
+            $('.record-cell[data-name="punto_contacto_origen_c"]').find('.normal.index').find('input[type="hidden"]').attr('disabled', "");
             $('.record-cell[data-name="punto_contacto_origen_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
-            $('[data-name="evento_c"]').css({ "pointer-events":"none"});
-            $('[data-name="camara_c"]').css({ "pointer-events":"none"});
-            $('[data-name="tct_que_promotor_rel_c"]').css({ "pointer-events":"none"});
-            $('[data-name="codigo_expo_c"]').css({ "pointer-events":"none"});
+            $('[data-name="evento_c"]').css({ "pointer-events": "none" });
+            $('[data-name="camara_c"]').css({ "pointer-events": "none" });
+            $('[data-name="tct_que_promotor_rel_c"]').css({ "pointer-events": "none" });
+            $('[data-name="codigo_expo_c"]').css({ "pointer-events": "none" });
             $('.record-cell[data-name="codigo_expo_c"]').find('.record-edit-link-wrapper').addClass('hide');
 
 
         }
     },
 
-    estableceOpcionesOrigen:function(){
+    estableceOpcionesOrigen: function () {
         var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
 
         if (App.user.attributes.puestousuario_c != '53') { //Si no tiene puesto uniclick, se eliminan las opciones Closer y Growth
@@ -7705,8 +7814,8 @@
         App.api.call("read", app.api.buildURL("AltaProveedor/" + this.model.get('id'), null, null, {}), null, {
             success: _.bind(function (data) {
                 App.alert.dismiss('ProcesoProveedor');
-                var level = (data.status=='200')?'success':'error';
-                if (data.status!='400'){
+                var level = (data.status == '200') ? 'success' : 'error';
+                if (data.status != '400') {
                     self.model.set('alta_portal_proveedor_chk_c', 1);
                 }
                 App.alert.show('alert_func_Proveedor', {
@@ -7718,841 +7827,841 @@
     },
 
     validaReqUniclick: function (fields, errors, callback) {
-        if(App.user.attributes.id == ResumenProductos.uniclick.assigned_user_id){
-                       var necesarios="";
-                       var requests=[];
-                       var request={};
-                       var Cuenta = this.model.get('id');
-                       //Obtenemos las opps de la cuenta
-                       var requestA = app.utils.deepCopy(request);
-                       var url = app.api.buildURL("Accounts/" + Cuenta + "/link/opportunities?filter[0][tipo_producto_c][$equals]=2&filter[1][negocio_c][$equals]=10&filter[2][negocio_c][$equals]=10&filter[3][estatus_c][$not_equals]=K&filter[4][tct_etapa_ddw_c][$not_equals]=N&filter[5][estatus_c][$not_equals]=R");
-                           requestA.url = url.substring(4);
-                           requests.push(requestA);
-                           var requestB = app.utils.deepCopy(request);
-                           var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_dire_direccion_1");
-                           requestB.url = url.substring(4);
-                           requests.push(requestB);
-                           var requestC = app.utils.deepCopy(request);
-                           var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_tel_telefonos_1");
-                           requestC.url = url.substring(4);
-                           requests.push(requestC);
-                           var requestD = app.utils.deepCopy(request);
-                           var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_tct_pld_1?filter[0][name][$equals]=Crédito Simple");
-                           requestD.url = url.substring(4);
-                           requests.push(requestD);
+        if (App.user.attributes.id == ResumenProductos.uniclick.assigned_user_id) {
+            var necesarios = "";
+            var requests = [];
+            var request = {};
+            var Cuenta = this.model.get('id');
+            //Obtenemos las opps de la cuenta
+            var requestA = app.utils.deepCopy(request);
+            var url = app.api.buildURL("Accounts/" + Cuenta + "/link/opportunities?filter[0][tipo_producto_c][$equals]=2&filter[1][negocio_c][$equals]=10&filter[2][negocio_c][$equals]=10&filter[3][estatus_c][$not_equals]=K&filter[4][tct_etapa_ddw_c][$not_equals]=N&filter[5][estatus_c][$not_equals]=R");
+            requestA.url = url.substring(4);
+            requests.push(requestA);
+            var requestB = app.utils.deepCopy(request);
+            var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_dire_direccion_1");
+            requestB.url = url.substring(4);
+            requests.push(requestB);
+            var requestC = app.utils.deepCopy(request);
+            var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_tel_telefonos_1");
+            requestC.url = url.substring(4);
+            requests.push(requestC);
+            var requestD = app.utils.deepCopy(request);
+            var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_tct_pld_1?filter[0][name][$equals]=Crédito Simple");
+            requestD.url = url.substring(4);
+            requests.push(requestD);
 
-                           app.api.call("create", app.api.buildURL("bulk", '', {}, {}), {requests: requests}, {
-                               success: _.bind(function (data) {
-                                   //Variables para controlar las direcciones y telefonos
-                                   var direP=0;
-                                   var telCyC=0;
-                                   var telO=0;
+            app.api.call("create", app.api.buildURL("bulk", '', {}, {}), { requests: requests }, {
+                success: _.bind(function (data) {
+                    //Variables para controlar las direcciones y telefonos
+                    var direP = 0;
+                    var telCyC = 0;
+                    var telO = 0;
 
-                                   if (data[0].contents.records.length > 0){
-                                       //Valida direcciones y teléfonos
-                                       //Itera direcciones
-                                       for (var d = 0; d < this.oDirecciones.direccion.length; d++) {
-                                        //Itera direccion Particular
-                                        if (App.lang.getAppListStrings('tipo_dir_map_list')[self.oDirecciones.direccion[d].tipodedireccion[0]].includes('1') && self.oDirecciones.direccion[d].inactivo == false) {
-                                            direP++;
-                                        }
-                                        }
-                                        //Itera telefonos
-                                        for (var t = 0; t < data[2].contents.records.length; t++) {
-                                            //Itera telefono casa y celular
-                                            if (data[2].contents.records[t].tipotelefono.includes('1') || data[2].contents.records[t].tipotelefono.includes('3')) {
-                                                telO++;
-                                            }
-                                            //Itera para telefono de trabajo y celular trabajo
-                                            if (data[2].contents.records[t].tipotelefono.includes('2') || data[2].contents.records[t].tipotelefono.includes('4')) {
-                                                telO++;
-                                            }
-                                        }
-                                        //Evaluamos campos faltantes en direccion
-                                        if(direP<=0){
-                                            necesarios = necesarios + '<b>Dirección Particular<br></b>';
-                                        }
-                                        //Evaluamos campos faltantes en direccion
-                                        if(telO<=0){
-                                            necesarios = necesarios + '<b>Teléfono<br></b>';
-                                        }
-                                        //Validamos requeridos de la cuenta
-                                        if (this.model.get('tipodepersona_c') != 'Persona Moral'){
-                                                if (this.model.get('primernombre_c') == "" || this.model.get('primernombre_c') == null) {
-                                                    necesarios = necesarios + '<b>Nombre<br></b>';
-                                                }
-                                                if (this.model.get('apellidopaterno_c') == "" || this.model.get('apellidopaterno_c') == null) {
-                                                    necesarios = necesarios + '<b>Apellido Paterno<br></b>';
-                                                }
-                                                if (this.model.get('genero_c') == "" || this.model.get('genero_c') == null) {
-                                                        necesarios = necesarios + '<b>G\u00E9nero</b><br>';
-                                                }
-                                                if (this.model.get('fechadenacimiento_c') == "" || this.model.get('fechadenacimiento_c') == null) {
-                                                    necesarios = necesarios + '<b>Fecha de Nacimiento<br></b>';
-                                                }
-                                                if (this.model.get('pais_nacimiento_c') == "" || this.model.get('pais_nacimiento_c') == null || this.model.get('pais_nacimiento_c')=='0') {
-                                                        necesarios = necesarios + '<b>Pa\u00EDs de Nacimiento</b><br>';
-                                                }
-                                                if (this.model.get('nacionalidad_c') == "" || this.model.get('nacionalidad_c') == null || this.model.get('nacionalidad_c')=='0') {
-                                                        necesarios = necesarios + '<b>Nacionalidad</b><br>';
-                                                }
-                                                // if (this.model.get('profesion_c') == "" || this.model.get('profesion_c') == null) {
-                                                //         necesarios = necesarios + '<b>Profesión</b><br>';
-                                                // }
+                    if (data[0].contents.records.length > 0) {
+                        //Valida direcciones y teléfonos
+                        //Itera direcciones
+                        for (var d = 0; d < this.oDirecciones.direccion.length; d++) {
+                            //Itera direccion Particular
+                            if (App.lang.getAppListStrings('tipo_dir_map_list')[self.oDirecciones.direccion[d].tipodedireccion[0]].includes('1') && self.oDirecciones.direccion[d].inactivo == false) {
+                                direP++;
+                            }
+                        }
+                        //Itera telefonos
+                        for (var t = 0; t < data[2].contents.records.length; t++) {
+                            //Itera telefono casa y celular
+                            if (data[2].contents.records[t].tipotelefono.includes('1') || data[2].contents.records[t].tipotelefono.includes('3')) {
+                                telO++;
+                            }
+                            //Itera para telefono de trabajo y celular trabajo
+                            if (data[2].contents.records[t].tipotelefono.includes('2') || data[2].contents.records[t].tipotelefono.includes('4')) {
+                                telO++;
+                            }
+                        }
+                        //Evaluamos campos faltantes en direccion
+                        if (direP <= 0) {
+                            necesarios = necesarios + '<b>Dirección Particular<br></b>';
+                        }
+                        //Evaluamos campos faltantes en direccion
+                        if (telO <= 0) {
+                            necesarios = necesarios + '<b>Teléfono<br></b>';
+                        }
+                        //Validamos requeridos de la cuenta
+                        if (this.model.get('tipodepersona_c') != 'Persona Moral') {
+                            if (this.model.get('primernombre_c') == "" || this.model.get('primernombre_c') == null) {
+                                necesarios = necesarios + '<b>Nombre<br></b>';
+                            }
+                            if (this.model.get('apellidopaterno_c') == "" || this.model.get('apellidopaterno_c') == null) {
+                                necesarios = necesarios + '<b>Apellido Paterno<br></b>';
+                            }
+                            if (this.model.get('genero_c') == "" || this.model.get('genero_c') == null) {
+                                necesarios = necesarios + '<b>G\u00E9nero</b><br>';
+                            }
+                            if (this.model.get('fechadenacimiento_c') == "" || this.model.get('fechadenacimiento_c') == null) {
+                                necesarios = necesarios + '<b>Fecha de Nacimiento<br></b>';
+                            }
+                            if (this.model.get('pais_nacimiento_c') == "" || this.model.get('pais_nacimiento_c') == null || this.model.get('pais_nacimiento_c') == '0') {
+                                necesarios = necesarios + '<b>Pa\u00EDs de Nacimiento</b><br>';
+                            }
+                            if (this.model.get('nacionalidad_c') == "" || this.model.get('nacionalidad_c') == null || this.model.get('nacionalidad_c') == '0') {
+                                necesarios = necesarios + '<b>Nacionalidad</b><br>';
+                            }
+                            // if (this.model.get('profesion_c') == "" || this.model.get('profesion_c') == null) {
+                            //         necesarios = necesarios + '<b>Profesión</b><br>';
+                            // }
 
-                                                if (this.model.get('rfc_c') == "" || this.model.get('rfc_c') == null ) {
-                                                        necesarios = necesarios + '<b>RFC</b><br>';
-                                                }
-                                                if (this.model.get('nacionalidad_c')!= "2" ) {
-                                                    if (this.model.get('tct_pais_expide_rfc_c') == "" || this.model.get('tct_pais_expide_rfc_c') == null ) {
-                                                        necesarios = necesarios + '<b>Pa\u00EDs que expide el RFC</b><br>';
-                                                    }
+                            if (this.model.get('rfc_c') == "" || this.model.get('rfc_c') == null) {
+                                necesarios = necesarios + '<b>RFC</b><br>';
+                            }
+                            if (this.model.get('nacionalidad_c') != "2") {
+                                if (this.model.get('tct_pais_expide_rfc_c') == "" || this.model.get('tct_pais_expide_rfc_c') == null) {
+                                    necesarios = necesarios + '<b>Pa\u00EDs que expide el RFC</b><br>';
+                                }
 
-                                                }else{
-                                                    if (this.model.get('ctpldnoseriefiel_c') == "" || this.model.get('ctpldnoseriefiel_c') == null ) {
-                                                        necesarios = necesarios + '<b>Número de serie de la Firma Electrónica Avanzada</b><br>';
-                                                    }
-                                                    if (this.model.get('curp_c') == "" || this.model.get('curp_c') == null) {
-                                                        necesarios = necesarios + '<b>CURP</b><br>';
-                                                    }
-                                                    if (this.model.get('estado_nacimiento_c') == "" || this.model.get('estado_nacimiento_c') == null || this.model.get('estado_nacimiento_c') == "1") {
-                                                        necesarios = necesarios + '<b>Estado de Nacimiento<br></b>';
-                                                    }
-                                                }
-                                                //Sección PEPS Física Personal
-                                                if (this.model.get('ctpldfuncionespublicas_c') == true) {
-                                                    var banderaPEPSPersonal="";
-                                                    if (this.model.get('ctpldfuncionespublicascargo_c') == "" || this.model.get('ctpldfuncionespublicascargo_c') == null) {
-                                                        banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Cargo público que tiene o tuvo<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_dependencia_pf_c') == "" || this.model.get('tct_dependencia_pf_c') == null) {
-                                                        banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_periodo_pf1_c') == "" || this.model.get('tct_periodo_pf1_c') == null) {
-                                                        banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Periodo en el cargo<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_fecha_ini_pf_c') == "" || this.model.get('tct_fecha_ini_pf_c') == null) {
-                                                        banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Fecha Inicio<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_fecha_fin_pf_c') == "" || this.model.get('tct_fecha_fin_pf_c') == null) {
-                                                        banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Fecha de término<br></b>';
-                                                    }
-                                                    if (banderaPEPSPersonal!=""){
-                                                        necesarios = necesarios +'<br>'+ "Sección PEPS Personal:<br>" + banderaPEPSPersonal
-                                                    }
-                                                }
+                            } else {
+                                if (this.model.get('ctpldnoseriefiel_c') == "" || this.model.get('ctpldnoseriefiel_c') == null) {
+                                    necesarios = necesarios + '<b>Número de serie de la Firma Electrónica Avanzada</b><br>';
+                                }
+                                if (this.model.get('curp_c') == "" || this.model.get('curp_c') == null) {
+                                    necesarios = necesarios + '<b>CURP</b><br>';
+                                }
+                                if (this.model.get('estado_nacimiento_c') == "" || this.model.get('estado_nacimiento_c') == null || this.model.get('estado_nacimiento_c') == "1") {
+                                    necesarios = necesarios + '<b>Estado de Nacimiento<br></b>';
+                                }
+                            }
+                            //Sección PEPS Física Personal
+                            if (this.model.get('ctpldfuncionespublicas_c') == true) {
+                                var banderaPEPSPersonal = "";
+                                if (this.model.get('ctpldfuncionespublicascargo_c') == "" || this.model.get('ctpldfuncionespublicascargo_c') == null) {
+                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Cargo público que tiene o tuvo<br></b>';
+                                }
+                                if (this.model.get('tct_dependencia_pf_c') == "" || this.model.get('tct_dependencia_pf_c') == null) {
+                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_periodo_pf1_c') == "" || this.model.get('tct_periodo_pf1_c') == null) {
+                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Periodo en el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_ini_pf_c') == "" || this.model.get('tct_fecha_ini_pf_c') == null) {
+                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Fecha Inicio<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_fin_pf_c') == "" || this.model.get('tct_fecha_fin_pf_c') == null) {
+                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Fecha de término<br></b>';
+                                }
+                                if (banderaPEPSPersonal != "") {
+                                    necesarios = necesarios + '<br>' + "Sección PEPS Personal:<br>" + banderaPEPSPersonal
+                                }
+                            }
 
-                                                //Sección PEPS Física Familiar
-                                                if (this.model.get('ctpldconyuge_c') == true) {
-                                                    var banderaPEPSFamiliar="";
-                                                    if (this.model.get('ctpldconyugecargo_c') == "" || this.model.get('ctpldconyugecargo_c') == null) {
-                                                        banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Especificar parentesco o relación<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_nombre_pf_peps_c') == "" || this.model.get('tct_nombre_pf_peps_c') == null) {
-                                                        banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Nombre de la persona que ocupa el puesto<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_cargo2_pf_c') == "" || this.model.get('tct_cargo2_pf_c') == null) {
-                                                        banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Cargo público que tiene o tuvo<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_dependencia2_pf_c') == "" || this.model.get('tct_dependencia2_pf_c') == null) {
-                                                        banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_periodo2_pf_c') == "" || this.model.get('tct_periodo2_pf_c') == null) {
-                                                        banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Periodo en el cargo<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_fecha_ini2_pf_c') == "" || this.model.get('tct_fecha_ini2_pf_c') == null) {
-                                                        banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Fecha de Inicio<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_fecha_fin2_pf_c') == "" || this.model.get('tct_fecha_fin2_pf_c') == null) {
-                                                        banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Fecha de término<br></b>';
-                                                    }
-                                                    if (banderaPEPSFamiliar!=""){
-                                                        necesarios = necesarios +'<br>'+ "Sección PEPS Familiar:<br>" + banderaPEPSFamiliar
-                                                    }
-                                                }
+                            //Sección PEPS Física Familiar
+                            if (this.model.get('ctpldconyuge_c') == true) {
+                                var banderaPEPSFamiliar = "";
+                                if (this.model.get('ctpldconyugecargo_c') == "" || this.model.get('ctpldconyugecargo_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Especificar parentesco o relación<br></b>';
+                                }
+                                if (this.model.get('tct_nombre_pf_peps_c') == "" || this.model.get('tct_nombre_pf_peps_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Nombre de la persona que ocupa el puesto<br></b>';
+                                }
+                                if (this.model.get('tct_cargo2_pf_c') == "" || this.model.get('tct_cargo2_pf_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Cargo público que tiene o tuvo<br></b>';
+                                }
+                                if (this.model.get('tct_dependencia2_pf_c') == "" || this.model.get('tct_dependencia2_pf_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_periodo2_pf_c') == "" || this.model.get('tct_periodo2_pf_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Periodo en el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_ini2_pf_c') == "" || this.model.get('tct_fecha_ini2_pf_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Fecha de Inicio<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_fin2_pf_c') == "" || this.model.get('tct_fecha_fin2_pf_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Fecha de término<br></b>';
+                                }
+                                if (banderaPEPSFamiliar != "") {
+                                    necesarios = necesarios + '<br>' + "Sección PEPS Familiar:<br>" + banderaPEPSFamiliar
+                                }
+                            }
 
-                                                //Preguntas PLD
-                                            if (data[3].contents.records.length>0){
-                                                if (this.$('.campo2ddw-cs').select2('val') == "" || this.$('.campo2ddw-cs').select2('val')  == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 1 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (this.$('.campo4ddw-cs').select2('val') == "" || this.$('.campo4ddw-cs').select2('val') == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 3 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (this.$('.campo18ddw-cs').select2('val').toString() == "" || this.$('.campo18ddw-cs').select2('val').toString() == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 5 PLD-Crédito Simple<br></b>';
-                                                }
-                                                /*if (this.$('.campo14chk-cs')[0].checked == false) {
-                                                    necesarios = necesarios + '<b>Pregunta 6 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (this.$('.campo19txt-cs').val() == "" || this.$('.campo19txt-cs').val() == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 5.1 PLD-Crédito Simple<br></b>';
-                                                }*/
-                                                if (this.$('.campo20ddw-cs').select2('val') == "" || this.$('.campo20ddw-cs').select2('val') == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 7 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (this.$('.campo6ddw-cs').select2('val') == "" || this.$('.campo6ddw-cs').select2('val') == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 8 PLD-Crédito Simple<br></b>';
-                                                }
-                                            }
-                                            }else{
-                                                //Valida persona Moral
-                                                if (this.$('.list_ae').select2('val') == "" || this.$('.list_ae').select2('val') == null || this.$('.list_ae').select2('val') == '0') {
-                                                    necesarios = necesarios + '<b>Actividad Económica<br></b>';
-                                                }
-                                                if (this.model.get('razonsocial_c') == "" || this.model.get('razonsocial_c') == null) {
-                                                    necesarios = necesarios + '<b>Razón Social<br></b>';
-                                                }
-                                                if (this.model.get('nacionalidad_c') == "" || this.model.get('nacionalidad_c') == null || this.model.get('nacionalidad_c')=='0') {
-                                                    necesarios = necesarios + '<b>Nacionalidad</b><br>';
-                                                }
-                                                if (this.model.get('rfc_c') == "" || this.model.get('rfc_c') == null ) {
-                                                        necesarios = necesarios + '<b>RFC</b><br>';
-                                                }
-                                                if (this.model.get('tct_pais_expide_rfc_c') == "" || this.model.get('tct_pais_expide_rfc_c') == null) {
-                                                    necesarios = necesarios + '<b>Pa\u00EDs que expide el RFC</b><br>';
-                                                }
-                                                if (this.model.get('ctpldnoseriefiel_c') == "" || this.model.get('ctpldnoseriefiel_c') == null) {
-                                                        necesarios = necesarios + '<b>Número de serie de la Firma Electrónica Avanzada</b><br>';
-                                                }
-                                                if (this.model.get('fechaconstitutiva_c') == "" || this.model.get('fechaconstitutiva_c') == null) {
-                                                    necesarios = necesarios + '<b>Fecha Constitutiva</b><br>';
-                                                }
-                                                if (this.model.get('tct_cpld_pregunta_u1_ddw_c') == "" || this.model.get('tct_cpld_pregunta_u1_ddw_c') == null) {
-                                                    necesarios = necesarios + '<b>Pregunta SOFOM</b><br>';
-                                                }
-                                                if (this.model.get('tct_cpld_pregunta_u3_ddw_c') == "" || this.model.get('tct_cpld_pregunta_u3_ddw_c') == null) {
-                                                    necesarios = necesarios + '<b>¿Cotiza en Bolsa?</b><br>';
-                                                }
-                                                /*if (this.model.get('tct_fedeicomiso_chk_c') == "" || this.model.get('tct_fedeicomiso_chk_c') == null) {
-                                                    necesarios = necesarios + '<b>¿Es Fideicomiso?</b><br>';
-                                                }*/
-                                                //Preguntas CHECK deudor_factor_c
-                                                if (this.model.get('deudor_factor_c')==true){
-                                                    if (this.model.get('apoderado_nombre_c') == "" || this.model.get('apoderado_nombre_c') == null) {
-                                                        necesarios = necesarios + '<b>Nombre Apoderado Legal</b><br>';
-                                                    }
-                                                    if (this.model.get('apoderado_apaterno_c') == "" || this.model.get('apoderado_apaterno_c') == null) {
-                                                        necesarios = necesarios + '<b>Apellido Paterno Apoderado Legal</b><br>';
-                                                    }
-                                                    if (this.model.get('apoderado_amaterno_c') == "" || this.model.get('apoderado_amaterno_c') == null) {
-                                                        necesarios = necesarios + '<b>Apellido Materno Apoderado Legal</b><br>';
-                                                    }
-                                                }
-                                                //Preguntas PLD
-                                                if (data[3].contents.records.length>0){
-                                                    if (this.$('.campo4ddw-cs').select2('val') == "" || this.$('.campo4ddw-cs').select2('val') == null) {
-                                                        necesarios = necesarios + '<b>Pregunta 3 PLD-Crédito Simple<br></b>';
-                                                    }
-                                                    if (this.$('.campo18ddw-cs').select2('val').toString() == "" || this.$('.campo18ddw-cs').select2('val').toString() == null) {
-                                                        necesarios = necesarios + '<b>Pregunta 5 PLD-Crédito Simple<br></b>';
-                                                    }
-                                                    /*if (this.$('.campo14chk-cs')[0].checked == false) {
-                                                        necesarios = necesarios + '<b>regunta 6 PLD-Crédito Simple<br></b>';
-                                                    }
-                                                    if (this.$('.campo19txt-cs').val() == "" || this.$('.campo19txt-cs').val() == null) {
-                                                        necesarios = necesarios + '<b>regunta 5.1 PLD-Crédito Simple<br></b>';
-                                                    }*/
-                                                    if (this.$('.campo20ddw-cs').select2('val') == "" || this.$('.campo20ddw-cs').select2('val') == null) {
-                                                        necesarios = necesarios + '<b>Pregunta 7 PLD-Crédito Simple<br></b>';
-                                                    }
-                                                    if (this.$('.campo6ddw-cs').select2('val') == "" || this.$('.campo6ddw-cs').select2('val') == null) {
-                                                        necesarios = necesarios + '<b>Pregunta 8 PLD-Crédito Simple<br></b>';
-                                                    }
-                                                }
-                                                 //PEPS Moral Familiar
-                                                if (this.model.get('ctpldaccionistasconyuge_c') == true) {
-                                                    var banderaPEPSMoralFamiliar="";
-                                                    if (this.model.get('tct_socio2_pm_c') == "" || this.model.get('tct_socio2_pm_c') == null) {
-                                                        banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Nombre del Socio o Accionista<br></b>';
-                                                    }
-                                                    if (this.model.get('ctpldaccionistasconyugecargo_c') == "" || this.model.get('ctpldaccionistasconyugecargo_c') == null) {
-                                                        banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Especificar parentesco o relación<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_nombre_pm_c') == "" || this.model.get('tct_nombre_pm_c') == null) {
-                                                        banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Nombre de la persona que ocupa el puesto<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_cargo_pm_c') == "" || this.model.get('tct_cargo_pm_c') == null) {
-                                                        banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Cargo público que tiene o tuvo<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_dependencia2_pm_c') == "" || this.model.get('tct_dependencia2_pm_c') == null) {
-                                                        banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_periodo2_pm_c') == "" || this.model.get('tct_periodo2_pm_c') == null) {
-                                                        banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Periodo en el cargo<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_fecha_ini2_pm_c') == "" || this.model.get('tct_fecha_ini2_pm_c') == null) {
-                                                        banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Fecha de Inicio<br></b>';
-                                                    }
-                                                    if (this.model.get('tct_fecha_fin2_pm_c') == "" || this.model.get('tct_fecha_fin2_pm_c') == null) {
-                                                        banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Fecha de término<br></b>';
-                                                    }
-                                                    if (banderaPEPSMoralFamiliar!=""){
-                                                        necesarios = necesarios +'<br>'+ "Sección PEPS Moral Familiar:<br>" + banderaPEPSMoralFamiliar
-                                                    }
-                                                }
-                                                //PEPS Moral Personal
-                                                if(this.model.get('ctpldaccionistas_c')==true){
-                                                    var banderaPEPSMoralPersonal="";
-                                                    if (this.model.get('tct_socio_pm_c') == "" || this.model.get('tct_socio_pm_c') == null) {
-                                                        banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Nombre del Socio o Accionista</b><br>';
-                                                    }
-                                                    if (this.model.get('ctpldaccionistascargo_c') == "" || this.model.get('ctpldaccionistascargo_c') == null) {
-                                                        banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Cargo público que tiene o tuvo</b><br>';
-                                                    }
-                                                    if (this.model.get('tct_dependencia_pm_c') == "" || this.model.get('tct_dependencia_pm_c') == null) {
-                                                        banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Dependencia donde ejerce o ejerció el cargo</b><br>';
-                                                    }
-                                                    if (this.model.get('tct_periodo_pm_c') == "" || this.model.get('tct_periodo_pm_c') == null) {
-                                                        banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Periodo en el cargo</b><br>';
-                                                    }
-                                                    if (this.model.get('tct_fecha_ini_pm_c') == "" || this.model.get('tct_fecha_ini_pm_c') == null) {
-                                                        banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Fecha de Inicio</b><br>';
-                                                    }
-                                                    if (this.model.get('tct_fecha_fin_pm_c') == "" || this.model.get('tct_fecha_fin_pm_c') == null) {
-                                                        banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Fecha de término</b><br>';
-                                                    }
-                                                    if (banderaPEPSMoralPersonal!=""){
-                                                        necesarios = necesarios +'<br>'+ "Sección PEPS Moral Personal:<br>" + banderaPEPSMoralPersonal
-                                                    }
-                                                }
+                            //Preguntas PLD
+                            if (data[3].contents.records.length > 0) {
+                                if (this.$('.campo2ddw-cs').select2('val') == "" || this.$('.campo2ddw-cs').select2('val') == null) {
+                                    necesarios = necesarios + '<b>Pregunta 1 PLD-Crédito Simple<br></b>';
+                                }
+                                if (this.$('.campo4ddw-cs').select2('val') == "" || this.$('.campo4ddw-cs').select2('val') == null) {
+                                    necesarios = necesarios + '<b>Pregunta 3 PLD-Crédito Simple<br></b>';
+                                }
+                                if (this.$('.campo18ddw-cs').select2('val').toString() == "" || this.$('.campo18ddw-cs').select2('val').toString() == null) {
+                                    necesarios = necesarios + '<b>Pregunta 5 PLD-Crédito Simple<br></b>';
+                                }
+                                /*if (this.$('.campo14chk-cs')[0].checked == false) {
+                                    necesarios = necesarios + '<b>Pregunta 6 PLD-Crédito Simple<br></b>';
+                                }
+                                if (this.$('.campo19txt-cs').val() == "" || this.$('.campo19txt-cs').val() == null) {
+                                    necesarios = necesarios + '<b>Pregunta 5.1 PLD-Crédito Simple<br></b>';
+                                }*/
+                                if (this.$('.campo20ddw-cs').select2('val') == "" || this.$('.campo20ddw-cs').select2('val') == null) {
+                                    necesarios = necesarios + '<b>Pregunta 7 PLD-Crédito Simple<br></b>';
+                                }
+                                if (this.$('.campo6ddw-cs').select2('val') == "" || this.$('.campo6ddw-cs').select2('val') == null) {
+                                    necesarios = necesarios + '<b>Pregunta 8 PLD-Crédito Simple<br></b>';
+                                }
+                            }
+                        } else {
+                            //Valida persona Moral
+                            if (this.$('.list_ae').select2('val') == "" || this.$('.list_ae').select2('val') == null || this.$('.list_ae').select2('val') == '0') {
+                                necesarios = necesarios + '<b>Actividad Económica<br></b>';
+                            }
+                            if (this.model.get('razonsocial_c') == "" || this.model.get('razonsocial_c') == null) {
+                                necesarios = necesarios + '<b>Razón Social<br></b>';
+                            }
+                            if (this.model.get('nacionalidad_c') == "" || this.model.get('nacionalidad_c') == null || this.model.get('nacionalidad_c') == '0') {
+                                necesarios = necesarios + '<b>Nacionalidad</b><br>';
+                            }
+                            if (this.model.get('rfc_c') == "" || this.model.get('rfc_c') == null) {
+                                necesarios = necesarios + '<b>RFC</b><br>';
+                            }
+                            if (this.model.get('tct_pais_expide_rfc_c') == "" || this.model.get('tct_pais_expide_rfc_c') == null) {
+                                necesarios = necesarios + '<b>Pa\u00EDs que expide el RFC</b><br>';
+                            }
+                            if (this.model.get('ctpldnoseriefiel_c') == "" || this.model.get('ctpldnoseriefiel_c') == null) {
+                                necesarios = necesarios + '<b>Número de serie de la Firma Electrónica Avanzada</b><br>';
+                            }
+                            if (this.model.get('fechaconstitutiva_c') == "" || this.model.get('fechaconstitutiva_c') == null) {
+                                necesarios = necesarios + '<b>Fecha Constitutiva</b><br>';
+                            }
+                            if (this.model.get('tct_cpld_pregunta_u1_ddw_c') == "" || this.model.get('tct_cpld_pregunta_u1_ddw_c') == null) {
+                                necesarios = necesarios + '<b>Pregunta SOFOM</b><br>';
+                            }
+                            if (this.model.get('tct_cpld_pregunta_u3_ddw_c') == "" || this.model.get('tct_cpld_pregunta_u3_ddw_c') == null) {
+                                necesarios = necesarios + '<b>¿Cotiza en Bolsa?</b><br>';
+                            }
+                            /*if (this.model.get('tct_fedeicomiso_chk_c') == "" || this.model.get('tct_fedeicomiso_chk_c') == null) {
+                                necesarios = necesarios + '<b>¿Es Fideicomiso?</b><br>';
+                            }*/
+                            //Preguntas CHECK deudor_factor_c
+                            if (this.model.get('deudor_factor_c') == true) {
+                                if (this.model.get('apoderado_nombre_c') == "" || this.model.get('apoderado_nombre_c') == null) {
+                                    necesarios = necesarios + '<b>Nombre Apoderado Legal</b><br>';
+                                }
+                                if (this.model.get('apoderado_apaterno_c') == "" || this.model.get('apoderado_apaterno_c') == null) {
+                                    necesarios = necesarios + '<b>Apellido Paterno Apoderado Legal</b><br>';
+                                }
+                                if (this.model.get('apoderado_amaterno_c') == "" || this.model.get('apoderado_amaterno_c') == null) {
+                                    necesarios = necesarios + '<b>Apellido Materno Apoderado Legal</b><br>';
+                                }
+                            }
+                            //Preguntas PLD
+                            if (data[3].contents.records.length > 0) {
+                                if (this.$('.campo4ddw-cs').select2('val') == "" || this.$('.campo4ddw-cs').select2('val') == null) {
+                                    necesarios = necesarios + '<b>Pregunta 3 PLD-Crédito Simple<br></b>';
+                                }
+                                if (this.$('.campo18ddw-cs').select2('val').toString() == "" || this.$('.campo18ddw-cs').select2('val').toString() == null) {
+                                    necesarios = necesarios + '<b>Pregunta 5 PLD-Crédito Simple<br></b>';
+                                }
+                                /*if (this.$('.campo14chk-cs')[0].checked == false) {
+                                    necesarios = necesarios + '<b>regunta 6 PLD-Crédito Simple<br></b>';
+                                }
+                                if (this.$('.campo19txt-cs').val() == "" || this.$('.campo19txt-cs').val() == null) {
+                                    necesarios = necesarios + '<b>regunta 5.1 PLD-Crédito Simple<br></b>';
+                                }*/
+                                if (this.$('.campo20ddw-cs').select2('val') == "" || this.$('.campo20ddw-cs').select2('val') == null) {
+                                    necesarios = necesarios + '<b>Pregunta 7 PLD-Crédito Simple<br></b>';
+                                }
+                                if (this.$('.campo6ddw-cs').select2('val') == "" || this.$('.campo6ddw-cs').select2('val') == null) {
+                                    necesarios = necesarios + '<b>Pregunta 8 PLD-Crédito Simple<br></b>';
+                                }
+                            }
+                            //PEPS Moral Familiar
+                            if (this.model.get('ctpldaccionistasconyuge_c') == true) {
+                                var banderaPEPSMoralFamiliar = "";
+                                if (this.model.get('tct_socio2_pm_c') == "" || this.model.get('tct_socio2_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Nombre del Socio o Accionista<br></b>';
+                                }
+                                if (this.model.get('ctpldaccionistasconyugecargo_c') == "" || this.model.get('ctpldaccionistasconyugecargo_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Especificar parentesco o relación<br></b>';
+                                }
+                                if (this.model.get('tct_nombre_pm_c') == "" || this.model.get('tct_nombre_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Nombre de la persona que ocupa el puesto<br></b>';
+                                }
+                                if (this.model.get('tct_cargo_pm_c') == "" || this.model.get('tct_cargo_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Cargo público que tiene o tuvo<br></b>';
+                                }
+                                if (this.model.get('tct_dependencia2_pm_c') == "" || this.model.get('tct_dependencia2_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_periodo2_pm_c') == "" || this.model.get('tct_periodo2_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Periodo en el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_ini2_pm_c') == "" || this.model.get('tct_fecha_ini2_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Fecha de Inicio<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_fin2_pm_c') == "" || this.model.get('tct_fecha_fin2_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Fecha de término<br></b>';
+                                }
+                                if (banderaPEPSMoralFamiliar != "") {
+                                    necesarios = necesarios + '<br>' + "Sección PEPS Moral Familiar:<br>" + banderaPEPSMoralFamiliar
+                                }
+                            }
+                            //PEPS Moral Personal
+                            if (this.model.get('ctpldaccionistas_c') == true) {
+                                var banderaPEPSMoralPersonal = "";
+                                if (this.model.get('tct_socio_pm_c') == "" || this.model.get('tct_socio_pm_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Nombre del Socio o Accionista</b><br>';
+                                }
+                                if (this.model.get('ctpldaccionistascargo_c') == "" || this.model.get('ctpldaccionistascargo_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Cargo público que tiene o tuvo</b><br>';
+                                }
+                                if (this.model.get('tct_dependencia_pm_c') == "" || this.model.get('tct_dependencia_pm_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Dependencia donde ejerce o ejerció el cargo</b><br>';
+                                }
+                                if (this.model.get('tct_periodo_pm_c') == "" || this.model.get('tct_periodo_pm_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Periodo en el cargo</b><br>';
+                                }
+                                if (this.model.get('tct_fecha_ini_pm_c') == "" || this.model.get('tct_fecha_ini_pm_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Fecha de Inicio</b><br>';
+                                }
+                                if (this.model.get('tct_fecha_fin_pm_c') == "" || this.model.get('tct_fecha_fin_pm_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Fecha de término</b><br>';
+                                }
+                                if (banderaPEPSMoralPersonal != "") {
+                                    necesarios = necesarios + '<br>' + "Sección PEPS Moral Personal:<br>" + banderaPEPSMoralPersonal
+                                }
+                            }
 
-                                            }
-                                            //Evalua si hay campos requeridos y muestra alerta
-                                            if (necesarios!="") {
-                                                app.alert.show("Campos Requeridos para opp CS y negocio Uniclick Moral", {
-                                                level: "error",
-                                                messages: "Hace falta completar la siguiente información en la <b>Cuenta</b> para el producto Uniclick:<br>"+ necesarios,
-                                                autoClose: false
-                                                    });
-                                                    errors['accounts_cstm'] = errors['accounts_cstm'] || {};
-                                                    errors['accounts_cstm'].required = true;
-                                            }
+                        }
+                        //Evalua si hay campos requeridos y muestra alerta
+                        if (necesarios != "") {
+                            app.alert.show("Campos Requeridos para opp CS y negocio Uniclick Moral", {
+                                level: "error",
+                                messages: "Hace falta completar la siguiente información en la <b>Cuenta</b> para el producto Uniclick:<br>" + necesarios,
+                                autoClose: false
+                            });
+                            errors['accounts_cstm'] = errors['accounts_cstm'] || {};
+                            errors['accounts_cstm'].required = true;
+                        }
 
-                                   }
-                                   callback(null, fields, errors);
-                               }, this)
-                           });
+                    }
+                    callback(null, fields, errors);
+                }, this)
+            });
 
 
-        }else{
-         callback(null, fields, errors);
+        } else {
+            callback(null, fields, errors);
         }
 
 
-},
+    },
 
-validaReqUniclickInfo: function () {
-    if(App.user.attributes.id == ResumenProductos.uniclick.assigned_user_id){
-                   var necesarios="";
-                   var requests=[];
-                   var request={};
-                   var Cuenta = this.model.get('id');
-                   //Obtenemos las opps de la cuenta
-                   var requestA = app.utils.deepCopy(request);
-                   var url = app.api.buildURL("Accounts/" + Cuenta + "/link/opportunities?filter[0][tipo_producto_c][$equals]=2&filter[1][negocio_c][$equals]=10&filter[2][estatus_c][$not_equals]=K&filter[3][tct_etapa_ddw_c][$not_equals]=N&filter[4][estatus_c][$not_equals]=R");
-                       requestA.url = url.substring(4);
-                       requests.push(requestA);
-                       var requestB = app.utils.deepCopy(request);
-                       var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_dire_direccion_1");
-                       requestB.url = url.substring(4);
-                       requests.push(requestB);
-                       var requestC = app.utils.deepCopy(request);
-                       var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_tel_telefonos_1");
-                       requestC.url = url.substring(4);
-                       requests.push(requestC);
-                       var requestD = app.utils.deepCopy(request);
-                       var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_tct_pld_1?filter[0][name][$equals]=Crédito Simple");
-                       requestD.url = url.substring(4);
-                       requests.push(requestD);
-
-                       app.api.call("create", app.api.buildURL("bulk", '', {}, {}), {requests: requests}, {
-                           success: _.bind(function (data) {
-                               //Variables para controlar las direcciones y telefonos
-                               var direP=0;
-                               var telCyC=0;
-                               var telO=0;
-
-                               if (data[0].contents.records.length > 0){
-                                   //Valida direcciones y telefonos:
-
-                                   //Itera direcciones
-                                   for (var d = 0; d < this.oDirecciones.direccion.length; d++) {
-                                    //Itera direccion Particular
-                                    if (App.lang.getAppListStrings('tipo_dir_map_list')[self.oDirecciones.direccion[d].tipodedireccion[0]].includes('1') && self.oDirecciones.direccion[d].inactivo == false) {
-                                        direP++;
-                                    }
-                                }
-                                //Itera telefonos
-                                for (var t = 0; t < data[2].contents.records.length; t++) {
-                                    //Itera telefono casa y celular
-                                    if (data[2].contents.records[t].tipotelefono.includes('1') || data[2].contents.records[t].tipotelefono.includes('3')) {
-                                        telO++;
-                                    }
-                                    //Itera para telefono de trabajo y celular trabajo
-                                    if (data[2].contents.records[t].tipotelefono.includes('2') || data[2].contents.records[t].tipotelefono.includes('4')) {
-                                        telO++;
-                                    }
-                                }
-                                    //Evaluamos campos faltantes en direccion
-                                    if(direP<=0){
-                                        necesarios = necesarios + '<b>Dirección Particular<br></b>';
-                                    }
-                                    //Evaluamos campos faltantes en direccion
-                                    if(telO<=0){
-                                        necesarios = necesarios + '<b>Teléfono<br></b>';
-                                    }
-                                    //Validamos requeridos de la cuenta
-                                    if (this.model.get('tipodepersona_c') != 'Persona Moral'){
-                                            if (this.model.get('primernombre_c') == "" || this.model.get('primernombre_c') == null) {
-                                                necesarios = necesarios + '<b>Nombre<br></b>';
-                                            }
-                                            if (this.model.get('apellidopaterno_c') == "" || this.model.get('apellidopaterno_c') == null) {
-                                                necesarios = necesarios + '<b>Apellido Paterno<br></b>';
-                                            }
-                                            if (this.model.get('genero_c') == "" || this.model.get('genero_c') == null) {
-                                                    necesarios = necesarios + '<b>G\u00E9nero</b><br>';
-                                            }
-                                            if (this.model.get('fechadenacimiento_c') == "" || this.model.get('fechadenacimiento_c') == null) {
-                                                necesarios = necesarios + '<b>Fecha de Nacimiento<br></b>';
-                                            }
-
-                                            if (this.model.get('pais_nacimiento_c') == "" || this.model.get('pais_nacimiento_c') == null || this.model.get('pais_nacimiento_c')=='0') {
-                                                necesarios = necesarios + '<b>Pa\u00EDs de Nacimiento</b><br>';
-                                            }
-                                            if (this.model.get('nacionalidad_c') == "" || this.model.get('nacionalidad_c') == null || this.model.get('nacionalidad_c')=='0') {
-                                                    necesarios = necesarios + '<b>Nacionalidad</b><br>';
-                                            }
-                                            // if (this.model.get('profesion_c') == "" || this.model.get('profesion_c') == null) {
-                                            //         necesarios = necesarios + '<b>Profesión</b><br>';
-                                            // }
-
-                                            if (this.model.get('rfc_c') == "" || this.model.get('rfc_c') == null ) {
-                                                    necesarios = necesarios + '<b>RFC</b><br>';
-                                            }
-                                            if (this.model.get('nacionalidad_c')!= "2" ) {
-                                                if (this.model.get('tct_pais_expide_rfc_c') == "" || this.model.get('tct_pais_expide_rfc_c') == null ) {
-                                                    necesarios = necesarios + '<b>Pa\u00EDs que expide el RFC</b><br>';
-                                                }
-
-                                            }else{
-                                                if (this.model.get('ctpldnoseriefiel_c') == "" || this.model.get('ctpldnoseriefiel_c') == null ) {
-                                                    necesarios = necesarios + '<b>Número de serie de la Firma Electrónica Avanzada</b><br>';
-                                                }
-                                                if (this.model.get('curp_c') == "" || this.model.get('curp_c') == null) {
-                                                    necesarios = necesarios + '<b>CURP</b><br>';
-                                                }
-                                                if (this.model.get('estado_nacimiento_c') == "" || this.model.get('estado_nacimiento_c') == null || this.model.get('estado_nacimiento_c') == "1") {
-                                                    necesarios = necesarios + '<b>Estado de Nacimiento<br></b>';
-                                                }
-                                            }
-                                            //Sección PEPS Física Personal
-                                            if (this.model.get('ctpldfuncionespublicas_c') == true) {
-                                                var banderaPEPSPersonal="";
-                                                if (this.model.get('ctpldfuncionespublicascargo_c') == "" || this.model.get('ctpldfuncionespublicascargo_c') == null) {
-                                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Cargo público que tiene o tuvo<br></b>';
-                                                }
-                                                if (this.model.get('tct_dependencia_pf_c') == "" || this.model.get('tct_dependencia_pf_c') == null) {
-                                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
-                                                }
-                                                if (this.model.get('tct_periodo_pf1_c') == "" || this.model.get('tct_periodo_pf1_c') == null) {
-                                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Periodo en el cargo<br></b>';
-                                                }
-                                                if (this.model.get('tct_fecha_ini_pf_c') == "" || this.model.get('tct_fecha_ini_pf_c') == null) {
-                                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Fecha Inicio<br></b>';
-                                                }
-                                                if (this.model.get('tct_fecha_fin_pf_c') == "" || this.model.get('tct_fecha_fin_pf_c') == null) {
-                                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Fecha de término<br></b>';
-                                                }
-                                                if (banderaPEPSPersonal!=""){
-                                                    necesarios = necesarios +'<br>'+ "Sección PEPS Personal:<br>" + banderaPEPSPersonal
-                                                }
-                                            }
-
-                                            //Sección PEPS Física Familiar
-                                            if (this.model.get('ctpldconyuge_c') == true) {
-                                                var banderaPEPSFamiliar="";
-                                                if (this.model.get('ctpldconyugecargo_c') == "" || this.model.get('ctpldconyugecargo_c') == null) {
-                                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Especificar parentesco o relación<br></b>';
-                                                }
-                                                if (this.model.get('tct_nombre_pf_peps_c') == "" || this.model.get('tct_nombre_pf_peps_c') == null) {
-                                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Nombre de la persona que ocupa el puesto<br></b>';
-                                                }
-                                                if (this.model.get('tct_cargo2_pf_c') == "" || this.model.get('tct_cargo2_pf_c') == null) {
-                                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Cargo público que tiene o tuvo<br></b>';
-                                                }
-                                                if (this.model.get('tct_dependencia2_pf_c') == "" || this.model.get('tct_dependencia2_pf_c') == null) {
-                                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
-                                                }
-                                                if (this.model.get('tct_periodo2_pf_c') == "" || this.model.get('tct_periodo2_pf_c') == null) {
-                                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Periodo en el cargo<br></b>';
-                                                }
-                                                if (this.model.get('tct_fecha_ini2_pf_c') == "" || this.model.get('tct_fecha_ini2_pf_c') == null) {
-                                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Fecha de Inicio<br></b>';
-                                                }
-                                                if (this.model.get('tct_fecha_fin2_pf_c') == "" || this.model.get('tct_fecha_fin2_pf_c') == null) {
-                                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Fecha de término<br></b>';
-                                                }
-                                                if (banderaPEPSFamiliar!=""){
-                                                    necesarios = necesarios +'<br>'+ "Sección PEPS Familiar:<br>" + banderaPEPSFamiliar
-                                                }
-                                            }
-
-                                            //Preguntas PLD
-                                            if (data[3].contents.records.length>0){
-                                                if (data[3].contents.records[0].tct_pld_campo2_ddw == "" || data[3].contents.records[0].tct_pld_campo2_ddw  == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 1 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (data[3].contents.records[0].tct_pld_campo4_ddw == "" || data[3].contents.records[0].tct_pld_campo4_ddw == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 3 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (data[3].contents.records[0].tct_pld_campo18_ddw == "" || data[3].contents.records[0].tct_pld_campo18_ddw == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 5 PLD-Crédito Simple<br></b>';
-                                                }
-                                                /*if (data[3].contents.records[0].tct_pld_campo14_chk == "" || data[3].contents.records[0].tct_pld_campo14_chk == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 6 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (data[3].contents.records[0].tct_pld_campo19_txt == "" || data[3].contents.records[0].tct_pld_campo19_txt == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 5.1 PLD-Crédito Simple<br></b>';
-                                                }*/
-                                                if (data[3].contents.records[0].tct_pld_campo20_ddw == "" || data[3].contents.records[0].tct_pld_campo20_ddw == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 7 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (data[3].contents.records[0].tct_pld_campo6_ddw == "" || data[3].contents.records[0].tct_pld_campo6_ddw == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 8 PLD-Crédito Simple<br></b>';
-                                                }
-                                            }
-                                        }else{
-                                            //Valida persona Moral
-                                            /*if (this.model.get('actividadeconomica_c') == "" || this.model.get('actividadeconomica_c') == null) {
-                                                necesarios = necesarios + '<b>Actividad Económica<br></b>';
-                                            }*/
-                                            if (this.model.get('razonsocial_c') == "" || this.model.get('razonsocial_c') == null) {
-                                                necesarios = necesarios + '<b>Razón Social<br></b>';
-                                            }
-                                            if (this.model.get('nacionalidad_c') == "" || this.model.get('nacionalidad_c') == null || this.model.get('nacionalidad_c')=='0') {
-                                                necesarios = necesarios + '<b>Nacionalidad</b><br>';
-                                            }
-                                            if (this.model.get('rfc_c') == "" || this.model.get('rfc_c') == null ) {
-                                                    necesarios = necesarios + '<b>RFC</b><br>';
-                                            }
-                                            if (this.model.get('tct_pais_expide_rfc_c') == "" || this.model.get('tct_pais_expide_rfc_c') == null) {
-                                                necesarios = necesarios + '<b>Pa\u00EDs que expide el RFC</b><br>';
-                                            }
-                                            if (this.model.get('ctpldnoseriefiel_c') == "" || this.model.get('ctpldnoseriefiel_c') == null) {
-                                                    necesarios = necesarios + '<b>Número de serie de la Firma Electrónica Avanzada</b><br>';
-                                            }
-                                            if (this.model.get('fechaconstitutiva_c') == "" || this.model.get('fechaconstitutiva_c') == null) {
-                                                necesarios = necesarios + '<b>Fecha Constitutiva</b><br>';
-                                            }
-                                            if (this.model.get('tct_cpld_pregunta_u1_ddw_c') == "" || this.model.get('tct_cpld_pregunta_u1_ddw_c') == null) {
-                                                necesarios = necesarios + '<b>Pregunta SOFOM</b><br>';
-                                            }
-                                            if (this.model.get('tct_cpld_pregunta_u3_ddw_c') == "" || this.model.get('tct_cpld_pregunta_u3_ddw_c') == null) {
-                                                necesarios = necesarios + '<b>¿Cotiza en Bolsa?</b><br>';
-                                            }
-                                            /*if (this.model.get('tct_fedeicomiso_chk_c') == "" || this.model.get('tct_fedeicomiso_chk_c') == null) {
-                                                necesarios = necesarios + '<b>¿Es Fideicomiso?</b><br>';
-                                            }*/
-                                            //Preguntas CHECK deudor_factor_c
-                                            if (this.model.get('deudor_factor_c')==true){
-                                                if (this.model.get('apoderado_nombre_c') == "" || this.model.get('apoderado_nombre_c') == null) {
-                                                    necesarios = necesarios + '<b>Nombre Apoderado Legal</b><br>';
-                                                }
-                                                if (this.model.get('apoderado_apaterno_c') == "" || this.model.get('apoderado_apaterno_c') == null) {
-                                                    necesarios = necesarios + '<b>Apellido Paterno Apoderado Legal</b><br>';
-                                                }
-                                                if (this.model.get('apoderado_amaterno_c') == "" || this.model.get('apoderado_amaterno_c') == null) {
-                                                    necesarios = necesarios + '<b>Apellido Materno Apoderado Legal</b><br>';
-                                                }
-                                            }
-                                            //Preguntas PLD
-                                            if (data[3].contents.records.length>0){
-                                                if (data[3].contents.records[0].tct_pld_campo4_ddw == "" || data[3].contents.records[0].tct_pld_campo4_ddw == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 3 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (data[3].contents.records[0].tct_pld_campo18_ddw == "" || data[3].contents.records[0].tct_pld_campo18_ddw == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 5 PLD-Crédito Simple<br></b>';
-                                                }
-                                                /*if (data[3].contents.records[0].tct_pld_campo14_chk == "" || data[3].contents.records[0].tct_pld_campo14_chk == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 6 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (data[3].contents.records[0].tct_pld_campo19_txt == "" || data[3].contents.records[0].tct_pld_campo19_txt == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 5.1 PLD-Crédito Simple<br></b>';
-                                                }*/
-                                                if (data[3].contents.records[0].tct_pld_campo20_ddw == "" || data[3].contents.records[0].tct_pld_campo20_ddw == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 7 PLD-Crédito Simple<br></b>';
-                                                }
-                                                if (data[3].contents.records[0].tct_pld_campo6_ddw == "" || data[3].contents.records[0].tct_pld_campo6_ddw == null) {
-                                                    necesarios = necesarios + '<b>Pregunta 8 PLD-Crédito Simple<br></b>';
-                                                }
-                                            }
-                                             //PEPS Moral Familiar
-                                             if (this.model.get('ctpldaccionistasconyuge_c') == true) {
-                                                var banderaPEPSMoralFamiliar="";
-                                                if (this.model.get('tct_socio2_pm_c') == "" || this.model.get('tct_socio2_pm_c') == null) {
-                                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Nombre del Socio o Accionista<br></b>';
-                                                }
-                                                if (this.model.get('ctpldaccionistasconyugecargo_c') == "" || this.model.get('ctpldaccionistasconyugecargo_c') == null) {
-                                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Especificar parentesco o relación<br></b>';
-                                                }
-                                                if (this.model.get('tct_nombre_pm_c') == "" || this.model.get('tct_nombre_pm_c') == null) {
-                                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Nombre de la persona que ocupa el puesto<br></b>';
-                                                }
-                                                if (this.model.get('tct_cargo_pm_c') == "" || this.model.get('tct_cargo_pm_c') == null) {
-                                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Cargo público que tiene o tuvo<br></b>';
-                                                }
-                                                if (this.model.get('tct_dependencia2_pm_c') == "" || this.model.get('tct_dependencia2_pm_c') == null) {
-                                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
-                                                }
-                                                if (this.model.get('tct_periodo2_pm_c') == "" || this.model.get('tct_periodo2_pm_c') == null) {
-                                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Periodo en el cargo<br></b>';
-                                                }
-                                                if (this.model.get('tct_fecha_ini2_pm_c') == "" || this.model.get('tct_fecha_ini2_pm_c') == null) {
-                                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Fecha de Inicio<br></b>';
-                                                }
-                                                if (this.model.get('tct_fecha_fin2_pm_c') == "" || this.model.get('tct_fecha_fin2_pm_c') == null) {
-                                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Fecha de término<br></b>';
-                                                }
-                                                if (banderaPEPSMoralFamiliar!=""){
-                                                    necesarios = necesarios +'<br>'+"Sección PEPS Moral Familiar:<br>" + banderaPEPSMoralFamiliar
-                                                }
-                                            }
-                                            //PEPS Moral Personal
-                                            if(this.model.get('ctpldaccionistas_c')==true){
-                                                var banderaPEPSMoralPersonal="";
-                                                if (this.model.get('tct_socio_pm_c') == "" || this.model.get('tct_socio_pm_c') == null) {
-                                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Nombre del Socio o Accionista</b><br>';
-                                                }
-                                                if (this.model.get('ctpldaccionistascargo_c') == "" || this.model.get('ctpldaccionistascargo_c') == null) {
-                                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Cargo público que tiene o tuvo</b><br>';
-                                                }
-                                                if (this.model.get('tct_dependencia_pm_c') == "" || this.model.get('tct_dependencia_pm_c') == null) {
-                                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Dependencia donde ejerce o ejerció el cargo</b><br>';
-                                                }
-                                                if (this.model.get('tct_periodo_pm_c') == "" || this.model.get('tct_periodo_pm_c') == null) {
-                                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Periodo en el cargo</b><br>';
-                                                }
-                                                if (this.model.get('tct_fecha_ini_pm_c') == "" || this.model.get('tct_fecha_ini_pm_c') == null) {
-                                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Fecha de Inicio</b><br>';
-                                                }
-                                                if (this.model.get('tct_fecha_fin_pm_c') == "" || this.model.get('tct_fecha_fin_pm_c') == null) {
-                                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Fecha de término</b><br>';
-                                                }
-                                                if (banderaPEPSMoralPersonal!=""){
-                                                    necesarios = necesarios +'<br>'+"Sección PEPS Moral Personal:<br>" + banderaPEPSMoralPersonal
-                                                }
-                                            }
-
-                                        }
-                                        //Evalua si hay campos requeridos y muestra alerta
-                                        if (necesarios!="") {
-                                            app.alert.show("Campos Requeridos para opp CS y negocio Uniclick Moral", {
-                                            level: "info",
-                                            messages: "Hace falta completar la siguiente información en la <b>Cuenta</b> para el producto Uniclick:<br>"+ necesarios,
-                                            autoClose: false
-                                                });
-
-                                        }
-
-                               }
-
-                           }, this)
-                       });
-
-    }
-},
-
-        CamposCstmLoad: function () {
-
-            var requests=[];
-            var request={};
+    validaReqUniclickInfo: function () {
+        if (App.user.attributes.id == ResumenProductos.uniclick.assigned_user_id) {
+            var necesarios = "";
+            var requests = [];
+            var request = {};
             var Cuenta = this.model.get('id');
-            //Obtenemos las peticiones de los campos cstm: telefonos 0
+            //Obtenemos las opps de la cuenta
             var requestA = app.utils.deepCopy(request);
-            var url = app.api.buildURL('Accounts/' + Cuenta + '/link/accounts_tel_telefonos_1');
+            var url = app.api.buildURL("Accounts/" + Cuenta + "/link/opportunities?filter[0][tipo_producto_c][$equals]=2&filter[1][negocio_c][$equals]=10&filter[2][estatus_c][$not_equals]=K&filter[3][tct_etapa_ddw_c][$not_equals]=N&filter[4][estatus_c][$not_equals]=R");
             requestA.url = url.substring(4);
             requests.push(requestA);
-            //Obtenemos peticion para la cuenta y traer campos para Cuenta 1
-            var requestH = app.utils.deepCopy(request);
-            var campos="actividadeconomica_c,subsectoreconomico_c,sectoreconomico_c,tct_macro_sector_ddw_c";
-            var url = app.api.buildURL('Accounts/' + Cuenta+'?fields='+campos);
-            requestH.url = url.substring(4);
-            requests.push(requestH);
-            //Obtenemos las peticiones de los campos cstm: Clasificacion Sectorial y V360 2
-            var requestC = app.utils.deepCopy(request);
-            var url = app.api.buildURL('ResumenCliente/' + Cuenta);
-            requestC.url = url.substring(4);
-            requests.push(requestC);
-            //Obtenemos las peticiones de los campos cstm: Pipeline y productos (cont_uni_p) 3
-            var requestD = app.utils.deepCopy(request);
-            var url = app.api.buildURL('GetProductosCuentas/' + Cuenta);
-            requestD.url = url.substring(4);
-            requests.push(requestD);
-            //Obtenemos las peticiones de los campos cstm: Analizate 4
-            var requestE = app.utils.deepCopy(request);
-            var url = app.api.buildURL('ObtieneFinanciera/' + Cuenta);
-            requestE.url = url.substring(4);
-            requests.push(requestE);
-            //Obtenemos las peticiones de los campos cstm: PLD 5
-            var requestF = app.utils.deepCopy(request);
-            var url = app.api.buildURL('GetProductosPLD/' + Cuenta);
-            requestF.url = url.substring(4);
-            requests.push(requestF);
-            //Obtenemos las peticiones de los campos cstm: Pautos 6
-            var requestG = app.utils.deepCopy(request);
-            var campos = "tct_no_autos_u_int_c, tct_no_autos_e_int_c, tct_no_motos_int_c, tct_no_camiones_int_c";
-            var url = app.api.buildURL('tct02_Resumen/' + Cuenta+'?fields='+campos);
-            requestG.url = url.substring(4);
-            requests.push(requestG);
-            //Obtenemos peticion para la cuenta y traer campos para condiciones 7
-            var filter_arguments =
-            {
-                max_num:-1,
-                "fields": [
-                    "id",
-                    "condicion",
-                    "razon",
-                    "motivo",
-                    "detalle",
-                    "responsable1",
-                    "responsable2",
-                    "bloquea",
-                    "notifica",
-                ],
-            };
-            filter_arguments["filter"] = [
-                {
-                    "$or":[
-                        {
-                        "condicion":"4"
-                        },
-                        {
-                        "condicion":"5"
-                        }
-                    ]
-                }
-            ];
-            var requestI = app.utils.deepCopy(request);
-            var url = app.api.buildURL("tct4_Condiciones", null, null, filter_arguments);
-            requestI.url = url.substring(4);
-            requests.push(requestI);
-            //Obtenemos las peticiones de los campos cstm: Direcciones SN
-            /*var requestB = app.utils.deepCopy(request);
+            var requestB = app.utils.deepCopy(request);
             var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_dire_direccion_1");
             requestB.url = url.substring(4);
-            requests.push(requestB);*/
+            requests.push(requestB);
+            var requestC = app.utils.deepCopy(request);
+            var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_tel_telefonos_1");
+            requestC.url = url.substring(4);
+            requests.push(requestC);
+            var requestD = app.utils.deepCopy(request);
+            var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_tct_pld_1?filter[0][name][$equals]=Crédito Simple");
+            requestD.url = url.substring(4);
+            requests.push(requestD);
+
+            app.api.call("create", app.api.buildURL("bulk", '', {}, {}), { requests: requests }, {
+                success: _.bind(function (data) {
+                    //Variables para controlar las direcciones y telefonos
+                    var direP = 0;
+                    var telCyC = 0;
+                    var telO = 0;
+
+                    if (data[0].contents.records.length > 0) {
+                        //Valida direcciones y telefonos:
+
+                        //Itera direcciones
+                        for (var d = 0; d < this.oDirecciones.direccion.length; d++) {
+                            //Itera direccion Particular
+                            if (App.lang.getAppListStrings('tipo_dir_map_list')[self.oDirecciones.direccion[d].tipodedireccion[0]].includes('1') && self.oDirecciones.direccion[d].inactivo == false) {
+                                direP++;
+                            }
+                        }
+                        //Itera telefonos
+                        for (var t = 0; t < data[2].contents.records.length; t++) {
+                            //Itera telefono casa y celular
+                            if (data[2].contents.records[t].tipotelefono.includes('1') || data[2].contents.records[t].tipotelefono.includes('3')) {
+                                telO++;
+                            }
+                            //Itera para telefono de trabajo y celular trabajo
+                            if (data[2].contents.records[t].tipotelefono.includes('2') || data[2].contents.records[t].tipotelefono.includes('4')) {
+                                telO++;
+                            }
+                        }
+                        //Evaluamos campos faltantes en direccion
+                        if (direP <= 0) {
+                            necesarios = necesarios + '<b>Dirección Particular<br></b>';
+                        }
+                        //Evaluamos campos faltantes en direccion
+                        if (telO <= 0) {
+                            necesarios = necesarios + '<b>Teléfono<br></b>';
+                        }
+                        //Validamos requeridos de la cuenta
+                        if (this.model.get('tipodepersona_c') != 'Persona Moral') {
+                            if (this.model.get('primernombre_c') == "" || this.model.get('primernombre_c') == null) {
+                                necesarios = necesarios + '<b>Nombre<br></b>';
+                            }
+                            if (this.model.get('apellidopaterno_c') == "" || this.model.get('apellidopaterno_c') == null) {
+                                necesarios = necesarios + '<b>Apellido Paterno<br></b>';
+                            }
+                            if (this.model.get('genero_c') == "" || this.model.get('genero_c') == null) {
+                                necesarios = necesarios + '<b>G\u00E9nero</b><br>';
+                            }
+                            if (this.model.get('fechadenacimiento_c') == "" || this.model.get('fechadenacimiento_c') == null) {
+                                necesarios = necesarios + '<b>Fecha de Nacimiento<br></b>';
+                            }
+
+                            if (this.model.get('pais_nacimiento_c') == "" || this.model.get('pais_nacimiento_c') == null || this.model.get('pais_nacimiento_c') == '0') {
+                                necesarios = necesarios + '<b>Pa\u00EDs de Nacimiento</b><br>';
+                            }
+                            if (this.model.get('nacionalidad_c') == "" || this.model.get('nacionalidad_c') == null || this.model.get('nacionalidad_c') == '0') {
+                                necesarios = necesarios + '<b>Nacionalidad</b><br>';
+                            }
+                            // if (this.model.get('profesion_c') == "" || this.model.get('profesion_c') == null) {
+                            //         necesarios = necesarios + '<b>Profesión</b><br>';
+                            // }
+
+                            if (this.model.get('rfc_c') == "" || this.model.get('rfc_c') == null) {
+                                necesarios = necesarios + '<b>RFC</b><br>';
+                            }
+                            if (this.model.get('nacionalidad_c') != "2") {
+                                if (this.model.get('tct_pais_expide_rfc_c') == "" || this.model.get('tct_pais_expide_rfc_c') == null) {
+                                    necesarios = necesarios + '<b>Pa\u00EDs que expide el RFC</b><br>';
+                                }
+
+                            } else {
+                                if (this.model.get('ctpldnoseriefiel_c') == "" || this.model.get('ctpldnoseriefiel_c') == null) {
+                                    necesarios = necesarios + '<b>Número de serie de la Firma Electrónica Avanzada</b><br>';
+                                }
+                                if (this.model.get('curp_c') == "" || this.model.get('curp_c') == null) {
+                                    necesarios = necesarios + '<b>CURP</b><br>';
+                                }
+                                if (this.model.get('estado_nacimiento_c') == "" || this.model.get('estado_nacimiento_c') == null || this.model.get('estado_nacimiento_c') == "1") {
+                                    necesarios = necesarios + '<b>Estado de Nacimiento<br></b>';
+                                }
+                            }
+                            //Sección PEPS Física Personal
+                            if (this.model.get('ctpldfuncionespublicas_c') == true) {
+                                var banderaPEPSPersonal = "";
+                                if (this.model.get('ctpldfuncionespublicascargo_c') == "" || this.model.get('ctpldfuncionespublicascargo_c') == null) {
+                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Cargo público que tiene o tuvo<br></b>';
+                                }
+                                if (this.model.get('tct_dependencia_pf_c') == "" || this.model.get('tct_dependencia_pf_c') == null) {
+                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_periodo_pf1_c') == "" || this.model.get('tct_periodo_pf1_c') == null) {
+                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Periodo en el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_ini_pf_c') == "" || this.model.get('tct_fecha_ini_pf_c') == null) {
+                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Fecha Inicio<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_fin_pf_c') == "" || this.model.get('tct_fecha_fin_pf_c') == null) {
+                                    banderaPEPSPersonal = banderaPEPSPersonal + '<b>-Fecha de término<br></b>';
+                                }
+                                if (banderaPEPSPersonal != "") {
+                                    necesarios = necesarios + '<br>' + "Sección PEPS Personal:<br>" + banderaPEPSPersonal
+                                }
+                            }
+
+                            //Sección PEPS Física Familiar
+                            if (this.model.get('ctpldconyuge_c') == true) {
+                                var banderaPEPSFamiliar = "";
+                                if (this.model.get('ctpldconyugecargo_c') == "" || this.model.get('ctpldconyugecargo_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Especificar parentesco o relación<br></b>';
+                                }
+                                if (this.model.get('tct_nombre_pf_peps_c') == "" || this.model.get('tct_nombre_pf_peps_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Nombre de la persona que ocupa el puesto<br></b>';
+                                }
+                                if (this.model.get('tct_cargo2_pf_c') == "" || this.model.get('tct_cargo2_pf_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Cargo público que tiene o tuvo<br></b>';
+                                }
+                                if (this.model.get('tct_dependencia2_pf_c') == "" || this.model.get('tct_dependencia2_pf_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_periodo2_pf_c') == "" || this.model.get('tct_periodo2_pf_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Periodo en el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_ini2_pf_c') == "" || this.model.get('tct_fecha_ini2_pf_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Fecha de Inicio<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_fin2_pf_c') == "" || this.model.get('tct_fecha_fin2_pf_c') == null) {
+                                    banderaPEPSFamiliar = banderaPEPSFamiliar + '<b>-Fecha de término<br></b>';
+                                }
+                                if (banderaPEPSFamiliar != "") {
+                                    necesarios = necesarios + '<br>' + "Sección PEPS Familiar:<br>" + banderaPEPSFamiliar
+                                }
+                            }
+
+                            //Preguntas PLD
+                            if (data[3].contents.records.length > 0) {
+                                if (data[3].contents.records[0].tct_pld_campo2_ddw == "" || data[3].contents.records[0].tct_pld_campo2_ddw == null) {
+                                    necesarios = necesarios + '<b>Pregunta 1 PLD-Crédito Simple<br></b>';
+                                }
+                                if (data[3].contents.records[0].tct_pld_campo4_ddw == "" || data[3].contents.records[0].tct_pld_campo4_ddw == null) {
+                                    necesarios = necesarios + '<b>Pregunta 3 PLD-Crédito Simple<br></b>';
+                                }
+                                if (data[3].contents.records[0].tct_pld_campo18_ddw == "" || data[3].contents.records[0].tct_pld_campo18_ddw == null) {
+                                    necesarios = necesarios + '<b>Pregunta 5 PLD-Crédito Simple<br></b>';
+                                }
+                                /*if (data[3].contents.records[0].tct_pld_campo14_chk == "" || data[3].contents.records[0].tct_pld_campo14_chk == null) {
+                                    necesarios = necesarios + '<b>Pregunta 6 PLD-Crédito Simple<br></b>';
+                                }
+                                if (data[3].contents.records[0].tct_pld_campo19_txt == "" || data[3].contents.records[0].tct_pld_campo19_txt == null) {
+                                    necesarios = necesarios + '<b>Pregunta 5.1 PLD-Crédito Simple<br></b>';
+                                }*/
+                                if (data[3].contents.records[0].tct_pld_campo20_ddw == "" || data[3].contents.records[0].tct_pld_campo20_ddw == null) {
+                                    necesarios = necesarios + '<b>Pregunta 7 PLD-Crédito Simple<br></b>';
+                                }
+                                if (data[3].contents.records[0].tct_pld_campo6_ddw == "" || data[3].contents.records[0].tct_pld_campo6_ddw == null) {
+                                    necesarios = necesarios + '<b>Pregunta 8 PLD-Crédito Simple<br></b>';
+                                }
+                            }
+                        } else {
+                            //Valida persona Moral
+                            /*if (this.model.get('actividadeconomica_c') == "" || this.model.get('actividadeconomica_c') == null) {
+                                necesarios = necesarios + '<b>Actividad Económica<br></b>';
+                            }*/
+                            if (this.model.get('razonsocial_c') == "" || this.model.get('razonsocial_c') == null) {
+                                necesarios = necesarios + '<b>Razón Social<br></b>';
+                            }
+                            if (this.model.get('nacionalidad_c') == "" || this.model.get('nacionalidad_c') == null || this.model.get('nacionalidad_c') == '0') {
+                                necesarios = necesarios + '<b>Nacionalidad</b><br>';
+                            }
+                            if (this.model.get('rfc_c') == "" || this.model.get('rfc_c') == null) {
+                                necesarios = necesarios + '<b>RFC</b><br>';
+                            }
+                            if (this.model.get('tct_pais_expide_rfc_c') == "" || this.model.get('tct_pais_expide_rfc_c') == null) {
+                                necesarios = necesarios + '<b>Pa\u00EDs que expide el RFC</b><br>';
+                            }
+                            if (this.model.get('ctpldnoseriefiel_c') == "" || this.model.get('ctpldnoseriefiel_c') == null) {
+                                necesarios = necesarios + '<b>Número de serie de la Firma Electrónica Avanzada</b><br>';
+                            }
+                            if (this.model.get('fechaconstitutiva_c') == "" || this.model.get('fechaconstitutiva_c') == null) {
+                                necesarios = necesarios + '<b>Fecha Constitutiva</b><br>';
+                            }
+                            if (this.model.get('tct_cpld_pregunta_u1_ddw_c') == "" || this.model.get('tct_cpld_pregunta_u1_ddw_c') == null) {
+                                necesarios = necesarios + '<b>Pregunta SOFOM</b><br>';
+                            }
+                            if (this.model.get('tct_cpld_pregunta_u3_ddw_c') == "" || this.model.get('tct_cpld_pregunta_u3_ddw_c') == null) {
+                                necesarios = necesarios + '<b>¿Cotiza en Bolsa?</b><br>';
+                            }
+                            /*if (this.model.get('tct_fedeicomiso_chk_c') == "" || this.model.get('tct_fedeicomiso_chk_c') == null) {
+                                necesarios = necesarios + '<b>¿Es Fideicomiso?</b><br>';
+                            }*/
+                            //Preguntas CHECK deudor_factor_c
+                            if (this.model.get('deudor_factor_c') == true) {
+                                if (this.model.get('apoderado_nombre_c') == "" || this.model.get('apoderado_nombre_c') == null) {
+                                    necesarios = necesarios + '<b>Nombre Apoderado Legal</b><br>';
+                                }
+                                if (this.model.get('apoderado_apaterno_c') == "" || this.model.get('apoderado_apaterno_c') == null) {
+                                    necesarios = necesarios + '<b>Apellido Paterno Apoderado Legal</b><br>';
+                                }
+                                if (this.model.get('apoderado_amaterno_c') == "" || this.model.get('apoderado_amaterno_c') == null) {
+                                    necesarios = necesarios + '<b>Apellido Materno Apoderado Legal</b><br>';
+                                }
+                            }
+                            //Preguntas PLD
+                            if (data[3].contents.records.length > 0) {
+                                if (data[3].contents.records[0].tct_pld_campo4_ddw == "" || data[3].contents.records[0].tct_pld_campo4_ddw == null) {
+                                    necesarios = necesarios + '<b>Pregunta 3 PLD-Crédito Simple<br></b>';
+                                }
+                                if (data[3].contents.records[0].tct_pld_campo18_ddw == "" || data[3].contents.records[0].tct_pld_campo18_ddw == null) {
+                                    necesarios = necesarios + '<b>Pregunta 5 PLD-Crédito Simple<br></b>';
+                                }
+                                /*if (data[3].contents.records[0].tct_pld_campo14_chk == "" || data[3].contents.records[0].tct_pld_campo14_chk == null) {
+                                    necesarios = necesarios + '<b>Pregunta 6 PLD-Crédito Simple<br></b>';
+                                }
+                                if (data[3].contents.records[0].tct_pld_campo19_txt == "" || data[3].contents.records[0].tct_pld_campo19_txt == null) {
+                                    necesarios = necesarios + '<b>Pregunta 5.1 PLD-Crédito Simple<br></b>';
+                                }*/
+                                if (data[3].contents.records[0].tct_pld_campo20_ddw == "" || data[3].contents.records[0].tct_pld_campo20_ddw == null) {
+                                    necesarios = necesarios + '<b>Pregunta 7 PLD-Crédito Simple<br></b>';
+                                }
+                                if (data[3].contents.records[0].tct_pld_campo6_ddw == "" || data[3].contents.records[0].tct_pld_campo6_ddw == null) {
+                                    necesarios = necesarios + '<b>Pregunta 8 PLD-Crédito Simple<br></b>';
+                                }
+                            }
+                            //PEPS Moral Familiar
+                            if (this.model.get('ctpldaccionistasconyuge_c') == true) {
+                                var banderaPEPSMoralFamiliar = "";
+                                if (this.model.get('tct_socio2_pm_c') == "" || this.model.get('tct_socio2_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Nombre del Socio o Accionista<br></b>';
+                                }
+                                if (this.model.get('ctpldaccionistasconyugecargo_c') == "" || this.model.get('ctpldaccionistasconyugecargo_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Especificar parentesco o relación<br></b>';
+                                }
+                                if (this.model.get('tct_nombre_pm_c') == "" || this.model.get('tct_nombre_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Nombre de la persona que ocupa el puesto<br></b>';
+                                }
+                                if (this.model.get('tct_cargo_pm_c') == "" || this.model.get('tct_cargo_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Cargo público que tiene o tuvo<br></b>';
+                                }
+                                if (this.model.get('tct_dependencia2_pm_c') == "" || this.model.get('tct_dependencia2_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Dependencia donde ejerce o ejerció el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_periodo2_pm_c') == "" || this.model.get('tct_periodo2_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Periodo en el cargo<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_ini2_pm_c') == "" || this.model.get('tct_fecha_ini2_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Fecha de Inicio<br></b>';
+                                }
+                                if (this.model.get('tct_fecha_fin2_pm_c') == "" || this.model.get('tct_fecha_fin2_pm_c') == null) {
+                                    banderaPEPSMoralFamiliar = banderaPEPSMoralFamiliar + '<b>-Fecha de término<br></b>';
+                                }
+                                if (banderaPEPSMoralFamiliar != "") {
+                                    necesarios = necesarios + '<br>' + "Sección PEPS Moral Familiar:<br>" + banderaPEPSMoralFamiliar
+                                }
+                            }
+                            //PEPS Moral Personal
+                            if (this.model.get('ctpldaccionistas_c') == true) {
+                                var banderaPEPSMoralPersonal = "";
+                                if (this.model.get('tct_socio_pm_c') == "" || this.model.get('tct_socio_pm_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Nombre del Socio o Accionista</b><br>';
+                                }
+                                if (this.model.get('ctpldaccionistascargo_c') == "" || this.model.get('ctpldaccionistascargo_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Cargo público que tiene o tuvo</b><br>';
+                                }
+                                if (this.model.get('tct_dependencia_pm_c') == "" || this.model.get('tct_dependencia_pm_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Dependencia donde ejerce o ejerció el cargo</b><br>';
+                                }
+                                if (this.model.get('tct_periodo_pm_c') == "" || this.model.get('tct_periodo_pm_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Periodo en el cargo</b><br>';
+                                }
+                                if (this.model.get('tct_fecha_ini_pm_c') == "" || this.model.get('tct_fecha_ini_pm_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Fecha de Inicio</b><br>';
+                                }
+                                if (this.model.get('tct_fecha_fin_pm_c') == "" || this.model.get('tct_fecha_fin_pm_c') == null) {
+                                    banderaPEPSMoralPersonal = banderaPEPSMoralPersonal + '<b>-Fecha de término</b><br>';
+                                }
+                                if (banderaPEPSMoralPersonal != "") {
+                                    necesarios = necesarios + '<br>' + "Sección PEPS Moral Personal:<br>" + banderaPEPSMoralPersonal
+                                }
+                            }
+
+                        }
+                        //Evalua si hay campos requeridos y muestra alerta
+                        if (necesarios != "") {
+                            app.alert.show("Campos Requeridos para opp CS y negocio Uniclick Moral", {
+                                level: "info",
+                                messages: "Hace falta completar la siguiente información en la <b>Cuenta</b> para el producto Uniclick:<br>" + necesarios,
+                                autoClose: false
+                            });
+
+                        }
+
+                    }
+
+                }, this)
+            });
+
+        }
+    },
+
+    CamposCstmLoad: function () {
+
+        var requests = [];
+        var request = {};
+        var Cuenta = this.model.get('id');
+        //Obtenemos las peticiones de los campos cstm: telefonos 0
+        var requestA = app.utils.deepCopy(request);
+        var url = app.api.buildURL('Accounts/' + Cuenta + '/link/accounts_tel_telefonos_1');
+        requestA.url = url.substring(4);
+        requests.push(requestA);
+        //Obtenemos peticion para la cuenta y traer campos para Cuenta 1
+        var requestH = app.utils.deepCopy(request);
+        var campos = "actividadeconomica_c,subsectoreconomico_c,sectoreconomico_c,tct_macro_sector_ddw_c";
+        var url = app.api.buildURL('Accounts/' + Cuenta + '?fields=' + campos);
+        requestH.url = url.substring(4);
+        requests.push(requestH);
+        //Obtenemos las peticiones de los campos cstm: Clasificacion Sectorial y V360 2
+        var requestC = app.utils.deepCopy(request);
+        var url = app.api.buildURL('ResumenCliente/' + Cuenta);
+        requestC.url = url.substring(4);
+        requests.push(requestC);
+        //Obtenemos las peticiones de los campos cstm: Pipeline y productos (cont_uni_p) 3
+        var requestD = app.utils.deepCopy(request);
+        var url = app.api.buildURL('GetProductosCuentas/' + Cuenta);
+        requestD.url = url.substring(4);
+        requests.push(requestD);
+        //Obtenemos las peticiones de los campos cstm: Analizate 4
+        var requestE = app.utils.deepCopy(request);
+        var url = app.api.buildURL('ObtieneFinanciera/' + Cuenta);
+        requestE.url = url.substring(4);
+        requests.push(requestE);
+        //Obtenemos las peticiones de los campos cstm: PLD 5
+        var requestF = app.utils.deepCopy(request);
+        var url = app.api.buildURL('GetProductosPLD/' + Cuenta);
+        requestF.url = url.substring(4);
+        requests.push(requestF);
+        //Obtenemos las peticiones de los campos cstm: Pautos 6
+        var requestG = app.utils.deepCopy(request);
+        var campos = "tct_no_autos_u_int_c, tct_no_autos_e_int_c, tct_no_motos_int_c, tct_no_camiones_int_c";
+        var url = app.api.buildURL('tct02_Resumen/' + Cuenta + '?fields=' + campos);
+        requestG.url = url.substring(4);
+        requests.push(requestG);
+        //Obtenemos peticion para la cuenta y traer campos para condiciones 7
+        var filter_arguments =
+        {
+            max_num: -1,
+            "fields": [
+                "id",
+                "condicion",
+                "razon",
+                "motivo",
+                "detalle",
+                "responsable1",
+                "responsable2",
+                "bloquea",
+                "notifica",
+            ],
+        };
+        filter_arguments["filter"] = [
+            {
+                "$or": [
+                    {
+                        "condicion": "4"
+                    },
+                    {
+                        "condicion": "5"
+                    }
+                ]
+            }
+        ];
+        var requestI = app.utils.deepCopy(request);
+        var url = app.api.buildURL("tct4_Condiciones", null, null, filter_arguments);
+        requestI.url = url.substring(4);
+        requests.push(requestI);
+        //Obtenemos las peticiones de los campos cstm: Direcciones SN
+        /*var requestB = app.utils.deepCopy(request);
+        var url = app.api.buildURL("Accounts/" + Cuenta + "/link/accounts_dire_direccion_1");
+        requestB.url = url.substring(4);
+        requests.push(requestB);*/
 
 
-        app.api.call("create", app.api.buildURL("bulk", '', {}, {}), {requests: requests}, {
+        app.api.call("create", app.api.buildURL("bulk", '', {}, {}), { requests: requests }, {
             success: _.bind(function (data) {
                 //Extiende This
                 this.oTelefonos = [];
                 this.oTelefonos.telefono = [];
                 this.prev_oTelefonos = [];
                 this.prev_oTelefonos.prev_telefono = [];
-                if (data[0].contents.records.length > 0){
-                        //Validaciones para Telefonos
-                        this.model.set('account_telefonos', this.oTelefonos.telefono);
-                        //Recupera información
-                        idCuenta = this.model.get('id');
+                if (data[0].contents.records.length > 0) {
+                    //Validaciones para Telefonos
+                    this.model.set('account_telefonos', this.oTelefonos.telefono);
+                    //Recupera información
+                    idCuenta = this.model.get('id');
                     for (var i = 0; i < data[0].contents.records.length; i++) {
-                            //Asignando valores de los campos
-                            var valor1 = data[0].contents.records[i].tipotelefono;
-                            var valor2 = data[0].contents.records[i].pais;
-                            var valor3 = data[0].contents.records[i].estatus;
-                            var valor4 = data[0].contents.records[i].telefono;
-                            var valor5 = data[0].contents.records[i].extension;
-                            var valor6 = (data[0].contents.records[i].principal == true) ? 1 : 0;
-                            var valor7 = (data[0].contents.records[i].whatsapp_c == true) ? 1 : 0;
-                            var valor8 = (data[0].contents.records[i].registro_reus_c == true) ? 1 : 0;
-                            if (valor8 == 1 && valor7 ==1){ valor7 = 0;}
-                            var idtel = data[0].contents.records[i].id;
-                            //Estatus Teléfono 06/01/2022 ECB
-                            var valor9 = data[0].contents.records[i].estatus_telefono_c;
-                            var estatus = '';
-                            var estatus1 = 0;
-                            var estatus2 = 0;
-                            var estatus3 = 0;
-                            var c4 = 0;
-                            if (valor9) {
-                                var estatus_tel = JSON.parse(valor9);
-                                if(estatus_tel[0].result == 0) {
-                                    estatus1 = 1;
-                                    estatus = app.lang.getAppListStrings('estatus_telefono_list')[1];
-                                }
-                                if(estatus_tel[0].result == 1) {
-                                    estatus2 = 1;
-                                    estatus = app.lang.getAppListStrings('estatus_telefono_list')[2] + ' (' + estatus_tel[0].Compania + ')';
-                                }
-                                if(estatus_tel[0].result == 2) {
-                                    estatus3 = 1;
-                                    estatus = app.lang.getAppListStrings('estatus_telefono_list')[3];
-                                }
-                                if(estatus_tel[0].Estatus_reporte) {
-                                    if(estatus_tel[0].Estatus_reporte.substring(0,3) == 'Con') c4 = 1;
-                                }
-                            }
-                            else {
+                        //Asignando valores de los campos
+                        var valor1 = data[0].contents.records[i].tipotelefono;
+                        var valor2 = data[0].contents.records[i].pais;
+                        var valor3 = data[0].contents.records[i].estatus;
+                        var valor4 = data[0].contents.records[i].telefono;
+                        var valor5 = data[0].contents.records[i].extension;
+                        var valor6 = (data[0].contents.records[i].principal == true) ? 1 : 0;
+                        var valor7 = (data[0].contents.records[i].whatsapp_c == true) ? 1 : 0;
+                        var valor8 = (data[0].contents.records[i].registro_reus_c == true) ? 1 : 0;
+                        if (valor8 == 1 && valor7 == 1) { valor7 = 0; }
+                        var idtel = data[0].contents.records[i].id;
+                        //Estatus Teléfono 06/01/2022 ECB
+                        var valor9 = data[0].contents.records[i].estatus_telefono_c;
+                        var estatus = '';
+                        var estatus1 = 0;
+                        var estatus2 = 0;
+                        var estatus3 = 0;
+                        var c4 = 0;
+                        if (valor9) {
+                            var estatus_tel = JSON.parse(valor9);
+                            if (estatus_tel[0].result == 0) {
                                 estatus1 = 1;
                                 estatus = app.lang.getAppListStrings('estatus_telefono_list')[1];
                             }
-                            var telefono = {
-                                "name": valor4,
-                                "tipotelefono": valor1,
-                                "pais": valor2,
-                                "estatus": valor3,
-                                "extension": valor5,
-                                "telefono": valor4,
-                                "principal": valor6,
-                                "whatsapp_c": valor7,
-                                "id_cuenta": idCuenta,
-                                "id": idtel,
-                                "reus": valor8,
-                                "estatus1": estatus1,
-                                "estatus2": estatus2,
-                                "estatus3": estatus3,
-                                "estatus_tel": estatus,
-                                "c4": c4
-                            };
-                            var prev_telefono = {
-                                "name": valor4,
-                                "tipotelefono": valor1,
-                                "pais": valor2,
-                                "estatus": valor3,
-                                "extension": valor5,
-                                "telefono": valor4,
-                                "principal": valor6,
-                                "whatsapp_c": valor7,
-                                "id_cuenta": idCuenta,
-                                "id": idtel,
-                                "reus": valor8,
-                                "estatus1": estatus1,
-                                "estatus2": estatus2,
-                                "estatus3": estatus3,
-                                "estatus_tel": estatus,
-                                "c4": c4
-                            };
-                            contexto_cuenta.oTelefonos.telefono.push(telefono);
-                            contexto_cuenta.prev_oTelefonos.prev_telefono.push(prev_telefono);
+                            if (estatus_tel[0].result == 1) {
+                                estatus2 = 1;
+                                estatus = app.lang.getAppListStrings('estatus_telefono_list')[2] + ' (' + estatus_tel[0].Compania + ')';
+                            }
+                            if (estatus_tel[0].result == 2) {
+                                estatus3 = 1;
+                                estatus = app.lang.getAppListStrings('estatus_telefono_list')[3];
+                            }
+                            if (estatus_tel[0].Estatus_reporte) {
+                                if (estatus_tel[0].Estatus_reporte.substring(0, 3) == 'Con') c4 = 1;
+                            }
                         }
-                        cont_tel.oTelefonos = contexto_cuenta.oTelefonos;
-                        cont_tel.render();
-                        //Oculta campo Accounts_telefonosV2
-                        $("div.record-label[data-name='account_telefonos']").attr('style', 'display:none;');
+                        else {
+                            estatus1 = 1;
+                            estatus = app.lang.getAppListStrings('estatus_telefono_list')[1];
+                        }
+                        var telefono = {
+                            "name": valor4,
+                            "tipotelefono": valor1,
+                            "pais": valor2,
+                            "estatus": valor3,
+                            "extension": valor5,
+                            "telefono": valor4,
+                            "principal": valor6,
+                            "whatsapp_c": valor7,
+                            "id_cuenta": idCuenta,
+                            "id": idtel,
+                            "reus": valor8,
+                            "estatus1": estatus1,
+                            "estatus2": estatus2,
+                            "estatus3": estatus3,
+                            "estatus_tel": estatus,
+                            "c4": c4
+                        };
+                        var prev_telefono = {
+                            "name": valor4,
+                            "tipotelefono": valor1,
+                            "pais": valor2,
+                            "estatus": valor3,
+                            "extension": valor5,
+                            "telefono": valor4,
+                            "principal": valor6,
+                            "whatsapp_c": valor7,
+                            "id_cuenta": idCuenta,
+                            "id": idtel,
+                            "reus": valor8,
+                            "estatus1": estatus1,
+                            "estatus2": estatus2,
+                            "estatus3": estatus3,
+                            "estatus_tel": estatus,
+                            "c4": c4
+                        };
+                        contexto_cuenta.oTelefonos.telefono.push(telefono);
+                        contexto_cuenta.prev_oTelefonos.prev_telefono.push(prev_telefono);
+                    }
+                    cont_tel.oTelefonos = contexto_cuenta.oTelefonos;
+                    cont_tel.render();
+                    //Oculta campo Accounts_telefonosV2
+                    $("div.record-label[data-name='account_telefonos']").attr('style', 'display:none;');
                 }
                 //Cuenta
-                if(data[1].contents!=""){
-                    var campo1=data[1].contents.actividadeconomica_c;
-                    var campo2=data[1].contents.subsectoreconomico_c;
-                    var campo3=data[1].contents.sectoreconomico_c;
-                    var campo4=data[1].contents.tct_macro_sector_ddw_c;
+                if (data[1].contents != "") {
+                    var campo1 = data[1].contents.actividadeconomica_c;
+                    var campo2 = data[1].contents.subsectoreconomico_c;
+                    var campo3 = data[1].contents.sectoreconomico_c;
+                    var campo4 = data[1].contents.tct_macro_sector_ddw_c;
                 }
                 //Validaciones para Clasificacion Sectorial y V360
-                if (data[2].contents!=""){
+                if (data[2].contents != "") {
                     //Extiende This
                     vista360.ResumenCliente = [];
-                    vista360.ResumenCliente=data[2].contents;
+                    vista360.ResumenCliente = data[2].contents;
                     vista360.render();
                     //Etiquetas del campo custom Clasificacion Sectorial
                     clasf_sectorial.ActividadEconomica = {
@@ -8586,7 +8695,13 @@ validaReqUniclickInfo: function () {
                         'label_imacro': '',
                         'label_div': '',
                         'label_grp': '',
-                        'label_cls': ''
+                        'label_cls': '',
+                        'ResumenSAT':{
+                            'aes': {
+                                'id_actividad_economica_sat': '',
+                                'actividad_economica_sat': ''
+                            }
+                        }
                     };
                     clasf_sectorial.prevActEconomica = {
                         // 'combinaciones': '',
@@ -8619,148 +8734,155 @@ validaReqUniclickInfo: function () {
                         'label_imacro': '',
                         'label_div': '',
                         'label_grp': '',
-                        'label_cls': ''
+                        'label_cls': '',
+                        'ResumenSAT':{
+                            'aes': {
+                                'id_actividad_economica_sat': '',
+                                'actividad_economica_sat': ''
+                            }
+                        }
                     };
-                    clasf_sectorial.ResumenCliente=data[2].contents;
+                    clasf_sectorial.ResumenCliente = data[2].contents;
                     clasf_sectorial.ActividadEconomica.ae.id = campo1;
                     clasf_sectorial.ActividadEconomica.sse.id = campo2;
                     clasf_sectorial.ActividadEconomica.se.id = campo3;
-                    clasf_sectorial.ActividadEconomica.ms.id = campo4;
-                    clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
+                    clasf_sectorial.ActividadEconomica.ms.id = campo4;                                        
                     clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
                     clasf_sectorial.ActividadEconomica.label_grp = app.lang.getAppListStrings('pb_grupo_list')[clasf_sectorial.ResumenCliente.pb.pb_grupo];
                     clasf_sectorial.ActividadEconomica.label_cls = app.lang.getAppListStrings('pb_clase_list')[clasf_sectorial.ResumenCliente.pb.pb_clase];
+                    clasf_sectorial.ActividadEconomica.ResumenSAT.aes.id_actividad_economica_sat = clasf_sectorial.ResumenCliente.actividad_economica_sat.id_actividad_economica_sat_c;
+                    clasf_sectorial.ActividadEconomica.ResumenSAT.aes.actividad_economica_sat = clasf_sectorial.ResumenCliente.actividad_economica_sat.actividad_economica_sat_c;
                     clasf_sectorial.check_uni2 = clasf_sectorial.ResumenCliente.inegi.inegi_acualiza_uni2;
+                    clasf_sectorial['prevActEconomica'] = app.utils.deepCopy(clasf_sectorial.ActividadEconomica);
                     _.extend(this, clasf_sectorial.ResumenCliente);
-                    contexto_cuenta.ActividadEconomica=clasf_sectorial.ActividadEconomica;
-                    contexto_cuenta.ResumenCliente=clasf_sectorial.ResumenCliente;
+                    contexto_cuenta.ActividadEconomica = clasf_sectorial.ActividadEconomica;
+                    contexto_cuenta.ResumenCliente = clasf_sectorial.ResumenCliente;
                     clasf_sectorial.render();
-
                 }
                 //Productos y pipeline
-                if(data[3].contents!=""){
-                        Productos = [];
-                        //Facha Actual
-                        var today = new Date();
-                        var dd = today.getDate();
-                        var mm = today.getMonth() + 1;
-                        var yyyy = today.getFullYear();
-                        if (dd < 10) { dd = '0' + dd }
-                        if (mm < 10) { mm = '0' + mm }
-                        today = yyyy + '-' + mm + '-' + dd;
-                        Productos = data[3].contents;
-                        ResumenProductos = [];
-                        _.each(Productos, function (value, key) {
-                            var tipoProducto = Productos[key].tipo_producto;
-                            var fechaAsignacion = Productos[key].fecha_asignacion_c;
-                            var fecha1 = moment(today);
-                            var fecha2 = moment(fechaAsignacion);
-                            Productos[key]['visible_noviable'] = (Productos[key]['visible_noviable'] != "0") ? true : false;
-                            Productos[key]['no_viable'] = (Productos[key]['no_viable'] != "0") ? true : false;
-                            Productos[key]['multilinea_c'] = (Productos[key]['multilinea_c'] == "1") ? true : false;
-                            Productos[key]['exclu_precalif_c'] = (Productos[key]['exclu_precalif_c'] == "1") ? true : false;
-                            Productos[key]['notificacion_noviable_c'] = (Productos[key]['notificacion_noviable_c'] == "1") ? true : false;
-                            Productos[key]['reactivacion_c'] = (Productos[key]['reactivacion_c'] == "1") ? true : false;
-                            Productos[key]['razon_c'] = (Productos[key]['razon_c'] == null) ? "" : Productos[key]['razon_c'];
-                            Productos[key]['motivo_c'] = (Productos[key]['motivo_c'] == null) ? "" : Productos[key]['motivo_c'];
-                            Productos[key]['aprueba1_c'] = (Productos[key]['aprueba1_c'] == "1") ? true : false;
-                            Productos[key]['aprueba2_c'] = (Productos[key]['aprueba2_c'] == "1") ? true : false;
-                            Productos[key]["aprueba2_c"] =
+                if (data[3].contents != "") {
+                    Productos = [];
+                    //Facha Actual
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) { dd = '0' + dd }
+                    if (mm < 10) { mm = '0' + mm }
+                    today = yyyy + '-' + mm + '-' + dd;
+                    Productos = data[3].contents;
+                    ResumenProductos = [];
+                    _.each(Productos, function (value, key) {
+                        var tipoProducto = Productos[key].tipo_producto;
+                        var fechaAsignacion = Productos[key].fecha_asignacion_c;
+                        var fecha1 = moment(today);
+                        var fecha2 = moment(fechaAsignacion);
+                        Productos[key]['visible_noviable'] = (Productos[key]['visible_noviable'] != "0") ? true : false;
+                        Productos[key]['no_viable'] = (Productos[key]['no_viable'] != "0") ? true : false;
+                        Productos[key]['multilinea_c'] = (Productos[key]['multilinea_c'] == "1") ? true : false;
+                        Productos[key]['exclu_precalif_c'] = (Productos[key]['exclu_precalif_c'] == "1") ? true : false;
+                        Productos[key]['notificacion_noviable_c'] = (Productos[key]['notificacion_noviable_c'] == "1") ? true : false;
+                        Productos[key]['reactivacion_c'] = (Productos[key]['reactivacion_c'] == "1") ? true : false;
+                        Productos[key]['razon_c'] = (Productos[key]['razon_c'] == null) ? "" : Productos[key]['razon_c'];
+                        Productos[key]['motivo_c'] = (Productos[key]['motivo_c'] == null) ? "" : Productos[key]['motivo_c'];
+                        Productos[key]['aprueba1_c'] = (Productos[key]['aprueba1_c'] == "1") ? true : false;
+                        Productos[key]['aprueba2_c'] = (Productos[key]['aprueba2_c'] == "1") ? true : false;
+                        Productos[key]["aprueba2_c"] =
                             Productos[key]["estado_cliente_c"] = Productos[key].estado_cliente_c;
 
-                            switch (tipoProducto) {
-                                case "1": //Leasing
-                                    var dias = fecha1.diff(fecha2, 'days');
-                                    Productos[key]['dias'] = dias;
-                                    ResumenProductos['leasing'] = Productos[key];
-                                    Oproductos.productos.tct_tipo_cuenta_l_c = Productos[key]['tipo_cuenta'];
-                                    Oproductos.productos.tct_subtipo_l_txf_c = Productos[key]['subtipo_cuenta'];
-                                    break;
-                                case "3": //Credito-auto
-                                    var dias = fecha1.diff(fecha2, 'days');
-                                    Productos[key]['dias'] = dias;
-                                    ResumenProductos['credito_auto'] = Productos[key];
-                                    Oproductos.productos.tct_tipo_cuenta_ca_c = Productos[key]['tipo_cuenta'];
-                                    Oproductos.productos.tct_subtipo_ca_txf_c = Productos[key]['subtipo_cuenta'];
-                                    break;
-                                case "4": //Factoraje
-                                    var dias = fecha1.diff(fecha2, 'days');
-                                    Productos[key]['dias'] = dias;
-                                    ResumenProductos['factoring'] = Productos[key];
-                                    Oproductos.productos.tct_tipo_cuenta_f_c = Productos[key]['tipo_cuenta'];
-                                    Oproductos.productos.tct_subtipo_f_txf_c = Productos[key]['subtipo_cuenta'];
-                                    break;
-                                case "6": //Fleet
-                                    var dias = fecha1.diff(fecha2, 'days');
-                                    Productos[key]['dias'] = dias;
-                                    ResumenProductos['fleet'] = Productos[key];
-                                    Oproductos.productos.tct_tipo_cuenta_fl_c = Productos[key]['tipo_cuenta'];
-                                    Oproductos.productos.tct_subtipo_fl_txf_c = Productos[key]['subtipo_cuenta'];
-                                    break;
-                                case "8": //Uniclick
-                                    var dias = fecha1.diff(fecha2, 'days');
-                                    Productos[key]['dias'] = dias;
-                                    ResumenProductos['uniclick'] = Productos[key];
-                                    Oproductos.productos.tct_tipo_cuenta_uc_c = Productos[key]['tipo_cuenta'];
-                                    Oproductos.productos.tct_subtipo_uc_txf_c = Productos[key]['subtipo_cuenta'];
-                                    break;
-                                case "9": //Unilease
-                                    var dias = fecha1.diff(fecha2, 'days');
-                                    Productos[key]['dias'] = dias;
-                                    ResumenProductos['unilease'] = Productos[key];
-                                    Oproductos.productos.tct_tipo_cuenta_ul_c = Productos[key]['tipo_cuenta'];
-                                    Oproductos.productos.tct_subtipo_ul_txf_c = Productos[key]['subtipo_cuenta'];
-                                    break;
-                                case "10": //Seguros
-                                    var dias = fecha1.diff(fecha2, 'days');
-                                    Productos[key]['dias'] = dias;
-                                    ResumenProductos['seguros'] = Productos[key];
-                                    Oproductos.productos.tct_tipo_cuenta_se_c = Productos[key]['tipo_cuenta'];
-                                    Oproductos.productos.tct_subtipo_se_txf_c = Productos[key]['subtipo_cuenta'];
-                                    break;
-                                case "14": //Tarjeta Crédito
-                                    var dias = fecha1.diff(fecha2, 'days');
-                                    Productos[key]['dias'] = dias;
-                                    ResumenProductos['tarjetaCredito'] = Productos[key];
-                                    Oproductos.productos.tct_tipo_cuenta_tc_c = Productos[key]['tipo_cuenta'];
-                                    Oproductos.productos.tct_subtipo_tc_txf_c = Productos[key]['subtipo_cuenta'];
-                                    break;
-                                case "2": //Crédito Simple
-                                    var dias = fecha1.diff(fecha2, 'days');
-                                    Productos[key]['dias'] = dias;
-                                    ResumenProductos['tarjetaCredito'] = Productos[key];
-                                    Oproductos.productos.tct_tipo_cuenta_cs_c = Productos[key]['tipo_cuenta'];
-                                    Oproductos.productos.tct_subtipo_cs_txf_c = Productos[key]['subtipo_cuenta'];
-                                    break;
-                                default:
-                                    break;
-                            }
-                        });
-                        cont_uni_p['ResumenProductos'] = ResumenProductos;
-                        contexto_cuenta['ResumenProductos'] = ResumenProductos;
-                        cont_uni_p.render();
-                        Oproductos.render();
+                        switch (tipoProducto) {
+                            case "1": //Leasing
+                                var dias = fecha1.diff(fecha2, 'days');
+                                Productos[key]['dias'] = dias;
+                                ResumenProductos['leasing'] = Productos[key];
+                                Oproductos.productos.tct_tipo_cuenta_l_c = Productos[key]['tipo_cuenta'];
+                                Oproductos.productos.tct_subtipo_l_txf_c = Productos[key]['subtipo_cuenta'];
+                                break;
+                            case "3": //Credito-auto
+                                var dias = fecha1.diff(fecha2, 'days');
+                                Productos[key]['dias'] = dias;
+                                ResumenProductos['credito_auto'] = Productos[key];
+                                Oproductos.productos.tct_tipo_cuenta_ca_c = Productos[key]['tipo_cuenta'];
+                                Oproductos.productos.tct_subtipo_ca_txf_c = Productos[key]['subtipo_cuenta'];
+                                break;
+                            case "4": //Factoraje
+                                var dias = fecha1.diff(fecha2, 'days');
+                                Productos[key]['dias'] = dias;
+                                ResumenProductos['factoring'] = Productos[key];
+                                Oproductos.productos.tct_tipo_cuenta_f_c = Productos[key]['tipo_cuenta'];
+                                Oproductos.productos.tct_subtipo_f_txf_c = Productos[key]['subtipo_cuenta'];
+                                break;
+                            case "6": //Fleet
+                                var dias = fecha1.diff(fecha2, 'days');
+                                Productos[key]['dias'] = dias;
+                                ResumenProductos['fleet'] = Productos[key];
+                                Oproductos.productos.tct_tipo_cuenta_fl_c = Productos[key]['tipo_cuenta'];
+                                Oproductos.productos.tct_subtipo_fl_txf_c = Productos[key]['subtipo_cuenta'];
+                                break;
+                            case "8": //Uniclick
+                                var dias = fecha1.diff(fecha2, 'days');
+                                Productos[key]['dias'] = dias;
+                                ResumenProductos['uniclick'] = Productos[key];
+                                Oproductos.productos.tct_tipo_cuenta_uc_c = Productos[key]['tipo_cuenta'];
+                                Oproductos.productos.tct_subtipo_uc_txf_c = Productos[key]['subtipo_cuenta'];
+                                break;
+                            case "9": //Unilease
+                                var dias = fecha1.diff(fecha2, 'days');
+                                Productos[key]['dias'] = dias;
+                                ResumenProductos['unilease'] = Productos[key];
+                                Oproductos.productos.tct_tipo_cuenta_ul_c = Productos[key]['tipo_cuenta'];
+                                Oproductos.productos.tct_subtipo_ul_txf_c = Productos[key]['subtipo_cuenta'];
+                                break;
+                            case "10": //Seguros
+                                var dias = fecha1.diff(fecha2, 'days');
+                                Productos[key]['dias'] = dias;
+                                ResumenProductos['seguros'] = Productos[key];
+                                Oproductos.productos.tct_tipo_cuenta_se_c = Productos[key]['tipo_cuenta'];
+                                Oproductos.productos.tct_subtipo_se_txf_c = Productos[key]['subtipo_cuenta'];
+                                break;
+                            case "14": //Tarjeta Crédito
+                                var dias = fecha1.diff(fecha2, 'days');
+                                Productos[key]['dias'] = dias;
+                                ResumenProductos['tarjetaCredito'] = Productos[key];
+                                Oproductos.productos.tct_tipo_cuenta_tc_c = Productos[key]['tipo_cuenta'];
+                                Oproductos.productos.tct_subtipo_tc_txf_c = Productos[key]['subtipo_cuenta'];
+                                break;
+                            case "2": //Crédito Simple
+                                var dias = fecha1.diff(fecha2, 'days');
+                                Productos[key]['dias'] = dias;
+                                ResumenProductos['tarjetaCredito'] = Productos[key];
+                                Oproductos.productos.tct_tipo_cuenta_cs_c = Productos[key]['tipo_cuenta'];
+                                Oproductos.productos.tct_subtipo_cs_txf_c = Productos[key]['subtipo_cuenta'];
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                    cont_uni_p['ResumenProductos'] = ResumenProductos;
+                    contexto_cuenta['ResumenProductos'] = ResumenProductos;
+                    cont_uni_p.render();
+                    Oproductos.render();
 
-                        //Limpia pipeline
-                        pipeacc.render();
-                        //Ejecuta funcion para actualizar pipeline
-                        pipeacc.tipoSubtipo_vista();
+                    //Limpia pipeline
+                    pipeacc.render();
+                    //Ejecuta funcion para actualizar pipeline
+                    pipeacc.tipoSubtipo_vista();
 
                 }
                 //ANALIZATE
-                if(data[4].contents!=""){
-                    cont_nlzt.Analizate=[];
-                    cont_nlzt.Analizate.Financiera=[];
-                    cont_nlzt.Analizate.Credit=[];
-                    cont_nlzt.Analizate.Cliente=[];
+                if (data[4].contents != "") {
+                    cont_nlzt.Analizate = [];
+                    cont_nlzt.Analizate.Financiera = [];
+                    cont_nlzt.Analizate.Credit = [];
+                    cont_nlzt.Analizate.Cliente = [];
                     cont_nlzt.Analizate.Financiera = data[4].contents.Financiera;
                     cont_nlzt.Analizate.Credit = data[4].contents.Credit;
                     cont_nlzt.Analizate.Cliente = data[4].contents.AnalizateCliente;
                     cont_nlzt.render();
-                    analizate_cl.Analizate=[];
-                    analizate_cl.Analizate.Financiera=[];
-                    analizate_cl.Analizate.Credit=[];
-                    analizate_cl.Analizate.Cliente=[];
+                    analizate_cl.Analizate = [];
+                    analizate_cl.Analizate.Financiera = [];
+                    analizate_cl.Analizate.Credit = [];
+                    analizate_cl.Analizate.Cliente = [];
                     analizate_cl.Analizate.Financiera = data[4].contents.Financiera;
                     analizate_cl.Analizate.Credit = data[4].contents.Credit;
                     analizate_cl.Analizate.Cliente = data[4].contents.AnalizateCliente;
@@ -8770,7 +8892,7 @@ validaReqUniclickInfo: function () {
 
                 }
                 //PLD
-                if(data[5].contents!=""){
+                if (data[5].contents != "") {
                     //Recupera resultado
                     contexto_cuenta.ProductosPLD = pld.formatDetailPLD(data[5].contents);
                     //Establece visibilidad por tipo de productos
@@ -8795,20 +8917,20 @@ validaReqUniclickInfo: function () {
 
                 }
                 //Pautos
-                if(data[6].contents!=""){
-                    contexto_cuenta.Pautos=[];
-                    contexto_cuenta.Pautos.autos=[];
+                if (data[6].contents != "") {
+                    contexto_cuenta.Pautos = [];
+                    contexto_cuenta.Pautos.autos = [];
                     contexto_cuenta.Pautos.autos = data[6].contents;
                     contexto_cuenta.Pautos.prev_autos = app.utils.deepCopy(Pautos.autos);
                     Pautos.render();
                 }
 
                 //Setea dataCondiciones
-                if (data[7].contents!=""){
+                if (data[7].contents != "") {
                     this.datacondiciones = [];
-                    if(data[7].contents.records.length > 0) {
-                      contexto_cuenta.datacondiciones = data[7].contents;
-                      this.datacondiciones = data[7].contents;
+                    if (data[7].contents.records.length > 0) {
+                        contexto_cuenta.datacondiciones = data[7].contents;
+                        this.datacondiciones = data[7].contents;
                     }
                 }
                 //Final de funcion, mandamos ejecutar funcion de requniclick
@@ -8821,23 +8943,23 @@ validaReqUniclickInfo: function () {
             }, this)
         });
 
-        },
+    },
 
     validaGrupoEmpresarial: function (fields, errors, callback) {
-        var subtipo_prospecto = ['7','8','9','10','12'];
-        var subtipo_cliente = ['11','12','13','14','15','16','17','18','19','20'];
+        var subtipo_prospecto = ['7', '8', '9', '10', '12'];
+        var subtipo_cliente = ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20'];
         var tipo_registro_cuenta_c = this.model.get("tipo_registro_cuenta_c");
         var subtipo_registro_cuenta_c = this.model.get("subtipo_registro_cuenta_c");
         var tipo_gp_emp = this.model.get("situacion_gpo_empresarial_c");
         var error = false;
-        var errorText= "";
+        var errorText = "";
         //Valida que no se asocie la misma cuenta como padre
-        if(this.model.get('parent_id') == this.model.get('id')) {
+        if (this.model.get('parent_id') == this.model.get('id')) {
             error = true;
             errorText += 'La cuenta está asociada a si misma como grupo empresarial. Por favor, corrige este valor.<br>';
         }
         //Valida situación de grupo empresarial para pospecto interesado en adelante
-        if( (tipo_registro_cuenta_c =="2" && subtipo_prospecto.includes(subtipo_registro_cuenta_c) ) || (tipo_registro_cuenta_c =="3" && subtipo_cliente.includes(subtipo_registro_cuenta_c)) ){
+        if ((tipo_registro_cuenta_c == "2" && subtipo_prospecto.includes(subtipo_registro_cuenta_c)) || (tipo_registro_cuenta_c == "3" && subtipo_cliente.includes(subtipo_registro_cuenta_c))) {
             if (tipo_gp_emp.indexOf("4") !== -1 && this.model.get('parent_id') == "") {
                 error = true;
                 errorText += 'La Situación del Grupo Empresarial no puede ser <b>Sin Grupo Empresarial Verificado</b>. Por favor, corrige este valor o bien asocia la cuenta a un <b>Grupo Empresarial</b>.<br>';
@@ -8846,13 +8968,13 @@ validaReqUniclickInfo: function () {
                 error = true;
                 errorText += 'La Situación del Grupo Empresarial no puede estar asociada y no pertencer a ningun <b>Grupo Empresarial</b>.<br>';
             }
-            if (tipo_gp_emp.indexOf("3") !== -1 && this.model.get('parent_id')!="") {
+            if (tipo_gp_emp.indexOf("3") !== -1 && this.model.get('parent_id') != "") {
                 error = true;
                 errorText += 'Grupo Empresarial debe tener <b>Situación Empresarial Definida</b>.';
             }
         }
         //Valida y muestra errires
-        if(error){
+        if (error) {
             app.alert.show("Situacion Grupo Empresarial", {
                 level: "error",
                 messages: errorText,
@@ -8866,27 +8988,27 @@ validaReqUniclickInfo: function () {
     },
 
     validaReferido: function (fields, errors, callback) {
-        var referido=this.model.get('account_id1_c');
+        var referido = this.model.get('account_id1_c');
         var consulta = app.api.buildURL('Accounts/' + referido, null, null);
 
-        if(this.model.get('origen_cuenta_c')=='8'){
-        app.api.call('read', consulta, {}, {
+        if (this.model.get('origen_cuenta_c') == '8') {
+            app.api.call('read', consulta, {}, {
                 success: _.bind(function (data) {
-                    if(data.tipo_proveedor_compras_c!='6' && data.codigo_vendor_c=="") {
-                            app.alert.show("Cuenta no VENDOR", {
-                                level: "error",
-                                messages: 'La cuenta Referida no tiene un <b>código vendor</b>. Favor de verificar.',
-                                autoClose: false
-                            });
-                            errors['referido_cliente_prov_c'] = errors['referido_cliente_prov_c'] || {};
-                            errors['referido_cliente_prov_c'].required = true;
+                    if (data.tipo_proveedor_compras_c != '6' && data.codigo_vendor_c == "") {
+                        app.alert.show("Cuenta no VENDOR", {
+                            level: "error",
+                            messages: 'La cuenta Referida no tiene un <b>código vendor</b>. Favor de verificar.',
+                            autoClose: false
+                        });
+                        errors['referido_cliente_prov_c'] = errors['referido_cliente_prov_c'] || {};
+                        errors['referido_cliente_prov_c'].required = true;
 
-                        }
-                        callback(null, fields, errors);
+                    }
+                    callback(null, fields, errors);
                 }, this)
             });
-        }else{
-        callback(null, fields, errors);
+        } else {
+            callback(null, fields, errors);
         }
 
     },
@@ -8894,9 +9016,9 @@ validaReqUniclickInfo: function () {
     val_SituacionEmpresarial: function () {
         var tipo_gp_emp = this.model.get("situacion_gpo_empresarial_c");
 
-        if(event.type == 'mouseup'){
-            if(tipo_gp_emp.indexOf("1") !== -1 || tipo_gp_emp.indexOf("2") !== -1){
-                this.model.set("situacion_gpo_empresarial_c","");
+        if (event.type == 'mouseup') {
+            if (tipo_gp_emp.indexOf("1") !== -1 || tipo_gp_emp.indexOf("2") !== -1) {
+                this.model.set("situacion_gpo_empresarial_c", "");
                 app.alert.show("Situación Grupo Empresarial", {
                     level: "error",
                     title: "Las opciones Cuenta Primaria y Cuenta Secundaria no son elegibles manualmente. Para usar éstas 2 opciones debes asociar la cuenta a un grupo empresarial.",
@@ -8904,36 +9026,36 @@ validaReqUniclickInfo: function () {
                 });
             }
 
-            if ( tipo_gp_emp.indexOf("3") !== -1 ) {
-                this.model.set("parent_name","");
-                this.model.set("parent_id","");
+            if (tipo_gp_emp.indexOf("3") !== -1) {
+                this.model.set("parent_name", "");
+                this.model.set("parent_id", "");
             }
             //Si se tiene la combinación 3 y 4 se borra el valor 4
-            if(tipo_gp_emp.includes('3') && tipo_gp_emp.includes('4')){
+            if (tipo_gp_emp.includes('3') && tipo_gp_emp.includes('4')) {
                 delete tipo_gp_emp[tipo_gp_emp.indexOf('4')];
-                this.model.set("situacion_gpo_empresarial_c",tipo_gp_emp);
+                this.model.set("situacion_gpo_empresarial_c", tipo_gp_emp);
             }
         }
     },
 
 
-    ocultaproveedor: function () {
-		var Proveedor = 0;
-        var Boton1 = this.getField("proveedor_quantico");
-		if (this.model.get("esproveedor_c") || this.model.get("tipo_registro_cuenta_c") == 5) Proveedor = 1;
-        if (Boton1) {
-            Boton1.listenTo(Boton1, "render", function () {
-                if (Proveedor) {
-                    Boton1.show();
-                } else {
-                    Boton1.hide();
-                }
-            });
-        }
-    },
+    // ocultaproveedor: function () {
+    //     var Proveedor = 0;
+    //     var Boton1 = this.getField("proveedor_quantico");
+    //     if (this.model.get("esproveedor_c") || this.model.get("tipo_registro_cuenta_c") == 5) Proveedor = 1;
+    //     if (Boton1) {
+    //         Boton1.listenTo(Boton1, "render", function () {
+    //             if (Proveedor) {
+    //                 Boton1.show();
+    //             } else {
+    //                 Boton1.hide();
+    //             }
+    //         });
+    //     }
+    // },
 
     disableNameCliente: function () {
-		if( this.model.get('tipo_registro_cuenta_c')=='3' ){
+        if (this.model.get('tipo_registro_cuenta_c') == '3') {
             this.noEditFields.push('primernombre_c');
             this.noEditFields.push('apellidopaterno_c');
             this.noEditFields.push('apellidomaterno_c');
@@ -8948,92 +9070,92 @@ validaReqUniclickInfo: function () {
         }
     },
 
-    proveedor_quantico:function(){
-        //Creación de tarea de integración de expediente de proveedor en Quantico
-        app.alert.show('proveedor_quantico', {
-            level: 'process',
-            title: 'Creando tarea de integración de expediente en Quantico para el proveedor, por favor espere.',
-        });
-        app.api.call("read", app.api.buildURL("tarea_quantico/" + this.model.get('id'), null, null, {}), null, {
-            success: _.bind(function (data) {
-                app.alert.dismiss('proveedor_quantico');
-				app.alert.show('tarea_quantico', {
-                    level: 'warning',
-                    messages: data,
-                });
-            }, this),
-        });
-    },
+    // proveedor_quantico: function () {
+    //     //Creación de tarea de integración de expediente de proveedor en Quantico
+    //     app.alert.show('proveedor_quantico', {
+    //         level: 'process',
+    //         title: 'Creando tarea de integración de expediente en Quantico para el proveedor, por favor espere.',
+    //     });
+    //     app.api.call("read", app.api.buildURL("tarea_quantico/" + this.model.get('id'), null, null, {}), null, {
+    //         success: _.bind(function (data) {
+    //             app.alert.dismiss('proveedor_quantico');
+    //             app.alert.show('tarea_quantico', {
+    //                 level: 'warning',
+    //                 messages: data,
+    //             });
+    //         }, this),
+    //     });
+    // },
     validaPropRealCR: function (fields, errors, callback) {
-        var esPropietario=false;
-       var esCLiente=false;
-       var esTercero=false;
-       var tienePR=false;
+        var esPropietario = false;
+        var esCLiente = false;
+        var esTercero = false;
+        var tienePR = false;
 
-       esCLiente=(this.model.get('tipo_registro_cuenta_c')=="3") ? true : false;
-       esTercero=(contexto_cuenta.ProductosPLD.creditoRevolvente.campo8=='2') ? true : false;
-       tienePR=(contexto_cuenta.ProductosPLD.creditoRevolvente.campo9=='') ? false : true;
+        esCLiente = (this.model.get('tipo_registro_cuenta_c') == "3") ? true : false;
+        esTercero = (contexto_cuenta.ProductosPLD.creditoRevolvente.campo8 == '2') ? true : false;
+        tienePR = (contexto_cuenta.ProductosPLD.creditoRevolvente.campo9 == '') ? false : true;
 
 
-        if(App.user.attributes.productos_c.includes('14')){
-                if((this.model.get('tipo_registro_cuenta_c')!="4" || this.model.get('tipo_registro_cuenta_c')!="5")){
+        if (App.user.attributes.productos_c.includes('14')) {
+            if ((this.model.get('tipo_registro_cuenta_c') != "4" || this.model.get('tipo_registro_cuenta_c') != "5")) {
 
-                    //Realizamos apicall para buscar que la cuenta tenga alguna relacion con otra
-                    var Cuenta=this.model.get('id');
-                    var consulta = app.api.buildURL('Rel_Relaciones/?filter[0][account_id1_c][$equals]=' + Cuenta, null, null);
-                       app.api.call('read', consulta, {}, {
-                           success: _.bind(function (data) {
-                               if(data.records.length>0){
-                                   //Validamos que las relaciones sean de tipo Propietario Real
-                                   for (var i = 0; i < data.records.length; i++) {
-                                       if (data.records[i].relaciones_activas.includes('Propietario Real')) {
-                                           esPropietario=true;
-                                       }
-                                   }
-                               }
-                                if((!esPropietario && esTercero && !tienePR) || (esCLiente && esTercero && !tienePR)){
-                                    $('.campo9rel-ce').find('.select2-choice').css('border-color', 'red');
+                //Realizamos apicall para buscar que la cuenta tenga alguna relacion con otra
+                var Cuenta = this.model.get('id');
+                var consulta = app.api.buildURL('Rel_Relaciones/?filter[0][account_id1_c][$equals]=' + Cuenta, null, null);
+                app.api.call('read', consulta, {}, {
+                    success: _.bind(function (data) {
+                        if (data.records.length > 0) {
+                            //Validamos que las relaciones sean de tipo Propietario Real
+                            for (var i = 0; i < data.records.length; i++) {
+                                if (data.records[i].relaciones_activas.includes('Propietario Real')) {
+                                    esPropietario = true;
+                                }
+                            }
+                        }
+                        if ((!esPropietario && esTercero && !tienePR) || (esCLiente && esTercero && !tienePR)) {
+                            $('.campo9rel-ce').find('.select2-choice').css('border-color', 'red');
 
-                                       app.alert.show("existen_relaciones_PR", {
-                                       level: "error",
-                                       messages: "Favor de seleccionar un <b>Propietario Real</b> en la sección de PLD- Crédito Revolvente.",
-                                       autoClose: false
-                                       });
-                                       errors['propetariorealCR'] = errors['propetariorealCR'] || {};
-                                       errors['propetariorealCR'].required = true;
+                            app.alert.show("existen_relaciones_PR", {
+                                level: "error",
+                                messages: "Favor de seleccionar un <b>Propietario Real</b> en la sección de PLD- Crédito Revolvente.",
+                                autoClose: false
+                            });
+                            errors['propetariorealCR'] = errors['propetariorealCR'] || {};
+                            errors['propetariorealCR'].required = true;
 
-                               }
-                               callback(null, fields, errors);
-                           }, this)
-                        });
-                }else{
-                    callback(null, fields, errors);
-                }
-       }else{
-           callback(null, fields, errors);
-       }
-   },
+                        }
+                        callback(null, fields, errors);
+                    }, this)
+                });
+            } else {
+                callback(null, fields, errors);
+            }
+        } else {
+            callback(null, fields, errors);
+        }
+    },
 
-   muestraCIEC: function (){
-       //Validamos que el usuario logueado sea el mismo asignado a alguno de los productos de la cuenta
-        var leasing= App.user.attributes.id== contexto_cuenta.ResumenProductos.leasing.assigned_user_id && contexto_cuenta.ResumenProductos.leasing.tipo_cuenta=='3' ? true : false;;
-        var factoring= App.user.attributes.id==contexto_cuenta.ResumenProductos.factoring.assigned_user_id && contexto_cuenta.ResumenProductos.factoring.tipo_cuenta=='3'? true : false;;
-        var creditauto= App.user.attributes.id== contexto_cuenta.ResumenProductos.credito_auto.assigned_user_id && contexto_cuenta.ResumenProductos.credito_auto.tipo_cuenta=='3' ? true : false;;
-        var fleet = App.user.attributes.id== contexto_cuenta.ResumenProductos.fleet.assigned_user_id && contexto_cuenta.ResumenProductos.fleet.tipo_cuenta=='3'? true : false;;
-        var uniclick = App.user.attributes.id==contexto_cuenta.ResumenProductos.uniclick.assigned_user_id && contexto_cuenta.ResumenProductos.uniclick.tipo_cuenta=='3'? true : false;;
+    muestraCIEC: function () {
+        //Validamos que el usuario logueado sea el mismo asignado a alguno de los productos de la cuenta
+        var leasing = App.user.attributes.id == contexto_cuenta.ResumenProductos.leasing.assigned_user_id && contexto_cuenta.ResumenProductos.leasing.tipo_cuenta == '3' ? true : false;;
+        var factoring = App.user.attributes.id == contexto_cuenta.ResumenProductos.factoring.assigned_user_id && contexto_cuenta.ResumenProductos.factoring.tipo_cuenta == '3' ? true : false;;
+        var creditauto = App.user.attributes.id == contexto_cuenta.ResumenProductos.credito_auto.assigned_user_id && contexto_cuenta.ResumenProductos.credito_auto.tipo_cuenta == '3' ? true : false;;
+        var fleet = App.user.attributes.id == contexto_cuenta.ResumenProductos.fleet.assigned_user_id && contexto_cuenta.ResumenProductos.fleet.tipo_cuenta == '3' ? true : false;;
+        var uniclick = App.user.attributes.id == contexto_cuenta.ResumenProductos.uniclick.assigned_user_id && contexto_cuenta.ResumenProductos.uniclick.tipo_cuenta == '3' ? true : false;;
 
-        if(leasing==true || factoring==true||creditauto==true||fleet==true||uniclick==true){
+        if (leasing == true || factoring == true || creditauto == true || fleet == true || uniclick == true) {
             $('[name="solicitar_ciec"]').show();
-       }else{
+        } else {
             $('[name="solicitar_ciec"]').hide();
-       }
-   },
+        }
+    },
 
-   _panel_anlzt_proveedor: function () {
-        if (this.model.get('tipo_registro_cuenta_c') == '5' || this.model.get('esproveedor_c')==true) {
+    _panel_anlzt_proveedor: function () {
+        if (this.model.get('tipo_registro_cuenta_c') == '5' || this.model.get('esproveedor_c') == true) {
             //Muestra subpanel Proveedor De Analizate
             this.$("[data-panelname='LBL_RECORDVIEW_PANEL18']").show();
-        }else{
+        } else {
             this.$("[data-panelname='LBL_RECORDVIEW_PANEL18']").hide();
         }
     },
@@ -9041,32 +9163,32 @@ validaReqUniclickInfo: function () {
         if (this.model.get("tipo_registro_cuenta_c") == '3' || this.model.get("tipo_registro_cuenta_c") == '2' || this.model.get("tipo_registro_cuenta_c") == '4') {
             //Muestra subpanel Cliente De Analizate
             this.$("[data-panelname='LBL_RECORDVIEW_PANEL24']").show();
-        }else{
+        } else {
             this.$("[data-panelname='LBL_RECORDVIEW_PANEL24']").hide();
         }
     },
 
-    hide_panel_buro_credito: function (){
+    hide_panel_buro_credito: function () {
 
         //Obtiene bandera de buró del registro de Resumen relacionado
         var url = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
-		app.api.call('read', url, {}, {
-			success: _.bind(function (resumen) {
+        app.api.call('read', url, {}, {
+            success: _.bind(function (resumen) {
                 var privilegio_buro = App.user.get("seguimiento_bc_c");
-				if( resumen.seguimiento_bc_c == "" || resumen.seguimiento_bc_c==0 ) {
-					this.$("[data-panelname='LBL_RECORDVIEW_PANEL27']").hide();
-				}else{
-                    if( privilegio_buro == 0 || privilegio_buro == "" ){
-                        this.$("[data-panelname='LBL_RECORDVIEW_PANEL27']").hide();   
+                if (resumen.seguimiento_bc_c == "" || resumen.seguimiento_bc_c == 0) {
+                    this.$("[data-panelname='LBL_RECORDVIEW_PANEL27']").hide();
+                } else {
+                    if (privilegio_buro == 0 || privilegio_buro == "") {
+                        this.$("[data-panelname='LBL_RECORDVIEW_PANEL27']").hide();
                     }
                 }
 
-			}, this)
-		});
+            }, this)
+        });
     },
 
     ocultaSolicitarCIEC: function () {
-    		var cliente = (this.model.get("tipo_registro_cuenta_c") == 3 || this.model.get("tipo_registro_cuenta_c") == 2 || this.model.get("tipo_registro_cuenta_c") == 4) ? true : false;
+        var cliente = (this.model.get("tipo_registro_cuenta_c") == 3 || this.model.get("tipo_registro_cuenta_c") == 2 || this.model.get("tipo_registro_cuenta_c") == 4) ? true : false;
         var botonSC = this.getField("solicitar_ciec");
         if (botonSC) {
             botonSC.listenTo(botonSC, "render", function () {
@@ -9084,18 +9206,18 @@ validaReqUniclickInfo: function () {
     aunque los campos que están dentro de dicha fila se encuentren ocultos a través de la dependencia de visibilidad
     El no aplicar esta función hacía que en la vista de registro se mostraran algunas filas en blanco
     */
-    hideRowsNoHideByDependency:function(){
+    hideRowsNoHideByDependency: function () {
         //La clase vis_action_hidden se agrega cuando un campo se oculta a través de una fórmula en studio o una dependencia
-        var hidden_rows=$('.LBL_RECORDVIEW_PANEL16 > .vis_action_hidden');
-        hidden_rows.each(function(i, obj) {
+        var hidden_rows = $('.LBL_RECORDVIEW_PANEL16 > .vis_action_hidden');
+        hidden_rows.each(function (i, obj) {
             //Se oculta la fila cuando se detecta que el campo está oculto y además el campo que está junto a el es el campo custom "blank_space" o es una celda "relleno" habilitada desde studio
-            if($(obj).siblings('[data-name="blank_space"]').length > 0 || $(obj).siblings('.filler-cell').length > 0){
+            if ($(obj).siblings('[data-name="blank_space"]').length > 0 || $(obj).siblings('.filler-cell').length > 0) {
                 $(obj).parent().addClass('hide');
             }
         });
     },
 
-    solicitar_ciec_function:function(){
+    solicitar_ciec_function: function () {
         //Valida que sea proveedor para reenviar
         if (this.model.get('tipo_registro_cuenta_c') == "1" || this.model.get("tipo_registro_cuenta_c") == 5) {
             app.alert.show('No_Cliente', {
@@ -9146,7 +9268,7 @@ validaReqUniclickInfo: function () {
         });
     },
 
-    muestra_modal_alta_po: function(){
+    muestra_modal_alta_po: function () {
 
         var selfModalAltaPO = this;
 
@@ -9162,9 +9284,9 @@ validaReqUniclickInfo: function () {
                 app.alert.dismiss('loadingMuestraModal');
 
                 var asesorLeasingId = selfModalAltaPO.model.get('user_id_c');
-                var currentUserId =  App.user.id;
+                var currentUserId = App.user.id;
 
-                if( data.bloqueo_cartera_c || data.bloqueo2_c || data.bloqueo3_c ){
+                if (data.bloqueo_cartera_c || data.bloqueo2_c || data.bloqueo3_c) {
                     app.alert.show('cuentaBloqueada', {
                         level: 'error',
                         messages: 'Acción no disponible.<b>Cuenta Bloqueada</b>',
@@ -9172,29 +9294,29 @@ validaReqUniclickInfo: function () {
                     });
                 }
                 //Si está notificado y entra alguien que no es director, muestra alaerta de pendiente de aprobación
-                if( data.po_creado_estado_c == '1' && data.id_dir_comercial_aprueba_c != currentUserId ){
+                if (data.po_creado_estado_c == '1' && data.id_dir_comercial_aprueba_c != currentUserId) {
                     app.alert.show('pendienteAprobacion', {
                         level: 'error',
                         messages: 'Actualmente se tiene una solicitud de aprobación en proceso. Espere la confirmación o rechazo de su director',
                         autoClose: false
                     });
                 }
-                
+
                 //Si el usuario logueado es igual al Director comercial y además ya se creó el PO, se muestra pantalla con botones para aprobar y rechazar
-                else if( (data.po_creado_c == 1 && data.id_dir_comercial_aprueba_c == currentUserId ) || currentUserId == asesorLeasingId ){
+                else if ((data.po_creado_c == 1 && data.id_dir_comercial_aprueba_c == currentUserId) || currentUserId == asesorLeasingId) {
                     app.drawer.open({
                         layout: 'layout-alta-po',
                         context: {
                             context: selfModalAltaPO.context,
                             model: selfModalAltaPO.model,
                         },
-                    },function(context, model,update) {
+                    }, function (context, model, update) {
                         console.log("CIERRA DRAWER ALTA PO");
-                        
-                        
+
+
                     });
 
-                }else{
+                } else {
 
                     app.alert.show('sinPermisoModal', {
                         level: 'error',
@@ -9204,36 +9326,37 @@ validaReqUniclickInfo: function () {
 
 
                 }
-                
+
             }
         });
 
     },
 
-	dynamics365:function(){
-		//Muestra mensaje de Dynamics365
-		var url = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
-		app.api.call('read', url, {}, {
-			success: _.bind(function (resumen) {
+    dynamics365: function () {
+        //Muestra mensaje de Dynamics365
+        var url = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
+        app.api.call('read', url, {}, {
+            success: _.bind(function (resumen) {
                 contexto_cuenta.showSubpanels();
-				if(resumen.error_dynamics365_c) {
-					app.alert.show('error_otp', {
-						level: 'warning',
-						messages: "Se ha identificado un problema con la sincronización a Dynamics 365. Para mayor detalle consulta con el equipo de TI",
-						autoClose: false
-					});
-				}
-			}, this)
-		});
-	},
+                contexto_cuenta.renderDireccionSinSepomex();
+                if (resumen.error_dynamics365_c) {
+                    app.alert.show('error_otp', {
+                        level: 'warning',
+                        messages: "Se ha identificado un problema con la sincronización a Dynamics 365. Para mayor detalle consulta con el equipo de TI",
+                        autoClose: false
+                    });
+                }
+            }, this)
+        });
+    },
 
-    showSubpanels:function(){
+    showSubpanels: function () {
 
         $("[data-subpanel-link]").show();
 
-         $('[data-name="control_dynamics_365_c"]').hide();
+        $('[data-name="control_dynamics_365_c"]').hide();
 
-         //Se agrega parche para mostrar icono de + en subpanels de Venta cruzada y Seguros ya que desde panel-top no se está tomando
+        //Se agrega parche para mostrar icono de + en subpanels de Venta cruzada y Seguros ya que desde panel-top no se está tomando
         $('[data-subpanel-link="accounts_ref_venta_cruzada_1"]')
             .find(".fa-plus")
             .addClass("sicon sicon-plus")
@@ -9241,31 +9364,51 @@ validaReqUniclickInfo: function () {
             .removeClass("fa-plus");
 
         $('[data-subpanel-link="s_seguros_accounts"]')
-          .find(".fa-plus")
-          .addClass("sicon sicon-plus")
-          .removeClass("fa")
-          .removeClass("fa-plus");
+            .find(".fa-plus")
+            .addClass("sicon sicon-plus")
+            .removeClass("fa")
+            .removeClass("fa-plus");
 
-          //Se refrescan los subpaneles manualmente para evitar bug al aplicar refresh a la página, los subpaneles no mostraban datos
-          this.refreshAllSubpanels();
+        //Se refrescan los subpaneles manualmente para evitar bug al aplicar refresh a la página, los subpaneles no mostraban datos
+        this.refreshAllSubpanels();
 
 
     },
 
-    refreshAllSubpanels: function() {
+    /**
+     * Se aplica render de account_direcciones en caso de que la(s) dirección(es) tengan el problema de que no tenga match con sepomex
+     */
+    renderDireccionSinSepomex: function () {
+
+        const sinMatchSepomex = [];
+
+        for (let index = 0; index < contexto_cuenta.oDirecciones.direccion.length; index++) {
+            if (contexto_cuenta.oDirecciones.direccion[index].hasOwnProperty("sinSepomex")) {
+                sinMatchSepomex.push(1);
+            }
+        }
+
+        if (sinMatchSepomex.includes(1)) {
+
+            cont_dir.render();
+
+        }
+    },
+
+    refreshAllSubpanels: function () {
 
         var arrSubpaneles = [];
 
-        $('[data-subpanel-link]').each(function() {
+        $('[data-subpanel-link]').each(function () {
             var subpanelLink = $(this).data('subpanel-link');
             arrSubpaneles.push(subpanelLink);
         });
-        _.each(this.model._relatedCollections, function(collection){
+        _.each(this.model._relatedCollections, function (collection) {
 
-            if( arrSubpaneles.includes(collection.link.name) ){
-                collection.fetch({relate: true});
+            if (arrSubpaneles.includes(collection.link.name)) {
+                collection.fetch({ relate: true });
             }
-            
+
         });
     },
 
@@ -9302,5 +9445,224 @@ validaReqUniclickInfo: function () {
             callback(null, fields, errors);
         }
     },
+
+    // _hideBtnSolicitudAsignacion: function () {
+    //     var btnSolicitudAsignacion = this.getField("solicitud_asignacion");
+    //     var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';
+    //     //OCULTA Y MUESTRA EL BOTON DE SOLICITUD ASIGNACION
+    //     if (btnSolicitudAsignacion) {
+    //         btnSolicitudAsignacion.listenTo(btnSolicitudAsignacion, "render", function () {
+    //             //VALIDA USUARIO LEASING
+    //             var nombreAsesorAsignadoLeasing = contexto_cuenta.ResumenProductos.leasing.nombre_completo_c;
+    //             var regionUsuarioLeasing = (contexto_cuenta.ResumenProductos.leasing.region_c || '').trim().toLowerCase();
+    //             var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
+    //             var status = contexto_cuenta.ResumenProductos.leasing.status;
+    //             var posicionOperativaLeasing = contexto_cuenta?.ResumenProductos?.leasing?.posicion_operativa_c || "";
+    //             var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
+    //             var esUsuarioPendienteAsignar = this.model.get('user_id_c') === idUsuarioPendiente;
+    //             var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
+    //             var esDiferenteRegion = !esMismaRegion;
+    //             var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
+    //             esPendienteAsignar = (esUsuarioPendienteAsignar || (tipodeCuenta !== '3' && estatusAtencion === '2') || status === "Inactive" || !posicionOperativaLeasing.includes("^3^"));
+
+    //             //VALIDA POSICION OPERATIVA: ASESOR Y SI ES DEL PROCESO 0 - PENDIENTE DE ASIGNAR, MISMA O DIFERENTE REGION
+    //             if (esPendienteAsignar || esMismaRegion || esDiferenteRegion) {
+    //                 btnSolicitudAsignacion.show();
+    //                 //MUESTRA EL NOMBRE DEL ASESOR ACTUAL DEL PRODUCTO LEASING EN MISMA Y DIFERENTE REGION
+    //                 if (!esPendienteAsignar && (esMismaRegion || esDiferenteRegion)) {
+    //                     $('[data-event="button:solicitud_asignacion:click"]').html("Solicitud de Asignación -&nbsp;<b>" + nombreAsesorAsignadoLeasing + "</b>");
+    //                 } else {
+    //                     $('[data-event="button:solicitud_asignacion:click"]').html("Solicitud de Asignación");
+    //                 }
+    //             } else {
+    //                 btnSolicitudAsignacion.hide();
+    //             }
+    //         });
+    //     }
+    // },
+
+    // solicitudAsignacionCuenta: function () {
+    //     console.log("...Solicitud asignacion...");
+    //     //POSICION OPERATIVA
+    //     var posicionOperativa = App.user.attributes.posicion_operativa_c;
+    //     //ASESOR LEASING
+    //     if (posicionOperativa.includes("^3^")) {
+    //         var flagAsignacionActiva = contexto_cuenta.ResumenCliente.asignacion_automatica.asignacion_activa_c;
+    //         var idUsuarioPendiente = '569246c7-da62-4664-ef2a-5628f649537e';
+    //         var esValidoProcesoCeroPendienteAsignar = false;
+    //         var esValidoProcesoMismaRegion = false;
+    //         var esValidoProcesoDiferenteRegion = false;
+    //         //OBTIENE INFORMACION DEL USUARIO LEASING
+    //         var usuarioAsignadoLeasing = this.model.get('user_id_c');
+    //         //VALIDA SI HAY UNA SOLICITUD DE ASIGNACION ACTIVA
+    //         if (Number(flagAsignacionActiva) === 0) {
+    //             //PROCESO ASIGNACION-AUTOMATICA
+    //             if (usuarioAsignadoLeasing) {                
+    //                 var status = contexto_cuenta.ResumenProductos.leasing.status;
+    //                 var posicionOperativaLeasing = contexto_cuenta?.ResumenProductos?.leasing?.posicion_operativa_c || "";
+    //                 var regionUsuarioLeasing = (contexto_cuenta.ResumenProductos.leasing.region_c || '').trim().toLowerCase();
+    //                 var regionUsuarioActual = (App.user.attributes.region_c || '').trim().toLowerCase();
+    //                 var esMismaRegion = (regionUsuarioLeasing === regionUsuarioActual);
+    //                 var esPendienteAsignar = (usuarioAsignadoLeasing === idUsuarioPendiente);
+    //                 var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
+    //                 var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
+    //                 var esDiferenteRegion = !esMismaRegion;
+    
+    //                 //VALIDACION 0-PENDIENTE DE ASIGNAR: Usuario = 0-pendiente o estatus atención = desatendido o estatus usuario = inactivo o puesto usuario <> asesor comercial
+    //                 esValidoProcesoCeroPendienteAsignar = esPendienteAsignar || (tipodeCuenta !== '3' && estatusAtencion === '2') || status === "Inactive" || !posicionOperativaLeasing.includes("^3^");                  
+    //                 if (!esValidoProcesoCeroPendienteAsignar && !esMismaRegion && !esDiferenteRegion) {
+    //                     app.alert.show('sa_asesor_cero_pendiente_asignar', {
+    //                         level: 'error',
+    //                         autoClose: false,
+    //                         messages: 'No puedes Solicitar la Asignación de la Cuenta porque <b>no cumple los requisitos de asignación por 0-Pendiente de Asignar.</b>'
+    //                     });
+    //                     return;
+    //                 }
+    //                 //VALIDACIONES MISMA REGIÓN: Si región asesor viejo = región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces entra, Si tipo cuenta = cliente entonces entra}
+    //                 if (!esValidoProcesoCeroPendienteAsignar && esMismaRegion) {
+    //                     esValidoProcesoMismaRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
+    //                     if (!esValidoProcesoMismaRegion) {
+    //                         app.alert.show('sa_asesor_misma_region', {
+    //                             level: 'error',
+    //                             autoClose: false,
+    //                             messages: 'No puedes Solicitar la Asignación de la Cuenta porque <b>no cumple los requisitos de asignación por Misma Región.</b>'
+    //                         });
+    //                         return;
+    //                     }
+    //                 }
+    //                 //VALIDACIONES DIFERENTE REGIÓN: Si región asesor viejo <> región asesor nuevo {Si tipo cuenta <> cliente y estatus atención = atendido entonces notifica Ricardo Gerardo Si tipo cuenta = cliente entonces VoBo Dir. Regional}
+    //                 if (!esValidoProcesoCeroPendienteAsignar && esDiferenteRegion) {
+    //                     esValidoProcesoDiferenteRegion = (tipodeCuenta !== '3' && estatusAtencion === '1') || tipodeCuenta === '3';
+    //                     if (!esValidoProcesoDiferenteRegion) {
+    //                         app.alert.show('sa_asesor_diferente_region', {
+    //                             level: 'error',
+    //                             autoClose: false,
+    //                             messages: 'No puedes Solicitar la Asignación de la Cuenta porque <b>no cumple los requisitos de asignación por Diferente Región.</b>'
+    //                         });
+    //                         return;
+    //                     }
+    //                 }
+    //                 //VALIDA SI LA POSICION OPERATIVA DEL USUARIO ASIGNADO LEASING ES VACIA
+    //                 if (posicionOperativaLeasing === '' && !esPendienteAsignar && (!esValidoProcesoCeroPendienteAsignar || esValidoProcesoCeroPendienteAsignar)) {
+    //                     app.alert.show('sa_asesor_asignado_no_comercial', {
+    //                         level: 'error',
+    //                         autoClose: false,
+    //                         messages: 'No puedes Solicitar la Asignación de la Cuenta favor de solicitarlo al <b>Ejecutivo de Estrategia Comercial.</b>'
+    //                     });
+    //                     return;
+    //                 }
+
+    //                 if(cont_uni_p.ResumenProductos.leasing.dias < 16 && cont_uni_p.ResumenProductos.leasing.estatus_atencion == '1' ){
+    //                     esValidoProcesoMismaRegion = false;
+    //                     esValidoProcesoDiferenteRegion = false;
+    //                     app.alert.show('sa_asesor_diferente_region', {
+    //                         level: 'error',
+    //                         autoClose: false,
+    //                         messages: 'No puedes Solicitar la Asignación sigue en el tiempo de gracia de atención de 15 días.'
+    //                     });
+    //                 }else{
+    //                     // Valida proceso pendiente de asignar
+    //                     if (esValidoProcesoCeroPendienteAsignar) {
+    //                         console.log("Proceso: 0 - Pendiente de Asignar");
+    //                         this.enviarEmailSolicitudAsignacionAPI(true, false, false);
+    //                     }
+    //                     // Valida proceso misma región
+    //                     if (esValidoProcesoMismaRegion) {
+    //                         console.log("Proceso: Misma Region");
+    //                         this.enviarEmailSolicitudAsignacionAPI(false, true, false);
+    //                     }
+    //                     // Valida proceso diferente región
+    //                     if (esValidoProcesoDiferenteRegion) {
+    //                         console.log("Proceso: Diferente Region");
+    //                         this.enviarEmailSolicitudAsignacionAPI(false, false, true);
+    //                     }
+    //                 }                    
+    //             }
+                
+    //         } else {
+    //             app.alert.show('sa_asignacion_activa', {
+    //                 level: 'error',
+    //                 autoClose: false,
+    //                 messages: 'La asignación de la cuenta no puede ser solicitada, ya que existe una <b>aprobación en curso.</b>'
+    //             });
+    //             return false;
+    //         }           
+
+    //     } else {
+    //         app.alert.show('sa_asesor_no_comercial', {
+    //             level: 'error',
+    //             autoClose: false,
+    //             messages: 'No puedes Solicitar la Asignación de la Cuenta porque <b>NO ERES UN ASESOR LEASING.</b>'
+    //         });
+    //         return false;
+    //     }
+    // },
+
+    // enviarEmailSolicitudAsignacionAPI: function (flagPendienteAsignar, flagMismaRegion, flagDiferenteRegion) {
+    //     console.log("Enviando email solicitud asignacion...");
+    //     var btnSolAsignacion = this.getField('solicitud_asignacion');
+    //     btnSolAsignacion.setDisabled(true);
+
+    //     app.alert.show('proceso_solicitud_asignacion', {
+    //         level: 'process',
+    //         title: 'Enviando correo',
+    //     });
+
+    //     //PROCESO PENDIENTE DE ASIGNAR
+    //     if (flagPendienteAsignar) {
+    //         var args = {
+    //             "id_cuenta": this.model.get('id'),
+    //             "id_asesor_solicita": App.user.attributes.id
+    //         };
+    //         app.api.call("create", app.api.buildURL("solicitudAsignacionEmail", null, null, args), null, {
+    //             success: _.bind(function (response) {
+    //                 app.alert.dismiss('proceso_solicitud_asignacion');
+    //                 btnSolAsignacion.setDisabled(true);
+    //                 app.alert.show('alert_correo_sa', {
+    //                     level: 'success',
+    //                     messages: response,
+    //                 });
+    //                 // Recargar la página después del éxito
+    //                 setTimeout(function () {
+    //                     location.reload();
+    //                 }, 5000); // Espera 5 segundos antes de recargar
+    //             }, this),
+    //         });
+    //     }
+    //     //PROCESO DE APROBACION MISMA REGION || DIFERENTE REGION
+    //     if (flagMismaRegion || flagDiferenteRegion) {
+    //         var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
+    //         var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
+    //         //VALIDA SI ES PARA EJECUTIVO DE ESTRATEGIA COMERCIAL/RICARDO GERARDO
+    //         var esEjecutivoEstrategiaComercial = (flagDiferenteRegion && tipodeCuenta !== '3' && estatusAtencion === '1') ? true : false;
+    //         console.log("esEjecutivoEstrategiaComercial ", esEjecutivoEstrategiaComercial);
+    //         var argsmdr = {
+    //             "id_cuenta": this.model.get('id'),
+    //             "id_asesor_solicita": App.user.attributes.id,
+    //             "id_asesor_anterior": this.model.get('user_id_c'),
+    //             "es_diferente_region": flagDiferenteRegion,
+    //             "es_ejecutivo_estrategia": esEjecutivoEstrategiaComercial
+    //         };
+    //         app.api.call("create", app.api.buildURL("voboDirectorRegionalCuentas", null, null, argsmdr), null, {
+    //             success: _.bind(function (response) {
+    //                 app.alert.dismiss('proceso_solicitud_asignacion');
+    //                 btnSolAsignacion.setDisabled(true);
+    //                 app.alert.show('alert_correo_aprobacion', {
+    //                     level: 'success',
+    //                     messages: response,
+    //                 });
+    //             }, this),
+    //         });
+    //     }
+    // },
+
+    blockProveedor: function () {        
+        //Bloquear el registro completo 
+        if(this.model.get('tipo_registro_cuenta_c') == '5'){
+            $(".record-cell").attr("style", "pointer-events:none");
+            $('[name="edit_button"].rowaction').hide();    
+            //this.ocultaOpcionesSubpanel();
+        }
+    },    
 
 })

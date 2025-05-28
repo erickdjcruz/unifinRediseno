@@ -308,4 +308,6 @@ $app_list_strings['rama_list'] = array(
   '9313' => 'Regulación y fomento del desarrollo económico',
   '9315' => 'Regulación y fomento de actividades para mejorar y preservar el medio ambiente',
   '9316' => 'Actividades administrativas de instituciones de bienestar social',
+  '99999' => 'No clasificada',
+  '4373' => 'Intermediación de comercio al por mayor',
 );

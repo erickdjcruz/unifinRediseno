@@ -154,11 +154,11 @@
 
     valida_cuenta_no_contactar:function (fields, errors, callback) {
 		if (!app.user.attributes.tct_no_contactar_chk_c && !app.user.attributes.bloqueo_credito_c && !app.user.attributes.bloqueo_cumple_c) {
-			if (this.model.get('rel_relaciones_accounts_1accounts_ida')!='' && this.model.get('rel_relaciones_accounts_1accounts_ida') !=undefined) {
-				var account = app.data.createBean('Accounts', {id:this.model.get('rel_relaciones_accounts_1accounts_ida')});
+			if (this.model.get('rel_relaciones_accountsaccounts_ida')!='' && this.model.get('rel_relaciones_accountsaccounts_ida') !=undefined) {
+				var account = app.data.createBean('Accounts', {id:this.model.get('rel_relaciones_accountsaccounts_ida')});
 				account.fetch({
 					success: _.bind(function (model) {
-						var url = app.api.buildURL('tct02_Resumen/' + this.model.get('rel_relaciones_accounts_1accounts_ida'), null, null);
+						var url = app.api.buildURL('tct02_Resumen/' + this.model.get('rel_relaciones_accountsaccounts_ida'), null, null);
 						app.api.call('read', url, {}, {
 							success: _.bind(function (data) {
 								if (data.bloqueo_cartera_c || data.bloqueo2_c || data.bloqueo3_c) {
@@ -589,7 +589,7 @@
         var productospld = App.user.attributes.productos_c;
         if (this.model.get('relaciones_activas').includes('Propietario Real') && this.model.get("relacion_c").trim()!= "") {
 
-            app.api.call("read", app.api.buildURL("Accounts/" + this.model.get("rel_relaciones_accounts_1accounts_ida")), null, {
+            app.api.call("read", app.api.buildURL("Accounts/" + this.model.get("rel_relaciones_accountsaccounts_ida")), null, {
                 success: _.bind(function (data) {
                     if (data.tipodepersona_c == "Persona Moral") {
 
@@ -603,9 +603,9 @@
                                     if (data.apellidopaterno_c == "") {
                                         RequeridosPR = RequeridosPR + '<b>Apellido Paterno<br></b>';
                                     }
-                                    if (data.apellidomaterno_c == "") {
-                                        RequeridosPR = RequeridosPR + '<b>Apellido Materno<br></b>';
-                                    }
+                                    // if (data.apellidomaterno_c == "") {
+                                    //     RequeridosPR = RequeridosPR + '<b>Apellido Materno<br></b>';
+                                    // }
                                     if (data.genero_c == "") {
                                         RequeridosPR = RequeridosPR + '<b>Género<br></b>';
                                     }
@@ -750,9 +750,9 @@
                         if (data.apellidopaterno_c == "") {
                             Requeridoschange = Requeridoschange + '<b>Apellido Paterno<br></b>';
                         }
-                        if (data.apellidomaterno_c == "") {
-                            Requeridoschange = Requeridoschange + '<b>Apellido Materno<br></b>';
-                        }
+                        // if (data.apellidomaterno_c == "") {
+                        //     Requeridoschange = Requeridoschange + '<b>Apellido Materno<br></b>';
+                        // }
                         if (data.genero_c == "") {
                             Requeridoschange = Requeridoschange + '<b>Género<br></b>';
                         }
@@ -865,7 +865,7 @@
             if (this.model.get('relaciones_activas').includes('Proveedor de Recursos L') || this.model.get('relaciones_activas').includes('Proveedor de Recursos F')
             || this.model.get('relaciones_activas').includes('Proveedor de Recursos CA') || this.model.get('relaciones_activas').includes('Proveedor de Recursos CR') && this.model.get("relacion_c").trim()!= "") {
 
-                app.api.call("read", app.api.buildURL("Accounts/" + this.model.get("rel_relaciones_accounts_1accounts_ida")), null, {
+                app.api.call("read", app.api.buildURL("Accounts/" + this.model.get("rel_relaciones_accountsaccounts_ida")), null, {
                     success: _.bind(function (data) {
                         if (data.tipodepersona_c != "") {
 
@@ -879,9 +879,9 @@
                                         if (data.apellidopaterno_c == "") {
                                             RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Paterno<br></b>';
                                         }
-                                        if (data.apellidomaterno_c == "") {
-                                            RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Materno<br></b>';
-                                        }
+                                        // if (data.apellidomaterno_c == "") {
+                                        //     RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Materno<br></b>';
+                                        // }
                                         if (data.fechadenacimiento_c == "") {
                                             RequeridosProvRec = RequeridosProvRec + '<b>-Fecha de Nacimiento<br></b>';
                                         }
@@ -995,7 +995,7 @@
         if ((this.model.get('relaciones_activas').includes('Proveedor de Recursos L') || this.model.get('relaciones_activas').includes('Proveedor de Recursos F') ||
             this.model.get('relaciones_activas').includes('Proveedor de Recursos CA')) || this.model.get('relaciones_activas').includes('Proveedor de Recursos CR') && this.model.get("relacion_c").trim()!= "") {
 
-            app.api.call("read", app.api.buildURL("Accounts/" + this.model.get("rel_relaciones_accounts_1accounts_ida")), null, {
+            app.api.call("read", app.api.buildURL("Accounts/" + this.model.get("rel_relaciones_accountsaccounts_ida")), null, {
                 success: _.bind(function (data) {
                     if (data.tipodepersona_c != "") {
 
@@ -1009,9 +1009,9 @@
                                     if (data.apellidopaterno_c == "") {
                                         RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Paterno<br></b>';
                                     }
-                                    if (data.apellidomaterno_c == "") {
-                                        RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Materno<br></b>';
-                                    }
+                                    // if (data.apellidomaterno_c == "") {
+                                    //     RequeridosProvRec = RequeridosProvRec + '<b>-Apellido Materno<br></b>';
+                                    // }
                                     if (data.fechadenacimiento_c == "") {
                                         RequeridosProvRec = RequeridosProvRec + '<b>-Fecha de Nacimiento<br></b>';
                                     }
@@ -1161,9 +1161,9 @@
                                 if (data[0].contents.apellidopaterno_c == "") {
                                     faltantes.push('Apellido Paterno');
                                 }
-                                if (data[0].contents.apellidomaterno_c == "") {
-                                    faltantes.push('Apellido Materno');
-                                }
+                                // if (data[0].contents.apellidomaterno_c == "") {
+                                //     faltantes.push('Apellido Materno');
+                                // }
                                 if (data[0].contents.fechadenacimiento_c == "") {
                                     faltantes.push('Fecha de Nacimiento');
                                 }
@@ -1430,9 +1430,9 @@
                                 if (data[0].contents.apellidopaterno_c == "") {
                                     faltantes.push('Apellido Paterno');
                                 }
-                                if (data[0].contents.apellidomaterno_c == "") {
-                                    faltantes.push('Apellido Materno');
-                                }
+                                // if (data[0].contents.apellidomaterno_c == "") {
+                                //     faltantes.push('Apellido Materno');
+                                // }
                                 if (data[0].contents.estadocivil_c == "") {
                                     faltantes.push('Estado Civil');
                                 }
@@ -1890,9 +1890,9 @@
 								if (data[0].contents.apellidopaterno_c == "") {
 									faltantes.push('Apellido Paterno');
 								}
-								if (data[0].contents.apellidomaterno_c == "") {
-									faltantes.push('Apellido Materno');
-								}
+								// if (data[0].contents.apellidomaterno_c == "") {
+								// 	faltantes.push('Apellido Materno');
+								// }
 								if (data[0].contents.fechadenacimiento_c == "") {
 									faltantes.push('Fecha de Nacimiento');
 								}
@@ -2072,9 +2072,9 @@
 								if (data[0].contents.apellidopaterno_c == "") {
 									faltantes.push('Apellido Paterno');
 								}
-								if (data[0].contents.apellidomaterno_c == "") {
-									faltantes.push('Apellido Materno');
-								}
+								// if (data[0].contents.apellidomaterno_c == "") {
+								// 	faltantes.push('Apellido Materno');
+								// }
                                 if (data[0].contents.fechadenacimiento_c == "") {
 									faltantes.push('Fecha de Nacimiento');
 								}
@@ -2238,7 +2238,7 @@
                         var requests=[];
                         var request={};
                         var Cuenta = this.model.get('account_id1_c');
-                        var CuentaPadre=this.model.get('rel_relaciones_accounts_1accounts_ida');
+                        var CuentaPadre=this.model.get('rel_relaciones_accountsaccounts_ida');
                         //Validamos que se tenga alguna de las siguientes relaciones activas
                     if ( this.model.get('relaciones_activas').includes('Aval') || this.model.get('relaciones_activas').includes('Representante') || this.model.get('relaciones_activas').includes('Propietario Real') ||
                     this.model.get('relaciones_activas').includes('Proveedor de Recursos CS') ||  this.model.get('relaciones_activas').includes('Accionista') || this.model.get('relaciones_activas').includes('Obligado solidario')&& Cuenta != "") {
@@ -2302,9 +2302,9 @@
                                                 if (data[4].contents.apellidopaterno_c == "" || data[4].contents.apellidopaterno_c == null) {
                                                     necesarios = necesarios + '<b>Apellido Paterno<br></b>';
                                                 }
-                                                if (data[4].contents.apellidomaterno_c == "" || data[4].contents.apellidomaterno_c == null) {
-                                                    necesarios = necesarios + '<b>Apellido Materno<br></b>';
-                                                }
+                                                // if (data[4].contents.apellidomaterno_c == "" || data[4].contents.apellidomaterno_c == null) {
+                                                //     necesarios = necesarios + '<b>Apellido Materno<br></b>';
+                                                // }
                                             }
                                             //Valida direcciones y feléfono PF
                                             if (this.model.get('relaciones_activas').includes('Aval') || this.model.get('relaciones_activas').includes('Propietario Real') || this.model.get('relaciones_activas').includes('Proveedor de Recursos CS')) {

@@ -742,7 +742,7 @@
         this.model.on('change:no_website_c', this.rowebsite, this);
         //Ocultar panel Analizate
         this.$("[data-panelname='LBL_RECORDVIEW_PANEL18']").hide();
-        this.model.addValidationTask('UniclickCanal', _.bind(this.requeridosUniclickCanal, this));
+        //this.model.addValidationTask('UniclickCanal', _.bind(this.requeridosUniclickCanal, this));
         this.model.addValidationTask('tipo_proveedor_compras', _.bind(this.tipoProveedor, this));
         this.model.addValidationTask('clean_name', _.bind(this.cleanName, this));
 
@@ -2304,10 +2304,10 @@
                         errors['curp_c'] = errors['curp_c'] || {};
                         errors['curp_c'].required = true;
                     }
-                    if (this.model.get('apellidomaterno_c') == "" || this.model.get('apellidomaterno_c') == null) {
-                        errors['apellidomaterno_c'] = errors['apellidomaterno_c'] || {};
-                        errors['apellidomaterno_c'].required = true;
-                    }
+                    // if (this.model.get('apellidomaterno_c') == "" || this.model.get('apellidomaterno_c') == null) {
+                    //     errors['apellidomaterno_c'] = errors['apellidomaterno_c'] || {};
+                    //     errors['apellidomaterno_c'].required = true;
+                    // }
                     if (this.model.get('fechadenacimiento_c') == "" || this.model.get('fechadenacimiento_c') == null) {
                         errors['fechadenacimiento_c'] = errors['fechadenacimiento_c'] || {};
                         errors['fechadenacimiento_c'].required = true;

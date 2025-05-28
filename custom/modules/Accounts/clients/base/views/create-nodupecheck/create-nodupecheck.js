@@ -317,7 +317,7 @@
         this.model.on('change:no_website_c', this.rowebsite, this);
         //Ocultar panel Analizate
         this.$("[data-panelname='LBL_RECORDVIEW_PANEL18']").hide();
-        this.model.addValidationTask('UniclickCanal', _.bind(this.requeridosUniclickCanal, this));
+        //this.model.addValidationTask('UniclickCanal', _.bind(this.requeridosUniclickCanal, this));
         this.model.addValidationTask('tipo_proveedor_compras', _.bind(this.tipoProveedor, this));
         //Limpia los campos dependientes de Origen y Detalle Origen
         this.model.on('change:origen_cuenta_c', this._cleanDependenciesOrigen, this);
@@ -1263,7 +1263,12 @@
 		if(!seguros) {
 			var campos = "";
 			_.each(errors, function (value, key) {
-				_.each(this.model.fields, function (field) {
+                //SE OMITE APELLIDO MATERNO COMO REQUERIDO
+                if (key === 'apellidomaterno_c') {
+                    delete errors[key];
+                    return;
+                }                
+				_.each(this.model.fields, function (field) {                    
 					if (_.isEqual(field.name, key)) {
 						if (field.vname) {
 							campos = campos + '<b>' + app.lang.get(field.vname, "Accounts") + '</b><br>';
@@ -1498,10 +1503,10 @@
                 errors['apellidopaterno_c'] = errors['apellidopaterno_c'] || {};
                 errors['apellidopaterno_c'].required = true;
             }
-            if (this.model.get('apellidomaterno_c') == "" || this.model.get('apellidomaterno_c') == undefined) {
-                errors['apellidomaterno_c'] = errors['apellidomaterno_c'] || {};
-                errors['apellidomaterno_c'].required = true;
-            }
+            // if (this.model.get('apellidomaterno_c') == "" || this.model.get('apellidomaterno_c') == undefined) {
+            //     errors['apellidomaterno_c'] = errors['apellidomaterno_c'] || {};
+            //     errors['apellidomaterno_c'].required = true;
+            // }
             if (this.model.get('genero_c') == "" || this.model.get('genero_c') == undefined) {
                 errors['genero_c'] = errors['genero_c'] || {};
                 errors['genero_c'].required = true;

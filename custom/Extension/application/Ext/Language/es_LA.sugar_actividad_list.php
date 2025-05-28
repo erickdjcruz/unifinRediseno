@@ -1192,5 +1192,8 @@ $app_list_strings['actividad_list']=array (
   '9911018' => 'Instituciones Financieras del Extranjero',
   '9912016' => 'Consulado',
   '9912024' => 'Gobierno Extranjero',
-  '9919012' => 'Servicios de Oficinas y Representaciones de otros Paises Que Gozan de Extraterritorialidad'
+  '9919012' => 'Servicios de Oficinas y Representaciones de otros Paises Que Gozan de Extraterritorialidad',
+  '9999999' => 'NO CLASIFICADA',
+  '5100003' => 'CAPTACIÓN, TRATAMIENTO, CONDUCCIÓN Y DISTRIBUCIÓN DE AGUA POTABLE EXCEPTO DE RIEGO',
+  '7613004' => 'OTROS SERVS. DE TELECOMUNICACIONES (EXCEPTO RADIO)',
 );

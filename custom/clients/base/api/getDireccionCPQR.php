@@ -11,6 +11,8 @@
 
 if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 require_once('custom/clients/base/api/GetDireccionesCP.php');
+use Sugarcrm\Sugarcrm\Util\Uuid;
+use Symfony\Component\Validator\Constraints\Length;
 
 class getDireccionCPQR extends SugarApi
 {
@@ -35,179 +37,322 @@ class getDireccionCPQR extends SugarApi
     {
         //$GLOBALS['log']->fatal("*****DIRECCIONES QR*****");
         //$GLOBALS['log']->fatal(print_r($args,true));
-        $colonia_QR = ($args['colonia_rfc']=='_') ? ' ' : $args['colonia_rfc'];
+        $colonia_QR = ($args['colonia_rfc']=='') ? ' ' : $args['colonia_rfc'];
         $cod_postal=$args['cp'];
         $ciudad_QR = $args['ciudad_rfc'];
         $estado_QR = $args['entidad_rfc'];
-        
         //Se obtiene ciudad a través de CSF
-        $ciudad_csf = ($args['ciudad_csf']=='_') ? ' ' : $args['ciudad_csf'];
-        $call_api = new GetDireccionesCP();
-        $resultado = $call_api->getAddressByCP($api, $args);
+        $ciudad_csf = ($args['ciudad_csf']=='') ? ' ' : $args['ciudad_csf'];
+        //$call_api = new GetDireccionesCP();
+        //$resultado = $call_api->getAddressByCP($api, $args);
         //$GLOBALS['log']->fatal( print_r($resultado,true) );
-        $arr_colonias = $resultado['colonias'];
-        $pais_id = intval(substr($resultado['idCP'], 0, 3));
-        $estado_id = intval(substr($resultado['idCP'], 3, 3));
-        $municipio_id = intval(substr($resultado['idCP'], 6, 3));
-
-        $arr_estado = $resultado['estados'];
-        $arr_municipio = $resultado['municipios'];
-        $arr_ciudades = $resultado['ciudades'];
         
-        $colonia_existe = false;
-        $ciudad_existe = false;
-        $municipio_existe = false;
+        $estado_QR = $estado_QR ?? "";
+        $ciudad_QR = $ciudad_QR ?? "";
+        $colonia_QR = $colonia_QR ?? "";
+        $ciudad_csf = $ciudad_csf ?? "";
 
-        $existe_dato = false;
+        $estadon = $this->normalizeText($estado_QR);
+        $municipion = $this->normalizeText($ciudad_QR);
+        $colonian = $this->normalizeText($colonia_QR);
+        $ciudadn = $this->normalizeText($ciudad_csf);
+        $GLOBALS['log']->fatal('cod_postal',$cod_postal );
+        //$GLOBALS['log']->fatal('estadon',$estadon );
+        //$GLOBALS['log']->fatal('municipion',$municipion);
+        //$GLOBALS['log']->fatal('colonian',$colonian);
+        //$GLOBALS['log']->fatal('ciudadn',$ciudadn);
+
+        $pais='México';
+        $id_pais = '2';
         
-        $aux = null;
-        $arrin=null;
-        
-        
-        $auxindex = $this->searchForId($colonia_QR, $arr_colonias,'nameColonia');
-        //$GLOBALS['log']->fatal('auxindex1',$auxindex);
-        if( $auxindex >= 0){
+        $id_sepomex = '';
 
-            $colonia_existe = true;
+        $columns = ["estado","ciudad","municipio","colonia"];
+        $datos = [$estadon , $ciudadn , $municipion , $colonian];
+        $result = $this->consultaSepomex($columns , $datos , $cod_postal);
 
-            $arrin = array( $auxindex => $arr_colonias[$auxindex]);
-            $aux = array( 'colonias'=> $arrin);
-            $arr_colonias = $aux;
+        /*$query = "SELECT id, pais, id_pais, estado, id_estado, ciudad, id_ciudad, municipio, id_municipio  FROM dir_sepomex 
+        WHERE codigo_postal = '$cod_postal' 
+        AND UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+            estado, 'Á', 'A'), 'É', 'E'), 'Í', 'I'), 'Ó', 'O'), 'Ú', 'U'), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')) = '$estadon' 
+        AND UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+            ciudad, 'Á', 'A'), 'É', 'E'), 'Í', 'I'), 'Ó', 'O'), 'Ú', 'U'), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')) = '$ciudadn'
+        AND UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+            municipio, 'Á', 'A'), 'É', 'E'), 'Í', 'I'), 'Ó', 'O'), 'Ú', 'U'), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')) = '$municipion'
+        AND UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+            colonia, 'Á', 'A'), 'É', 'E'), 'Í', 'I'), 'Ó', 'O'), 'Ú', 'U'), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')) = '$colonian' 
+        order by id desc;";
+        */
+        //$result = $GLOBALS['db']->query($query);
+        if ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+            $prow = $row;
+            $id_sepomex = $row['id'];
+            $GLOBALS['log']->fatal('id_sepomex',$id_sepomex);
+        }else {
+            //Busqueda Estado
+            $columns = ["estado"];
+            $datos = [$estadon ];
+            $result = $this->consultaSepomex($columns , $datos , $cod_postal);
 
-            unset($resultado['colonias']);
-            $arr_colonias['colonias'][0] = $arr_colonias['colonias'][$auxindex];
-            if($auxindex != 0) unset($arr_colonias['colonias'][$auxindex]);
-            $resultado = array_replace($resultado, $arr_colonias);
-        }
-        
-        //$auxindex = array_search($estado_QR,$arr_estado,false);
-        $auxindex = $this->searchForId($estado_QR, $arr_estado,'nameEstado');
-        //$GLOBALS['log']->fatal('searchForId',$estado_QR,$arr_estado,$auxindex);
-        if( $auxindex != '-1'){
-            $arrin = array( $auxindex => $arr_estado[$auxindex], );
-            $aux = array( 'estados'=> $arrin);
-            $arr_estado = $aux;
-            $estado_id = isset($arr_estado['estados'][$auxindex]['idEstado']) ? intval(substr($arr_estado['estados'][$auxindex]['idEstado'],-3)) : 0 ;
-            $arr_estado['estados'][0] = $arr_estado['estados'][$auxindex];
-            if($auxindex != 0) unset($arr_estado['estados'][$auxindex]);
-            unset($resultado['estados']);
-            $resultado = array_replace($resultado, $arr_estado);        
-        }
-        
-        //$auxindex = array_search($ciudad_QR,$arr_municipio,false);
-        $auxindex = $this->searchForId($ciudad_QR, $arr_municipio,'nameMunicipio');
-        //$GLOBALS['log']->fatal('searchForId',$ciudad_QR,$arr_municipio,$auxindex);
-        if( $auxindex != '-1' && $auxindex >=0){
-
-            $municipio_existe = true;
-            
-            $arrin = array( $auxindex => $arr_municipio[$auxindex], );
-            $aux = array( 'municipios'=> $arrin);
-            $arr_municipio = $aux;
-            $municipio_id = isset($arr_municipio['municipios'][$auxindex]['idMunicipio']) ? intval(substr($arr_municipio['municipios'][$auxindex]['idMunicipio'],-3)) : 0 ;
-
-            $arr_municipio['municipios'][0] = $arr_municipio['municipios'][$auxindex];
-            if($auxindex != 0) unset($arr_municipio['municipios'][$auxindex]);
-            unset($resultado['municipios']); 
-            $resultado = array_replace($resultado, $arr_municipio);        
-        }
-
-        $auxindex = $this->searchForId($ciudad_csf, $arr_ciudades,'nameCiudad');
-        //$GLOBALS['log']->fatal('auxindex1',$auxindex);
-        if( $auxindex >= 0){
-
-            $ciudad_existe = true;
-
-            $arrin = array( $auxindex => $arr_ciudades[$auxindex]);
-            $aux = array( 'ciudades'=> $arrin);
-            $arr_ciudades = $aux;
-
-            unset($resultado['ciudades']);
-            $arr_ciudades['ciudades'][0] = $arr_ciudades['ciudades'][$auxindex];
-            if($auxindex != 0) unset($arr_ciudades['ciudades'][$auxindex]);
-            $resultado = array_replace($resultado, $arr_ciudades);
-        }
-        
-        if(!$colonia_existe)
-        {
-            $GLOBALS['log']->fatal("NO EXISTE COLONIA, SE PROCEDE A INSERTAR");
-            $data = $this->buildBodyRequest( 'colonia', $pais_id , $estado_id, $municipio_id, $colonia_QR, $cod_postal, '', '');
-            //$result=$this->insertColonia($pais_id,$estado_id,$municipio_id,$cod_postal,$colonia_QR);
-            $result = $this->insertDataDireccion( '/direccion/insertColonia', $data );
-
-            if( !empty($result['name']) ){
-
-                $queryColonia = "Select * from dire_colonia where codigo_postal='{$cod_postal}' AND name = '{$colonia_QR}'";
-                $resultQ = $GLOBALS['db']->query($queryColonia);
-
-                if( $resultQ->num_rows > 0 ){
-
-                    $existe_dato = true;
-
+            if ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+                // estado
+                // Búsqueda sin colonia
+                $columns = ["estado","ciudad","municipio"];
+                $datos = [$estadon , $ciudadn , $municipion];
+                $result = $this->consultaSepomex($columns , $datos , $cod_postal);
+          
+                if ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+                    $GLOBALS['log']->fatal('sin colonia');
+                    $id_pais = $row['id_pais'];
+                    $id_estado = $row['id_estado'];
+                    $id_municipio = $row['id_municipio'];
+                    $id_ciudad = $row['id_ciudad'];
+                    $id_colonia = Uuid::uuid1();
+                }else{
+                    // Búsqueda sin ciudad
+                    $columns = ["estado","municipio","colonia"];
+                    $datos = [$estadon , $municipion , $colonian ];
+                    $result = $this->consultaSepomex($columns , $datos , $cod_postal);
+                    
+                    if ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+                        $GLOBALS['log']->fatal('sin ciudad');
+                        $id_pais = $row['id_pais'];
+                        $id_estado = $row['id_estado'];
+                        $id_municipio = $row['id_municipio'];
+                        $id_ciudad = Uuid::uuid1();
+                        $id_colonia = $row['id_colonia'];
+                    }else{
+                        // Búsqueda sin municipio
+                        $GLOBALS['log']->fatal('sin municipio');
+                        $columns = ["estado","ciudad","colonia"];
+                        $datos = [$estadon , $ciudadn , $colonian ];
+                        $result = $this->consultaSepomex($columns , $datos , $cod_postal);
+                        
+                        if ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+                            $GLOBALS['log']->fatal('sin municipio');
+                            $id_pais = $row['id_pais'];
+                            $id_estado = $row['id_estado'];
+                            $id_municipio = Uuid::uuid1();
+                            $id_ciudad = $row['id_ciudad'];
+                            $id_colonia = $row['id_colonia'];
+                        }else{
+                            // Búsqueda sin ciudad y sin colonia
+                            $columns = ["estado","municipio"];
+                            $datos = [$estadon , $municipion ];
+                            $result = $this->consultaSepomex($columns , $datos , $cod_postal);
+                            
+                            if ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+                                $GLOBALS['log']->fatal('sin ciudad,sin colonia');
+                                $id_pais = $row['id_pais'];
+                                $id_estado = $row['id_estado'];
+                                $id_municipio = $row['id_municipio'];
+                                $id_ciudad = Uuid::uuid1();
+                                $id_colonia = Uuid::uuid1();
+                            } else {
+                                // Buscar sin  municipio y sin colonia
+                                $columns = ["estado","ciudad"];
+                                $datos = [$estadon , $ciudadn ];
+                                $result = $this->consultaSepomex($columns , $datos , $cod_postal);
+                                
+                                if ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+                                    $GLOBALS['log']->fatal('sin municipio,sin colonia');
+                                    $id_pais = $row['id_pais'];
+                                    $id_estado = $row['id_estado'];
+                                    $id_municipio = Uuid::uuid1();
+                                    $id_ciudad = $row['id_ciudad'];
+                                    $id_colonia = Uuid::uuid1();
+                                } else {
+                                    $GLOBALS['log']->fatal('sin municipio, sin ciudad,sin colonia');
+                                    $id_pais = $row['id_pais'];
+                                    $id_estado = $row['id_estado'];
+                                    $id_municipio = Uuid::uuid1();
+                                    $id_ciudad = Uuid::uuid1();
+                                    $id_colonia = Uuid::uuid1();
+                                }
+                            }
+                        }
+                    }
                 }
-
-            }
-        }
-
-        if(!$ciudad_existe)
-        {
-            $GLOBALS['log']->fatal('NO EXISTE CIUDAD, SE PROCEDE A INSERTAR');
-            $data = $this->buildBodyRequest( 'ciudad', $pais_id , $estado_id, $municipio_id, $colonia_QR, $cod_postal, $ciudad_csf, $municipio);
-            
-            $result = $this->insertDataDireccion( '/direccion/insertCiudad', $data );
-
-            if( !empty($result['name']) ){
-
-                $queryCiudad = "Select * from dire_ciudad where name = '{$ciudad_csf}'";
-                $resultC = $GLOBALS['db']->query($queryCiudad);
-
-                if( $resultC->num_rows > 0 ){
-
-                    $existe_dato = true;
-
+            }else{
+                $id_estado = Uuid::uuid1();
+                // sin estado
+                // Búsqueda sin colonia
+                $columns = ["ciudad","municipio"];
+                $datos = [ $ciudadn , $municipion];
+                $result = $this->consultaSepomex($columns , $datos , $cod_postal);
+          
+                if ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+                    $GLOBALS['log']->fatal('sin colonia');
+                    $id_pais = $row['id_pais'];
+                    $id_municipio = $row['id_municipio'];
+                    $id_ciudad = $row['id_ciudad'];
+                    $id_colonia = Uuid::uuid1();
+                }else{
+                    // Búsqueda sin ciudad
+                    $columns = ["municipio","colonia"];
+                    $datos = [$municipion , $colonian ];
+                    $result = $this->consultaSepomex($columns , $datos , $cod_postal);
+                    
+                    if ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+                        $GLOBALS['log']->fatal('sin ciudad');
+                        $id_pais = $row['id_pais'];
+                        $id_municipio = $row['id_municipio'];
+                        $id_ciudad = Uuid::uuid1();
+                        $id_colonia = $row['id_colonia'];
+                    }else{
+                        // Búsqueda sin municipio
+                        $columns = ["ciudad","colonia"];
+                        $datos = [$ciudadn , $colonian ];
+                        $result = $this->consultaSepomex($columns , $datos , $cod_postal);
+                        
+                        if ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+                            $GLOBALS['log']->fatal('sin municipio');
+                            $id_pais = $row['id_pais'];
+                            $id_municipio = Uuid::uuid1();
+                            $id_ciudad = $row['id_ciudad'];
+                            $id_colonia = $row['id_colonia'];
+                        }else{
+                            $GLOBALS['log']->fatal('sin municipio, sin ciudad,sin colonia');
+                            $id_pais = $row['id_pais'];
+                            $id_municipio = Uuid::uuid1();
+                            $id_ciudad = Uuid::uuid1();
+                            $id_colonia = Uuid::uuid1();
+                        }
+                    }
                 }
-
             }
+            $existe_dato = true;
+            $id_sepomex = Uuid::uuid1();
+            $GLOBALS['log']->fatal('id_sepomex',$id_sepomex);
+            $name = "$pais $cod_postal $estado_QR $colonia_QR";
             
-        }
-
-        if(!$municipio_existe)
-        {
-            $GLOBALS['log']->fatal('NO EXISTE MUNICIPIO, SE PROCEDE A INSERTAR');
-            //$result=$this->insertMunicipio($pais_id,$estado_id, $ciudad_QR);
-            $data = $this->buildBodyRequest( 'municipio', $pais_id , $estado_id, $municipio_id, $colonia_QR, $cod_postal, $ciudad_csf, $municipio);
-            
-            $result = $this->insertDataDireccion( '/direccion/insertMunicipio', $data );
-
-            if( !empty($result['name']) ){
-
-                $queryMunicipio = "Select * from dire_municipio where name = '{$ciudad_QR}'";
-                $resultM = $GLOBALS['db']->query($queryMunicipio);
-
-                if( $resultM->num_rows > 0 ){
-                    $existe_dato = true;
-                }
-
-            }
-            
+            // Insertar en dir_sepomex
+            $insert_query = "INSERT IGNORE INTO dir_sepomex (id, name, date_entered, date_modified, modified_user_id, created_by, description, deleted, pais, id_pais, codigo_postal, estado, id_estado, ciudad, id_ciudad, municipio, id_municipio, colonia, id_colonia, team_id, team_set_id) 
+                            VALUES ('$id_sepomex', '$name', NOW(), NOW(), '{$GLOBALS['current_user']->id}', '{$GLOBALS['current_user']->id}', '', 0, '$pais', '$id_pais', '$cod_postal', '$estado_QR', '$id_estado', '$ciudad_csf', '$id_ciudad', '$ciudad_QR', '$id_municipio', '$colonia_QR', '$id_colonia', 1, 1)";
+            $GLOBALS['log']->fatal('insert_query',$insert_query);
+            $GLOBALS['db']->query($insert_query);
+        
         }
 
         if( $existe_dato ){
 
             $GLOBALS['log']->fatal( "Se insertó dato, se vuelven a cargar datos" );
-            $resultado = $this->getAddressByCPQR($api, $args);
+            //$resultado = $this->getAddressByCPQR($api, $args);
+            $query = "SELECT id, name, codigo_postal , pais, id_pais, estado, id_estado, ciudad, id_ciudad, municipio, id_municipio, colonia, id_colonia FROM dir_sepomex WHERE id = '$id_sepomex'";
+            //$GLOBALS['log']->fatal('query',$query);
+            $result = $GLOBALS['db']->query($query);
+            $prow = $GLOBALS['db']->fetchByAssoc($result);
         }
+        //$GLOBALS['log']->fatal('result',$result);
+        $resultado = $this->obtenerDatosSepomex($prow);
 
         return $resultado;
     }
 
-    public function searchForId($id, $array , $busqueda) {
+    public function consultaSepomex($filtros , $data , $cod_postal){
+
+        $query = "SELECT id, name, codigo_postal , pais, id_pais, estado, id_estado, ciudad, id_ciudad, municipio, id_municipio, colonia, id_colonia  FROM dir_sepomex 
+        WHERE deleted = 0 
+        AND codigo_postal = '$cod_postal' ";
+        
+        for ($i = 0; $i < count($filtros); $i++) {
+            switch ($filtros[$i]) {
+                case "estado":
+                    $query = $query. "AND UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+                estado, 'Á', 'A'), 'É', 'E'), 'Í', 'I'), 'Ó', 'O'), 'Ú', 'U'), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')) = '$data[$i]' ";
+                    break;
+                case "ciudad":
+                    $query = $query. "AND UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+                ciudad, 'Á', 'A'), 'É', 'E'), 'Í', 'I'), 'Ó', 'O'), 'Ú', 'U'), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')) = '$data[$i]' ";
+                    break;
+                case "municipio":
+                    $query = $query. "AND UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+                municipio, 'Á', 'A'), 'É', 'E'), 'Í', 'I'), 'Ó', 'O'), 'Ú', 'U'), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')) = '$data[$i]' ";
+                    break;
+                case "colonia":
+                    $query = $query. "AND UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+                colonia, 'Á', 'A'), 'É', 'E'), 'Í', 'I'), 'Ó', 'O'), 'Ú', 'U'), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')) = '$data[$i]' ";
+                    break;
+            }
+        }
+        $query = $query. " order by id desc;";
+
+        //$GLOBALS['log']->fatal('query',$query);
+        $result = $GLOBALS['db']->query($query);
+        //$GLOBALS['log']->fatal('result',$result);
+        return $result;
+    }
+
+    public function obtenerDatosSepomex($row) {
+        //$GLOBALS['log']->fatal('row',$row);
+        $data = [
+            "paises" => [],
+            "municipios" => [],
+            "estados" => [],
+            "colonias" => [],
+            "ciudades" => [],
+            "ciudades_metadata" => [],
+            "idCP" => "",
+            "nameCP" => "",
+            "indice" => "0"
+        ];
+    
+        //while ($row = $GLOBALS['db']->fetchByAssoc($result)) {
+            //$GLOBALS['log']->fatal('row',$row);
+            $data['paises'][] = ["idPais" => "2", "namePais" => $row['pais']];
+            $data['municipios'][] = ["idMunicipio" => $row['id_municipio'], "nameMunicipio" => $row['municipio']];
+            $data['estados'][] = ["idEstado" => $row['id_estado'], "nameEstado" => $row['estado']];
+            $data['colonias'][] = [
+                "idColonia" => $row['id_colonia'],
+                "nameColonia" => $row['colonia'],
+                "idCodigoPostal" => $row['id_codigo_postal'],
+                "idMunicipio" => $row['id_municipio']
+            ];
+            $data['ciudades'][] = ["idCiudad" => $row['id_ciudad'], "nameCiudad" => $row['ciudad']];
+            $data['ciudades_metadata'][$row['id_ciudad']] = [
+                "estado_id" => $row['id_estado'],
+                "id" => $row['id_ciudad'],
+                "name" => $row['ciudad'],
+                "pais_id" => "2"
+            ];
+            $data['idCP'] = $row['id'];
+            $data['nameCP'] = $row['codigo_postal'];
+        //}
+    
+        return $data;
+    }
+    
+
+    public function normalizeText($text) {
+        return strtoupper(iconv('UTF-8', 'ASCII//TRANSLIT', $text));
+    }
+
+    function normalize_text_py($text) {
+        // Normaliza el texto eliminando acentos y convirtiéndolo a mayúsculas
+        if (!$text) return "";
+        $search = ['Á', 'É', 'Í', 'Ó', 'Ú', 'á', 'é', 'í', 'ó', 'ú'];
+        $replace = ['A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'];
+        return strtoupper(str_replace($search, $replace, $text));
+    }
+
+    public function searchForId($id, $array, $busqueda) {
+        // Convertir la búsqueda y el ID a mayúsculas y sin acentos
+        $id_normalizado = mb_strtoupper($this->removeAccents($id));
+    
         foreach ($array as $key => $val) {
-            if ($val[$busqueda] === $id) {
+            // Normalizar el valor del array antes de comparar
+            $valor_normalizado = mb_strtoupper($this->removeAccents($val[$busqueda] ?? ''));
+    
+            if ($valor_normalizado === $id_normalizado) {
                 return $key;
             }
         }
         return -1;
+    }
+    
+    // Función auxiliar para eliminar acentos
+    private function removeAccents($string) {
+        return transliterator_transliterate('NFD; [:Nonspacing Mark:] Remove; NFC;', $string);
     }
 
     public function buildBodyRequest( $dato, $pais, $estado, $idMunicipio, $colonia, $cp, $ciudad, $municipio ){
@@ -249,6 +394,43 @@ class getDireccionCPQR extends SugarApi
 
         return $data;
     }
+
+    public function buildBodyRequestSepomex( $dato, $cp,$id_pais, $pais,$id_estado, $estado, $id_municipio,$municipio ,$id_colonia,$colonia, $id_ciudad,$ciudad){
+        $data = null;
+        
+        $data = json_encode(
+            array(
+            "cp"=>$cp,
+            "pais"=>$id_pais,
+            "labelPais"=>$pais,
+            "estado"=>$id_estado,
+            "labelEstado"=>$estado,
+            //"ciudad"=>$id_ciudad,
+            //"labelCiudad"=>$ciudad,
+            "municipio"=>$id_municipio,
+            "labelMunicipio"=>$municipio,
+            //"colonia":colonia, únicamente se inserta la etiqueta, ya que el id no se conoce
+            "labelColonia"=>$colonia
+            )
+        );
+        return $data;
+    }   
+
+    public function insertSepomex( $cp,$id_pais, $pais,$id_estado, $estado, $id_municipio,$municipio ,$id_colonia,$colonia, $id_ciudad,$ciudad){
+        global $current_user;
+        $new_id_sep=Uuid::uuid1();
+        $id_user=$current_user->id;
+        $current_date=TimeDate::getInstance()->nowDb();
+        $name=$pais ." ".$cp." ".$estado." ".$colonia;//labelPais CP Estado Colonia
+        /*$qinsertRecordSepomex="INSERT INTO `dir_sepomex` (`id`, `name`, `date_entered`, `date_modified`, `modified_user_id`, `created_by`, `deleted`, 
+        `pais`, `id_pais`, `codigo_postal`, `estado`, `id_estado`, `ciudad`, `id_ciudad`, `municipio`, `id_municipio`, `colonia`, `id_colonia`) VALUES 
+        ('{$new_id_sep}', '{$name}', '{$current_date}', '{$current_date}', '{$id_user}', '{$id_user}', '0', 
+        '{$pais}', '{$id_pais}', '{$cp}', '{$estado}', '{$id_estado}','{$ciudad}', '{$id_ciudad}', '{$municipio}', '{$id_municipio}', '{$colonia}', '{$id_colonia}');";
+        $GLOBALS['db']->query($qinsertRecordSepomex);
+        */
+        return true;
+
+    }        
 
     public function insertDataDireccion( $endpoint, $data){
         global $sugar_config;

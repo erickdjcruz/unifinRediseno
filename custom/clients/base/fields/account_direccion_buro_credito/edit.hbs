@@ -98,9 +98,12 @@
                             <div class="span4">
                                 <label class="record-label">Colonia</label>
                                 <select class="row-fluid newColonia select2" data-field="colonia" placeholder="" style="font-size: 15px;font-weight: 500;">
-                                    {{#each listColonia}}
+                                    {{!-- {{#each listColonia}}
                                         <option value="{{@key}}" {{ifSelected @key ../colonia}}>{{this}}</option>
-                                    {{/each}}
+                                    {{/each}} --}}
+                                    {{#each listColonia}}
+                                            <option value="{{this.idColonia}}" data-cp="{{this.idCodigoPostal}}" {{ifSelected this.idColonia ../colonia}}>{{this.nameColonia}}</option>
+                                        {{/each}}
                                 </select>
                             </div>
                         </div> <!-- Cierra fila 3-->

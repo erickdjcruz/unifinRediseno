@@ -70,7 +70,7 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
     array (
       'type' => 'button',
       'name' => 'rfc_qr_button',
-      'label' => 'Leer CSF',
+      'label' => 'Actualiza datos SAT',
       'css_class' => 'btn_rfc_qr btn btn-primary',
       'showOn' => 'edit',
       'events' => 
@@ -118,13 +118,21 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
         ),
         3 => 
         array (
+          // 'type' => 'rowaction',
+          // 'event' => 'button:solicitud_asignacion:click',
+          // 'name' => 'solicitud_asignacion',
+          // 'label' => 'Solicitud de Asignación',
+          // 'acl_action' => 'view',
+        ),
+        4 => 
+        array (
           'type' => 'rowaction',
           'event' => 'button:verificar_cambios:click',
           'name' => 'verificar_cambios',
           'label' => 'Verificar cambios',
           'acl_action' => 'view',
         ),
-        4 => 
+        5 => 
         array (
           'type' => 'rowaction',
           'event' => 'button:historical_summary_button:click',
@@ -132,7 +140,7 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
           'label' => 'LBL_HISTORICAL_SUMMARY',
           'acl_action' => 'view',
         ),
-        5 => 
+        6 => 
         array (
           'type' => 'rowaction',
           'event' => 'button:audit_button:click',
@@ -140,25 +148,25 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
           'label' => 'LNK_VIEW_CHANGE_LOG',
           'acl_action' => 'view',
         ),
-        6 => 
+        7 => 
         array (
           'name' => 'alta_po',
           'type' => 'rowaction',
           'label' => 'Alta de PO',
           'event' => 'button:alta_po:click',
         ),
-        7 => 
+        8 => 
         array (
           'type' => 'divider',
         ),
-        8 => 
+        /*9 => 
         array (
           'type' => 'rowaction',
           'event' => 'button:dynamics_button:click',
           'name' => 'dynamics_365',
           'label' => 'Enviar a Dynamics 365',
           'acl_action' => 'view',
-        ),
+        ),*/
         9 => 
         array (
           'type' => 'rowaction',
@@ -228,13 +236,13 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
           'label' => 'Enviar al portal de proveedor',
           'event' => 'button:enviar_portal_proveedores:click',
         ),
-        18 => 
-        array (
-          'name' => 'proveedor_quantico',
-          'type' => 'rowaction',
-          'label' => 'Tarea IE Proveedor Quantico',
-          'event' => 'button:proveedor_quantico:click',
-        ),
+        // 19 => 
+        // array (
+        //   'name' => 'proveedor_quantico',
+        //   'type' => 'rowaction',
+        //   'label' => 'Tarea IE Proveedor Quantico',
+        //   'event' => 'button:proveedor_quantico:click',
+        // ),
         19 => 
         array (
           'name' => 'solicitar_ciec',

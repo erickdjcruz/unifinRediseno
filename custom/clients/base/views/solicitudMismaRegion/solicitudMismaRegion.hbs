@@ -1,0 +1,86 @@
+<style>
+    .message {
+        padding: 15px;
+        border-radius: 5px;
+        width: 100%;
+        margin: 20px auto;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+
+    .sizetxt {
+        font-size: 14px;
+    }
+
+    textarea {
+        width: 535px;
+    }
+
+    /* Centrar el botón */
+    .btn-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    /* Estilos para el botón */
+    #btnEnviar {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+    }
+
+    /* Efectos de hover y clic */
+    #btnEnviar:hover {
+        background-color: #0056b3;
+    }
+
+    #btnEnviar:active {
+        background-color: #004494;
+    }
+</style>
+
+<div class="panel panel-default" style="max-width: 600px; margin: 20px auto;">
+    <div class="panel-heading">
+        <h3 class="panel-title text-center">Solicitud de Asignación</h3>
+    </div>
+    <div class="panel-body" style="padding: 20px;">
+        {{#if puedeAprobar}}
+        <form id="comentarioForm">
+            <div class="form-group">
+                <label class="sizetxt" for="comentarios">Ingresa el motivo de aprobación/rechazo a la solicitud de reasingnación (30 - 500 caracteres):</label>
+                <textarea id="comentarios" name="comentarios" class="form-control" rows="8"></textarea>
+            </div>
+            <div class="btn-container">
+                <button id="btnEnviar" type="submit" class="btn btn-primary">Enviar</button>
+            </div>            
+        </form>
+        {{/if}}
+        <div id="mensaje" class="message text-center" style="margin-top: 15px;">
+            {{#if msgExitoso}}
+            <div class="message success">Se autorizó el cambio de asignación exitosamente!</div>
+            {{/if}}
+
+            {{#if msgRechazado}}
+            <div class="message warning">Se rechazo el cambio de asignación.</div>
+            {{/if}}
+        </div>
+    </div>
+</div>

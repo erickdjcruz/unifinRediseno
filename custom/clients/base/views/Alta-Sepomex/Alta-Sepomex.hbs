@@ -145,7 +145,7 @@
         <h3>&nbsp;&nbsp;Alta Sepomex</h3>
       </div>
         <!-- Modal body -->
-        <div class="modal-body" style="height:220px">
+        <div class="modal-body" style="height:320px">
             <div class="row-fluid" style="margin-top:10px">
               <div class="span6" style="text-align:center">
                   <div class="record-label">Código Postal</div>
@@ -189,6 +189,9 @@
                       <option value="{{@key}}">{{this}}</option>
                       {{/each}}
                   </select>
+                  <input id="newCiudad" class="formField" type="text" style="display:none" placeholder="Nueva ciudad"> <i id="iconNewCiudad" class="sicon sicon-close" style="display:none"></i>
+                  <br>
+                  <button type="button" class="btn btn-link btnNewCiudad">¿No existe la Ciudad? Dar de alta</button>
                   {{else}}
                   <input id="ciudad" class="formField" type="text" value="">
                   <p class="help-block"></p>
@@ -205,6 +208,9 @@
                       <option value="{{@key}}">{{this}}</option>
                       {{/each}}
                   </select>
+                  <input id="newMunicipio" class="formField" type="text" style="display:none" placeholder="Nuevo municipio"> <i id="iconNewMunicipio" class="sicon sicon-close" style="display:none"></i>
+                  <br>
+                  <button type="button" class="btn btn-link btnNewMunicipio">¿No existe el municipio? Dar de alta</button>
                   {{else}}
                   <input id="municipio" class="formField" type="text" value="">
                   <p class="help-block"></p>

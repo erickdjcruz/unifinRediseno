@@ -115,12 +115,15 @@ AND rc.seguimiento_bc_c = 1 ";
                 $beanNuevaDireccionBuro = BeanFactory::newBean('dire_Direccion');
 
                 $beanNuevaDireccionBuro->name = $beanDireccionFiscal->name;
+                /*
                 $beanNuevaDireccionBuro->dire_direccion_dire_codigopostaldire_codigopostal_ida = $beanDireccionFiscal->dire_direccion_dire_codigopostaldire_codigopostal_ida;
                 $beanNuevaDireccionBuro->dire_direccion_dire_municipiodire_municipio_ida = $beanDireccionFiscal->dire_direccion_dire_municipiodire_municipio_ida;
                 $beanNuevaDireccionBuro->dire_direccion_dire_estadodire_estado_ida = $beanDireccionFiscal->dire_direccion_dire_estadodire_estado_ida;
                 $beanNuevaDireccionBuro->dire_direccion_dire_paisdire_pais_ida = $beanDireccionFiscal->dire_direccion_dire_paisdire_pais_ida;
                 $beanNuevaDireccionBuro->dire_direccion_dire_coloniadire_colonia_ida = $beanDireccionFiscal->dire_direccion_dire_coloniadire_colonia_ida;
                 $beanNuevaDireccionBuro->dire_direccion_dire_ciudaddire_ciudad_ida = $beanDireccionFiscal->dire_direccion_dire_ciudaddire_ciudad_ida;
+                */
+                $beanNuevaDireccionBuro->dir_sepomex_dire_direcciondir_sepomex_ida = $beanDireccionFiscal->dir_sepomex_dire_direcciondir_sepomex_ida;
 
                 $beanNuevaDireccionBuro->calle = $beanDireccionFiscal->calle;
                 $beanNuevaDireccionBuro->numext = $beanDireccionFiscal->numext;
