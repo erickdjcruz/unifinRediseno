@@ -2039,7 +2039,7 @@
 
     hideShowBtnVoBo: function () {
         var id_user = App.user.id;
-        if (this.model.get('envio_correo_po_c') && this.model.get('id_director_vobo_c') == id_user) {
+        if (this.model.get('envio_correo_po_c') > 1 && this.model.get('id_director_vobo_c') == id_user) {
             $('[name="rechaza_envio_correo"]').removeClass('hidden');
             $('[name="vobo_envio_correo"]').removeClass('hidden');
         }

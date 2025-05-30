@@ -56,7 +56,7 @@ class SendEmailPO extends SugarApi
 
     public function sendEmailProspect($api, $args)
     {
-        global $sugar_config;
+        global $sugar_config , $db;
         $url_unileasing = $sugar_config['url_unileasing_email'];
         $id_prospecto = $args['id_po'];
         $response = "";
@@ -99,7 +99,7 @@ class SendEmailPO extends SugarApi
             $email_comercial = $info_comercial['email'];
         }
 
-        if ($envio_previo) {
+        if ($envio_previo > 0 ) {
             //$response = "SI HAY ENVIO PREVIO: Enviar correo al director de asesor comercial y cc: director regional. Contenido: Email VoBo Director PO";
             $body_mail = $this->buildBodyEmailVoBo($name_comercial, $asesorName, $beanPO->name, $linkPO);
             //Enviando correo
@@ -112,6 +112,8 @@ class SendEmailPO extends SugarApi
             }
             $beanPO->id_director_vobo_c = $id_director_comercial;
             $beanPO->save();
+            $updateP = "UPDATE prospects_cstm set envio_correo_po_c = 2 where  id_c ='{$beanPO->id}';";
+            $db->query($updateP);
         } else {
             //No hay envío previo
             $link_unileasing = $url_unileasing . "/api/crm/contact/create?crm_id=" . $id_prospecto . "&assessor_id=" . $id_asesor;
