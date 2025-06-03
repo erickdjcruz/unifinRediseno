@@ -68,10 +68,16 @@ class SendEmailPO extends SugarApi
         $email_asesor_alianza = $beanPO->email_aa_c;
         $envio_previo = $beanPO->envio_correo_po_c;
         $id_asesor = $beanPO->assigned_user_id;
+        $nombre_gerente_credito = $beanPO->gerente_vendor_c;
+        $email_gerente_credito = $beanPO->email_gerente_vendor_c;
+        $nombre_vendedor = $beanPO->vendedor_c;
+        $email_vendedor = $beanPO->email_vendedor_c;
         $origen = $beanPO->origen_c;
         $detalleOrigen = $beanPO->detalle_origen_c;
         $esAlianzaKonnect = ($origen === '12' && $detalleOrigen === '115') ? 1 : 0; //Valida si es Alianza Konnect
         $GLOBALS['log']->fatal('PO (SEND_EMAIL_PROSPECT) - ORIGEN - DETALLE ' . $origen . ' - ' . $detalleOrigen . ' --- ' . $esAlianzaKonnect);
+        $esAlianzaVendors = ($origen === '12' && $detalleOrigen === '116') ? 1 : 0; //Valida si es Alianza Vendors
+        $GLOBALS['log']->fatal('PO (SEND_EMAIL_PROSPECT) - ORIGEN - DETALLE ' . $origen . ' - ' . $detalleOrigen . ' --- ' . $esAlianzaVendors);
 
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
@@ -141,7 +147,12 @@ class SendEmailPO extends SugarApi
                     $name_regional,
                     $nombre_asesor_alianza,
                     $email_asesor_alianza,
-                    $esAlianzaKonnect
+                    $esAlianzaKonnect,
+                    $nombre_gerente_credito,
+                    $email_gerente_credito,
+                    $nombre_vendedor,
+                    $email_vendedor,
+                    $esAlianzaVendors
                 );
                 $response .= "<br>Se envió notificación a: " . $asesorName . " , " . $name_comercial . " , " . $name_regional . " , " . $nombre_asesor_alianza;
             }
@@ -172,6 +183,11 @@ class SendEmailPO extends SugarApi
         $nombre_asesor_alianza = $beanPO->asesor_alianza_c;
         $email_asesor_alianza = $beanPO->email_aa_c;
         $esAlianzaKonnect = 0; //BANDERA PARA EL PARAMETRO DE SEND-EMAIL-ASESOR-PO DE ALIANZA KONNECT
+        $nombre_gerente_credito = $beanPO->gerente_vendor_c;
+        $email_gerente_credito = $beanPO->email_gerente_vendor_c;
+        $nombre_vendedor = $beanPO->vendedor_c;
+        $email_vendedor = $beanPO->email_vendedor_c;
+        $esAlianzaVendors = 0; //BANDERA PARA EL PARAMETRO DE SEND-EMAIL-ASESOR-PO DE ALIANZA VENDORS
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
         $telefono_asesor = $beanAsesor->phone_mobile;
@@ -225,7 +241,12 @@ class SendEmailPO extends SugarApi
                 $name_regional,
                 $nombre_asesor_alianza,
                 $email_asesor_alianza,
-                $esAlianzaKonnect
+                $esAlianzaKonnect,
+                $nombre_gerente_credito,
+                $email_gerente_credito,
+                $nombre_vendedor,
+                $email_vendedor,
+                $esAlianzaVendors
             );
             $response .= "<br>Se envió notificación a: " . $asesorName . " , " . $name_comercial . " , " . $name_regional . " , " . $nombre_asesor_alianza;
         }
@@ -1496,7 +1517,7 @@ class SendEmailPO extends SugarApi
         }
     }
 
-    public function sendEmailAsesorPO($body_correo, $nombre_empresa, $email_asesor, $name_asesor, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza, $esAlianzaKonnect)
+    public function sendEmailAsesorPO($body_correo, $nombre_empresa, $email_asesor, $name_asesor, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza, $esAlianzaKonnect, $nombre_gerente_credito, $email_gerente_credito, $nombre_vendedor, $email_vendedor, $esAlianzaVendors)
     {
         try {
             global $app_list_strings;
@@ -1532,11 +1553,25 @@ class SendEmailPO extends SugarApi
                     }
                 }
             }
+            //VALIDA SI ES ALIANZA VENDORS
+            $GLOBALS['log']->fatal("ES_CC_ALIANZA_VENDORS: " . $esAlianzaVendors);
+            if ($esAlianzaVendors === 1) {
+                //EMAIL DEL F&I O GERENTE DE CREDITO
+                if ($email_gerente_credito != "") {
+                    $mailer->addRecipientsCc(new EmailIdentity($email_gerente_credito, $nombre_gerente_credito));
+                }
+                //EMAIL DEL VENDEDOR
+                if ($email_vendedor != "") {
+                    $mailer->addRecipientsCc(new EmailIdentity($email_vendedor, $nombre_vendedor));
+                }
+            }
 
             $GLOBALS['log']->fatal("ENVIANDO CORREO ASESOR: " . $email_asesor);
             $GLOBALS['log']->fatal("ENVIANDO CORREO COMERCIAL: " . $email_comercial);
             $GLOBALS['log']->fatal("ENVIANDO CORREO REGIONAL: " . $email_regional);
             $GLOBALS['log']->fatal("ENVIANDO CORREO ASESOR ALIANZA: " . $email_asesor_alianza);
+            $GLOBALS['log']->fatal("ENVIANDO CORREO GERENTE CREDITO VENDORS: " . $email_gerente_credito);
+            $GLOBALS['log']->fatal("ENVIANDO CORREO VENDEDOR VENDORS: " . $email_vendedor);
             $result = $mailer->send();
         } catch (Exception $e) {
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
