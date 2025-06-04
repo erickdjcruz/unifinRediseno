@@ -172,7 +172,8 @@
             }
         }
 
-        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' || this.model.get('detalle_origen_c') == '115')) {
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' || 
+            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '117')) {
             //VALIDA FORMATO DE EMAIL DEL ASESOR DE ALIANZA
             if (this.model.get('email_aa_c') != null && this.model.get('email_aa_c') !== "") {
 
@@ -319,7 +320,8 @@
             }
         }
 
-        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' || this.model.get('detalle_origen_c') == '115')) {
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' || 
+            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '117')) {
             //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO TELEFONICO DEL ASESOR DE ALIANZA
             if (this.model.get('telefono_aa_c') != "" && this.model.get('telefono_aa_c') != null) {
                 if (this.model.get('telefono_aa_c').trim() == "" || this.model.get('telefono_aa_c').trim().length != 10) {
@@ -403,7 +405,8 @@
             }, this);
         }, this);
 
-        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' || this.model.get('detalle_origen_c') == '115')) {
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' || 
+            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
             if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined) {
                 campos = campos + '<b>' + 'Franquicia' + '</b><br>';
@@ -509,7 +512,8 @@
             default:
                 break;
         }
-        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' || this.model.get('detalle_origen_c') == '115')) {
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' || 
+            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
             if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == null) {
                 campos_req.push('franquicia_c');
@@ -635,9 +639,10 @@
             $('[data-name="detalle_origen_c"]').css('pointer-events', 'none');
             self.noEditFields.push('detalle_origen_c');
         }
+
         //READONLY DE ORIGEN BLOQUEADO CON ALIANZA SOC/CREDITARIA, KONNECT, VENDORS || MARKETING - ORGANICO || LEASING - LEASING
         if (!permisosGestionTeamLeader.includes("^utility_trailers^") && (
-            (this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (['12', '13', '115', '116'].includes(this.model.get('detalle_origen_c')))) ||
+            (this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (['12', '13', '115', '116', '117'].includes(this.model.get('detalle_origen_c')))) ||
             (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
             (this.model.get('origen_c') === '20' && this.model.get('detalle_origen_c') === '113')
         )
@@ -779,14 +784,17 @@
         //Valida si es Origen Alianza
         if (this.model.get('origen_c') === '12') {
             console.log("ORIGEN ALIANZA");
-            if (permisosGestionTeamLeader.includes("^soc_creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || permisosGestionTeamLeader.includes("^konnect^") || permisosGestionTeamLeader.includes("^vendors^")) {
+            if (permisosGestionTeamLeader.includes("^soc_creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || permisosGestionTeamLeader.includes("^konnect^") || permisosGestionTeamLeader.includes("^vendors^")|| permisosGestionTeamLeader.includes("^reditus^")) {
                 //Define opciones de origen
                 opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]); //12:Alianzas - 20:Leasing
                 this.model.fields['origen_c'].options = opciones_origen;
                 actualizarCampoOrigen.call(this, opciones_origen, '12');
                 //Define opciones de detalle origen                
-                if (permisosGestionTeamLeader.includes("^soc_creditaria^") && permisosGestionTeamLeader.includes("^utility_trailers^") && permisosGestionTeamLeader.includes("^konnect^") && permisosGestionTeamLeader.includes("^vendors^") && this.model.get('origen_c') == '12') {
-                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115", "116"]); //12:SOC - 13:Creditaria - 114:Utility Trailers - 115:Konnect - 116:Vendors
+
+                if (permisosGestionTeamLeader.includes("^soc_creditaria^") && permisosGestionTeamLeader.includes("^utility_trailers^") && permisosGestionTeamLeader.includes("^konnect^") && permisosGestionTeamLeader.includes("^vendors^") && permisosGestionTeamLeader.includes("^reditus^")
+                    && this.model.get('origen_c') == '12') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115", "116", "117"]); //12:SOC - 13:Creditaria - 114:Utility Trailers - 115:Konnect - 116:Vendors - 117:Reditus
+
                     this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                     //Forzamos la actualización de las opciones en la vista
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
@@ -809,7 +817,14 @@
                     //Forzamos la actualización de las opciones en la vista
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '114');
 
+                } else if (permisosGestionTeamLeader.includes("^utility_trailers^") && permisosGestionTeamLeader.includes("^reditus^") && this.model.get('origen_c') == '12') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["114", "117"], valorDetalleActual); //114:Utility Trailers - 117:Reditus
+                    this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                    //Forzamos la actualización de las opciones en la vista
+                    actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '114');
+
                 } else if (permisosGestionTeamLeader.includes("^soc_creditaria^") && permisosGestionTeamLeader.includes("^konnect^") && this.model.get('origen_c') == '12') {
+
                     opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "115"], valorDetalleActual); //12:SOC - 13:Creditaria - 115:Konnect
                     this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                     //Forzamos la actualización de las opciones en la vista
@@ -821,13 +836,32 @@
                     //Forzamos la actualización de las opciones en la vista
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '12');
 
+                } else if (App.user.attributes.define_origen_po_c && permisosGestionTeamLeader.includes("^reditus^") && this.model.get('origen_c') == '12') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "117"], valorDetalleActual); //12:SOC - 13:Creditaria - 117:Reditus
+                    this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                    //Forzamos la actualización de las opciones en la vista
+                    actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '12');
+
                 } else if (permisosGestionTeamLeader.includes("^konnect^") && permisosGestionTeamLeader.includes("^vendors^") && this.model.get('origen_c') == '12') {
                     opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["115", "116"], valorDetalleActual); //115:Konnect - 116:Vendors
                     this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                     //Forzamos la actualización de las opciones en la vista
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '115');
 
+                } else if (permisosGestionTeamLeader.includes("^konnect^") && permisosGestionTeamLeader.includes("^reditus^") && this.model.get('origen_c') == '12') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["115", "117"], valorDetalleActual); //115:Konnect - 117:Reditus
+                    this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                    //Forzamos la actualización de las opciones en la vista
+                    actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '115');
+
+                } else if (permisosGestionTeamLeader.includes("^vendors^") && permisosGestionTeamLeader.includes("^reditus^") && this.model.get('origen_c') == '12') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["116", "117"], valorDetalleActual); //116:Vendors - 117:Reditus
+                    this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                    //Forzamos la actualización de las opciones en la vista
+                    actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '116');
+
                 } else if (permisosGestionTeamLeader.includes("^soc_creditaria^") && this.model.get('origen_c') == '12') {
+
                     opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13"], valorDetalleActual); //12:SOC - 13:Creditaria
                     this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                     //Forzamos la actualización de las opciones en la vista
@@ -850,13 +884,19 @@
                     this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                     //Forzamos la actualización de las opciones en la vista
                     actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '116');
+
+                } else if (permisosGestionTeamLeader.includes("^reditus^") && this.model.get('origen_c') == '12') {
+                    opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["117"], valorDetalleActual); //117:Reditus
+                    this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+                    //Forzamos la actualización de las opciones en la vista
+                    actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || '117');
                 }
                 //Disparar eventos para forzar la actualización
                 this.model.trigger("change:detalle_origen_c");
             } else {
                 console.log("SIN PERMISOS - ALIANZA");
-                //12:SOC - 13:Creditaria - 114:Utility Trailers - 115:Konnect - 116:Vendors
-                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115", "116"]);
+                //12:SOC - 13:Creditaria - 114:Utility Trailers - 115:Konnect - 116:Vendors - 117:Reditus
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115", "116", "117"]);
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                 //Forzamos la actualización de las opciones en la vista
                 actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
@@ -1297,7 +1337,8 @@
         if (this.model.get('email')[0] == undefined || this.model.get('email')[0].email_address == '') {
             campos = campos + '<b>' + 'Correo electrónico' + '</b><br>';
         }
-        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' || this.model.get('detalle_origen_c') == '115')) {
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' || 
+            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '117')) {
             //VALIDA CAMPOS DE ALIANZA
             if (this.model.get('franquicia_c') === null || this.model.get('franquicia_c') === "") {
                 campos = campos + '<b>' + 'Franquicia' + '</b><br>';
@@ -1378,7 +1419,8 @@
         }
 
         var permisosGestionTeamLeader = app.user.attributes.gestion_team_leaders_c || ""; //OBTIENE EL PERMISO SOC/CREDITARIA, KONNECT, VENDORS
-        if (!permisosGestionTeamLeader.includes("^soc_creditaria^") && !permisosGestionTeamLeader.includes("^konnect^") && !permisosGestionTeamLeader.includes("^vendors^")) {
+        if (!permisosGestionTeamLeader.includes("^soc_creditaria^") && !permisosGestionTeamLeader.includes("^konnect^") && !permisosGestionTeamLeader.includes("^vendors^") && !permisosGestionTeamLeader.includes("^reditus^")) {
+
             app.alert.show('not_access', {
                 level: 'error',
                 autoClose: false,
