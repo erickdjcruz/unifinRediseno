@@ -790,8 +790,8 @@
                 this.model.fields['origen_c'].options = opciones_origen;
                 actualizarCampoOrigen.call(this, opciones_origen, '12');
                 //Define opciones de detalle origen
-                if (permisosGestionTeamLeader.includes("^soc_creditaria^") && permisosGestionTeamLeader.includes("^utility_trailers^") && permisosGestionTeamLeader.includes("^konnect^") && permisosGestionTeamLeader.includes("^vendors^") && permisosGestionTeamLeader.includes("^reditus^")
-                    && this.model.get('origen_c') == '12') {
+                if (permisosGestionTeamLeader.includes("^soc_creditaria^") && permisosGestionTeamLeader.includes("^utility_trailers^") && permisosGestionTeamLeader.includes("^konnect^") && 
+                    permisosGestionTeamLeader.includes("^vendors^") && permisosGestionTeamLeader.includes("^reditus^") && this.model.get('origen_c') == '12') {
                     opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115", "116", "117"]); //12:SOC - 13:Creditaria - 114:Utility Trailers - 115:Konnect - 116:Vendors - 117:Reditus
 
                     this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
