@@ -56,7 +56,7 @@ class SendEmailPO extends SugarApi
 
     public function sendEmailProspect($api, $args)
     {
-        global $sugar_config;
+        global $sugar_config , $db;
         $url_unileasing = $sugar_config['url_unileasing_email'];
         $id_prospecto = $args['id_po'];
         $response = "";
@@ -78,6 +78,8 @@ class SendEmailPO extends SugarApi
         $GLOBALS['log']->fatal('PO (SEND_EMAIL_PROSPECT) - ORIGEN - DETALLE ' . $origen . ' - ' . $detalleOrigen . ' --- ' . $esAlianzaKonnect);
         $esAlianzaVendors = ($origen === '12' && $detalleOrigen === '116') ? 1 : 0; //Valida si es Alianza Vendors
         $GLOBALS['log']->fatal('PO (SEND_EMAIL_PROSPECT) - ORIGEN - DETALLE ' . $origen . ' - ' . $detalleOrigen . ' --- ' . $esAlianzaVendors);
+        $esAlianzaReditus = ($origen === '12' && $detalleOrigen === '117') ? 1 : 0; //Valida si es Alianza Reditus
+        $GLOBALS['log']->fatal('PO (SEND_EMAIL_PROSPECT) - ORIGEN - DETALLE ' . $origen . ' - ' . $detalleOrigen . ' --- ' . $esAlianzaReditus);
 
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
@@ -105,7 +107,7 @@ class SendEmailPO extends SugarApi
             $email_comercial = $info_comercial['email'];
         }
 
-        if ($envio_previo) {
+        if ($envio_previo > 0 ) {
             //$response = "SI HAY ENVIO PREVIO: Enviar correo al director de asesor comercial y cc: director regional. Contenido: Email VoBo Director PO";
             $body_mail = $this->buildBodyEmailVoBo($name_comercial, $asesorName, $beanPO->name, $linkPO);
             //Enviando correo
@@ -118,6 +120,8 @@ class SendEmailPO extends SugarApi
             }
             $beanPO->id_director_vobo_c = $id_director_comercial;
             $beanPO->save();
+            $updateP = "UPDATE prospects_cstm set envio_correo_po_c = 2 where  id_c ='{$beanPO->id}';";
+            $db->query($updateP);
         } else {
             //No hay envío previo
             $link_unileasing = $url_unileasing . "/api/crm/contact/create?crm_id=" . $id_prospecto . "&assessor_id=" . $id_asesor;
@@ -152,7 +156,8 @@ class SendEmailPO extends SugarApi
                     $email_gerente_credito,
                     $nombre_vendedor,
                     $email_vendedor,
-                    $esAlianzaVendors
+                    $esAlianzaVendors,
+                    $esAlianzaReditus
                 );
                 $response .= "<br>Se envió notificación a: " . $asesorName . " , " . $name_comercial . " , " . $name_regional . " , " . $nombre_asesor_alianza;
             }
@@ -192,6 +197,7 @@ class SendEmailPO extends SugarApi
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
         $telefono_asesor = $beanAsesor->phone_mobile;
         $email_asesor = $beanAsesor->email1;
+        $esAlianzaReditus = 0; //BANDERA PARA EL PARAMETRO DE SEND-EMAIL-ASESOR-PO DE ALIANZA REDITUS
 
         $id_director_regional = $this->getIdDirectorRegional($beanAsesor);
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
@@ -246,7 +252,8 @@ class SendEmailPO extends SugarApi
                 $email_gerente_credito,
                 $nombre_vendedor,
                 $email_vendedor,
-                $esAlianzaVendors
+                $esAlianzaVendors,
+                $esAlianzaReditus
             );
             $response .= "<br>Se envió notificación a: " . $asesorName . " , " . $name_comercial . " , " . $name_regional . " , " . $nombre_asesor_alianza;
         }
@@ -1553,6 +1560,7 @@ class SendEmailPO extends SugarApi
                     }
                 }
             }
+
             //VALIDA SI ES ALIANZA VENDORS
             $GLOBALS['log']->fatal("ES_CC_ALIANZA_VENDORS: " . $esAlianzaVendors);
             if ($esAlianzaVendors === 1) {
@@ -1563,6 +1571,18 @@ class SendEmailPO extends SugarApi
                 //EMAIL DEL VENDEDOR
                 if ($email_vendedor != "") {
                     $mailer->addRecipientsCc(new EmailIdentity($email_vendedor, $nombre_vendedor));
+                }
+            }
+                  
+            //VALIDA SI ES ALIANZA REDITUS
+            $GLOBALS['log']->fatal("ES_CC_ASESORES_ALIANZA_REDITUS: " . $esAlianzaReditus);
+            if ($esAlianzaReditus === 1) {
+                $listaEmailsCCReditus = $app_list_strings['copia_asignacion_PO_reditus_notificacion'];
+                if (!empty($listaEmailsCCReditus)) {
+                    foreach ($listaEmailsCCReditus as $keyNombre => $email) {
+                        $GLOBALS['log']->fatal("CC_ASESOR_REDITUS: " . $keyNombre . " - " . $email);
+                        $mailer->addRecipientsCc(new EmailIdentity($email, $keyNombre));
+                    }
                 }
             }
 
