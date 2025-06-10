@@ -1,5 +1,6 @@
 <?php
- // created: 2025-05-31 17:46:11
+ // created: 2025-06-03 23:10:39
+
 $dictionary['Prospect']['fields']['asesor_alianza_c']['labelValue']='Asesor de la Alianza';
 $dictionary['Prospect']['fields']['asesor_alianza_c']['full_text_search']=array (
   'enabled' => '0',
@@ -7,7 +8,7 @@ $dictionary['Prospect']['fields']['asesor_alianza_c']['full_text_search']=array 
   'searchable' => false,
 );
 $dictionary['Prospect']['fields']['asesor_alianza_c']['enforced']='';
-$dictionary['Prospect']['fields']['asesor_alianza_c']['dependency']='and(equal($origen_c,"12"),or(equal($detalle_origen_c,"12"),equal($detalle_origen_c,"13"),equal($detalle_origen_c,"114"),equal($detalle_origen_c,"115"),equal($detalle_origen_c,"116")))';
+$dictionary['Prospect']['fields']['asesor_alianza_c']['dependency']='and(equal($origen_c,"12"),or(equal($detalle_origen_c,"12"),equal($detalle_origen_c,"13"),equal($detalle_origen_c,"114"),equal($detalle_origen_c,"115"),equal($detalle_origen_c,"117")))';
 $dictionary['Prospect']['fields']['asesor_alianza_c']['required_formula']='';
 $dictionary['Prospect']['fields']['asesor_alianza_c']['readonly_formula']='';
 
