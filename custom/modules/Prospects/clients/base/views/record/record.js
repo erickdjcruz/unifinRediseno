@@ -197,42 +197,42 @@
             }
         }
         //VALIDA CORREOS DE ALIANZA - VENDORS
-        if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
-            //VALIDA FORMATO DE Email del F&I o Gerente de crédito
-            if (this.model.get('email_gerente_vendor_c') != undefined && this.model.get('email_gerente_vendor_c') !== "") {
+        // if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
+        //     //VALIDA FORMATO DE Email del F&I o Gerente de crédito
+        //     if (this.model.get('email_gerente_vendor_c') != undefined && this.model.get('email_gerente_vendor_c') !== "") {
 
-                var inputEGV = this.model.get('email_gerente_vendor_c'); // Obtenemos el email
-                var expresionEGV = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
+        //         var inputEGV = this.model.get('email_gerente_vendor_c'); // Obtenemos el email
+        //         var expresionEGV = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
 
-                if (!expresionEGV.test(inputEGV)) {
-                    // Si el formato del email no es válido, mostramos el error
-                    app.alert.show('Error al validar emailgv', {
-                        level: 'error',
-                        autoClose: false,
-                        messages: '<b>Formato de Email del F&I o Gerente de crédito.</b>'
-                    });
-                    errors['email_gerente_vendor_c'] = errors['email_gerente_vendor_c'] || {};
-                    errors['email_gerente_vendor_c'].required = true;
-                }
-            }
-            //VALIDA FORMATO DE Email del vendedor
-            if (this.model.get('email_vendedor_c') != undefined && this.model.get('email_vendedor_c') !== "") {
+        //         if (!expresionEGV.test(inputEGV)) {
+        //             // Si el formato del email no es válido, mostramos el error
+        //             app.alert.show('Error al validar emailgv', {
+        //                 level: 'error',
+        //                 autoClose: false,
+        //                 messages: '<b>Formato de Email del F&I o Gerente de crédito.</b>'
+        //             });
+        //             errors['email_gerente_vendor_c'] = errors['email_gerente_vendor_c'] || {};
+        //             errors['email_gerente_vendor_c'].required = true;
+        //         }
+        //     }
+        //     //VALIDA FORMATO DE Email del vendedor
+        //     if (this.model.get('email_vendedor_c') != undefined && this.model.get('email_vendedor_c') !== "") {
 
-                var inputEV = this.model.get('email_vendedor_c'); // Obtenemos el email
-                var expresionEV = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
+        //         var inputEV = this.model.get('email_vendedor_c'); // Obtenemos el email
+        //         var expresionEV = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
 
-                if (!expresionEV.test(inputEV)) {
-                    // Si el formato del email no es válido, mostramos el error
-                    app.alert.show('Error al validar email_v', {
-                        level: 'error',
-                        autoClose: false,
-                        messages: '<b>Formato de Email del vendedor.</b>'
-                    });
-                    errors['email_vendedor_c'] = errors['email_vendedor_c'] || {};
-                    errors['email_vendedor_c'].required = true;
-                }
-            }
-        }
+        //         if (!expresionEV.test(inputEV)) {
+        //             // Si el formato del email no es válido, mostramos el error
+        //             app.alert.show('Error al validar email_v', {
+        //                 level: 'error',
+        //                 autoClose: false,
+        //                 messages: '<b>Formato de Email del vendedor.</b>'
+        //             });
+        //             errors['email_vendedor_c'] = errors['email_vendedor_c'] || {};
+        //             errors['email_vendedor_c'].required = true;
+        //         }
+        //     }
+        // }
 
         callback(null, fields, errors);
     },
@@ -379,32 +379,32 @@
             }
         }
         //VALIDA TELEFONOS ALIANZA - VENDORS
-        if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
-            //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO DE Teléfono del F&I o Gerente de crédito
-            if (this.model.get('telefono_gerente_vendor_c') != "" && this.model.get('telefono_gerente_vendor_c') != undefined) {
-                if (this.model.get('telefono_gerente_vendor_c').trim() == "" || this.model.get('telefono_gerente_vendor_c').trim().length != 10) {
-                    app.alert.show('telefono_gv_invalido', {
-                        level: 'error',
-                        autoClose: false,
-                        messages: 'Se requiere un teléfono válido de <b>10 dígitos</b> para el <b>Teléfono del F&I o Gerente de crédito</b>'
-                    });
-                    errors['telefono_gerente_vendor_c'] = errors['telefono_gerente_vendor_c'] || {};
-                    errors['telefono_gerente_vendor_c'].required = true;
-                }
-            }
-            //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO DE Teléfono del vendedor
-            if (this.model.get('telefono_vendedor_c') != "" && this.model.get('telefono_vendedor_c') != undefined) {
-                if (this.model.get('telefono_vendedor_c').trim() == "" || this.model.get('telefono_vendedor_c').trim().length != 10) {
-                    app.alert.show('telefono_vendedor_invalido', {
-                        level: 'error',
-                        autoClose: false,
-                        messages: 'Se requiere un teléfono válido de <b>10 dígitos</b> para el <b>Teléfono del vendedor</b>'
-                    });
-                    errors['telefono_vendedor_c'] = errors['telefono_vendedor_c'] || {};
-                    errors['telefono_vendedor_c'].required = true;
-                }
-            }
-        }
+        // if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
+        //     //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO DE Teléfono del F&I o Gerente de crédito
+        //     if (this.model.get('telefono_gerente_vendor_c') != "" && this.model.get('telefono_gerente_vendor_c') != undefined) {
+        //         if (this.model.get('telefono_gerente_vendor_c').trim() == "" || this.model.get('telefono_gerente_vendor_c').trim().length != 10) {
+        //             app.alert.show('telefono_gv_invalido', {
+        //                 level: 'error',
+        //                 autoClose: false,
+        //                 messages: 'Se requiere un teléfono válido de <b>10 dígitos</b> para el <b>Teléfono del F&I o Gerente de crédito</b>'
+        //             });
+        //             errors['telefono_gerente_vendor_c'] = errors['telefono_gerente_vendor_c'] || {};
+        //             errors['telefono_gerente_vendor_c'].required = true;
+        //         }
+        //     }
+        //     //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO DE Teléfono del vendedor
+        //     if (this.model.get('telefono_vendedor_c') != "" && this.model.get('telefono_vendedor_c') != undefined) {
+        //         if (this.model.get('telefono_vendedor_c').trim() == "" || this.model.get('telefono_vendedor_c').trim().length != 10) {
+        //             app.alert.show('telefono_vendedor_invalido', {
+        //                 level: 'error',
+        //                 autoClose: false,
+        //                 messages: 'Se requiere un teléfono válido de <b>10 dígitos</b> para el <b>Teléfono del vendedor</b>'
+        //             });
+        //             errors['telefono_vendedor_c'] = errors['telefono_vendedor_c'] || {};
+        //             errors['telefono_vendedor_c'].required = true;
+        //         }
+        //     }
+        // }
 
         callback(null, fields, errors);
     },
@@ -773,7 +773,7 @@
 
         //READONLY DE ORIGEN BLOQUEADO CON ALIANZA SOC/CREDITARIA, KONNECT, VENDORS, REDITUS || MARKETING - ORGANICO || LEASING - LEASING
         if (!permisosGestionTeamLeader.includes("^utility_trailers^") && (
-            (this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (['12', '13', '115', '116', '117'].includes(this.model.get('detalle_origen_c')))) ||
+            (this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (['12', '13', '115', '117'].includes(this.model.get('detalle_origen_c')))) ||
             (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
             (this.model.get('origen_c') === '20' && this.model.get('detalle_origen_c') === '113')
         )
@@ -871,7 +871,7 @@
             "^soc_creditaria^": ["12", "13"],
             "^utility_trailers^": ["114"],
             "^konnect^": ["115"],
-            "^vendors^": ["116"],
+            // "^vendors^": ["116"],
             "^reditus^": ["117"]
         };
 
@@ -935,8 +935,7 @@
         //Valida si es Origen Alianza
         if (this.model.get('origen_c') === '12') {
             console.log("ORIGEN ALIANZA");
-            if (permisosGestionTeamLeader.includes("^soc_creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || permisosGestionTeamLeader.includes("^konnect^") || 
-                permisosGestionTeamLeader.includes("^vendors^") || permisosGestionTeamLeader.includes("^reditus^")) {
+            if (permisosGestionTeamLeader.includes("^soc_creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || permisosGestionTeamLeader.includes("^konnect^") || permisosGestionTeamLeader.includes("^reditus^")) {
                 //ORIGEN
                 opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]); //12:Alianzas - 20:Leasing
                 this.model.fields['origen_c'].options = opciones_origen;
@@ -952,7 +951,7 @@
             } else {
                 console.log("SIN PERMISOS - ALIANZA");
                 //12:SOC - 13:Creditaria - 114:Utility Trailers - 115:Konnect - 116:Vendors - 117:Reditus
-                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115", "116", "117"]);
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115", "117"]);
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                 //Forzamos la actualización de las opciones en la vista
                 actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
@@ -1527,8 +1526,7 @@
         }
 
         var permisosGestionTeamLeader = app.user.attributes.gestion_team_leaders_c || ""; //OBTIENE EL PERMISO SOC/CREDITARIA, KONNECT, VENDORS
-
-        if (!permisosGestionTeamLeader.includes("^soc_creditaria^") && !permisosGestionTeamLeader.includes("^konnect^") && !permisosGestionTeamLeader.includes("^vendors^") && !permisosGestionTeamLeader.includes("^reditus^")) {
+        if (!permisosGestionTeamLeader.includes("^soc_creditaria^") && !permisosGestionTeamLeader.includes("^konnect^") && !permisosGestionTeamLeader.includes("^reditus^")) {
             app.alert.show('not_access', {
                 level: 'error',
                 autoClose: false,

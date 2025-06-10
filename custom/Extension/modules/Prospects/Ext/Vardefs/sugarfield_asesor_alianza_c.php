@@ -1,6 +1,5 @@
 <?php
  // created: 2025-06-03 23:10:39
-
 $dictionary['Prospect']['fields']['asesor_alianza_c']['labelValue']='Asesor de la Alianza';
 $dictionary['Prospect']['fields']['asesor_alianza_c']['full_text_search']=array (
   'enabled' => '0',

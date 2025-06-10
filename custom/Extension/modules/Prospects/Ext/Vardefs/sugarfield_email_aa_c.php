@@ -1,6 +1,5 @@
 <?php
  // created: 2025-06-03 23:13:30
-
 $dictionary['Prospect']['fields']['email_aa_c']['labelValue']='Email del Asesor de Alianza';
 $dictionary['Prospect']['fields']['email_aa_c']['full_text_search']=array (
   'enabled' => '0',
