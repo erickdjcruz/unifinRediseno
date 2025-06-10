@@ -1,5 +1,6 @@
 <?php
  // created: 2025-06-03 23:08:42
+
 $dictionary['Prospect']['fields']['franquicia_c']['labelValue']='Franquicia';
 $dictionary['Prospect']['fields']['franquicia_c']['full_text_search']=array (
   'enabled' => '0',
