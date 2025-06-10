@@ -1,5 +1,5 @@
 <?php
- // created: 2025-05-21 11:11:58
+ // created: 2025-06-03 22:01:32
 $dictionary['Prospect']['fields']['detalle_origen_c']['labelValue']='Detalle Origen';
 $dictionary['Prospect']['fields']['detalle_origen_c']['enforced']='';
 $dictionary['Prospect']['fields']['detalle_origen_c']['dependency']='';
