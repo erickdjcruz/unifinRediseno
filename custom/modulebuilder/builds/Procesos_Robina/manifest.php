@@ -29,9 +29,9 @@ $manifest = array (
   'icon' => '',
   'is_uninstallable' => true,
   'name' => 'Procesos_Robina',
-  'published_date' => '2025-06-09 21:21:43',
+  'published_date' => '2025-06-10 04:35:16',
   'type' => 'module',
-  'version' => 1749504104,
+  'version' => 1749530116,
   'remove_tables' => 'prompt',
 );
 
