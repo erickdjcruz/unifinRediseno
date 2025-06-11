@@ -114,8 +114,55 @@ class GetInfoRFCbyQR extends SugarApi
 
         }
 
-        return $response;
+        $rfc =  $response['rfc'] ?? null;
 
+        if($rfc != null){
+           // Fechas dinámicas
+            $from = date('Y-m-01\T00:00:00', strtotime('-1 year'));
+            $to = date('Y-m-01\T00:00:00');
+        
+            $url_ticket = $sugar_config['regimenes_sat_url'].'/orders/place-order';
+            
+            $body = json_encode([
+                "options" => [
+                    "period" => [
+                        "to" => $to,
+                        "from" => $from
+                    ]
+                ],
+                "taxpayer" => $rfc,
+                "extractor" => "tax_status"
+            ]);
+
+            $GLOBALS['log']->fatal($url_ticket);
+            $GLOBALS['log']->fatal($body);
+            $response = $this->callCreateTicket($url_ticket, $token, $body);
+            $GLOBALS['log']->fatal( 'creo ticket' );
+            //$GLOBALS['log']->fatal( print_r($response,true) );
+            //$response = json_decode($response, true);
+            
+            if (isset($response['detail'][0]['msg']) && $response['detail'][0]['msg'] === 'value is not a valid dict') {
+                $response['codeerror'] = 400;
+                $response['messageerror'] = 'No se encontraron datos del RFC';
+                $GLOBALS['log']->fatal('Error crear ticket');
+                return $response; // Termina aquí y regresa el error
+            }
+            $ticket = '';
+
+            // Validar y extraer datos
+            if (!empty($response['id']) && !empty($response['createdAt'])) {
+                $ticket = $response['id'];
+                $GLOBALS['log']->fatal( 'ticket: '. $ticket);
+            }else{
+                $response['error'] = 'Ticket no generado';
+                $response['error_code'] = '401';
+            }
+        }else{
+            $response['error'] = 'RFC no encontrado';
+            $response['error_code'] = '401';
+        }
+
+        return $response;
     }
 
     /*
@@ -234,6 +281,30 @@ class GetInfoRFCbyQR extends SugarApi
 
     }
 
+    public function callCreateTicket( $url, $token, $body ){
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $body,
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer '.$token,
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        return json_decode($response, true);
+    }
 
 }
 

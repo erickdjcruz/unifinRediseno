@@ -240,6 +240,8 @@
 			level: 'process',
 			title: 'Cargando...'
 		});
+		
+		this.$("[data-name='validar_CIEC']").attr('style', 'pointer-events:none;');
 
 		if (contexto_cuenta.model.get('rfc_c') != '' && contexto_cuenta.model.get('rfc_c') != undefined) {
 			var rfc = contexto_cuenta.model.get('rfc_c');
@@ -255,6 +257,7 @@
 						var indice_indicador = 0;
 						var Completo = '';
 						var RFC = data["rfc"].toUpperCase();
+						var ticket = data["ticket"];
 						//var PathQR=data[0]["path_img_qr"];
 						var Correo = data["email"];
 						var CP = data["address"]["postalCode"];
@@ -378,7 +381,12 @@
 											},
 											onConfirm: function () {
 												//Comienza integraciones con Alfresco, Quantico y Robina
-												contextol.integraCSF(contexto_cuenta.model.get('id'), RFC, FechaEmision);
+												//contextol.integraCSF(contexto_cuenta.model.get('id'), RFC, FechaEmision);
+												
+												//NUEVO SERVICIO PROCESO ROBINA API
+												if(RFC != null && ticket != null){
+													contextol.registroProcesoRobinaAPI(RFC, FechaEmision, ticket );
+												}
 												// Actualiza Datos Personales
 												contexto_cuenta.model.set('tipodepersona_c', Regimen);
 												contexto_cuenta.model.set('rfc_c', RFC);
@@ -1072,6 +1080,7 @@
 								var indice_indicador = 0;
 								var Completo = '';
 								var RFC = data["rfc"].toUpperCase();
+								var ticket = data["ticket"];
 								//var PathQR=data[0]["path_img_qr"];
 								var Correo = data["email"];
 								var CP = data["address"]["postalCode"];
@@ -1195,7 +1204,14 @@
 													},
 													onConfirm: function () {
 														//Comienza integraciones con Alfresco, Quantico y Robina
-														contextol.FileintegraCSF(contexto_cuenta.model.get('id'), RFC, window.result, FechaEmision);
+														//contextol.FileintegraCSF(contexto_cuenta.model.get('id'), RFC, window.result, FechaEmision);
+
+														//NUEVO SERVICIO PROCESO ROBINA API
+														                                //(RFC, fechaEmision , ticket)
+														if(RFC != null && ticket != null){
+															contextol.registroProcesoRobinaAPI(RFC, FechaEmision, ticket);
+														}
+
 														// Actualiza Datos Personales
 														contexto_cuenta.model.set('tipodepersona_c', Regimen);
 														contexto_cuenta.model.set('rfc_c', RFC);
@@ -2232,5 +2248,40 @@
 				infoUser['name'] = '';
 			}
 		}
-	}
+	},
+
+	registroProcesoRobinaAPI: function(RFC, fechaEmision , ticket ) {
+
+		app.alert.show('registro_pr', {
+			level: 'process',
+			title: 'Registrando Referencia Robina...',
+		});
+
+		var params = {
+			"rfc": RFC,
+			"ticket": ticket,
+			"estatus_procesado": "Sin procesar",
+			"fecha_emision": fechaEmision
+		};
+
+		var url = app.api.buildURL('procesoRobinaApi', null, null,);
+		app.api.call('create', url, params, {
+			success: function (response) {
+				app.alert.dismiss('registro_pr');
+				app.alert.show('info_pr', {
+					level: 'info',
+					autoClose: true,
+					messages: response.message
+				});
+			},
+			error: function (error) {
+				app.alert.dismiss('registro_pr');
+				app.alert.show('error_pr', {
+					level: 'error',
+					autoClose: false,
+					messages: 'Ocurrió un error al registrar el proceso robina.'
+				});
+			}
+		});
+	},
 })

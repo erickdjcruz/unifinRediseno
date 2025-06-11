@@ -210,6 +210,9 @@ class GetInfoRFCbyCIEC extends SugarApi
                     $url_csf = $sugar_config['regimenes_sat_url'] . '/tax-status/retrieve/' . $rfc;
                     $GLOBALS['log']->fatal('url_csf - retrieve: '.$url_csf );
                     $response = $this->callValidateCSF($url_csf, $token);
+
+                    $response['ticket'] = $ticket;
+
                     //$GLOBALS['log']->fatal( print_r($response,true) );                    
                     if (isset($response['detail'][0]['msg']) && $response['detail'][0]['msg'] === 'value is not a valid dict') {
                         $resultado['success'] = false;
