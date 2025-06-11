@@ -2079,6 +2079,13 @@
                 }
             }
         }
+
+        // Siempre limpia si cambia el valor de detalle_origen_c
+        if (this.model.previous('detalle_origen_c') !== this.model.get('detalle_origen_c')) {
+            //FUNCION DE LIMPIEZA DE CAMPOS
+            this._limpiaCamposDOAlianza();
+        }
+
     },
 
     change_estatus: function () {
@@ -2164,6 +2171,22 @@
     _validateTaskPotencialCierre: function (fields, errors, callback) {
         this._validaPotencialCierre("validatePotencialCierre", errors);
         callback(null, fields, errors);
+    },
+
+    _limpiaCamposDOAlianza: function() {
+        console.log("LIMPIA CAMPOS DEPENDIENTES DEL GRUPO ALIANZA");
+        var campos = ["franquicia_c", "asesor_alianza_c", "email_aa_c", "telefono_aa_c"];
+        var valores = {};
+        
+        _.each(campos, function(campo) {
+            if (this.model.get(campo)) {
+                valores[campo] = "";
+            }
+        }, this);
+
+        if (!_.isEmpty(valores)) {
+            this.model.set(valores);
+        }
     },
 
 })
