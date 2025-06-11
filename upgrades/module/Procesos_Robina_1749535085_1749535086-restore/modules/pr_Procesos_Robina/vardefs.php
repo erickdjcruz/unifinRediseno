@@ -1,0 +1,220 @@
+<?php
+
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+
+$dictionary['pr_Procesos_Robina'] = array(
+    'table' => 'pr_procesos_robina',
+    'audited' => true,
+    'activity_enabled' => false,
+    'duplicate_merge' => true,
+    'fields' => array (
+  'rfc' => 
+  array (
+    'required' => false,
+    'readonly' => false,
+    'name' => 'rfc',
+    'vname' => 'LBL_RFC',
+    'type' => 'varchar',
+    'massupdate' => true,
+    'hidemassupdate' => false,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'enabled',
+    'duplicate_merge_dom_value' => '1',
+    'audited' => true,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'pii' => false,
+    'default' => '',
+    'full_text_search' => 
+    array (
+      'enabled' => '0',
+      'boost' => '1',
+      'searchable' => false,
+    ),
+    'calculated' => false,
+    'len' => '100',
+    'size' => '20',
+  ),
+  'ticket' => 
+  array (
+    'required' => false,
+    'readonly' => false,
+    'name' => 'ticket',
+    'vname' => 'LBL_TICKET',
+    'type' => 'varchar',
+    'massupdate' => true,
+    'hidemassupdate' => false,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'enabled',
+    'duplicate_merge_dom_value' => '1',
+    'audited' => true,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'pii' => false,
+    'default' => '',
+    'full_text_search' => 
+    array (
+      'enabled' => '0',
+      'boost' => '1',
+      'searchable' => false,
+    ),
+    'calculated' => false,
+    'len' => '100',
+    'size' => '20',
+  ),
+  'estatus_procesado' => 
+  array (
+    'required' => false,
+    'readonly' => false,
+    'name' => 'estatus_procesado',
+    'vname' => 'LBL_ESTATUS_PROCESADO',
+    'type' => 'varchar',
+    'massupdate' => true,
+    'hidemassupdate' => false,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'enabled',
+    'duplicate_merge_dom_value' => '1',
+    'audited' => true,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'pii' => false,
+    'default' => '',
+    'full_text_search' => 
+    array (
+      'enabled' => '0',
+      'boost' => '1',
+      'searchable' => false,
+    ),
+    'calculated' => false,
+    'len' => '100',
+    'size' => '20',
+  ),
+  'estatus_robina' => 
+  array (
+    'required' => false,
+    'readonly' => false,
+    'name' => 'estatus_robina',
+    'vname' => 'LBL_ESTATUS_ROBINA',
+    'type' => 'varchar',
+    'massupdate' => true,
+    'hidemassupdate' => false,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'enabled',
+    'duplicate_merge_dom_value' => '1',
+    'audited' => true,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'pii' => false,
+    'default' => '',
+    'full_text_search' => 
+    array (
+      'enabled' => '0',
+      'boost' => '1',
+      'searchable' => false,
+    ),
+    'calculated' => false,
+    'len' => '100',
+    'size' => '20',
+  ),
+  'fecha_emision' => 
+  array (
+    'required' => false,
+    'readonly' => false,
+    'name' => 'fecha_emision',
+    'vname' => 'LBL_FECHA_EMISION',
+    'type' => 'varchar',
+    'massupdate' => true,
+    'hidemassupdate' => false,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'enabled',
+    'duplicate_merge_dom_value' => '1',
+    'audited' => true,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'pii' => false,
+    'default' => '',
+    'full_text_search' => 
+    array (
+      'enabled' => '0',
+      'boost' => '1',
+      'searchable' => false,
+    ),
+    'calculated' => false,
+    'len' => '100',
+    'size' => '20',
+  ),
+  'name' => 
+  array (
+    'name' => 'name',
+    'vname' => 'LBL_NAME',
+    'type' => 'name',
+    'dbType' => 'varchar',
+    'len' => '100',
+    'unified_search' => true,
+    'full_text_search' => 
+    array (
+      'enabled' => true,
+      'boost' => '1.55',
+      'searchable' => true,
+    ),
+    'required' => true,
+    'importable' => 'false',
+    'duplicate_merge' => 'disabled',
+    'merge_filter' => 'disabled',
+    'duplicate_on_record_copy' => 'always',
+    'readonly' => false,
+    'massupdate' => false,
+    'hidemassupdate' => false,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'duplicate_merge_dom_value' => 0,
+    'audited' => false,
+    'reportable' => true,
+    'pii' => false,
+    'default' => '',
+    'calculated' => 'true',
+    'size' => '20',
+    'formula' => 'concat($rfc," - ",$ticket)',
+    'enforced' => true,
+  ),
+),
+    'relationships' => array (
+),
+    'optimistic_locking' => true,
+    'unified_search' => true,
+    'full_text_search' => true,
+);
+
+if (!class_exists('VardefManager')){
+}
+VardefManager::createVardef('pr_Procesos_Robina','pr_Procesos_Robina', array('basic','team_security','assignable','taggable'));
