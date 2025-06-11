@@ -75,7 +75,9 @@
         this.model.on("change:activos_interes_c", this._validaActivoInteres, this);
         //Valida el potencial de cierre debe ser entre 10 y 100%
         this.model.addValidationTask('validate_potencial_cierre', _.bind(this._validateTaskPotencialCierre, this));
-        this.model.on("change:potencial_cierre_c", this._validaPotencialCierre, this);
+        this.model.on("change:potencial_cierre_c", this._validaPotencialCierre, this);        
+        // Cambia etiquetas vendor
+        this.on('render', this.cambiarEtiquetasVendor, this);
     },
 
     handleEdit: function (e, cell) {
@@ -172,8 +174,10 @@
             }
         }
 
+
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
             this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '117')) {
+
             //VALIDA FORMATO DE EMAIL DEL ASESOR DE ALIANZA
             if (this.model.get('email_aa_c') != null && this.model.get('email_aa_c') !== "") {
 
@@ -192,6 +196,43 @@
                 }
             }
         }
+        //VALIDA CORREOS DE ALIANZA - VENDORS
+        // if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
+        //     //VALIDA FORMATO DE Email del F&I o Gerente de crédito
+        //     if (this.model.get('email_gerente_vendor_c') != undefined && this.model.get('email_gerente_vendor_c') !== "") {
+
+        //         var inputEGV = this.model.get('email_gerente_vendor_c'); // Obtenemos el email
+        //         var expresionEGV = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
+
+        //         if (!expresionEGV.test(inputEGV)) {
+        //             // Si el formato del email no es válido, mostramos el error
+        //             app.alert.show('Error al validar emailgv', {
+        //                 level: 'error',
+        //                 autoClose: false,
+        //                 messages: '<b>Formato de Email del F&I o Gerente de crédito.</b>'
+        //             });
+        //             errors['email_gerente_vendor_c'] = errors['email_gerente_vendor_c'] || {};
+        //             errors['email_gerente_vendor_c'].required = true;
+        //         }
+        //     }
+        //     //VALIDA FORMATO DE Email del vendedor
+        //     if (this.model.get('email_vendedor_c') != undefined && this.model.get('email_vendedor_c') !== "") {
+
+        //         var inputEV = this.model.get('email_vendedor_c'); // Obtenemos el email
+        //         var expresionEV = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
+
+        //         if (!expresionEV.test(inputEV)) {
+        //             // Si el formato del email no es válido, mostramos el error
+        //             app.alert.show('Error al validar email_v', {
+        //                 level: 'error',
+        //                 autoClose: false,
+        //                 messages: '<b>Formato de Email del vendedor.</b>'
+        //             });
+        //             errors['email_vendedor_c'] = errors['email_vendedor_c'] || {};
+        //             errors['email_vendedor_c'].required = true;
+        //         }
+        //     }
+        // }
 
         callback(null, fields, errors);
     },
@@ -320,8 +361,10 @@
             }
         }
 
+
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
             this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '117')) {
+
             //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO TELEFONICO DEL ASESOR DE ALIANZA
             if (this.model.get('telefono_aa_c') != "" && this.model.get('telefono_aa_c') != null) {
                 if (this.model.get('telefono_aa_c').trim() == "" || this.model.get('telefono_aa_c').trim().length != 10) {
@@ -335,6 +378,33 @@
                 }
             }
         }
+        //VALIDA TELEFONOS ALIANZA - VENDORS
+        // if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
+        //     //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO DE Teléfono del F&I o Gerente de crédito
+        //     if (this.model.get('telefono_gerente_vendor_c') != "" && this.model.get('telefono_gerente_vendor_c') != undefined) {
+        //         if (this.model.get('telefono_gerente_vendor_c').trim() == "" || this.model.get('telefono_gerente_vendor_c').trim().length != 10) {
+        //             app.alert.show('telefono_gv_invalido', {
+        //                 level: 'error',
+        //                 autoClose: false,
+        //                 messages: 'Se requiere un teléfono válido de <b>10 dígitos</b> para el <b>Teléfono del F&I o Gerente de crédito</b>'
+        //             });
+        //             errors['telefono_gerente_vendor_c'] = errors['telefono_gerente_vendor_c'] || {};
+        //             errors['telefono_gerente_vendor_c'].required = true;
+        //         }
+        //     }
+        //     //VALIDA LA LONGITUD DE 10 DIGITOS DEL NUMERO DE Teléfono del vendedor
+        //     if (this.model.get('telefono_vendedor_c') != "" && this.model.get('telefono_vendedor_c') != undefined) {
+        //         if (this.model.get('telefono_vendedor_c').trim() == "" || this.model.get('telefono_vendedor_c').trim().length != 10) {
+        //             app.alert.show('telefono_vendedor_invalido', {
+        //                 level: 'error',
+        //                 autoClose: false,
+        //                 messages: 'Se requiere un teléfono válido de <b>10 dígitos</b> para el <b>Teléfono del vendedor</b>'
+        //             });
+        //             errors['telefono_vendedor_c'] = errors['telefono_vendedor_c'] || {};
+        //             errors['telefono_vendedor_c'].required = true;
+        //         }
+        //     }
+        // }
 
         callback(null, fields, errors);
     },
@@ -406,7 +476,7 @@
         }, this);
 
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
-            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '117')) {
+            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '116') || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
             if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined) {
                 campos = campos + '<b>' + 'Franquicia' + '</b><br>';
@@ -431,6 +501,45 @@
 
                 errors['telefono_aa_c'] = errors['telefono_aa_c'] || {};
                 errors['telefono_aa_c'].required = true;
+            }
+        }
+        //CAMPOS REQUERIDOS DE ALIANZAS - VENDORS
+        if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {            
+            if (this.model.get('gerente_vendor_c') == '' || this.model.get('gerente_vendor_c') == undefined) {
+                campos = campos + '<b>' + 'F&I o Gerente de crédito' + '</b><br>';
+
+                errors['gerente_vendor_c'] = errors['gerente_vendor_c'] || {};
+                errors['gerente_vendor_c'].required = true;
+            }
+            if (this.model.get('email_gerente_vendor_c') == '' || this.model.get('email_gerente_vendor_c') == undefined) {
+                campos = campos + '<b>' + 'Email del F&I o Gerente de crédito' + '</b><br>';
+
+                errors['email_gerente_vendor_c'] = errors['email_gerente_vendor_c'] || {};
+                errors['email_gerente_vendor_c'].required = true;
+            }
+            if (this.model.get('telefono_gerente_vendor_c') == '' || this.model.get('telefono_gerente_vendor_c') == undefined) {
+                campos = campos + '<b>' + 'Teléfono del F&I o Gerente de crédito' + '</b><br>';
+
+                errors['telefono_gerente_vendor_c'] = errors['telefono_gerente_vendor_c'] || {};
+                errors['telefono_gerente_vendor_c'].required = true;
+            }
+            if (this.model.get('vendedor_c') == '' || this.model.get('vendedor_c') == undefined) {
+                campos = campos + '<b>' + 'Vendedor' + '</b><br>';
+
+                errors['vendedor_c'] = errors['vendedor_c'] || {};
+                errors['vendedor_c'].required = true;
+            }
+            if (this.model.get('email_vendedor_c') == '' || this.model.get('email_vendedor_c') == undefined) {
+                campos = campos + '<b>' + 'Email del vendedor' + '</b><br>';
+
+                errors['email_vendedor_c'] = errors['email_vendedor_c'] || {};
+                errors['email_vendedor_c'].required = true;
+            }
+            if (this.model.get('telefono_vendedor_c') == '' || this.model.get('telefono_vendedor_c') == undefined) {
+                campos = campos + '<b>' + 'Teléfono del vendedor' + '</b><br>';
+
+                errors['telefono_vendedor_c'] = errors['telefono_vendedor_c'] || {};
+                errors['telefono_vendedor_c'].required = true;
             }
         }
         //ACTIVOS DE INTERÉS
@@ -512,8 +621,9 @@
             default:
                 break;
         }
+      
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
-            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '117')) {
+            this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116') || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
             if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == null) {
                 campos_req.push('franquicia_c');
@@ -526,6 +636,27 @@
             }
             if (this.model.get('telefono_aa_c') == '' || this.model.get('telefono_aa_c') == null) {
                 campos_req.push('telefono_aa_c');
+            }
+        }
+        if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
+            //CAMPOS REQUERIDOS DE ALIANZAS - VENDORS
+            if (this.model.get('gerente_vendor_c') == '' || this.model.get('gerente_vendor_c') == null) {
+                campos_req.push('gerente_vendor_c');
+            }
+            if (this.model.get('email_gerente_vendor_c') == '' || this.model.get('email_gerente_vendor_c') == null) {
+                campos_req.push('email_gerente_vendor_c');
+            }
+            if (this.model.get('telefono_gerente_vendor_c') == '' || this.model.get('telefono_gerente_vendor_c') == null) {
+                campos_req.push('telefono_gerente_vendor_c');
+            }
+            if (this.model.get('vendedor_c') == '' || this.model.get('vendedor_c') == null) {
+                campos_req.push('vendedor_c');
+            }
+            if (this.model.get('email_vendedor_c') == '' || this.model.get('email_vendedor_c') == null) {
+                campos_req.push('email_vendedor_c');
+            }
+            if (this.model.get('telefono_vendedor_c') == '' || this.model.get('telefono_vendedor_c') == null) {
+                campos_req.push('telefono_vendedor_c');
             }
         }
 
@@ -642,7 +773,7 @@
 
         //READONLY DE ORIGEN BLOQUEADO CON ALIANZA SOC/CREDITARIA, KONNECT, VENDORS, REDITUS || MARKETING - ORGANICO || LEASING - LEASING
         if (!permisosGestionTeamLeader.includes("^utility_trailers^") && (
-            (this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (['12', '13', '115', '116', '117'].includes(this.model.get('detalle_origen_c')))) ||
+            (this.model.get('origen_bloqueado_c') && this.model.get('origen_c') === '12' && (['12', '13', '115', '117'].includes(this.model.get('detalle_origen_c')))) ||
             (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') ||
             (this.model.get('origen_c') === '20' && this.model.get('detalle_origen_c') === '113')
         )
@@ -740,7 +871,7 @@
             "^soc_creditaria^": ["12", "13"],
             "^utility_trailers^": ["114"],
             "^konnect^": ["115"],
-            "^vendors^": ["116"],
+            // "^vendors^": ["116"],
             "^reditus^": ["117"]
         };
 
@@ -804,8 +935,7 @@
         //Valida si es Origen Alianza
         if (this.model.get('origen_c') === '12') {
             console.log("ORIGEN ALIANZA");
-            if (permisosGestionTeamLeader.includes("^soc_creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || permisosGestionTeamLeader.includes("^konnect^") || 
-                permisosGestionTeamLeader.includes("^vendors^") || permisosGestionTeamLeader.includes("^reditus^")) {
+            if (permisosGestionTeamLeader.includes("^soc_creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || permisosGestionTeamLeader.includes("^konnect^") || permisosGestionTeamLeader.includes("^reditus^")) {
                 //ORIGEN
                 opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]); //12:Alianzas - 20:Leasing
                 this.model.fields['origen_c'].options = opciones_origen;
@@ -821,7 +951,7 @@
             } else {
                 console.log("SIN PERMISOS - ALIANZA");
                 //12:SOC - 13:Creditaria - 114:Utility Trailers - 115:Konnect - 116:Vendors - 117:Reditus
-                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115", "116", "117"]);
+                opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, ["12", "13", "114", "115", "117"]);
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
                 //Forzamos la actualización de las opciones en la vista
                 actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, '12');
@@ -1262,8 +1392,9 @@
         if (this.model.get('email')[0] == undefined || this.model.get('email')[0].email_address == '') {
             campos = campos + '<b>' + 'Correo electrónico' + '</b><br>';
         }
+
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
-            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '117')) {
+            this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116') || this.model.get('detalle_origen_c') == '117')) {
             //VALIDA CAMPOS DE ALIANZA
             if (this.model.get('franquicia_c') === null || this.model.get('franquicia_c') === "") {
                 campos = campos + '<b>' + 'Franquicia' + '</b><br>';
@@ -1286,8 +1417,45 @@
                 }
             }
         }
+        if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
+            //VALIDA CAMPOS DE ALIANZA - VENDORS
+            if (this.model.get('gerente_vendor_c') === null || this.model.get('gerente_vendor_c') === "") {
+                campos = campos + '<b>' + 'F&I o Gerente de crédito' + '</b><br>';
+            }
+            if (this.model.get('telefono_gerente_vendor_c') === null || this.model.get('telefono_gerente_vendor_c') === "") {
+                campos = campos + '<b>' + 'Teléfono del F&I o Gerente de crédito' + '</b><br>';
+            }
+            if (this.model.get('email_gerente_vendor_c') === null || this.model.get('email_gerente_vendor_c') === "") {
+                campos = campos + '<b>' + 'Email del F&I o Gerente de crédito' + '</b><br>';
+            } else {
+                var inputEGV = this.model.get('email_gerente_vendor_c'); // Obtenemos el email
+                var expresionEGV = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
 
-        if (campos || flagCorreoValido) {
+                if (!expresionEGV.test(inputEGV)) {
+                    // Si el formato del email no es válido
+                    flagCorreoValidoEGV = true;
+                }
+            }
+            if (this.model.get('vendedor_c') === null || this.model.get('vendedor_c') === "") {
+                campos = campos + '<b>' + 'Vendedor' + '</b><br>';
+            }
+            if (this.model.get('telefono_vendedor_c') === null || this.model.get('telefono_vendedor_c') === "") {
+                campos = campos + '<b>' + 'Teléfono del vendedor' + '</b><br>';
+            }
+            if (this.model.get('email_vendedor_c') === null || this.model.get('email_vendedor_c') === "") {
+                campos = campos + '<b>' + 'Email del vendedor' + '</b><br>';
+            } else {
+                var inputEV = this.model.get('email_vendedor_c'); // Obtenemos el email
+                var expresionEV = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular válida para emails
+
+                if (!expresionEV.test(inputEV)) {
+                    // Si el formato del email no es válido
+                    flagCorreoValidoEV = true;
+                }
+            }
+        }
+
+        if (campos || flagCorreoValido || flagCorreoValidoEGV || flagCorreoValidoEV) {
             //ALERTAS DE CAMPOS REQUERIDOS
             if (campos) {
                 app.alert.show("campos_requeridos_email", {
@@ -1301,6 +1469,20 @@
                     level: 'error',
                     autoClose: false,
                     messages: 'Se requiere un <b>Email del Asesor de Alianza</b> válido para el PO.'
+                });
+            }
+            if (flagCorreoValidoEGV) {
+                app.alert.show('Error_validar_email_gerente_vendor_c', {
+                    level: 'error',
+                    autoClose: false,
+                    messages: 'Se requiere un <b>Email del F&I o Gerente de crédito</b> válido para el PO.'
+                });
+            }
+            if (flagCorreoValidoEV) {
+                app.alert.show('Error_validar_email_vendedor_c', {
+                    level: 'error',
+                    autoClose: false,
+                    messages: 'Se requiere un <b>Email del vendedor</b> válido para el PO.'
                 });
             }
             return false;
@@ -1344,8 +1526,7 @@
         }
 
         var permisosGestionTeamLeader = app.user.attributes.gestion_team_leaders_c || ""; //OBTIENE EL PERMISO SOC/CREDITARIA, KONNECT, VENDORS
-        if (!permisosGestionTeamLeader.includes("^soc_creditaria^") && !permisosGestionTeamLeader.includes("^konnect^") && !permisosGestionTeamLeader.includes("^vendors^") && !permisosGestionTeamLeader.includes("^reditus^")) {
-
+        if (!permisosGestionTeamLeader.includes("^soc_creditaria^") && !permisosGestionTeamLeader.includes("^konnect^") && !permisosGestionTeamLeader.includes("^reditus^")) {
             app.alert.show('not_access', {
                 level: 'error',
                 autoClose: false,
@@ -2079,6 +2260,8 @@
                 }
             }
         }
+        //CAMBIO DE ETIQUETAS EN ALIANZAS - VENDORS
+        //this.cambiarEtiquetasVendor();
 
         // Siempre limpia si cambia el valor de detalle_origen_c
         if (this.model.previous('detalle_origen_c') !== this.model.get('detalle_origen_c')) {
@@ -2173,6 +2356,27 @@
         callback(null, fields, errors);
     },
 
+
+    cambiarEtiquetasVendor: function () {
+        var detalleOrigen = this.model.get('detalle_origen_c');               
+        var labelFranquicia = this.$('[data-name="franquicia_c"]').closest('.record-cell').find('.record-label');
+        var labelAsesorAlianza = this.$('[data-name="asesor_alianza_c"]').closest('.record-cell').find('.record-label');        
+        var labelEmailAsesorAlianza = this.$('[data-name="email_aa_c"]').closest('.record-cell').find('.record-label');        
+        var labelTelefonoAsesorAlianza = this.$('[data-name="telefono_aa_c"]').closest('.record-cell').find('.record-label');        
+        // Cambia la etiqueta visual de los campos vendors
+        if (detalleOrigen === '116') {
+            console.log("CAMBIO DE ETIQUETA VENDORS ", detalleOrigen); 
+            labelFranquicia.text('Vendor');
+            labelAsesorAlianza.text('Gerente comercial');
+            labelEmailAsesorAlianza.text('Email del gerente comercial');
+            labelTelefonoAsesorAlianza.text('Teléfono del gerente comercial');
+        } else {
+            labelFranquicia.text('Franquicia');
+            labelAsesorAlianza.text('Asesor de la Alianza');
+            labelEmailAsesorAlianza.text('Email del Asesor de Alianza');
+            labelTelefonoAsesorAlianza.text('Teléfono del Asesor de Alianza');
+        }        
+
     _limpiaCamposDOAlianza: function() {
         console.log("LIMPIA CAMPOS DEPENDIENTES DEL GRUPO ALIANZA");
         var campos = ["franquicia_c", "asesor_alianza_c", "email_aa_c", "telefono_aa_c"];
@@ -2187,6 +2391,7 @@
         if (!_.isEmpty(valores)) {
             this.model.set(valores);
         }
+
     },
 
 })
