@@ -10,21 +10,26 @@ class crm_robina_class
 
         if($bean->estatus_procesado == 'Recibido'){
             $GLOBALS['log']->fatal("********* Webhook Recibido *************");
-            $query = "SELECT * from accounts_cstm WHERE rfc_c = {$bean->rfc}";
+            $query = "SELECT * from accounts_cstm WHERE rfc_c = '{$bean->rfc}'";
             //$GLOBALS['log']->fatal("QUERYS:".$query);
             $regacc = $db->query($query);
             $accs = [];
-
+            //$GLOBALS['log']->fatal(print_r($regacc, true));
             while ($row = $db->fetchByAssoc($regacc)) {
+                //$GLOBALS['log']->fatal(print_r($row, true));
                 $accs[] = $row;
             }
-            $idCliente = $accs[0]['id'];
+            //$GLOBALS['log']->fatal(print_r($accs, true));
+            $idCliente = $accs[0]['id_c'];
+            $GLOBALS['log']->fatal("idCliente: ".$idCliente);
 
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCliente , array('disable_row_level_security' => true));
             //      $idCliente = $args['idCliente'];
-            $rfc = $bebeanAccountanA->rfc_c;
+            
+            $rfc = $beanAccount->rfc_c;
             $date_issued = $bean->vigencia;
             $vigencia = gmdate("Y-m-d");
+            //$vigencia = $date_issued;
             
             $url_token_robina = $sugar_config['regimenes_sat_url'].'/auth/login/token';
             $user = $sugar_config['regimenes_sat_user'];
@@ -49,7 +54,7 @@ class crm_robina_class
                 //$GLOBALS['log']->fatal("Inicia petición Robina CSF: ".$url_digital_csf);
                 $responseCSF_base64=$this->callDigitalVal($url_digital_csf, $token );
                 file_put_contents('custom/csf/csf_'.$rfc.'.pdf', $responseCSF_base64);
-                $b64CSFVal = chunk_split(base64_encode(file_get_contents('custom/csf/csf_dw_'.$rfc.'.pdf')));
+                $b64CSFVal = chunk_split(base64_encode(file_get_contents('custom/csf/csf_'.$rfc.'.pdf')));
 
                 //file_put_contents('custom/csf/csforiginal.pdf', chunk_split($base64_CSF));
                 //file_put_contents('custom/csf/csf1.pdf', $responseCSF_base64);            
@@ -61,6 +66,7 @@ class crm_robina_class
                     $response_upload_alfresco = $this->callUploadDocument( $url_alfresco, $body_request_alfresco );
                     
                     $GLOBALS['log']->fatal( "Respuesta upload Alfresco:" );
+                    //GLOBALS['log']->fatal( print_r($body_request_alfresco,true) );
                     $GLOBALS['log']->fatal( print_r($response_upload_alfresco,true) );
                     $response['alfresco'] = $response_upload_alfresco['resultDescription'];
 
@@ -75,7 +81,7 @@ class crm_robina_class
                 $response_base64=$this->callDigitalVal($url_digital_val, $token );
                 //$GLOBALS['log']->fatal( "response_base64: " . !empty($response_base64) );
                 if( !empty($response_base64) ){
-                    file_put_contents('custom/csf/validator.pdf', $response_base64);
+                    file_put_contents('custom/csf/validator_'.$rfc.'.pdf', $response_base64);
                     $response['robina']= "Validación digital de CSF generada correctamente";
 
                     //Envía Constancia de Situación Fiscal hacia Quantico
@@ -100,11 +106,11 @@ class crm_robina_class
                     $body_request_quantico_validator = $this->createBodyRequest( $idCliente, "ValDigital", $b64Val, $vigencia );
                     // envio quantico validador
                     $response_upload_valDig = $this->callUploadDocument( $url_expediente, $body_request_quantico_validator );
-
+                    $GLOBALS['log']->fatal("Petición quantico: ".$url_expediente);
                     $GLOBALS['log']->fatal( "Respuesta upload Validación Digital:" );
                     //$GLOBALS['log']->fatal($url_expediente);
                     //$GLOBALS['log']->fatal( print_r($body_request_quantico_validator,true) );
-                    //$GLOBALS['log']->fatal( print_r($response_upload_valDig,true) );
+                    $GLOBALS['log']->fatal( print_r($response_upload_valDig,true) );
                     
                     $response['quantico_validator']= $response_upload_valDig['Message'];
                 }
