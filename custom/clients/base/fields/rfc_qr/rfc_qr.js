@@ -240,8 +240,15 @@
 			level: 'process',
 			title: 'Cargando...'
 		});
+		
+		this.$("[data-name='validar_CIEC']").attr('style', 'pointer-events:none;');
 
 		if (contexto_cuenta.model.get('rfc_c') != '' && contexto_cuenta.model.get('rfc_c') != undefined) {
+
+			var $btnCIEC = this.$('#validar_CIEC');
+			$btnCIEC.prop('disabled', true);
+			$btnCIEC.text('Procesando...');
+			
 			var rfc = contexto_cuenta.model.get('rfc_c');
 			var body = {
 				"rfc": rfc
@@ -255,6 +262,7 @@
 						var indice_indicador = 0;
 						var Completo = '';
 						var RFC = data["rfc"].toUpperCase();
+						var ticket = data["ticket"];
 						//var PathQR=data[0]["path_img_qr"];
 						var Correo = data["email"];
 						var CP = data["address"]["postalCode"];
@@ -365,6 +373,10 @@
 											messages: "La información recuperada con la CSF proporcionada corresponde a: " + Completo + " ¿Desea proceder con estos datos?",
 											autoClose: false,
 											onCancel: function () {
+
+												$btnCIEC.prop('disabled', false);
+												$btnCIEC.text('Actualizar Constancia');
+
 												contexto_cuenta.$('#activar_camara').removeClass('disabled');
 												contexto_cuenta.$('#activar_camara').attr('style', '');
 												contexto_cuenta.$('#archivo_qr').removeClass('disabled');
@@ -378,7 +390,14 @@
 											},
 											onConfirm: function () {
 												//Comienza integraciones con Alfresco, Quantico y Robina
-												contextol.integraCSF(contexto_cuenta.model.get('id'), RFC, FechaEmision);
+												//contextol.integraCSF(contexto_cuenta.model.get('id'), RFC, FechaEmision);
+												
+												//NUEVO SERVICIO PROCESO ROBINA API
+												if(RFC != null && ticket != null){
+													contextol.registroProcesoRobinaAPI(RFC, FechaEmision, ticket );
+												}
+												$btnCIEC.prop('disabled', false);
+												$btnCIEC.text('Actualizar Constancia');
 												// Actualiza Datos Personales
 												contexto_cuenta.model.set('tipodepersona_c', Regimen);
 												contexto_cuenta.model.set('rfc_c', RFC);
@@ -978,7 +997,7 @@
 						app.alert.show('errorCIEC', {
 							level: 'warning',
 							//messages: 'No se pudo identificar una estructura válida para el documento y/o no cumple con la estructura oficial del SAT.\nPor lo tanto, no se pueden validar los datos del contribuyente con los del SAT',
-							messages: 'No se encontro información por CIEC, favor de actualizar datos por medio de CSF.',
+							messages: 'No se tiene información de CIEC activa, por favor realiza la actualización de datos por medio de carga de CSF.',
 							autoClose: false
 						});
 
@@ -991,14 +1010,24 @@
 						contexto_cuenta.$('#validar_QR').removeClass('disabled');
 						contexto_cuenta.$('#validar_QR').attr('style', 'margin:10px');
 						contexto_cuenta.$('#btn_Cancelar').removeClass('disabled');
-						contexto_cuenta.$('#btn_Cancelar').attr('style', 'margin:10px')
+						contexto_cuenta.$('#btn_Cancelar').attr('style', 'margin:10px');
+
+						$btnCIEC.prop('disabled', false);
+						$btnCIEC.text('Actualizar Constancia');
 
             			contextol.validarServicioQR();
             
 					}
-				})
+				}),
+				error: function (error) {
+					$btnCIEC.prop('disabled', false);
+					$btnCIEC.text('Actualizar Constancia');			
+				}
 			});
 		} else {
+			$btnCIEC.prop('disabled', false);
+			$btnCIEC.text('Actualizar Constancia');
+			
 			app.alert.show('errorAlertSinRFC', {
 				level: 'error',
 				messages: 'Se necesita valor de RFC. para continuar',
@@ -1009,6 +1038,7 @@
 	},
 
 	validarServicioQR: function () {
+		
 		var contextol = this;
 		var input = contexto_cuenta.$('input[type=file]');
 		var file = input[0].files[0];
@@ -1025,13 +1055,21 @@
 			return;
 		}
 		if (contexto_cuenta.picturecam == false || self.picturecam == false) {
+			var $btnCIEC = this.$('#validar_CIEC');
+
 			if (file == "" || file == undefined) {
+				$btnCIEC.prop('disabled', false);
+				$btnCIEC.text('Actualizar Constancia');
+
 				app.alert.show('errorAlert', {
 					level: 'error',
 					messages: 'No se tiene un archivo cargado para realizar la actualización por CSF.',
 					autoClose: false
 				});
 			} else {
+				app.alert.dismiss('errorCIEC');
+				$btnCIEC.prop('disabled', true);
+				$btnCIEC.text('Procesando...');
 
 				//Enviamos petición con el archivo pdf convertido en base64
 				if (window.result != "" && window.result != undefined) {
@@ -1072,6 +1110,7 @@
 								var indice_indicador = 0;
 								var Completo = '';
 								var RFC = data["rfc"].toUpperCase();
+								var ticket = data["ticket"];
 								//var PathQR=data[0]["path_img_qr"];
 								var Correo = data["email"];
 								var CP = data["address"]["postalCode"];
@@ -1182,6 +1221,9 @@
 													messages: "La información recuperada con la CSF proporcionada corresponde a: " + Completo + " ¿Desea proceder con estos datos?",
 													autoClose: false,
 													onCancel: function () {
+														$btnCIEC.prop('disabled', false);
+														$btnCIEC.text('Actualizar Constancia');
+
 														contexto_cuenta.$('#activar_camara').removeClass('disabled');
 														contexto_cuenta.$('#activar_camara').attr('style', '');
 														contexto_cuenta.$('#archivo_qr').removeClass('disabled');
@@ -1195,7 +1237,17 @@
 													},
 													onConfirm: function () {
 														//Comienza integraciones con Alfresco, Quantico y Robina
-														contextol.FileintegraCSF(contexto_cuenta.model.get('id'), RFC, window.result, FechaEmision);
+														//contextol.FileintegraCSF(contexto_cuenta.model.get('id'), RFC, window.result, FechaEmision);
+
+														//NUEVO SERVICIO PROCESO ROBINA API
+														                                //(RFC, fechaEmision , ticket)
+														if(RFC != null && ticket != null){
+															contextol.registroProcesoRobinaAPI(RFC, FechaEmision, ticket);
+														}
+
+														$btnCIEC.prop('disabled', false);
+														$btnCIEC.text('Actualizar Constancia');
+
 														// Actualiza Datos Personales
 														contexto_cuenta.model.set('tipodepersona_c', Regimen);
 														contexto_cuenta.model.set('rfc_c', RFC);
@@ -1798,6 +1850,9 @@
 									autoClose: true
 								});
 
+								$btnCIEC.prop('disabled', false);
+								$btnCIEC.text('Actualizar Constancia');
+
 								contexto_cuenta.$('#activar_camara').removeClass('disabled');
 								contexto_cuenta.$('#activar_camara').attr('style', '');
 								contexto_cuenta.$('#archivo_qr').removeClass('disabled');
@@ -1811,6 +1866,9 @@
 
 							}
 							} else {
+								$btnCIEC.prop('disabled', false);
+								$btnCIEC.text('Actualizar Constancia');
+
 								app.alert.show('errorCSF', {
 									level: 'error',
 									messages: 'No se pudo identificar una estructura válida para el documento y/o no cumple con la estructura oficial del SAT.\nPor lo tanto, no se pueden validar los datos del contribuyente con los del SAT',
@@ -1829,7 +1887,11 @@
 								contexto_cuenta.$('#btn_Cancelar').attr('style', 'margin:10px');
 
 							}
-						})
+						}),
+						error: function (error) {
+							$btnCIEC.prop('disabled', false);
+							$btnCIEC.text('Actualizar Constancia');			
+						}
 					});
 				}
 
@@ -2232,5 +2294,40 @@
 				infoUser['name'] = '';
 			}
 		}
-	}
+	},
+
+	registroProcesoRobinaAPI: function(RFC, fechaEmision , ticket ) {
+
+		app.alert.show('registro_pr', {
+			level: 'process',
+			title: 'Registrando Referencia Robina...',
+		});
+
+		var params = {
+			"rfc": RFC,
+			"ticket": ticket,
+			"estatus_procesado": "Sin procesar",
+			"fecha_emision": fechaEmision
+		};
+
+		var url = app.api.buildURL('procesoRobinaApi', null, null,);
+		app.api.call('create', url, params, {
+			success: function (response) {
+				app.alert.dismiss('registro_pr');
+				app.alert.show('info_pr', {
+					level: 'info',
+					autoClose: false,
+					messages: 'Se esta procesando la descarga de los documentos SAT, por favor espera unos minutos para poder descargarlos'
+				});
+			},
+			error: function (error) {
+				app.alert.dismiss('registro_pr');
+				app.alert.show('error_pr', {
+					level: 'error',
+					autoClose: false,
+					messages: 'Ocurrió un error al registrar el proceso robina.'
+				});
+			}
+		});
+	},
 })

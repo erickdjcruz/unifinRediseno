@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Your installation or use of this SugarCRM file is subject to the applicable
  * terms available at
@@ -13,3 +14,5 @@
 $app_list_strings['moduleList']['pr_Procesos_Robina'] = 'Procesos Robina';
 $app_list_strings['moduleListSingular']['pr_Procesos_Robina'] = 'Procesos Robina';
 $app_list_strings['moduleIconList']['pr_Procesos_Robina'] = 'PR';
+
+?>
