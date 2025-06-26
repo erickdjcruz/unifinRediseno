@@ -30,7 +30,7 @@ class WebHookCrmRobina extends SugarApi
 
     public function processDataRobina($api, $args){
         global $sugar_config,$db;
-        $GLOBALS['log']->fatal( "Respuesta robina" );
+        $GLOBALS['log']->fatal( "--------------- Respuesta robina webhook -----------" );
 
         $ticket = '';
         $resultado=[];
@@ -42,10 +42,13 @@ class WebHookCrmRobina extends SugarApi
         if ($statusCode) {
             $ticket = isset($args['response']['id']) ? $args['response']['id'] : null;
             $rfc = isset($args['response']['taxpayer']['id']) ? $args['response']['taxpayer']['id'] : null;
+            $GLOBALS['log']->fatal('ticket: '. $ticket);
+            $GLOBALS['log']->fatal('rfc: '. $rfc);
         
             $resultado['detail'] = 'Recibido correctamente-estatus T01';
 
             $query = "SELECT * from pr_procesos_robina WHERE ticket = '{$ticket}' and rfc = '{$rfc}'";
+            //$GLOBALS['log']->fatal('query: '. $query);
             $queryResult = $db->query($query);
             $res_tickets = [];
 

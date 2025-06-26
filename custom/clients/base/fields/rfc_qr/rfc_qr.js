@@ -242,10 +242,10 @@
 		});
 		
 		this.$("[data-name='validar_CIEC']").attr('style', 'pointer-events:none;');
+		var $btnCIEC = this.$('#validar_CIEC');
 
 		if (contexto_cuenta.model.get('rfc_c') != '' && contexto_cuenta.model.get('rfc_c') != undefined) {
-
-			var $btnCIEC = this.$('#validar_CIEC');
+			
 			$btnCIEC.prop('disabled', true);
 			$btnCIEC.text('Procesando...');
 			
@@ -285,7 +285,7 @@
 						//actividades economicas
 						// Filtrar las actividades con preponderancia 1
 						var filteredActivities = data.economicActivities.filter(
-							activity => activity.riched_code_preponderance === 1
+							activity => activity.riched_code_preponderance == 1
 						);
 
 						var activity_sat_id = filteredActivities[0].riched_activity_sat_id;
@@ -394,7 +394,7 @@
 												
 												//NUEVO SERVICIO PROCESO ROBINA API
 												if(RFC != null && ticket != null){
-													contextol.registroProcesoRobinaAPI(RFC, FechaEmision, ticket );
+													contextol.registroProcesoRobinaAPI(RFC, FechaEmision, ticket, contexto_cuenta.model.get('id') );
 												}
 												$btnCIEC.prop('disabled', false);
 												$btnCIEC.text('Actualizar Constancia');
@@ -1242,7 +1242,7 @@
 														//NUEVO SERVICIO PROCESO ROBINA API
 														                                //(RFC, fechaEmision , ticket)
 														if(RFC != null && ticket != null){
-															contextol.registroProcesoRobinaAPI(RFC, FechaEmision, ticket);
+															contextol.registroProcesoRobinaAPI(RFC, FechaEmision, ticket,contexto_cuenta.model.get('id'));
 														}
 
 														$btnCIEC.prop('disabled', false);
@@ -2296,7 +2296,7 @@
 		}
 	},
 
-	registroProcesoRobinaAPI: function(RFC, fechaEmision , ticket ) {
+	registroProcesoRobinaAPI: function(RFC, fechaEmision , ticket , id_cuenta) {
 
 		app.alert.show('registro_pr', {
 			level: 'process',
@@ -2304,6 +2304,7 @@
 		});
 
 		var params = {
+			"id_cuenta": id_cuenta,
 			"rfc": RFC,
 			"ticket": ticket,
 			"estatus_procesado": "Sin procesar",

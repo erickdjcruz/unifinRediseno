@@ -22,11 +22,21 @@ class procesoRobinaApi extends SugarApi
     public function registraProcesoRobina($api, $args)
     {
         $GLOBALS['log']->fatal("...INICIA REGISTRO DE PROCESO ROBINA API...");
+        $id_cuenta = isset($args['id_cuenta']) ? $args['id_cuenta'] : '';
         $rfc = isset($args['rfc']) ? $args['rfc'] : '';
         $ticket = isset($args['ticket']) ? $args['ticket'] : '';
         $estatus_procesado = isset($args['estatus_procesado']) ? $args['estatus_procesado'] : '';
         $fecha_emision = isset($args['fecha_emision']) ? $args['fecha_emision'] : '';
 
+        // Validación id_cuenta
+        if (empty($id_cuenta)) {
+            return array(
+                "status" => "error",
+                "code" => 400,
+                "message" => "El registro no se pudo crear. id_cuenta es obligatorio.",
+                "required_fields" => ["id_cuenta"]
+            );
+        }
         // Validación RFC
         if (empty($rfc)) {
             return array(
@@ -39,6 +49,7 @@ class procesoRobinaApi extends SugarApi
 
         //SE CREA EL REGISTRO PROCESO ROBINA
         $beanProcesoRobina = BeanFactory::newBean('pr_Procesos_Robina');
+        $beanProcesoRobina->id_cuenta = $id_cuenta;
         $beanProcesoRobina->rfc = $rfc;
         $beanProcesoRobina->ticket = $ticket;
         $beanProcesoRobina->estatus_procesado = $estatus_procesado;
