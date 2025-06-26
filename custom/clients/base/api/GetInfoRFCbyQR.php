@@ -115,7 +115,8 @@ class GetInfoRFCbyQR extends SugarApi
         }
 
         $rfc =  $response['rfc'] ?? null;
-
+        $GLOBALS['log']->fatal( "rfc:".$rfc );
+        
         if($rfc != null){
            // Fechas dinámicas
             $from = date('Y-m-01\T00:00:00', strtotime('-1 year'));
@@ -136,30 +137,32 @@ class GetInfoRFCbyQR extends SugarApi
 
             $GLOBALS['log']->fatal($url_ticket);
             $GLOBALS['log']->fatal($body);
-            $response = $this->callCreateTicket($url_ticket, $token, $body);
+            $response1 = $this->callCreateTicket($url_ticket, $token, $body);
             $GLOBALS['log']->fatal( 'creo ticket' );
             //$GLOBALS['log']->fatal( print_r($response,true) );
+            $GLOBALS['log']->fatal( 'ticket:'.$response1['id'] );
             //$response = json_decode($response, true);
             
-            if (isset($response['detail'][0]['msg']) && $response['detail'][0]['msg'] === 'value is not a valid dict') {
-                $response['codeerror'] = 400;
-                $response['messageerror'] = 'No se encontraron datos del RFC';
+            if (isset($response1['detail'][0]['msg']) && $response1['detail'][0]['msg'] === 'value is not a valid dict') {
+                $response1['codeerror'] = 400;
+                $response1['messageerror'] = 'No se encontraron datos del RFC';
                 $GLOBALS['log']->fatal('Error crear ticket');
-                return $response; // Termina aquí y regresa el error
+                //return $response1; // Termina aquí y regresa el error
             }
             $ticket = '';
 
             // Validar y extraer datos
-            if (!empty($response['id']) && !empty($response['createdAt'])) {
-                $ticket = $response['id'];
+            if (!empty($response1['id']) && !empty($response1['createdAt'])) {
+                $ticket = $response1['id'];
+                $response['ticket'] = $ticket;
                 $GLOBALS['log']->fatal( 'ticket: '. $ticket);
             }else{
-                $response['error'] = 'Ticket no generado';
-                $response['error_code'] = '401';
+                $response1['error'] = 'Ticket no generado';
+                $response1['error_code'] = '401';
             }
         }else{
-            $response['error'] = 'RFC no encontrado';
-            $response['error_code'] = '401';
+            $response1['error'] = 'RFC no encontrado';
+            $response1['error_code'] = '401';
         }
 
         return $response;

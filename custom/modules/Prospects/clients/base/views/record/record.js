@@ -5,6 +5,8 @@
         //self = this;
         this._super("initialize", [options]);
 
+        this.carga_inicial = true;
+
         this.model.addValidationTask('check_Requeridos', _.bind(this.valida_requeridos_min, this));
         this.model.on('sync', this._readonlyFields, this);
         this.context.on('button:convert_po_to_Lead:click', this.convert_Po_to_Lead, this);
@@ -78,6 +80,16 @@
         this.model.on("change:potencial_cierre_c", this._validaPotencialCierre, this);        
         // Cambia etiquetas vendor
         this.on('render', this.cambiarEtiquetasVendor, this);
+
+        // Configura bandera cuando modelo y vista están listos
+        this.model.once('sync', () => {
+            console.log("Modelo sincronizado y vista renderizada");
+                this.carga_inicial = false;
+            this.on('render', () => {
+                console.log("Modelo sincronizado y vista renderizada");
+                this.carga_inicial = false;
+            });
+        });
     },
 
     handleEdit: function (e, cell) {
@@ -2263,10 +2275,10 @@
             }
         }
         //CAMBIO DE ETIQUETAS EN ALIANZAS - VENDORS
-        this.cambiarEtiquetasVendor();
+        //this.cambiarEtiquetasVendor();
 
         // Siempre limpia si cambia el valor de detalle_origen_c
-        if (this.model.previous('detalle_origen_c') !== this.model.get('detalle_origen_c')) {
+        if ( !this.carga_inicial && (this.model.previous('detalle_origen_c') !== this.model.get('detalle_origen_c'))) {
             //FUNCION DE LIMPIEZA DE CAMPOS
             this._limpiaCamposDOAlianza();
         }

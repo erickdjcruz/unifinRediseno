@@ -48,6 +48,7 @@
         if($('[data-fieldname="accounts_analizate_clientes"] > span').length >0){
             $('[data-fieldname="accounts_analizate_clientes"] > span').show();
         }
+        this.verificaEstatusSAT();
     },
 
     cargapipelineCliente: function () {
@@ -270,5 +271,52 @@
                 }
             }, this)
         });
-    }
+    },
+
+    verificaEstatusSAT: function () {
+        var id = this.model.get('id');
+        app.api.call('GET', app.api.buildURL('estatusProcesoRobina/' + id), null, {
+            success: function (data) {
+                var status_gen = data.status;
+                var estatus = data.estatus_procesado;
+
+                if (estatus != "Procesado" && status_gen != '300' ) {
+                    // Deshabilita los botones
+                    /*$('.btn-ReenviarCliente').prop('disabled', true);
+                    $('.btn-DescargarCliente').prop('disabled', true);
+                    $('.btn-DescargarCotejoDigital').prop('disabled', true);
+                    */
+                   $('.btn-ReenviarCliente, .btn-DescargarCliente, .btn-DescargarCotejoDigital')
+                    .attr('disabled', true)
+                    .css({
+                        'pointer-events': 'none',
+                        'opacity': '0.6',
+                        'cursor': 'not-allowed'
+                    });
+                    // Muestra el mensaje
+                    /*if ($('#msg-proceso-sat').length === 0) {
+                        $('.record').prepend('<div id="msg-proceso-sat" style="color:red;font-weight:bold;margin:10px 0;">Procesando datos SAT, no puede realizar las descargas</div>');
+                    }*/
+
+                } else {
+                    // Habilita los botones
+                    /*$('.btn-ReenviarCliente').prop('disabled', false);
+                    $('.btn-DescargarCliente').prop('disabled', false);
+                    $('.btn-DescargarCotejoDigital').prop('disabled', false);
+                    $('#msg-proceso-sat').remove();
+                    */
+                   $('.btn-ReenviarCliente, .btn-DescargarCliente, .btn-DescargarCotejoDigital')
+                    .removeAttr('disabled')
+                    .css({
+                        'pointer-events': '',
+                        'opacity': '',
+                        'cursor': ''
+                    });
+                }
+            },
+            error: function (e) {
+                console.log(e);                
+            }
+        });
+    },
 })

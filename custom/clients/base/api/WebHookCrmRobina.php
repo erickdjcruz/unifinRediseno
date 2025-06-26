@@ -45,7 +45,7 @@ class WebHookCrmRobina extends SugarApi
         
             $resultado['detail'] = 'Recibido correctamente-estatus T01';
 
-            $query = "SELECT * from pr_Procesos_Robina WHERE ticket = '{$ticket}' and rfc = '{$rfc}'";
+            $query = "SELECT * from pr_procesos_robina WHERE ticket = '{$ticket}' and rfc = '{$rfc}'";
             $queryResult = $db->query($query);
             $res_tickets = [];
 
