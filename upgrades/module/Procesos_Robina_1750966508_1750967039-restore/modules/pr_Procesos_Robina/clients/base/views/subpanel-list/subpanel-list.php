@@ -9,31 +9,18 @@
  *
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
-
 $module_name = 'pr_Procesos_Robina';
-$viewdefs[$module_name]['base']['view']['selection-list'] = [
+$viewdefs[$module_name]['base']['view']['subpanel-list'] = [
     'panels' => [
         [
+            'name' => 'panel_header',
             'label' => 'LBL_PANEL_1',
             'fields' => [
                 [
-                    'name' => 'name',
                     'label' => 'LBL_NAME',
-                    'default' => true,
                     'enabled' => true,
-                    'link' => true,
-                ],
-                [
-                    'name' => 'team_name',
-                    'label' => 'LBL_TEAM',
                     'default' => true,
-                    'enabled' => true,
-                ],
-                [
-                    'name' => 'assigned_user_name',
-                    'label' => 'LBL_ASSIGNED_TO_NAME',
-                    'default' => true,
-                    'enabled' => true,
+                    'name' => 'name',
                     'link' => true,
                 ],
                 [
@@ -41,7 +28,6 @@ $viewdefs[$module_name]['base']['view']['selection-list'] = [
                     'enabled' => true,
                     'default' => true,
                     'name' => 'date_modified',
-                    'readonly' => true,
                 ],
             ],
         ],

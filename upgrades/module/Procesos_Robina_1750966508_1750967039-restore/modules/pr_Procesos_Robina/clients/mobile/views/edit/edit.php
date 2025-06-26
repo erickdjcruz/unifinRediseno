@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Your installation or use of this SugarCRM file is subject to the applicable
  * terms available at
@@ -10,13 +11,24 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 $module_name = 'pr_Procesos_Robina';
-$object_name = 'pr_Procesos_Robina';
-$_module_name = 'pr_procesos_robina';
-$popupMeta = ['moduleMain' => $module_name,
-    'varName' => $object_name,
-    'orderBy' => $_module_name . '.name',
-    'whereClauses' => ['name' => $_module_name . '.name',
+$viewdefs[$module_name]['mobile']['view']['edit'] = [
+    'templateMeta' => ['maxColumns' => '1',
+        'widths' => [
+            ['label' => '10', 'field' => '30'],
+            ['label' => '10', 'field' => '30'],
+        ],
     ],
-    'searchInputs' => [$_module_name . '_number', 'name', 'priority', 'status'],
 
+
+    'panels' => [
+        [
+            'label' => 'LBL_PANEL_DEFAULT',
+            'fields' => [
+                'name',
+                'tag',
+                'assigned_user_name',
+                'team_name',
+            ],
+        ],
+    ],
 ];

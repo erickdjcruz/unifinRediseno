@@ -1,4 +1,4 @@
-<?php
+<?PHP
 /*
  * Your installation or use of this SugarCRM file is subject to the applicable
  * terms available at
@@ -9,14 +9,9 @@
  *
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
-$module_name = 'pr_Procesos_Robina';
-$object_name = 'pr_Procesos_Robina';
-$_module_name = 'pr_procesos_robina';
-$popupMeta = ['moduleMain' => $module_name,
-    'varName' => $object_name,
-    'orderBy' => $_module_name . '.name',
-    'whereClauses' => ['name' => $_module_name . '.name',
-    ],
-    'searchInputs' => [$_module_name . '_number', 'name', 'priority', 'status'],
-
-];
+/**
+ * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
+ */
+require_once('modules/pr_Procesos_Robina/pr_Procesos_Robina_sugar.php');
+class pr_Procesos_Robina extends pr_Procesos_Robina_sugar {
+}

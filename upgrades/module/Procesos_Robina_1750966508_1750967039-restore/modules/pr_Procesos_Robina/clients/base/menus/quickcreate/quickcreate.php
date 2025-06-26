@@ -10,13 +10,9 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 $module_name = 'pr_Procesos_Robina';
-$object_name = 'pr_Procesos_Robina';
-$_module_name = 'pr_procesos_robina';
-$popupMeta = ['moduleMain' => $module_name,
-    'varName' => $object_name,
-    'orderBy' => $_module_name . '.name',
-    'whereClauses' => ['name' => $_module_name . '.name',
-    ],
-    'searchInputs' => [$_module_name . '_number', 'name', 'priority', 'status'],
-
+$viewdefs[$module_name]['base']['menu']['quickcreate'] = [
+    'layout' => 'create',
+    'label' => 'LNK_NEW_RECORD',
+    'visible' => false,
+    'order' => 1,
 ];

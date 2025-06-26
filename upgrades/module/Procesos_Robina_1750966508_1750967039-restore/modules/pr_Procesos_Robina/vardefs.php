@@ -211,7 +211,7 @@ $dictionary['pr_Procesos_Robina'] = array(
   array (
     'required' => false,
     'readonly' => false,
-    'name' => 'id_cuenta',
+    'name' => 'Id Cuenta',
     'vname' => 'LBL_ID_CUENTA',
     'type' => 'varchar',
     'massupdate' => true,
