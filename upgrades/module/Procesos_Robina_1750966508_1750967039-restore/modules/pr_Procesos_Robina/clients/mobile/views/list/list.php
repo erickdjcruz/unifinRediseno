@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Your installation or use of this SugarCRM file is subject to the applicable
  * terms available at
@@ -9,12 +10,11 @@
  *
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
-
 $module_name = 'pr_Procesos_Robina';
-$viewdefs[$module_name]['base']['view']['selection-list'] = [
+$viewdefs[$module_name]['mobile']['view']['list'] = [
     'panels' => [
         [
-            'label' => 'LBL_PANEL_1',
+            'label' => 'LBL_PANEL_DEFAULT',
             'fields' => [
                 [
                     'name' => 'name',
@@ -36,18 +36,7 @@ $viewdefs[$module_name]['base']['view']['selection-list'] = [
                     'enabled' => true,
                     'link' => true,
                 ],
-                [
-                    'label' => 'LBL_DATE_MODIFIED',
-                    'enabled' => true,
-                    'default' => true,
-                    'name' => 'date_modified',
-                    'readonly' => true,
-                ],
             ],
         ],
-    ],
-    'orderBy' => [
-        'field' => 'date_modified',
-        'direction' => 'desc',
     ],
 ];

@@ -9,14 +9,24 @@
  *
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
+
+
 $module_name = 'pr_Procesos_Robina';
-$object_name = 'pr_Procesos_Robina';
-$_module_name = 'pr_procesos_robina';
-$popupMeta = ['moduleMain' => $module_name,
-    'varName' => $object_name,
-    'orderBy' => $_module_name . '.name',
-    'whereClauses' => ['name' => $_module_name . '.name',
-    ],
-    'searchInputs' => [$_module_name . '_number', 'name', 'priority', 'status'],
+$listViewDefs[$module_name] = [
+    'NAME' => [
+        'width' => '32',
+        'label' => 'LBL_NAME',
+        'default' => true,
+        'link' => true],
+    'TEAM_NAME' => [
+        'width' => '9',
+        'label' => 'LBL_TEAM',
+        'default' => false],
+    'ASSIGNED_USER_NAME' => [
+        'width' => '9',
+        'label' => 'LBL_ASSIGNED_TO_NAME',
+        'module' => 'Employees',
+        'id' => 'ASSIGNED_USER_ID',
+        'default' => true],
 
 ];

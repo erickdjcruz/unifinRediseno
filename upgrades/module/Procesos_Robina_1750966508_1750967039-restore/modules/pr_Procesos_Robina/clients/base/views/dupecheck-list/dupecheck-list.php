@@ -11,7 +11,7 @@
  */
 
 $module_name = 'pr_Procesos_Robina';
-$viewdefs[$module_name]['base']['view']['selection-list'] = [
+$viewdefs[$module_name]['base']['view']['dupecheck-list'] = [
     'panels' => [
         [
             'label' => 'LBL_PANEL_1',
@@ -45,9 +45,5 @@ $viewdefs[$module_name]['base']['view']['selection-list'] = [
                 ],
             ],
         ],
-    ],
-    'orderBy' => [
-        'field' => 'date_modified',
-        'direction' => 'desc',
     ],
 ];
