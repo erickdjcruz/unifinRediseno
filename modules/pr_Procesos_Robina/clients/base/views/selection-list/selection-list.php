@@ -1,121 +1,53 @@
 <?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+
 $module_name = 'pr_Procesos_Robina';
-$viewdefs[$module_name] = 
-array (
-  'base' => 
-  array (
-    'view' => 
-    array (
-      'selection-list' => 
-      array (
-        'panels' => 
-        array (
-          0 => 
-          array (
+$viewdefs[$module_name]['base']['view']['selection-list'] = [
+    'panels' => [
+        [
             'label' => 'LBL_PANEL_1',
-            'fields' => 
-            array (
-              0 => 
-              array (
-                'name' => 'name',
-                'label' => 'LBL_NAME',
-                'default' => true,
-                'enabled' => true,
-                'link' => true,
-              ),
-              1 => 
-              array (
-                'name' => 'rfc',
-                'label' => 'LBL_RFC',
-                'enabled' => true,
-                'readonly' => false,
-                'default' => true,
-              ),
-              2 => 
-              array (
-                'name' => 'ticket',
-                'label' => 'LBL_TICKET',
-                'enabled' => true,
-                'readonly' => false,
-                'default' => true,
-              ),
-              3 => 
-              array (
-                'name' => 'estatus_procesado',
-                'label' => 'LBL_ESTATUS_PROCESADO',
-                'enabled' => true,
-                'readonly' => false,
-                'default' => true,
-              ),
-              4 => 
-              array (
-                'name' => 'estatus_robina',
-                'label' => 'LBL_ESTATUS_ROBINA',
-                'enabled' => true,
-                'readonly' => false,
-                'default' => true,
-              ),
-              5 => 
-              array (
-                'name' => 'fecha_emision',
-                'label' => 'LBL_FECHA_EMISION',
-                'enabled' => true,
-                'readonly' => false,
-                'default' => true,
-              ),
-              6 => 
-              array (
-                'name' => 'assigned_user_name',
-                'label' => 'LBL_ASSIGNED_TO_NAME',
-                'default' => true,
-                'enabled' => true,
-                'link' => true,
-              ),
-              7 => 
-              array (
-                'label' => 'LBL_DATE_MODIFIED',
-                'enabled' => true,
-                'default' => true,
-                'name' => 'date_modified',
-                'readonly' => true,
-              ),
-              8 => 
-              array (
-                'name' => 'created_by_name',
-                'label' => 'LBL_CREATED',
-                'enabled' => true,
-                'readonly' => true,
-                'id' => 'CREATED_BY',
-                'link' => true,
-                'default' => false,
-              ),
-              9 => 
-              array (
-                'name' => 'date_entered',
-                'label' => 'LBL_DATE_ENTERED',
-                'enabled' => true,
-                'readonly' => true,
-                'default' => false,
-              ),
-              10 => 
-              array (
-                'name' => 'modified_by_name',
-                'label' => 'LBL_MODIFIED',
-                'enabled' => true,
-                'readonly' => true,
-                'id' => 'MODIFIED_USER_ID',
-                'link' => true,
-                'default' => false,
-              ),
-            ),
-          ),
-        ),
-        'orderBy' => 
-        array (
-          'field' => 'date_modified',
-          'direction' => 'desc',
-        ),
-      ),
-    ),
-  ),
-);
+            'fields' => [
+                [
+                    'name' => 'name',
+                    'label' => 'LBL_NAME',
+                    'default' => true,
+                    'enabled' => true,
+                    'link' => true,
+                ],
+                [
+                    'name' => 'team_name',
+                    'label' => 'LBL_TEAM',
+                    'default' => true,
+                    'enabled' => true,
+                ],
+                [
+                    'name' => 'assigned_user_name',
+                    'label' => 'LBL_ASSIGNED_TO_NAME',
+                    'default' => true,
+                    'enabled' => true,
+                    'link' => true,
+                ],
+                [
+                    'label' => 'LBL_DATE_MODIFIED',
+                    'enabled' => true,
+                    'default' => true,
+                    'name' => 'date_modified',
+                    'readonly' => true,
+                ],
+            ],
+        ],
+    ],
+    'orderBy' => [
+        'field' => 'date_modified',
+        'direction' => 'desc',
+    ],
+];

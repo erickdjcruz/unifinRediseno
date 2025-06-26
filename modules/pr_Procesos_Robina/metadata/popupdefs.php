@@ -1,90 +1,22 @@
 <?php
-$popupMeta = array (
-    'moduleMain' => 'pr_Procesos_Robina',
-    'varName' => 'pr_Procesos_Robina',
-    'orderBy' => 'pr_procesos_robina.name',
-    'whereClauses' => array (
-  'name' => 'pr_procesos_robina.name',
-),
-    'searchInputs' => array (
-  0 => 'pr_procesos_robina_number',
-  1 => 'name',
-  2 => 'priority',
-  3 => 'status',
-),
-    'listviewdefs' => array (
-  'NAME' => 
-  array (
-    'type' => 'name',
-    'readonly' => false,
-    'default' => true,
-    'label' => 'LBL_NAME',
-    'width' => 10,
-  ),
-  'RFC' => 
-  array (
-    'readonly' => false,
-    'type' => 'varchar',
-    'default' => true,
-    'label' => 'LBL_RFC',
-    'width' => 10,
-  ),
-  'TICKET' => 
-  array (
-    'readonly' => false,
-    'type' => 'varchar',
-    'default' => true,
-    'label' => 'LBL_TICKET',
-    'width' => 10,
-  ),
-  'ESTATUS_PROCESADO' => 
-  array (
-    'readonly' => false,
-    'type' => 'varchar',
-    'default' => true,
-    'label' => 'LBL_ESTATUS_PROCESADO',
-    'width' => 10,
-  ),
-  'ESTATUS_ROBINA' => 
-  array (
-    'readonly' => false,
-    'type' => 'varchar',
-    'default' => true,
-    'label' => 'LBL_ESTATUS_ROBINA',
-    'width' => 10,
-  ),
-  'FECHA_EMISION' => 
-  array (
-    'readonly' => false,
-    'type' => 'varchar',
-    'default' => true,
-    'label' => 'LBL_FECHA_EMISION',
-    'width' => 10,
-  ),
-  'ASSIGNED_USER_NAME' => 
-  array (
-    'link' => true,
-    'type' => 'relate',
-    'related_fields' => 
-    array (
-      0 => 'assigned_user_id',
-    ),
-    'label' => 'LBL_ASSIGNED_TO',
-    'id' => 'ASSIGNED_USER_ID',
-    'width' => 10,
-    'default' => true,
-  ),
-  'DATE_MODIFIED' => 
-  array (
-    'type' => 'datetime',
-    'studio' => 
-    array (
-      'portaleditview' => false,
-    ),
-    'readonly' => true,
-    'label' => 'LBL_DATE_MODIFIED',
-    'width' => 10,
-    'default' => true,
-  ),
-),
-);
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$module_name = 'pr_Procesos_Robina';
+$object_name = 'pr_Procesos_Robina';
+$_module_name = 'pr_procesos_robina';
+$popupMeta = ['moduleMain' => $module_name,
+    'varName' => $object_name,
+    'orderBy' => $_module_name . '.name',
+    'whereClauses' => ['name' => $_module_name . '.name',
+    ],
+    'searchInputs' => [$_module_name . '_number', 'name', 'priority', 'status'],
+
+];

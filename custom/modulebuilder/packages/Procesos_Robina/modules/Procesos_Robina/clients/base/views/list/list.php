@@ -33,13 +33,21 @@ array (
               ),
               2 => 
               array (
+                'name' => 'id_cuenta',
+                'label' => 'LBL_ID_CUENTA',
+                'enabled' => true,
+                'readonly' => false,
+                'default' => true,
+              ),
+              3 => 
+              array (
                 'name' => 'ticket',
                 'label' => 'LBL_TICKET',
                 'enabled' => true,
                 'readonly' => false,
                 'default' => true,
               ),
-              3 => 
+              4 => 
               array (
                 'name' => 'estatus_procesado',
                 'label' => 'LBL_ESTATUS_PROCESADO',
@@ -47,7 +55,7 @@ array (
                 'readonly' => false,
                 'default' => true,
               ),
-              4 => 
+              5 => 
               array (
                 'name' => 'estatus_robina',
                 'label' => 'LBL_ESTATUS_ROBINA',
@@ -55,7 +63,7 @@ array (
                 'readonly' => false,
                 'default' => true,
               ),
-              5 => 
+              6 => 
               array (
                 'name' => 'fecha_emision',
                 'label' => 'LBL_FECHA_EMISION',
@@ -63,7 +71,7 @@ array (
                 'readonly' => false,
                 'default' => true,
               ),
-              6 => 
+              7 => 
               array (
                 'name' => 'assigned_user_name',
                 'label' => 'LBL_ASSIGNED_TO_NAME',
@@ -71,26 +79,26 @@ array (
                 'enabled' => true,
                 'link' => true,
               ),
-              7 => 
+              8 => 
               array (
                 'name' => 'date_modified',
                 'enabled' => true,
                 'default' => true,
               ),
-              8 => 
+              9 => 
               array (
                 'name' => 'date_entered',
                 'enabled' => true,
                 'default' => true,
               ),
-              9 => 
+              10 => 
               array (
                 'name' => 'team_name',
                 'label' => 'LBL_TEAM',
                 'default' => false,
                 'enabled' => true,
               ),
-              10 => 
+              11 => 
               array (
                 'name' => 'modified_by_name',
                 'label' => 'LBL_MODIFIED',
@@ -100,7 +108,7 @@ array (
                 'link' => true,
                 'default' => false,
               ),
-              11 => 
+              12 => 
               array (
                 'name' => 'created_by_name',
                 'label' => 'LBL_CREATED',

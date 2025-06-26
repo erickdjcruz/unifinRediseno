@@ -200,6 +200,9 @@ array (
               ),
               5 => 
               array (
+                'readonly' => false,
+                'name' => 'id_cuenta',
+                'label' => 'LBL_ID_CUENTA',
               ),
             ),
           ),
