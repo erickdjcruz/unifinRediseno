@@ -8,9 +8,10 @@ class crm_robina_class
         require_once("custom/Levementum/UnifinAPI.php");
         global $sugar_config,$db;
 
-        if($bean->estatus_procesado == 'Recibido'){
+        if($bean->estatus_procesado == 'Recibido' && $bean->rfc != ''){
             $GLOBALS['log']->fatal("********* Webhook Recibido *************");
-            $query = "SELECT * from accounts_cstm WHERE rfc_c = '{$bean->rfc}'";
+            $GLOBALS['log']->fatal("RFC:".$bean->rfc);
+            $query = "SELECT * from accounts_cstm WHERE id_c = '{$bean->id_cuenta}'";
             //$GLOBALS['log']->fatal("QUERYS:".$query);
             $regacc = $db->query($query);
             $accs = [];
