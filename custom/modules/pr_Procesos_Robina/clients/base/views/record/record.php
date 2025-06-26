@@ -199,6 +199,15 @@ array (
                 'name' => 'estatus_robina',
                 'label' => 'LBL_ESTATUS_ROBINA',
               ),
+              5 => 
+              array (
+                'readonly' => false,
+                'name' => 'id_cuenta',
+                'label' => 'LBL_ID_CUENTA',
+              ),
+              6 => 
+              array (
+              ),
             ),
           ),
           2 => 

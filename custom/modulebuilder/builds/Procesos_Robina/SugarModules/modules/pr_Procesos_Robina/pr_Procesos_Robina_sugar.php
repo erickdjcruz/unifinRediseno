@@ -63,6 +63,7 @@ class pr_Procesos_Robina_sugar extends Basic {
     public $estatus_procesado;
     public $estatus_robina;
     public $fecha_emision;
+    public $id_cuenta;
     
     public function bean_implements($interface){
         switch($interface){

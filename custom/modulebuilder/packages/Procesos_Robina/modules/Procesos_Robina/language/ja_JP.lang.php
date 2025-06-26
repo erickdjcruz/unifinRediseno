@@ -61,4 +61,5 @@ $mod_strings = array (
   'LBL_ESTATUS_PROCESADO' => 'Estatus procesado',
   'LBL_ESTATUS_ROBINA' => 'Estatus robina',
   'LBL_FECHA_EMISION' => 'Fecha emision',
+  'LBL_ID_CUENTA' => 'Id Cuenta',
 );
