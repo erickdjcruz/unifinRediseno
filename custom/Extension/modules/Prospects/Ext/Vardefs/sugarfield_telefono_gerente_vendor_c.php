@@ -1,5 +1,5 @@
 <?php
- // created: 2025-05-31 16:52:26
+ // created: 2025-06-27 02:08:18
 $dictionary['Prospect']['fields']['telefono_gerente_vendor_c']['labelValue']='Teléfono del F&I o Gerente de crédito';
 $dictionary['Prospect']['fields']['telefono_gerente_vendor_c']['full_text_search']=array (
   'enabled' => '0',
