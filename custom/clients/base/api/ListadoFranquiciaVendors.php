@@ -32,9 +32,9 @@ class ListadoFranquiciaVendors extends SugarApi
             $tokenUrl = 'https://login.windows.net/unifin.com.mx/oauth2/token';
             $tokenParams = [
                 'grant_type' => 'client_credentials',
-                'client_id' => '41070bb1-289d-4e21-9ab0-ac08d2a00a37',
-                'client_secret' => '5wC8Q~fBGdFtRouZRYrvhwMD.XRBcwycoBbqidk9',
-                'resource' => 'https://unifintestdf9769911a6cda6fdevaos.cloudax.dynamics.com',
+                'client_id' => '679c982f-e343-49fb-ba88-fd8bf2b2d1fb',
+                'client_secret' => '3Qdn3re63R_sBO6oG1.0LUUOv..oe7tX~_',
+                'resource' => 'https://uatunifin.sandbox.operations.dynamics.com',
             ];
 
             $ch = curl_init($tokenUrl);
@@ -78,7 +78,8 @@ class ListadoFranquiciaVendors extends SugarApi
 
         // Consumir API externo de Dynamics - VENDORS
         // rawurlencode("dataAreaId eq 'ufin'") ⟶ dataAreaId%20eq%20%27ufin%27
-        $apiUrl = "https://unifintestdf9769911a6cda6fdevaos.cloudax.dynamics.com/data/UNF_VendReferencedVendors?cross-company=true&\$filter=" . rawurlencode("dataAreaId eq 'ufin'");
+        // $apiUrl = "https://unifintestdf9769911a6cda6fdevaos.cloudax.dynamics.com/data/UNF_VendReferencedVendors?cross-company=true&\$filter=" . rawurlencode("dataAreaId eq 'ufin'");
+        $apiUrl = "https://uatunifin.sandbox.operations.dynamics.com/data/UNF_VendReferencedVendors?cross-company=true&\$filter=" . rawurlencode("dataAreaId eq 'ufin'");
 
         $ch = curl_init($apiUrl);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //SE DESACTIVA VERIFICADOR DE SSL PARA PRUEBAS
