@@ -1041,12 +1041,12 @@
         $('[data-name="phone_work"]').hide();
         $('[data-name="phone_home"]').hide();
         $('[data-name="phone_mobile"]').hide();
-
         //Oculta fecha de bloqueo
         $('[data-name="fecha_bloqueo_origen_c"]').hide();
-
         //Deshabilita Estado
         $('[data-name="estatus_po_c"]').attr('style', 'pointer-events:none');
+        //Oculta Id Franquicia Vendors
+        $('[data-name="id_franquicia_vendors_c"]').hide();
 
         var permisosGestionTeamLeader = app.user.attributes.gestion_team_leaders_c || "";
         //Deshabilita Origen
