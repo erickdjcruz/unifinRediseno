@@ -102,3 +102,4 @@ $mod_strings['LBL_TELEFONO_GERENTE_VENDOR_C'] = 'Teléfono del F&amp;I o Gerente
 $mod_strings['LBL_VENDEDOR_C'] = 'Vendedor';
 $mod_strings['LBL_EMAIL_VENDEDOR_C'] = 'Email del vendedor';
 $mod_strings['LBL_TELEFONO_VENDEDOR_C'] = 'Teléfono del vendedor';
+$mod_strings['LBL_ID_FRANQUICIA_VENDORS_C'] = 'Id Franquicia Vendors';

@@ -1,5 +1,5 @@
 <?php
- // created: 2025-05-31 16:53:39
+ // created: 2025-06-27 02:08:49
 $dictionary['Prospect']['fields']['vendedor_c']['labelValue']='Vendedor';
 $dictionary['Prospect']['fields']['vendedor_c']['full_text_search']=array (
   'enabled' => '0',

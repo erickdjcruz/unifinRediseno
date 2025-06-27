@@ -1148,6 +1148,8 @@
         $('[data-name="homonimo_c"]').hide();
         //Oculta fecha de bloqueo
         $('[data-name="fecha_bloqueo_origen_c"]').hide();
+        //Oculta Id Franquicia Vendors
+        $('[data-name="id_franquicia_vendors_c"]').hide();
     },
 
     convert_Po_to_Lead: function () {
