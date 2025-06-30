@@ -602,12 +602,8 @@
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
             this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
-            if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined) {                
-                if(this.model.get('detalle_origen_c') == '116'){
-                    campos_req.push('franquicia_vendor_c');
-                }else{
-                    campos_req.push('franquicia_c');
-                }
+            if(this.model.get('detalle_origen_c') != '116' && (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined)) {
+                campos_req.push('franquicia_c');
             }
             if (this.model.get('asesor_alianza_c') == '' || this.model.get('asesor_alianza_c') == undefined) {
                 campos_req.push('asesor_alianza_c');
@@ -622,6 +618,12 @@
 
         if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
             //CAMPOS REQUERIDOS DE ALIANZAS - VENDORS
+            if (this.model.get('id_franquicia_vendors_c') == '' || this.model.get('id_franquicia_vendors_c') == undefined) { 
+                campos_req.push('prospects_franquicia_vendors');
+                //Custom Franquicia Vendors requerido
+                errors['prospects_franquicia_vendors'] = errors['prospects_franquicia_vendors'] || {};
+                errors['prospects_franquicia_vendors'].required = true;
+            }
             if (this.model.get('gerente_vendor_c') == '' || this.model.get('gerente_vendor_c') == undefined) {
                 campos_req.push('gerente_vendor_c');
             }
