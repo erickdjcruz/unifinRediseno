@@ -27,7 +27,7 @@ class crm_robina_class
             $beanAccount = BeanFactory::retrieveBean('Accounts', $idCliente , array('disable_row_level_security' => true));
             //      $idCliente = $args['idCliente'];
             
-            $rfc = $beanAccount->rfc_c;
+            $rfc = $bean->rfc;
             $date_issued = $bean->vigencia;
             $vigencia = gmdate("Y-m-d");
             //$vigencia = $date_issued;
