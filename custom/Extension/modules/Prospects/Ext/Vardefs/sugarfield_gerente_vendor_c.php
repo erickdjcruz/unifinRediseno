@@ -1,5 +1,5 @@
 <?php
- // created: 2025-05-31 16:51:14
+ // created: 2025-06-27 02:18:44
 $dictionary['Prospect']['fields']['gerente_vendor_c']['labelValue']='F&I o Gerente de crédito';
 $dictionary['Prospect']['fields']['gerente_vendor_c']['full_text_search']=array (
   'enabled' => '0',

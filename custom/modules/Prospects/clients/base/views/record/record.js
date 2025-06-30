@@ -491,10 +491,17 @@
             this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
             if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined) {
-                campos = campos + '<b>' + 'Franquicia' + '</b><br>';
+                if(this.model.get('detalle_origen_c') == '116'){
+                    campos = campos + '<b>' + 'Franquicia Vendors' + '</b><br>';
 
-                errors['franquicia_c'] = errors['franquicia_c'] || {};
-                errors['franquicia_c'].required = true;
+                    errors['franquicia_vendor_c'] = errors['franquicia_vendor_c'] || {};
+                    errors['franquicia_vendor_c'].required = true;
+                }else{
+                    campos = campos + '<b>' + 'Franquicia' + '</b><br>';
+
+                    errors['franquicia_c'] = errors['franquicia_c'] || {};
+                    errors['franquicia_c'].required = true;
+                }
             }
             if (this.model.get('asesor_alianza_c') == '' || this.model.get('asesor_alianza_c') == undefined) {
                 campos = campos + '<b>' + 'Asesor de la Alianza' + '</b><br>';
@@ -638,7 +645,11 @@
             this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
             if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == null) {
-                campos_req.push('franquicia_c');
+                if(this.model.get('detalle_origen_c') == '116'){
+                    campos_req.push('franquicia_vendor_c');
+                }else{
+                    campos_req.push('franquicia_c');
+                }
             }
             if (this.model.get('asesor_alianza_c') == '' || this.model.get('asesor_alianza_c') == null) {
                 campos_req.push('asesor_alianza_c');
@@ -1148,6 +1159,10 @@
         $('[data-name="homonimo_c"]').hide();
         //Oculta fecha de bloqueo
         $('[data-name="fecha_bloqueo_origen_c"]').hide();
+        //Oculta Id Franquicia Vendors
+        $('[data-name="id_franquicia_vendors_c"]').hide();
+        //Oculta Etiqueta Franquicia Vendors
+        $('[data-name="label_franquicia_vendors_c"]').hide();
     },
 
     convert_Po_to_Lead: function () {
@@ -1410,7 +1425,11 @@
             this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //VALIDA CAMPOS DE ALIANZA
             if (this.model.get('franquicia_c') === null || this.model.get('franquicia_c') === "") {
-                campos = campos + '<b>' + 'Franquicia' + '</b><br>';
+                 if(this.model.get('detalle_origen_c') == '116'){
+                    campos = campos + '<b>' + 'Franquicia Vendors' + '</b><br>';
+                }else{
+                    campos = campos + '<b>' + 'Franquicia' + '</b><br>';
+                }
             }
             if (this.model.get('asesor_alianza_c') === null || this.model.get('asesor_alianza_c') === "") {
                 campos = campos + '<b>' + 'Asesor de la Alianza' + '</b><br>';
@@ -2275,7 +2294,7 @@
             }
         }
         //CAMBIO DE ETIQUETAS EN ALIANZAS - VENDORS
-        //this.cambiarEtiquetasVendor();
+        this.cambiarEtiquetasVendor();
 
         // Siempre limpia si cambia el valor de detalle_origen_c
         if ( !this.carga_inicial && (this.model.previous('detalle_origen_c') !== this.model.get('detalle_origen_c'))) {
@@ -2370,22 +2389,21 @@
         callback(null, fields, errors);
     },
 
-
     cambiarEtiquetasVendor: function () {
         var detalleOrigen = this.model.get('detalle_origen_c');               
-        var labelFranquicia = this.$('[data-name="franquicia_c"]').closest('.record-cell').find('.record-label');
+        // var labelFranquicia = this.$('[data-name="franquicia_c"]').closest('.record-cell').find('.record-label');
         var labelAsesorAlianza = this.$('[data-name="asesor_alianza_c"]').closest('.record-cell').find('.record-label');        
         var labelEmailAsesorAlianza = this.$('[data-name="email_aa_c"]').closest('.record-cell').find('.record-label');        
         var labelTelefonoAsesorAlianza = this.$('[data-name="telefono_aa_c"]').closest('.record-cell').find('.record-label');        
         // Cambia la etiqueta visual de los campos vendors
         if (detalleOrigen === '116') {
             console.log("CAMBIO DE ETIQUETA VENDORS ", detalleOrigen); 
-            labelFranquicia.text('Vendor');
+            // labelFranquicia.text('Vendor');
             labelAsesorAlianza.text('Gerente comercial');
             labelEmailAsesorAlianza.text('Email del gerente comercial');
             labelTelefonoAsesorAlianza.text('Teléfono del gerente comercial');
         } else {
-            labelFranquicia.text('Franquicia');
+            // labelFranquicia.text('Franquicia');
             labelAsesorAlianza.text('Asesor de la Alianza');
             labelEmailAsesorAlianza.text('Email del Asesor de Alianza');
             labelTelefonoAsesorAlianza.text('Teléfono del Asesor de Alianza');
