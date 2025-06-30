@@ -602,8 +602,12 @@
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
             this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
-            if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined) {
-                campos_req.push('franquicia_c');
+            if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined) {                
+                if(this.model.get('detalle_origen_c') == '116'){
+                    campos_req.push('franquicia_vendor_c');
+                }else{
+                    campos_req.push('franquicia_c');
+                }
             }
             if (this.model.get('asesor_alianza_c') == '' || this.model.get('asesor_alianza_c') == undefined) {
                 campos_req.push('asesor_alianza_c');

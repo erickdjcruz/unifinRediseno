@@ -491,10 +491,17 @@
             this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
             if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == undefined) {
-                campos = campos + '<b>' + 'Franquicia' + '</b><br>';
+                if(this.model.get('detalle_origen_c') == '116'){
+                    campos = campos + '<b>' + 'Franquicia Vendors' + '</b><br>';
 
-                errors['franquicia_c'] = errors['franquicia_c'] || {};
-                errors['franquicia_c'].required = true;
+                    errors['franquicia_vendor_c'] = errors['franquicia_vendor_c'] || {};
+                    errors['franquicia_vendor_c'].required = true;
+                }else{
+                    campos = campos + '<b>' + 'Franquicia' + '</b><br>';
+
+                    errors['franquicia_c'] = errors['franquicia_c'] || {};
+                    errors['franquicia_c'].required = true;
+                }
             }
             if (this.model.get('asesor_alianza_c') == '' || this.model.get('asesor_alianza_c') == undefined) {
                 campos = campos + '<b>' + 'Asesor de la Alianza' + '</b><br>';
@@ -638,7 +645,11 @@
             this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
             if (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == null) {
-                campos_req.push('franquicia_c');
+                if(this.model.get('detalle_origen_c') == '116'){
+                    campos_req.push('franquicia_vendor_c');
+                }else{
+                    campos_req.push('franquicia_c');
+                }
             }
             if (this.model.get('asesor_alianza_c') == '' || this.model.get('asesor_alianza_c') == null) {
                 campos_req.push('asesor_alianza_c');
@@ -1414,7 +1425,11 @@
             this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //VALIDA CAMPOS DE ALIANZA
             if (this.model.get('franquicia_c') === null || this.model.get('franquicia_c') === "") {
-                campos = campos + '<b>' + 'Franquicia' + '</b><br>';
+                 if(this.model.get('detalle_origen_c') == '116'){
+                    campos = campos + '<b>' + 'Franquicia Vendors' + '</b><br>';
+                }else{
+                    campos = campos + '<b>' + 'Franquicia' + '</b><br>';
+                }
             }
             if (this.model.get('asesor_alianza_c') === null || this.model.get('asesor_alianza_c') === "") {
                 campos = campos + '<b>' + 'Asesor de la Alianza' + '</b><br>';

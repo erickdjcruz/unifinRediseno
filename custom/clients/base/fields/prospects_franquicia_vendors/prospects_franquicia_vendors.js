@@ -128,6 +128,8 @@
 
                 $select.select2({ width: '100%' });
             }
+            this.$el.find('.record-label').append('<span style="color:red;"> *</span>');
+            this.$el.closest('.record-cell').addClass('required');
         } else {
             // DETAIL VIEW
             var label = 'Sin Alianza'; // Por defecto
