@@ -1150,6 +1150,8 @@
         $('[data-name="fecha_bloqueo_origen_c"]').hide();
         //Oculta Id Franquicia Vendors
         $('[data-name="id_franquicia_vendors_c"]').hide();
+        //Oculta Etiqueta Franquicia Vendors
+        $('[data-name="label_franquicia_vendors_c"]').hide();
     },
 
     convert_Po_to_Lead: function () {
@@ -2277,7 +2279,7 @@
             }
         }
         //CAMBIO DE ETIQUETAS EN ALIANZAS - VENDORS
-        //this.cambiarEtiquetasVendor();
+        this.cambiarEtiquetasVendor();
 
         // Siempre limpia si cambia el valor de detalle_origen_c
         if ( !this.carga_inicial && (this.model.previous('detalle_origen_c') !== this.model.get('detalle_origen_c'))) {
@@ -2372,22 +2374,21 @@
         callback(null, fields, errors);
     },
 
-
     cambiarEtiquetasVendor: function () {
         var detalleOrigen = this.model.get('detalle_origen_c');               
-        var labelFranquicia = this.$('[data-name="franquicia_c"]').closest('.record-cell').find('.record-label');
+        // var labelFranquicia = this.$('[data-name="franquicia_c"]').closest('.record-cell').find('.record-label');
         var labelAsesorAlianza = this.$('[data-name="asesor_alianza_c"]').closest('.record-cell').find('.record-label');        
         var labelEmailAsesorAlianza = this.$('[data-name="email_aa_c"]').closest('.record-cell').find('.record-label');        
         var labelTelefonoAsesorAlianza = this.$('[data-name="telefono_aa_c"]').closest('.record-cell').find('.record-label');        
         // Cambia la etiqueta visual de los campos vendors
         if (detalleOrigen === '116') {
             console.log("CAMBIO DE ETIQUETA VENDORS ", detalleOrigen); 
-            labelFranquicia.text('Vendor');
+            // labelFranquicia.text('Vendor');
             labelAsesorAlianza.text('Gerente comercial');
             labelEmailAsesorAlianza.text('Email del gerente comercial');
             labelTelefonoAsesorAlianza.text('Teléfono del gerente comercial');
         } else {
-            labelFranquicia.text('Franquicia');
+            // labelFranquicia.text('Franquicia');
             labelAsesorAlianza.text('Asesor de la Alianza');
             labelEmailAsesorAlianza.text('Email del Asesor de Alianza');
             labelTelefonoAsesorAlianza.text('Teléfono del Asesor de Alianza');

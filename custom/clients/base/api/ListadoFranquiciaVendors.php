@@ -1,6 +1,14 @@
 <?php
 if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
+global $sugar_config;
+$GLOBALS['url_token_dynamics_vendors'] = $sugar_config['url_token_dynamics_vendors'];
+$GLOBALS['grant_type_dynamics_vendors'] = $sugar_config['grant_type_dynamics_vendors'];
+$GLOBALS['client_id_dynamics_vendors'] = $sugar_config['client_id_dynamics_vendors'];
+$GLOBALS['client_secret_dynamics_vendors'] = $sugar_config['client_secret_dynamics_vendors'];
+$GLOBALS['resource_dynamics_vendors'] = $sugar_config['resource_dynamics_vendors'];
+$GLOBALS['url_api_dynamics_vendors'] = $sugar_config['url_api_dynamics_vendors'];
+
 class ListadoFranquiciaVendors extends SugarApi
 {
     public function registerApiRest()
@@ -29,13 +37,15 @@ class ListadoFranquiciaVendors extends SugarApi
 
         if (!$accessToken || !$tokenExpires || $currentTime >= $tokenExpires) {
             // Obtener nuevo token desde Azure
-            $tokenUrl = 'https://login.windows.net/unifin.com.mx/oauth2/token';
+            $tokenUrl = $GLOBALS['url_token_dynamics_vendors'];
+            // $GLOBALS['log']->fatal("TOKEN_URL ". $tokenUrl);
             $tokenParams = [
-                'grant_type' => 'client_credentials',
-                'client_id' => '41070bb1-289d-4e21-9ab0-ac08d2a00a37',
-                'client_secret' => '5wC8Q~fBGdFtRouZRYrvhwMD.XRBcwycoBbqidk9',
-                'resource' => 'https://unifintestdf9769911a6cda6fdevaos.cloudax.dynamics.com',
+                'grant_type' => $GLOBALS['grant_type_dynamics_vendors'],
+                'client_id' => $GLOBALS['client_id_dynamics_vendors'],
+                'client_secret' => $GLOBALS['client_secret_dynamics_vendors'],
+                'resource' => $GLOBALS['resource_dynamics_vendors'],
             ];
+            // $GLOBALS['log']->fatal($tokenParams);
 
             $ch = curl_init($tokenUrl);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //SE DESACTIVA VERIFICADOR DE SSL PARA PRUEBAS
@@ -78,8 +88,8 @@ class ListadoFranquiciaVendors extends SugarApi
 
         // Consumir API externo de Dynamics - VENDORS
         // rawurlencode("dataAreaId eq 'ufin'") ⟶ dataAreaId%20eq%20%27ufin%27
-        $apiUrl = "https://unifintestdf9769911a6cda6fdevaos.cloudax.dynamics.com/data/UNF_VendReferencedVendors?cross-company=true&\$filter=" . rawurlencode("dataAreaId eq 'ufin'");
-
+        $apiUrl = $GLOBALS['url_api_dynamics_vendors'] . rawurlencode("dataAreaId eq 'ufin'");
+        // $GLOBALS['log']->fatal("API_URL ". $apiUrl);
         $ch = curl_init($apiUrl);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //SE DESACTIVA VERIFICADOR DE SSL PARA PRUEBAS
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -103,7 +113,7 @@ class ListadoFranquiciaVendors extends SugarApi
 
         $records = [];
         foreach ($data['value'] as $vendor) {
-            $GLOBALS['log']->fatal($vendor);
+            // $GLOBALS['log']->fatal($vendor);
             if (!empty($vendor['AccountNum']) && !empty($vendor['Name'])) {
                 $records[] = [
                     'id' => $vendor['AccountNum'],
