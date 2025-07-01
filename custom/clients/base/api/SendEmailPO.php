@@ -1524,7 +1524,7 @@ class SendEmailPO extends SugarApi
         }
     }
 
-    public function sendEmailAsesorPO($body_correo, $nombre_empresa, $email_asesor, $name_asesor, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza, $esAlianzaKonnect, $nombre_gerente_credito, $email_gerente_credito, $nombre_vendedor, $email_vendedor, $esAlianzaVendors)
+    public function sendEmailAsesorPO($body_correo, $nombre_empresa, $email_asesor, $name_asesor, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza, $esAlianzaKonnect, $nombre_gerente_credito, $email_gerente_credito, $nombre_vendedor, $email_vendedor, $esAlianzaVendors, $esAlianzaReditus)
     {
         try {
             global $app_list_strings;
