@@ -80,6 +80,8 @@ class SendEmailPO extends SugarApi
         $GLOBALS['log']->fatal('PO (SEND_EMAIL_PROSPECT) - ORIGEN - DETALLE ' . $origen . ' - ' . $detalleOrigen . ' --- ' . $esAlianzaVendors);
         $esAlianzaReditus = ($origen === '12' && $detalleOrigen === '117') ? 1 : 0; //Valida si es Alianza Reditus
         $GLOBALS['log']->fatal('PO (SEND_EMAIL_PROSPECT) - ORIGEN - DETALLE ' . $origen . ' - ' . $detalleOrigen . ' --- ' . $esAlianzaReditus);
+        $esAprobadorNoDirectorPO = 0; //BANDERA PARA APROBADORES (NO DIRECTOR)
+        $esAprobadorReenvioPO = 0; //BANDERA PARA APROBADORES REENVIO
 
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
@@ -157,7 +159,9 @@ class SendEmailPO extends SugarApi
                     $nombre_vendedor,
                     $email_vendedor,
                     $esAlianzaVendors,
-                    $esAlianzaReditus
+                    $esAlianzaReditus,
+                    $esAprobadorNoDirectorPO,
+                    $esAprobadorReenvioPO
                 );
                 $response .= "<br>Se envió notificación a: " . $asesorName . " , " . $name_comercial . " , " . $name_regional . " , " . $nombre_asesor_alianza;
             }
@@ -198,6 +202,8 @@ class SendEmailPO extends SugarApi
         $telefono_asesor = $beanAsesor->phone_mobile;
         $email_asesor = $beanAsesor->email1;
         $esAlianzaReditus = 0; //BANDERA PARA EL PARAMETRO DE SEND-EMAIL-ASESOR-PO DE ALIANZA REDITUS
+        $esAprobadorNoDirectorPO = 1; //BANDERA PARA APROBADORES (NO DIRECTOR)
+        $esAprobadorReenvioPO = 1; //BANDERA PARA APROBADORES REENVIO
 
         $id_director_regional = $this->getIdDirectorRegional($beanAsesor);
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
@@ -253,7 +259,9 @@ class SendEmailPO extends SugarApi
                 $nombre_vendedor,
                 $email_vendedor,
                 $esAlianzaVendors,
-                $esAlianzaReditus
+                $esAlianzaReditus,
+                $esAprobadorNoDirectorPO,
+                $esAprobadorReenvioPO
             );
             $response .= "<br>Se envió notificación a: " . $asesorName . " , " . $name_comercial . " , " . $name_regional . " , " . $nombre_asesor_alianza;
         }
@@ -284,6 +292,8 @@ class SendEmailPO extends SugarApi
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
         $telefono_asesor = $beanAsesor->phone_mobile;
         $email_asesor = $beanAsesor->email1;
+        $esAprobadorNoDirectorPO = 1; //BANDERA PARA APROBADORES (NO DIRECTOR)
+        $esAprobadorReenvioPO = 1; //BANDERA PARA APROBADORES REENVIO
 
         $id_director_regional = $this->getIdDirectorRegional($beanAsesor);
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
@@ -309,7 +319,20 @@ class SendEmailPO extends SugarApi
         $body_correo_rechazo = $this->buildBodyRechazo($asesorName, $beanPO->name);
 
         if (!empty($email_asesor)) {
-            $this->sendEmailNotificationRechazo($body_correo_rechazo, $nombreEmpresa, $email_asesor, $asesorName, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza);
+            $this->sendEmailNotificationRechazo(
+                $body_correo_rechazo, 
+                $nombreEmpresa, 
+                $email_asesor, 
+                $asesorName, 
+                $email_comercial, 
+                $name_comercial, 
+                $email_regional, 
+                $name_regional, 
+                $nombre_asesor_alianza, 
+                $email_asesor_alianza,
+                $esAprobadorNoDirectorPO,
+                $esAprobadorReenvioPO
+            );
             $response = "<br>Se envió notificación de rechazo a: " . $asesorName . " , " . $nombre_asesor_alianza;
         }
 
@@ -1524,7 +1547,9 @@ class SendEmailPO extends SugarApi
         }
     }
 
-    public function sendEmailAsesorPO($body_correo, $nombre_empresa, $email_asesor, $name_asesor, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza, $esAlianzaKonnect, $nombre_gerente_credito, $email_gerente_credito, $nombre_vendedor, $email_vendedor, $esAlianzaVendors, $esAlianzaReditus)
+    public function sendEmailAsesorPO($body_correo, $nombre_empresa, $email_asesor, $name_asesor, $email_comercial, $name_comercial, 
+    $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza, $esAlianzaKonnect, $nombre_gerente_credito, $email_gerente_credito, 
+    $nombre_vendedor, $email_vendedor, $esAlianzaVendors, $esAlianzaReditus, $esAprobadorNoDirectorPO, $esAprobadorReenvioPO)
     {
         try {
             global $app_list_strings;
@@ -1560,7 +1585,6 @@ class SendEmailPO extends SugarApi
                     }
                 }
             }
-
             //VALIDA SI ES ALIANZA VENDORS
             $GLOBALS['log']->fatal("ES_CC_ALIANZA_VENDORS: " . $esAlianzaVendors);
             if ($esAlianzaVendors === 1) {
@@ -1572,8 +1596,7 @@ class SendEmailPO extends SugarApi
                 if ($email_vendedor != "") {
                     $mailer->addRecipientsCc(new EmailIdentity($email_vendedor, $nombre_vendedor));
                 }
-            }
-                  
+            }                  
             //VALIDA SI ES ALIANZA REDITUS
             $GLOBALS['log']->fatal("ES_CC_ASESORES_ALIANZA_REDITUS: " . $esAlianzaReditus);
             if ($esAlianzaReditus === 1) {
@@ -1581,6 +1604,28 @@ class SendEmailPO extends SugarApi
                 if (!empty($listaEmailsCCReditus)) {
                     foreach ($listaEmailsCCReditus as $keyNombre => $email) {
                         $GLOBALS['log']->fatal("CC_ASESOR_REDITUS: " . $keyNombre . " - " . $email);
+                        $mailer->addRecipientsCc(new EmailIdentity($email, $keyNombre));
+                    }
+                }
+            }
+            //VALIDA SI SON APROBADORES (NO DIRECTOR)
+            $GLOBALS['log']->fatal("ES_CC_APROBADORES_NO_DIRECTOR (APROBADOR): " . $esAprobadorNoDirectorPO);
+            if ($esAprobadorNoDirectorPO === 1) {
+                $listaEmailsCCAprobadoresNoDirector = $app_list_strings['correo_aprobadores_po_gc_list'];
+                if (!empty($listaEmailsCCAprobadoresNoDirector)) {
+                    foreach ($listaEmailsCCAprobadoresNoDirector as $keyNombre => $email) {
+                        $GLOBALS['log']->fatal("CC_APROBADORES_NO_DIRECTOR (APROBADOR): " . $keyNombre . " - " . $email);
+                        $mailer->addRecipientsCc(new EmailIdentity($email, $keyNombre));
+                    }
+                }
+            }
+            //VALIDA SI SON APROBADORES REENVIO
+            $GLOBALS['log']->fatal("ES_CC_APROBADORES_REENVIO (APROBADOR): " . $esAprobadorReenvioPO);
+            if ($esAprobadorReenvioPO === 1) {
+                $listaEmailsCCAprobadorReenvio = $app_list_strings['aprobador_reenvio_po_gc_list'];
+                if (!empty($listaEmailsCCAprobadorReenvio)) {
+                    foreach ($listaEmailsCCAprobadorReenvio as $keyNombre => $email) {
+                        $GLOBALS['log']->fatal("ES_CC_APROBADORES_REENVIO (APROBADOR): " . $keyNombre . " - " . $email);
                         $mailer->addRecipientsCc(new EmailIdentity($email, $keyNombre));
                     }
                 }
@@ -1599,9 +1644,11 @@ class SendEmailPO extends SugarApi
         }
     }
 
-    public function sendEmailNotificationRechazo($body_correo, $nombre_empresa, $email_asesor, $name_asesor, $email_comercial, $name_comercial, $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza)
+    public function sendEmailNotificationRechazo($body_correo, $nombre_empresa, $email_asesor, $name_asesor, $email_comercial, $name_comercial, 
+    $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza, $esAprobadorNoDirectorPO, $esAprobadorReenvioPO)
     {
         try {
+            global $app_list_strings;
             $mailer = MailerFactory::getSystemDefaultMailer();
             $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
             $mailer->setSubject('Rechazo Reenvío Unileasing / ' . $nombre_empresa);
@@ -1623,6 +1670,28 @@ class SendEmailPO extends SugarApi
             //CON COPIA A EMAIL ASESOR ALIANZA
             if ($email_asesor_alianza != "") {
                 $mailer->addRecipientsTo(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
+            }
+            //VALIDA SI SON APROBADORES (NO DIRECTOR)
+            $GLOBALS['log']->fatal("ES_CC_APROBADORES_NO_DIRECTOR (RECHAZO): " . $esAprobadorNoDirectorPO);
+            if ($esAprobadorNoDirectorPO === 1) {
+                $listaEmailsCCAprobadoresNoDirector = $app_list_strings['correo_aprobadores_po_gc_list'];
+                if (!empty($listaEmailsCCAprobadoresNoDirector)) {
+                    foreach ($listaEmailsCCAprobadoresNoDirector as $keyNombre => $email) {
+                        $GLOBALS['log']->fatal("CC_APROBADORES_NO_DIRECTOR (RECHAZO): " . $keyNombre . " - " . $email);
+                        $mailer->addRecipientsCc(new EmailIdentity($email, $keyNombre));
+                    }
+                }
+            }
+            //VALIDA SI SON APROBADORES REENVIO
+            $GLOBALS['log']->fatal("ES_CC_APROBADORES_REENVIO (RECHAZO): " . $esAprobadorReenvioPO);
+            if ($esAprobadorReenvioPO === 1) {
+                $listaEmailsCCAprobadorReenvio = $app_list_strings['aprobador_reenvio_po_gc_list'];
+                if (!empty($listaEmailsCCAprobadorReenvio)) {
+                    foreach ($listaEmailsCCAprobadorReenvio as $keyNombre => $email) {
+                        $GLOBALS['log']->fatal("ES_CC_APROBADORES_REENVIO (RECHAZO): " . $keyNombre . " - " . $email);
+                        $mailer->addRecipientsCc(new EmailIdentity($email, $keyNombre));
+                    }
+                }
             }
 
             $GLOBALS['log']->fatal("ENVIANDO CORREO DE RECHAZO ASESOR: " . $email_asesor);

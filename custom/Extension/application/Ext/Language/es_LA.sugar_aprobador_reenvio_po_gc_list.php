@@ -1,6 +1,6 @@
 <?php
- // created: 2025-06-30 23:39:27
+ // created: 2025-07-01 22:59:09
 
 $app_list_strings['aprobador_reenvio_po_gc_list']=array (
-  1 => 'Ricardo Gerardo',
+  'Ricardo Gerardo' => 'irving.delgado_ext@unifin.com.mx',
 );
