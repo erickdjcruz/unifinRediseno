@@ -36,6 +36,8 @@
 //      'clasifica_sectorial_class',
 //      'clasifica_sectorial_function'
 //  );
+
+/*
  $hook_array['before_save'][] = Array(
      6,
      'Validacion de duplicados RFC',
@@ -43,6 +45,7 @@
      'class_validate_rfc',
      'func_validate_rfc'
  );
+*/
  $hook_array['before_save'][] = Array(
      7,
      'Validacion REUS email y telefonos',

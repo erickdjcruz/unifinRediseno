@@ -6,7 +6,7 @@ class class_validate_rfc
     {
         global $db;
 
-        if(!$bean->excluye_campana_c){
+        /*if(!$bean->excluye_campana_c){
             if($bean->rfc_c != '' && $bean->rfc_c != 'XXX010101XXX' && $bean->rfc_c != 'XXXX010101XXX' && $bean->estatus_po_c!='3') {
                 $queryRFCPO = "SELECT p.id from prospects p, prospects_cstm pc where p.id = pc.id_c
                   and p.deleted = 0
@@ -27,6 +27,7 @@ class class_validate_rfc
                 $queryResultA1 = $db->query($queryRFCAccount);
                 if($db->getRowCount($queryResultA1) > 0) throw new SugarApiExceptionInvalidParameter('No se puede guardar el registro. El RFC '.$bean->rfc_c.' ya exite en Cuentas, favor de corregir');
             }
-          }    
+          }
+        */   
     }
 }
