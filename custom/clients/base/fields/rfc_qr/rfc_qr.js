@@ -1214,6 +1214,10 @@
 												contexto_cuenta.$('#validar_QR').attr('style', 'margin:10px');
 												contexto_cuenta.$('#btn_Cancelar').removeClass('disabled');
 												contexto_cuenta.$('#btn_Cancelar').attr('style', 'margin:10px');
+												
+												$btnCIEC.prop('disabled', false);
+												$btnCIEC.text('Actualizar Constancia');
+
 											} else {
 												app.alert.show('errorAlert2', {
 													level:
