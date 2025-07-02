@@ -35,15 +35,39 @@ class WebHookCrmRobina extends SugarApi
         $ticket = '';
         $resultado=[];
 
+        $GLOBALS['log']->fatal('payload: ');
+        $GLOBALS['log']->fatal(print_r($args, true));
+
         // Verifica si existe el campo 'status_code' en la estructura esperada
         $statusCode = isset($args['response']['status_code']) ? $args['response']['status_code'] : null;
+        $url = $args['webhookEndpoint']['url'];
+        $id_response = isset($args['id']) ? $args['id'] : null;
+        $ticket = isset($args['response']['id']) ? $args['response']['id'] : null;
         $GLOBALS['log']->fatal('statusCode: '. $statusCode);
-        
+        // Insertar en tabla de auditoría
+        $insert = "";
+        $fecha = date('Y-m-d H:i:s');
+                
         if ($statusCode) {
-            $ticket = isset($args['response']['id']) ? $args['response']['id'] : null;
             $rfc = isset($args['response']['taxpayer']['id']) ? $args['response']['taxpayer']['id'] : null;
             $GLOBALS['log']->fatal('ticket: '. $ticket);
             $GLOBALS['log']->fatal('rfc: '. $rfc);
+
+            // Insertar en tabla de auditoría
+            $insert = "
+                INSERT INTO robina_auditoria_peticiones 
+                (id,date_entered,id_response,ticket,rfc,response_status_robina,crm_status_process,url)
+                VALUES (
+                    uuid(),
+                    '{$fecha}',
+                    '{$id_response}',
+                    '{$ticket}',
+                    '{$rfc}',
+                    '{$statusCode}',
+                    'Recibido',
+                    '{$url}'
+                )
+            ";
         
             $resultado['detail'] = 'Recibido correctamente-estatus T01';
 
@@ -81,8 +105,22 @@ class WebHookCrmRobina extends SugarApi
         } else {
             $GLOBALS['log']->fatal('Estatus no valido');
             $resultado['detail'] = 'Estatus no valido';
+            $insert = "
+                INSERT INTO robina_auditoria_peticiones (id,date_entered,id_response,ticket,rfc,response_status_robina,crm_status_process,url)
+                VALUES (
+                    uuid(),
+                    '{$fecha}',
+                    '{$id_response}',
+                    '{$ticket}',
+                    '{$rfc}',
+                    '{$statusCode}',
+                    'Recibido error',
+                    '{$url}'
+                )
+            ";
         }
-        
+        $db->query($insert);
+
         return $resultado;
 
     }
