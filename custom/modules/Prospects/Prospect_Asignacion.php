@@ -112,9 +112,13 @@ class Prospects_AsignacionPO
                 $resultado = $db->query($query);
               }   
             }
-            
             //Establece asignado
             if(!empty($asignado_id)){
+              //Valida si esta de vacaciones
+              $query1 = "select holiday_date from holidays where person_id = '{$asignado_id}' and holiday_date = curdate() and deleted = 0;";
+              $resultado1 = $db->query($query1);
+              $row1 = $db->fetchByAssoc($resultado1);
+              if(!empty($row1)) $asignado_id = $app_list_strings['lider_generation_center_list']['Ricardo Gerardo'];
               $bean->assigned_user_id = $asignado_id;
             }
           }   
