@@ -77,14 +77,14 @@
         this.model.on("change:activos_interes_c", this._validaActivoInteres, this);
         //Valida el potencial de cierre debe ser entre 10 y 100%
         this.model.addValidationTask('validate_potencial_cierre', _.bind(this._validateTaskPotencialCierre, this));
-        this.model.on("change:potencial_cierre_c", this._validaPotencialCierre, this);        
+        this.model.on("change:potencial_cierre_c", this._validaPotencialCierre, this);
         // Cambia etiquetas vendor
         this.on('render', this.cambiarEtiquetasVendor, this);
 
         // Configura bandera cuando modelo y vista están listos
         this.model.once('sync', () => {
             console.log("Modelo sincronizado y vista renderizada");
-                this.carga_inicial = false;
+            this.carga_inicial = false;
             this.on('render', () => {
                 console.log("Modelo sincronizado y vista renderizada");
                 this.carga_inicial = false;
@@ -494,7 +494,7 @@
                 campos = campos + '<b>' + 'Franquicia' + '</b><br>';
 
                 errors['franquicia_c'] = errors['franquicia_c'] || {};
-                errors['franquicia_c'].required = true;                
+                errors['franquicia_c'].required = true;
             }
             if (this.model.get('asesor_alianza_c') == '' || this.model.get('asesor_alianza_c') == undefined) {
                 campos = campos + '<b>' + 'Asesor de la Alianza' + '</b><br>';
@@ -516,13 +516,13 @@
             }
         }
         //CAMPOS REQUERIDOS DE ALIANZAS - VENDORS
-        if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {         
+        if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
             if (this.model.get('id_franquicia_vendors_c') == '' || this.model.get('id_franquicia_vendors_c') == null) {
                 campos = campos + '<b>' + 'Franquicia Vendors' + '</b><br>';
 
                 errors['prospects_franquicia_vendors'] = errors['prospects_franquicia_vendors'] || {};
-                errors['prospects_franquicia_vendors'].required = true;    
-            }   
+                errors['prospects_franquicia_vendors'].required = true;
+            }
             if (this.model.get('gerente_vendor_c') == '' || this.model.get('gerente_vendor_c') == undefined) {
                 campos = campos + '<b>' + 'F&I o Gerente de crédito' + '</b><br>';
 
@@ -639,11 +639,11 @@
             default:
                 break;
         }
-      
+
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
-            this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
+            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
-            if(this.model.get('detalle_origen_c') != '116' && (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == null)) {
+            if (this.model.get('detalle_origen_c') != '116' && (this.model.get('franquicia_c') == '' || this.model.get('franquicia_c') == null)) {
                 campos_req.push('franquicia_c');
             }
             if (this.model.get('asesor_alianza_c') == '' || this.model.get('asesor_alianza_c') == null) {
@@ -658,7 +658,7 @@
         }
         if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
             //CAMPOS REQUERIDOS DE ALIANZAS - VENDORS
-            if (this.model.get('id_franquicia_vendors_c') == '' || this.model.get('id_franquicia_vendors_c') == null) { 
+            if (this.model.get('id_franquicia_vendors_c') == '' || this.model.get('id_franquicia_vendors_c') == null) {
                 campos_req.push('prospects_franquicia_vendors');
             }
             if (this.model.get('gerente_vendor_c') == '' || this.model.get('gerente_vendor_c') == null) {
@@ -956,7 +956,7 @@
         //Valida si es Origen Alianza
         if (this.model.get('origen_c') === '12') {
             console.log("ORIGEN ALIANZA");
-            if (permisosGestionTeamLeader.includes("^soc_creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || permisosGestionTeamLeader.includes("^konnect^") || 
+            if (permisosGestionTeamLeader.includes("^soc_creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || permisosGestionTeamLeader.includes("^konnect^") ||
                 permisosGestionTeamLeader.includes("^vendors^") || permisosGestionTeamLeader.includes("^reditus^")) {
                 //ORIGEN
                 opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]); //12:Alianzas - 20:Leasing
@@ -967,7 +967,7 @@
                 // Aplica filtro
                 opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, opcionesPermitidas, valorDetalleActual);
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
-                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || opcionesPermitidas[0]);                
+                actualizarCampoDetalleOrigen.call(this, opciones_detalle_origen, valorDetalleActual || opcionesPermitidas[0]);
                 //Disparar eventos para forzar la actualización
                 this.model.trigger("change:detalle_origen_c");
             } else {
@@ -1420,7 +1420,7 @@
         }
 
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
-            this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
+            this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //VALIDA CAMPOS DE ALIANZA
             if (this.model.get('detalle_origen_c') != '116' && (this.model.get('franquicia_c') === null || this.model.get('franquicia_c') === "")) {
                 campos = campos + '<b>' + 'Franquicia' + '</b><br>';
@@ -1445,7 +1445,7 @@
         }
         if (this.model.get('origen_c') == '12' && this.model.get('detalle_origen_c') == '116') {
             //VALIDA CAMPOS DE ALIANZA - VENDORS
-            if (this.model.get('id_franquicia_vendors_c') === '' || this.model.get('id_franquicia_vendors_c') === null) { 
+            if (this.model.get('id_franquicia_vendors_c') === '' || this.model.get('id_franquicia_vendors_c') === null) {
                 //Custom Franquicia Vendors requerido
                 campos = campos + '<b>' + 'Franquicia Vendors' + '</b><br>';
             }
@@ -1556,7 +1556,7 @@
         }
 
         var permisosGestionTeamLeader = app.user.attributes.gestion_team_leaders_c || ""; //OBTIENE EL PERMISO SOC/CREDITARIA, KONNECT, VENDORS
-        if (!permisosGestionTeamLeader.includes("^soc_creditaria^") && !permisosGestionTeamLeader.includes("^konnect^") && 
+        if (!permisosGestionTeamLeader.includes("^soc_creditaria^") && !permisosGestionTeamLeader.includes("^konnect^") &&
             !permisosGestionTeamLeader.includes("^vendors^") && !permisosGestionTeamLeader.includes("^reditus^")) {
             app.alert.show('not_access', {
                 level: 'error',
@@ -2204,8 +2204,29 @@
     },
 
     muestraBotonCorreo: function () {
-
+        console.log("muestraBotonCorreo");
+        var id_user = App.user.id;
         var id_prospecto = this.model.get('id');
+        var listaUsuariosGC = App.lang.getAppListStrings('usuarios_generation_center_list');
+        var usuarioPermitido = false;
+
+        // Verifica si el ID del usuario en sesión está entre los valores de la lista
+        Object.entries(listaUsuariosGC).forEach(([key, idValue]) => {
+            console.log("ID_USUARIO_SESION "+ id_user + " ID_LISTA_GC " + idValue);
+            if (idValue === id_user) {
+                usuarioPermitido = true;
+            }
+        });
+
+        // Si el usuario no está en la lista, oculta el botón reenvio de correo
+        if (!usuarioPermitido) {
+            console.log("Usuario no autorizado para reenvió de correo.");
+            var button = this.getField('reenvio_correo');
+            if (button) {
+                button.dispose();
+            }
+            return;
+        }
 
         app.api.call('GET', app.api.buildURL('GetRelatedMeetingsCallsPO/' + id_prospecto), null, {
             success: _.bind(function (response) {
@@ -2295,7 +2316,7 @@
         this.cambiarEtiquetasVendor();
 
         // Siempre limpia si cambia el valor de detalle_origen_c
-        if ( !this.carga_inicial && (this.model.previous('detalle_origen_c') !== this.model.get('detalle_origen_c'))) {
+        if (!this.carga_inicial && (this.model.previous('detalle_origen_c') !== this.model.get('detalle_origen_c'))) {
             //FUNCION DE LIMPIEZA DE CAMPOS
             this._limpiaCamposDOAlianza();
         }
@@ -2388,14 +2409,14 @@
     },
 
     cambiarEtiquetasVendor: function () {
-        var detalleOrigen = this.model.get('detalle_origen_c');               
+        var detalleOrigen = this.model.get('detalle_origen_c');
         // var labelFranquicia = this.$('[data-name="franquicia_c"]').closest('.record-cell').find('.record-label');
-        var labelAsesorAlianza = this.$('[data-name="asesor_alianza_c"]').closest('.record-cell').find('.record-label');        
-        var labelEmailAsesorAlianza = this.$('[data-name="email_aa_c"]').closest('.record-cell').find('.record-label');        
-        var labelTelefonoAsesorAlianza = this.$('[data-name="telefono_aa_c"]').closest('.record-cell').find('.record-label');        
+        var labelAsesorAlianza = this.$('[data-name="asesor_alianza_c"]').closest('.record-cell').find('.record-label');
+        var labelEmailAsesorAlianza = this.$('[data-name="email_aa_c"]').closest('.record-cell').find('.record-label');
+        var labelTelefonoAsesorAlianza = this.$('[data-name="telefono_aa_c"]').closest('.record-cell').find('.record-label');
         // Cambia la etiqueta visual de los campos vendors
         if (detalleOrigen === '116') {
-            console.log("CAMBIO DE ETIQUETA VENDORS ", detalleOrigen); 
+            console.log("CAMBIO DE ETIQUETA VENDORS ", detalleOrigen);
             // labelFranquicia.text('Vendor');
             labelAsesorAlianza.text('Gerente comercial');
             labelEmailAsesorAlianza.text('Email del gerente comercial');
@@ -2405,15 +2426,15 @@
             labelAsesorAlianza.text('Asesor de la Alianza');
             labelEmailAsesorAlianza.text('Email del Asesor de Alianza');
             labelTelefonoAsesorAlianza.text('Teléfono del Asesor de Alianza');
-        }        
+        }
     },
 
-    _limpiaCamposDOAlianza: function() {
+    _limpiaCamposDOAlianza: function () {
         console.log("LIMPIA CAMPOS DEPENDIENTES DEL GRUPO ALIANZA");
         var campos = ["franquicia_c", "asesor_alianza_c", "email_aa_c", "telefono_aa_c"];
         var valores = {};
-        
-        _.each(campos, function(campo) {
+
+        _.each(campos, function (campo) {
             if (this.model.get(campo)) {
                 valores[campo] = "";
             }
