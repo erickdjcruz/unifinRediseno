@@ -1480,7 +1480,7 @@
 
                 if (!expresionEV.test(inputEV)) {
                     // Si el formato del email no es válido
-                    flagCorreoValidoEV = true;
+                    var flagCorreoValidoEV = true;
                 }
             }
         }
