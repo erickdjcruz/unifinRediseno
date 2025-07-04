@@ -1463,7 +1463,7 @@
 
                 if (!expresionEGV.test(inputEGV)) {
                     // Si el formato del email no es válido
-                    flagCorreoValidoEGV = true;
+                    var flagCorreoValidoEGV = true;
                 }
             }
             if (this.model.get('vendedor_c') === null || this.model.get('vendedor_c') === "") {
