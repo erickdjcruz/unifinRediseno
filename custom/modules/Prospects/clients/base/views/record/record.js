@@ -1519,15 +1519,15 @@
         }
 
         var id_prospecto = this.model.get('id');
+        var currentUserId = app.user.get('id');
         var buttonReenvio = this.getField('reenvio_correo');
         buttonReenvio.setDisabled(true);
-
         app.alert.show('envio_correo', {
             level: 'process',
             title: 'Enviando correo',
         });
 
-        app.api.call('GET', app.api.buildURL('SendEmailPO/' + id_prospecto), null, {
+        app.api.call('GET', app.api.buildURL('SendEmailPO/' + id_prospecto + '/' + currentUserId), null, {
             success: _.bind(function (response) {
                 var buttonReenvio = this.getField('reenvio_correo');
                 buttonReenvio.setDisabled(false);
@@ -1618,6 +1618,7 @@
             autoClose: false,
             onConfirm: function () {
                 var id_prospecto = App.controller.context.get('model').id;
+                var currentUserId = app.user.get('id');
 
                 $('a[name="rechaza_envio_correo"]').attr('disabled', "disabled");
                 $('a[name="vobo_envio_correo"]').attr('disabled', "disabled");
@@ -1629,7 +1630,7 @@
                     title: 'Enviando correo',
                 });
 
-                app.api.call('GET', app.api.buildURL('AutorizaEnvioPO/' + id_prospecto), null, {
+                app.api.call('GET', app.api.buildURL('AutorizaEnvioPO/' + id_prospecto + '/' + currentUserId), null, {
                     success: _.bind(function (response) {
 
                         $('a[name="rechaza_envio_correo"]').removeAttr('disabled');
@@ -1667,6 +1668,7 @@
             autoClose: false,
             onConfirm: function () {
                 var id_prospecto = App.controller.context.get('model').id;
+                var currentUserId = app.user.get('id');
 
                 $('a[name="rechaza_envio_correo"]').attr('disabled', "disabled");
                 $('a[name="vobo_envio_correo"]').attr('disabled', "disabled");
@@ -1678,7 +1680,7 @@
                     title: 'Rechazando operación',
                 });
 
-                app.api.call('GET', app.api.buildURL('RechazaEnvioPO/' + id_prospecto), null, {
+                app.api.call('GET', app.api.buildURL('RechazaEnvioPO/' + id_prospecto + '/' + currentUserId), null, {
                     success: _.bind(function (response) {
 
                         $('a[name="rechaza_envio_correo"]').removeAttr('disabled');
@@ -2204,29 +2206,7 @@
     },
 
     muestraBotonCorreo: function () {
-        console.log("muestraBotonCorreo");
-        var id_user = App.user.id;
         var id_prospecto = this.model.get('id');
-        var listaUsuariosGC = App.lang.getAppListStrings('usuarios_generation_center_list');
-        var usuarioPermitido = false;
-
-        // Verifica si el ID del usuario en sesión está entre los valores de la lista
-        Object.entries(listaUsuariosGC).forEach(([key, idValue]) => {
-            console.log("ID_USUARIO_SESION "+ id_user + " ID_LISTA_GC " + idValue);
-            if (idValue === id_user) {
-                usuarioPermitido = true;
-            }
-        });
-
-        // Si el usuario no está en la lista, oculta el botón reenvio de correo
-        if (!usuarioPermitido) {
-            console.log("Usuario no autorizado para reenvió de correo.");
-            var button = this.getField('reenvio_correo');
-            if (button) {
-                button.dispose();
-            }
-            return;
-        }
 
         app.api.call('GET', app.api.buildURL('GetRelatedMeetingsCallsPO/' + id_prospecto), null, {
             success: _.bind(function (response) {

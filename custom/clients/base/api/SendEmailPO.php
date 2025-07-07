@@ -13,24 +13,24 @@ class SendEmailPO extends SugarApi
             'sendEmailPo' => array(
                 'reqType' => 'GET',
                 'noLoginRequired' => true,
-                'path' => array('SendEmailPO', '?'),
-                'pathVars' => array('method', 'id_po'),
+                'path' => array('SendEmailPO', '?', '?'),
+                'pathVars' => array('method', 'id_po', 'user_id'),
                 'method' => 'sendEmailProspect',
                 'shortHelp' => 'Envía notificación por email a respectivos usuarios en proceso de Público Objetivo',
             ),
             'autorizacionPO' => array(
                 'reqType' => 'GET',
                 'noLoginRequired' => true,
-                'path' => array('AutorizaEnvioPO', '?'),
-                'pathVars' => array('method', 'id_po'),
+                'path' => array('AutorizaEnvioPO', '?', '?'),
+                'pathVars' => array('method', 'id_po', 'user_id'),
                 'method' => 'autorizaEnvioCorreo',
                 'shortHelp' => 'Envía correo a través de la aprobación del director del PO',
             ),
             'rechazoPO' => array(
                 'reqType' => 'GET',
                 'noLoginRequired' => true,
-                'path' => array('RechazaEnvioPO', '?'),
-                'pathVars' => array('method', 'id_po'),
+                'path' => array('RechazaEnvioPO', '?', '?'),
+                'pathVars' => array('method', 'id_po', 'user_id'),
                 'method' => 'rechazaEnvioCorreo',
                 'shortHelp' => 'Envía correo a través del rechazo del director del PO',
             ),
@@ -50,15 +50,24 @@ class SendEmailPO extends SugarApi
                 'method' => 'notificaCambioOrigen',
                 'shortHelp' => 'Envía notificación por email a respectivos usuarios para solicitar aprobación en edición de Origen de Público Objetivo',
             ),
-
+            'notificaLiderGenerationCenterPO' => array(
+                'reqType' => 'POST',
+                'noLoginRequired' => true,
+                'path' => array('notificaLiderGenerationCenterPO'),
+                'pathVars' => array(''),
+                'method' => 'notificaReasignacionLiderGenerationCenterPO',
+                'shortHelp' => 'Envía notificación por email la reasignacion de PO al lider de generation center',
+            ),
         );
     }
 
     public function sendEmailProspect($api, $args)
     {
-        global $sugar_config , $db, $app_list_strings;
+        global $sugar_config, $db, $app_list_strings;
         $url_unileasing = $sugar_config['url_unileasing_email'];
         $id_prospecto = $args['id_po'];
+        $currentUserId = $args['user_id'];
+        $GLOBALS['log']->fatal("(sendEmailProspect_currentUserId): " . $currentUserId);
         $response = "";
         $beanPO = BeanFactory::retrieveBean('Prospects', $id_prospecto, array('disable_row_level_security' => true));
         $linkPO = $GLOBALS['sugar_config']['site_url'] . '/#Prospects/' . $id_prospecto;
@@ -81,6 +90,10 @@ class SendEmailPO extends SugarApi
         $esAlianzaReditus = ($origen === '12' && $detalleOrigen === '117') ? 1 : 0; //Valida si es Alianza Reditus
         $GLOBALS['log']->fatal('PO (SEND_EMAIL_PROSPECT) - ORIGEN - DETALLE ' . $origen . ' - ' . $detalleOrigen . ' --- ' . $esAlianzaReditus);
         $esAprobadorNoDirector_PO = 0; //BANDERA PARA APROBADORES (NO DIRECTOR)
+        //VALIDA LOS USUARIOS DE LA LISTA GENERATION CENTER EN SESION
+        $usuarios_gc_list = $app_list_strings['usuarios_generation_center_list'];
+        $esUsuarioGC = in_array($currentUserId, $usuarios_gc_list) ? 1 : 0;
+        $GLOBALS['log']->fatal("esUsuarioGC: " . $esUsuarioGC);
 
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
@@ -108,32 +121,31 @@ class SendEmailPO extends SugarApi
             $email_comercial = $info_comercial['email'];
         }
         //----- REENVIO -----
-        if ($envio_previo > 0 ) {
+        if ($envio_previo > 0) {
             //$response = "SI HAY ENVIO PREVIO: Enviar correo al director de asesor comercial y cc: director regional. Contenido: Email VoBo Director PO";
             $body_mail = $this->buildBodyEmailVoBo($name_comercial, $asesorName, $beanPO->name, $linkPO);
             //Enviando correo
-            //ToDO: Antes de enviar, validar que si se haya encontrado un director para enviar notificación y no se intenta mandar correo a una dirección vacía
-            if ($email_comercial != "" || $email_regional != "") {
-                $esAprobadorNoDirector = 0;
-                $this->sendEmailNotificationPO($nombreEmpresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail, $esAprobadorNoDirector);
-                $response = "Se envió notificación a: " . $name_comercial . " - " . $name_regional;
-                $beanPO->id_director_vobo_c = $id_director_comercial;
-
-            } else {
-                // $response = "No existe Director Comercial al que se le pueda enviar notificación";
-                // SI NO HAY DIRECTOR COMERCIAL O REGIONAL MANDA NOTIFICACION A APROBADOR (NO DIRECTOR)
-                $esAprobadorNoDirector = 1;
-                $this->sendEmailNotificationPO($nombreEmpresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail, $esAprobadorNoDirector);
+            if ($esUsuarioGC === 1) {
+                // SI NO HAY DIRECTOR COMERCIAL O REGIONAL MANDA NOTIFICACION A APROBADOR (NO DIRECTOR) - RICARDO GERARDO            
+                $this->sendEmailNotificationPO($nombreEmpresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail, $esUsuarioGC);
                 $listaIdAprobadorReenvio = $app_list_strings['aprobador_reenvio_po_gc_list'];
                 if (!empty($listaIdAprobadorReenvio)) {
                     foreach ($listaIdAprobadorReenvio as $keyNombre => $idAprobadorReenvio) {
-                        $GLOBALS['log']->fatal("APROBADOR_REENVIO: " . $keyNombre . " - " . $idAprobadorReenvio);                        
+                        $GLOBALS['log']->fatal("APROBADOR_REENVIO: " . $keyNombre . " - " . $idAprobadorReenvio);
                     }
                 }
                 $response = "Se envió notificación a: " . $keyNombre;
                 $beanPO->id_director_vobo_c = $idAprobadorReenvio;
+            } else {
+                //ToDO: Antes de enviar, validar que si se haya encontrado un director para enviar notificación y no se intenta mandar correo a una dirección vacía 
+                if ($email_comercial != "" || $email_regional != "") {
+                    $this->sendEmailNotificationPO($nombreEmpresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail, $esUsuarioGC);
+                    $response = "Se envió notificación a: " . $name_comercial . " - " . $name_regional;
+                    $beanPO->id_director_vobo_c = $id_director_comercial;
+                } else {
+                    $response = "No existe Director Comercial al que se le pueda enviar notificación";
+                }
             }
-            
             $beanPO->save();
             $updateP = "UPDATE prospects_cstm set envio_correo_po_c = 2 where  id_c ='{$beanPO->id}';";
             $db->query($updateP);
@@ -190,9 +202,11 @@ class SendEmailPO extends SugarApi
 
     public function autorizaEnvioCorreo($api, $args)
     {
-        global $sugar_config;
+        global $sugar_config, $app_list_strings;
         $url_unileasing = $sugar_config['url_unileasing_email'];
         $id_prospecto = $args['id_po'];
+        $currentUserIdAE = $args['user_id'];
+        $GLOBALS['log']->fatal("(autorizaEnvioCorreo_currentUserId): " . $currentUserIdAE);
         $response = '';
         // Configurar zona horaria de Ciudad de México y obtener la fecha actual
         $dateTime = new DateTime('now', new DateTimeZone('America/Mexico_City'));
@@ -214,7 +228,10 @@ class SendEmailPO extends SugarApi
         $telefono_asesor = $beanAsesor->phone_mobile;
         $email_asesor = $beanAsesor->email1;
         $esAlianzaReditus = 0; //BANDERA PARA EL PARAMETRO DE SEND-EMAIL-ASESOR-PO DE ALIANZA REDITUS
-        $esAprobadorNoDirectorPO = 1; //BANDERA PARA APROBADORES (NO DIRECTOR)
+        //VALIDA LOS USUARIOS DE LA LISTA APROBADOR REENVIO (NO DIRECTOR)
+        $usuarios_ar_list = $app_list_strings['aprobador_reenvio_po_gc_list'];
+        $esAprobadorNoDirectorPO = in_array($currentUserIdAE, $usuarios_ar_list) ? 1 : 0;
+        $GLOBALS['log']->fatal("esAprobadorNoDirectorPO-AUTORIZA: " . $esAprobadorNoDirectorPO);
 
         $id_director_regional = $this->getIdDirectorRegional($beanAsesor);
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
@@ -252,7 +269,7 @@ class SendEmailPO extends SugarApi
         //Enviando correo al asesor cc a Director Comercial y Director Regional
         $body_mail_asesor = $this->buildBodyNotificationAsesor($asesorName, $beanPO->name);
 
-        if (!empty($email_asesor)) {
+        if (!empty($email_asesor) || $esAprobadorNoDirectorPO == 1) {
             $this->sendEmailAsesorPO(
                 $body_mail_asesor,
                 $nombreEmpresa,
@@ -273,7 +290,12 @@ class SendEmailPO extends SugarApi
                 $esAlianzaReditus,
                 $esAprobadorNoDirectorPO
             );
-            $response .= "<br>Se envió notificación a: " . $asesorName . " , " . $name_comercial . " , " . $name_regional . " , " . $nombre_asesor_alianza;
+
+            if ($esAprobadorNoDirectorPO == 1) {
+                $response .= "<br>Se envió notificación a Ricardo Gerardo";
+            } else {
+                $response .= "<br>Se envió notificación a: " . $asesorName . " , " . $name_comercial . " , " . $name_regional . " , " . $nombre_asesor_alianza;
+            }
         }
 
         //Resetea banderas
@@ -289,7 +311,10 @@ class SendEmailPO extends SugarApi
 
     public function rechazaEnvioCorreo($api, $args)
     {
+        global $app_list_strings;
         $id_prospecto = $args['id_po'];
+        $currentUserIdRE = $args['user_id'];
+        $GLOBALS['log']->fatal("(rechazaEnvioCorreo_currentUserId): " . $currentUserIdRE);
         $response = '';
 
         $beanPO = BeanFactory::retrieveBean('Prospects', $id_prospecto, array('disable_row_level_security' => true));
@@ -300,9 +325,12 @@ class SendEmailPO extends SugarApi
         $email_asesor_alianza = $beanPO->email_aa_c;
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $asesorName = $beanAsesor->first_name . " " . $beanAsesor->last_name;
-        $telefono_asesor = $beanAsesor->phone_mobile;
+        // $telefono_asesor = $beanAsesor->phone_mobile;
         $email_asesor = $beanAsesor->email1;
-        $esAprobadorNoDirectorPO = 1; //BANDERA PARA APROBADORES (NO DIRECTOR)
+        //VALIDA LOS USUARIOS DE LA LISTA APROBADOR REENVIO (NO DIRECTOR)
+        $usuarios_ar_list = $app_list_strings['aprobador_reenvio_po_gc_list'];
+        $esAprobadorNoDirectorPO = in_array($currentUserIdRE, $usuarios_ar_list) ? 1 : 0;
+        $GLOBALS['log']->fatal("esAprobadorNoDirectorPO-RECHAZO: " . $esAprobadorNoDirectorPO);
 
         $id_director_regional = $this->getIdDirectorRegional($beanAsesor);
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
@@ -327,21 +355,26 @@ class SendEmailPO extends SugarApi
 
         $body_correo_rechazo = $this->buildBodyRechazo($asesorName, $beanPO->name);
 
-        if (!empty($email_asesor)) {
+        if (!empty($email_asesor) || $esAprobadorNoDirectorPO == 1) {
             $this->sendEmailNotificationRechazo(
-                $body_correo_rechazo, 
-                $nombreEmpresa, 
-                $email_asesor, 
-                $asesorName, 
-                $email_comercial, 
-                $name_comercial, 
-                $email_regional, 
-                $name_regional, 
-                $nombre_asesor_alianza, 
+                $body_correo_rechazo,
+                $nombreEmpresa,
+                $email_asesor,
+                $asesorName,
+                $email_comercial,
+                $name_comercial,
+                $email_regional,
+                $name_regional,
+                $nombre_asesor_alianza,
                 $email_asesor_alianza,
                 $esAprobadorNoDirectorPO
             );
-            $response = "<br>Se envió notificación de rechazo a: " . $asesorName . " , " . $nombre_asesor_alianza;
+
+            if ($esAprobadorNoDirectorPO == 1) {
+                $response .= "<br>Se envió notificación a Ricardo Gerardo";
+            } else {
+                $response = "<br>Se envió notificación de rechazo a: " . $asesorName . " , " . $nombre_asesor_alianza;
+            }
         }
 
         //Resetea banderas
@@ -1568,10 +1601,26 @@ class SendEmailPO extends SugarApi
         }
     }
 
-    public function sendEmailAsesorPO($body_correo, $nombre_empresa, $email_asesor, $name_asesor, $email_comercial, $name_comercial, 
-    $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza, $esAlianzaKonnect, $nombre_gerente_credito, $email_gerente_credito, 
-    $nombre_vendedor, $email_vendedor, $esAlianzaVendors, $esAlianzaReditus, $esAprobadorNoDirectorPO)
-    {
+    public function sendEmailAsesorPO(
+        $body_correo,
+        $nombre_empresa,
+        $email_asesor,
+        $name_asesor,
+        $email_comercial,
+        $name_comercial,
+        $email_regional,
+        $name_regional,
+        $nombre_asesor_alianza,
+        $email_asesor_alianza,
+        $esAlianzaKonnect,
+        $nombre_gerente_credito,
+        $email_gerente_credito,
+        $nombre_vendedor,
+        $email_vendedor,
+        $esAlianzaVendors,
+        $esAlianzaReditus,
+        $esAprobadorNoDirectorPO
+    ) {
         try {
             global $app_list_strings;
             $mailer = MailerFactory::getSystemDefaultMailer();
@@ -1617,7 +1666,7 @@ class SendEmailPO extends SugarApi
                 if ($email_vendedor != "") {
                     $mailer->addRecipientsCc(new EmailIdentity($email_vendedor, $nombre_vendedor));
                 }
-            }                  
+            }
             //VALIDA SI ES ALIANZA REDITUS
             $GLOBALS['log']->fatal("ES_CC_ASESORES_ALIANZA_REDITUS: " . $esAlianzaReditus);
             if ($esAlianzaReditus === 1) {
@@ -1640,7 +1689,7 @@ class SendEmailPO extends SugarApi
                     }
                 }
             }
-            
+
             $GLOBALS['log']->fatal("ENVIANDO CORREO ASESOR: " . $email_asesor);
             $GLOBALS['log']->fatal("ENVIANDO CORREO COMERCIAL: " . $email_comercial);
             $GLOBALS['log']->fatal("ENVIANDO CORREO REGIONAL: " . $email_regional);
@@ -1654,9 +1703,19 @@ class SendEmailPO extends SugarApi
         }
     }
 
-    public function sendEmailNotificationRechazo($body_correo, $nombre_empresa, $email_asesor, $name_asesor, $email_comercial, $name_comercial, 
-    $email_regional, $name_regional, $nombre_asesor_alianza, $email_asesor_alianza, $esAprobadorNoDirectorPO)
-    {
+    public function sendEmailNotificationRechazo(
+        $body_correo,
+        $nombre_empresa,
+        $email_asesor,
+        $name_asesor,
+        $email_comercial,
+        $name_comercial,
+        $email_regional,
+        $name_regional,
+        $nombre_asesor_alianza,
+        $email_asesor_alianza,
+        $esAprobadorNoDirectorPO
+    ) {
         try {
             global $app_list_strings;
             $mailer = MailerFactory::getSystemDefaultMailer();
@@ -1781,7 +1840,7 @@ class SendEmailPO extends SugarApi
         $nombrePO = $beanPO->last_name;
         $link_po = $GLOBALS['sugar_config']['site_url'] . '/#Prospects/' . $id_prospecto;
         //Recupera Asesor asignado
-        $id_asesor = $beanPO->assigned_user_id;        
+        $id_asesor = $beanPO->assigned_user_id;
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $correoAsesor = $beanAsesor->email1;
         //Recupera Asesor responable
@@ -2241,6 +2300,262 @@ class SendEmailPO extends SugarApi
                 </tbody>
             </table><!-- End -->
             </body>';
+        return $mailHTML;
+    }
+
+    public function notificaReasignacionLiderGenerationCenterPO($api, $args)
+    {
+        $GLOBALS['log']->fatal("---------- notificaReasignacionLiderGenerationCenterPO -----------");
+        $id_prospecto = isset($args['id_po']) ? $args['id_po'] : '';
+        $id_lider_gc = isset($args['id_lider_gc']) ? $args['id_lider_gc'] : '';
+        $GLOBALS['log']->fatal("id_po " . $id_prospecto);
+        $GLOBALS['log']->fatal("id_lider_gc " . $id_lider_gc);
+        $response = [];
+        $response['status'] = '';
+        $response['description'] = '';
+        //Recupera PO
+        $beanPO = BeanFactory::retrieveBean('Prospects', $id_prospecto, array('disable_row_level_security' => true));
+        $nombrePO = $beanPO->last_name;
+        $link_po = $GLOBALS['sugar_config']['site_url'] . '/#Prospects/' . $id_prospecto;
+        $GLOBALS['log']->fatal("nombrePO " . $nombrePO);
+
+        $beanLiderGC = BeanFactory::retrieveBean('Users', $id_lider_gc, array('disable_row_level_security' => true));
+        $nombreLiderGC = $beanLiderGC->first_name . " " . $beanLiderGC->last_name;
+        $correoLiderGC = $beanLiderGC->email1;
+        $GLOBALS['log']->fatal("nombreLiderGC " . $nombreLiderGC);
+        $GLOBALS['log']->fatal("correoLiderGC " . $correoLiderGC);
+
+        try {
+            //Define correo
+            $body_correo = $this->buildBodyNotificaLiderGC($nombreLiderGC, $nombrePO, $link_po);
+            $mailer = MailerFactory::getSystemDefaultMailer();
+            $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
+            $mailer->setSubject('Reasignación Público Objetivo ' . $nombrePO . ' por no disponibilidad');
+            $mailer->addAttachment(new \EmbeddedImage('Copia_de_Recurso-2unileasingazulLOW', 'custom/images_email/Copia_de_Recurso-2unileasingazulLOW.png', 'Copia_de_Recurso-2unileasingazulLOW'), "Copia_de_Recurso-2unileasingazulLOW");
+            $body = trim($body_correo);
+            $mailer->setHtmlBody($body);
+            $mailer->clearRecipients();
+            //Agrega destinatarios
+            $mailer->addRecipientsTo(new EmailIdentity($correoLiderGC, $nombreLiderGC));
+
+            $result = $mailer->send();
+            $response['status'] = '200';
+            $response['description'] = 'Se generó envío de correo';
+            $GLOBALS['log']->fatal("SE ENVIO CORREO AL LIDER DE GENERATION CENTER");
+        } catch (Exception $e) {
+            $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
+            $GLOBALS['log']->fatal(print_r($e, true));
+            $response['status'] = '500';
+            $response['description'] = $e;
+        }
+        return $response;
+    }
+
+    public function buildBodyNotificaLiderGC($nombreLiderGC, $nombre_po, $link_po)
+    {
+        $mailHTML = '<head>
+            <title></title>
+            <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+            <meta content="width=device-width, initial-scale=1.0" name="viewport"/><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+            <style>
+                * {
+                    box-sizing: border-box;
+                }
+
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                a[x-apple-data-detectors] {
+                    color: inherit !important;
+                    text-decoration: inherit !important;
+                }
+
+                #MessageViewBody a {
+                    color: inherit;
+                    text-decoration: none;
+                }
+
+                p {
+                    line-height: inherit
+                }
+
+                .desktop_hide,
+                .desktop_hide table {
+                    mso-hide: all;
+                    display: none;
+                    max-height: 0px;
+                    overflow: hidden;
+                }
+
+                .image_block img+div {
+                    display: none;
+                }
+
+                @media (max-width:620px) {
+                    .mobile_hide {
+                        display: none;
+                    }
+
+                    .row-content {
+                        width: 100% !important;
+                    }
+
+                    .stack .column {
+                        width: 100%;
+                        display: block;
+                    }
+
+                    .mobile_hide {
+                        min-height: 0;
+                        max-height: 0;
+                        max-width: 0;
+                        overflow: hidden;
+                        font-size: 0px;
+                    }
+
+                    .desktop_hide,
+                    .desktop_hide table {
+                        display: table !important;
+                        max-height: none !important;
+                    }
+
+                    .row-1 .column-1 .block-1.paragraph_block td.pad>div,
+                    .row-3 .column-1 .block-1.paragraph_block td.pad>div,
+                    .row-5 .column-1 .block-1.paragraph_block td.pad>div {
+                        text-align: center !important;
+                        font-size: 14px !important;
+                    }
+
+                    .row-1 .column-1 .block-1.paragraph_block td.pad,
+                    .row-3 .column-1 .block-1.paragraph_block td.pad,
+                    .row-5 .column-1 .block-1.paragraph_block td.pad {
+                        padding: 20px 35px !important;
+                    }
+
+                    .row-1 .column-1,
+                    .row-3 .column-1,
+                    .row-4 .column-1,
+                    .row-5 .column-1 {
+                        padding: 0 !important;
+                    }
+                }
+            </style>
+            </head>
+            <body style="background-color: #e4e7e7; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+            <table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e4e7e7;" width="100%">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #56adff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:6px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:9px;"> </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombreLiderGC . '</strong></p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Se ha asignado el público objetivo <a id="linkPO" href="' . $link_po . '"> <strong>' . $nombre_po . '</strong></a> para su seguimiento, favor de vaidar.</p>
+                                                                            <br>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
+                                                                            <p style="margin: 0;">Equipo CRM</p>
+                                                                            <p style="margin: 0;">Inteligencia de Negocios</p>
+                                                                            <p style="margin: 0;">T: (55)5249 5800 Ext.5737 y 5677</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; padding-top: 15px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:20px;width:100%;">
+                                                                        <div align="center" class="alignment" style="line-height:10px"><img src="cid:Copia_de_Recurso-2unileasingazulLOW" style="display: block; height: auto; border: 0; max-width: 102px; width: 100%;" width="102"/></div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #dde1e9; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:30px;padding-right:30px;padding-top:25px;">
+                                                                        <div style="color:#000000;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:12px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:14.399999999999999px;">
+                                                                            <p style="margin: 0;"><em>Información confidencial y exclusiva para uso interno de Unifin.</em></p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table><!-- End -->
+            </body>';
+
         return $mailHTML;
     }
 }
