@@ -1,75 +1,76 @@
 <?php
 class Prospects_AsignacionPO
 {
-    public function set_assigned($bean = null, $event = null, $args = null){
-        global $db, $app_list_strings;
-        //Sólo aplica en creación
-        if (!$args['isUpdate'] && $_SESSION['platform'] != 'base') {
+  public function set_assigned($bean = null, $event = null, $args = null)
+  {
+    global $db, $app_list_strings;
+    //Sólo aplica en creación
+    if (!$args['isUpdate'] && $_SESSION['platform'] != 'base') {
 
-          //Entra validación para nueva asignación de alianza
-          $GLOBALS['log']->fatal("ENTRA ASIGNACIÓN DESDE API");
+      //Entra validación para nueva asignación de alianza
+      $GLOBALS['log']->fatal("ENTRA ASIGNACIÓN DESDE API");
 
-          if( !empty($bean->zona_geografica_c) ){
-            $valor_zona_geografica = $app_list_strings['mapeo_dire_estado_zona_geografica_list'][$bean->zona_geografica_c];
+      if (!empty($bean->zona_geografica_c)) {
+        $valor_zona_geografica = $app_list_strings['mapeo_dire_estado_zona_geografica_list'][$bean->zona_geografica_c];
 
-            $GLOBALS['log']->fatal("ZONA GEOGRAFICA ENCONTRADA: ". $valor_zona_geografica);
+        $GLOBALS['log']->fatal("ZONA GEOGRAFICA ENCONTRADA: " . $valor_zona_geografica);
 
-            if( !empty( $valor_zona_geografica ) ){
-              $bean->zona_geografica_c = $valor_zona_geografica;
-            }
-          }
+        if (!empty($valor_zona_geografica)) {
+          $bean->zona_geografica_c = $valor_zona_geografica;
+        }
+      }
 
-          //Valida existencia de relación entre estado (zona_geografica) y municipio (municipio_po_c)
-          //Se aplica validación para evitar obtener municipio_po_c NULL y traiga resultados de la bd equivocados
-          $municipio = ( empty($bean->municipio_po_c) ) ? "" : $bean->municipio_po_c;
-          $queryZonaGeograficaMunicipio = "SELECT * FROM unifin_asignacion_po where zona_geografica='{$bean->zona_geografica_c}' AND municipio='{$municipio}'";
+      //Valida existencia de relación entre estado (zona_geografica) y municipio (municipio_po_c)
+      //Se aplica validación para evitar obtener municipio_po_c NULL y traiga resultados de la bd equivocados
+      $municipio = (empty($bean->municipio_po_c)) ? "" : $bean->municipio_po_c;
+      $queryZonaGeograficaMunicipio = "SELECT * FROM unifin_asignacion_po where zona_geografica='{$bean->zona_geografica_c}' AND municipio='{$municipio}'";
 
-          $GLOBALS['log']->fatal("QUERY PARA OBTENER ASIGNADO: ".$queryZonaGeograficaMunicipio);
+      $GLOBALS['log']->fatal("QUERY PARA OBTENER ASIGNADO: " . $queryZonaGeograficaMunicipio);
 
-          $resultZonaGeograficaMunicipio = $db->query($queryZonaGeograficaMunicipio);
+      $resultZonaGeograficaMunicipio = $db->query($queryZonaGeograficaMunicipio);
 
-          if( $resultZonaGeograficaMunicipio->num_rows > 0 ){
-            $id_asignado = "";
-            while ($row = $db->fetchByAssoc($resultZonaGeograficaMunicipio)) {
+      if ($resultZonaGeograficaMunicipio->num_rows > 0) {
+        $id_asignado = "";
+        while ($row = $db->fetchByAssoc($resultZonaGeograficaMunicipio)) {
 
-              $id_asignado = $row['asignado_id'];
-              $GLOBALS['log']->fatal("ID ENCONTRADO PARA ASIGNACIÓN: " . $id_asignado);
-            }
+          $id_asignado = $row['asignado_id'];
+          $GLOBALS['log']->fatal("ID ENCONTRADO PARA ASIGNACIÓN: " . $id_asignado);
+        }
 
-            $bean->assigned_user_id = $id_asignado;
-            //Alianzas
-            // $bean->origen_c = '12';
-            $bean->compania_po_c = '1'; //Compañia: Unifin
+        $bean->assigned_user_id = $id_asignado;
+        //Alianzas
+        // $bean->origen_c = '12';
+        $bean->compania_po_c = '1'; //Compañia: Unifin
 
 
-          }else{
-            $GLOBALS['log']->fatal("ENTRA ASIGNACIÓN EXISTENTE ");
+      } else {
+        $GLOBALS['log']->fatal("ENTRA ASIGNACIÓN EXISTENTE ");
+        
+        //Valida asignación para PO creados fuera de CRM
+        $asignado_id = '';
 
-            //Valida asignación para PO creados fuera de CRM
-            $asignado_id = '';
-            
-            //Recupera usuario por núm empleaso
-            if(!empty($bean->numero_empleado_c)){
-              $query = "select id_c from users_cstm
+        //Recupera usuario por núm empleaso
+        if (!empty($bean->numero_empleado_c)) {
+          $query = "select id_c from users_cstm
                 where no_empleado_c = '{$bean->numero_empleado_c}' limit 1;";
-              $resultado = $db->query($query);
-              while ($row = $db->fetchByAssoc($resultado)) {
-                  $asignado_id = $row['id_c'];
-              }              
-            }
-            
-            //Recupera usuario por carrousel
-            if(!empty($bean->zona_geografica_c) && empty($asignado_id)){
-              $equipos = '';
-              $query = "select equipos,asignado_id from unifin_asignacion_po 
+          $resultado = $db->query($query);
+          while ($row = $db->fetchByAssoc($resultado)) {
+            $asignado_id = $row['id_c'];
+          }
+        }
+
+        //Recupera usuario por carrousel
+        if (!empty($bean->zona_geografica_c) && empty($asignado_id)) {
+          $equipos = '';
+          $query = "select equipos,asignado_id from unifin_asignacion_po 
                 where zona_geografica = '{$bean->zona_geografica_c}' and municipio IS NULL limit 1;";
-              $resultado = $db->query($query);
-              while ($row = $db->fetchByAssoc($resultado)) {
-                  $equipos = $row['equipos'];
-              }
-              if(!empty($equipos)){
-                $equipos = str_replace("^","'",$equipos);
-                $query = "select u.id, u.last_name, u.status, uc.equipo_c, b.fecha_reporte, bc.vacaciones_c, a.zona_geografica, a.asignado_id
+          $resultado = $db->query($query);
+          while ($row = $db->fetchByAssoc($resultado)) {
+            $equipos = $row['equipos'];
+          }
+          if (!empty($equipos)) {
+            $equipos = str_replace("^", "'", $equipos);
+            $query = "select u.id, u.last_name, u.status, uc.equipo_c, b.fecha_reporte, bc.vacaciones_c, a.zona_geografica, a.asignado_id
                   from users u
                   inner join users_cstm uc on uc.id_c=u.id
                   left join uni_brujula b on b.assigned_user_id = u.id  and b.fecha_reporte = curdate()
@@ -84,62 +85,70 @@ class Prospects_AsignacionPO
                   and a.zona_geografica is not null
                   and uc.posicion_operativa_c like '%^3^%'
                   order by u.last_name asc;";
-                $resultadoC = $db->query($query);
-                $countRows = 0;
-                $indexA = 0;
-                $nextIndex = 1;
-                $usuarios = [];
-                while ($rowC = $db->fetchByAssoc($resultadoC)) {
-                  $countRows++;
-                  $usuarios[]=$rowC['id'];
-                  $indexA = $rowC['asignado_id'];
-                }
-                if ($countRows>0) {
-                  if($indexA<=$countRows){
-                    $asignado_id = $usuarios[$indexA-1];
-                  }else{
-                    $asignado_id = $usuarios[0];
-                  }
-                  
-                  $nextIndex = ($indexA+1 > $countRows) ? 1 : $indexA+1;
-                  
-                }
-                
-                //Actualiza indice
-                $query = "update unifin_asignacion_po a
+            $resultadoC = $db->query($query);
+            $countRows = 0;
+            $indexA = 0;
+            $nextIndex = 1;
+            $usuarios = [];
+            while ($rowC = $db->fetchByAssoc($resultadoC)) {
+              $countRows++;
+              $usuarios[] = $rowC['id'];
+              $indexA = $rowC['asignado_id'];
+            }
+            if ($countRows > 0) {
+              if ($indexA <= $countRows) {
+                $asignado_id = $usuarios[$indexA - 1];
+              } else {
+                $asignado_id = $usuarios[0];
+              }
+
+              $nextIndex = ($indexA + 1 > $countRows) ? 1 : $indexA + 1;
+            }
+
+            //Actualiza indice
+            $query = "update unifin_asignacion_po a
                   set a.asignado_id = '{$nextIndex}'
                   where a.zona_geografica='{$bean->zona_geografica_c}' and a.municipio IS NULL;";
-                $resultado = $db->query($query);
-              }   
-            }
-            //Establece asignado
-            if(!empty($asignado_id)){
-              //Valida si esta de vacaciones
-              $query1 = "select holiday_date from holidays where person_id = '{$asignado_id}' and holiday_date = curdate() and deleted = 0;";
-              $resultado1 = $db->query($query1);
-              $row1 = $db->fetchByAssoc($resultado1);
-              if(!empty($row1)) $asignado_id = $app_list_strings['lider_generation_center_list']['Ricardo Gerardo'];
-              $bean->assigned_user_id = $asignado_id;
-            }
-          }   
+            $resultado = $db->query($query);
+          }
         }
-        //SE APLICA ACTUALIZACIÓN
-        if ($args['isUpdate'] && $_SESSION['platform'] != 'base') {       
-          //VALIDA SOLO SI HA CAMBIADO DE VALOR LA ZONA GEOGRAFICA
-          if(!empty($bean->zona_geografica_c) && $bean->fetched_row['zona_geografica_c'] != $bean->zona_geografica_c){
+        //Establece asignado
+        if (!empty($asignado_id)) {
+          //Valida si esta de vacaciones
+          $query1 = "SELECT holiday_date FROM holidays WHERE person_id = '{$asignado_id}' and holiday_date = curdate() and deleted = 0;";
+          $resultado1 = $db->query($query1);
+          $row1 = $db->fetchByAssoc($resultado1);
+          if (!empty($row1)) $asignado_id = $app_list_strings['lider_generation_center_list']['Ricardo Gerardo'];
+          $bean->assigned_user_id = $asignado_id;
 
-            $valor_zona_geografica = $app_list_strings['mapeo_dire_estado_zona_geografica_list'][$bean->zona_geografica_c];
-            $GLOBALS['log']->fatal("ACTUAIZACION DE ZONA GEOGRAFICA ENCONTRADA: ". $valor_zona_geografica);
-
-            if(!empty($valor_zona_geografica)){
-              $bean->zona_geografica_c = $valor_zona_geografica;
-            }
-          }        
+          require_once("custom/clients/base/api/SendEmailPO.php");
+          $apiSendEmailPO = new SendEmailPO();
+          $body = array(
+            'id_po' => $bean->id,
+            'id_lider_gc' => $asignado_id
+          );
+          //ENVIA CORREO DE NOTIFICACION AL LIDER DE GENERATION CENTER
+          $response = $apiSendEmailPO->notificaReasignacionLiderGenerationCenterPO(null, $body);
         }
-        
-        //Valida Bloqueo de Origen
-        if( ($bean->origen_c!='' && $bean->fetched_row['origen_c'] != $bean->origen_c) || ($bean->detalle_origen_c!='' && $bean->fetched_row['detalle_origen_c'] != $bean->detalle_origen_c )){
-            $bean->origen_bloqueado_c = true;
-        }
+      }
     }
+    //SE APLICA ACTUALIZACIÓN
+    if ($args['isUpdate'] && $_SESSION['platform'] != 'base') {
+      //VALIDA SOLO SI HA CAMBIADO DE VALOR LA ZONA GEOGRAFICA
+      if (!empty($bean->zona_geografica_c) && $bean->fetched_row['zona_geografica_c'] != $bean->zona_geografica_c) {
+
+        $valor_zona_geografica = $app_list_strings['mapeo_dire_estado_zona_geografica_list'][$bean->zona_geografica_c];
+        $GLOBALS['log']->fatal("ACTUAIZACION DE ZONA GEOGRAFICA ENCONTRADA: " . $valor_zona_geografica);
+
+        if (!empty($valor_zona_geografica)) {
+          $bean->zona_geografica_c = $valor_zona_geografica;
+        }
+      }
+    }
+
+    //Valida Bloqueo de Origen
+    if (($bean->origen_c != '' && $bean->fetched_row['origen_c'] != $bean->origen_c) || ($bean->detalle_origen_c != '' && $bean->fetched_row['detalle_origen_c'] != $bean->detalle_origen_c)) {
+      $bean->origen_bloqueado_c = true;
+    }
+  }
 }
