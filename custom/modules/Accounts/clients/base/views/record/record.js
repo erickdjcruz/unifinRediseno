@@ -615,6 +615,7 @@
                 duplicado += ((dirA.colonia ?? "").trim() === (dirB.colonia ?? "").trim()) ? 1 : 0;
                 duplicado += ((dirA.calle ?? "").trim().toLowerCase() === (dirB.calle ?? "").trim().toLowerCase()) ? 1 : 0;
                 duplicado += ((dirA.numext ?? "").trim().toLowerCase() === (dirB.numext ?? "").trim().toLowerCase()) ? 1 : 0;
+                duplicado += ((dirA.numint ?? "").trim().toLowerCase() === (dirB.numint ?? "").trim().toLowerCase()) ? 1 : 0;
 
                 var inactivoA = parseInt(dirA.inactivo) || 0;
                 var inactivoB = parseInt(dirB.inactivo) || 0;
@@ -622,8 +623,8 @@
 
                 // console.log(`Comparando dirección ${keyA} con ${keyB}: duplicado =`, duplicado);
 
-                // Si coinciden 9 atributos, es duplicado
-                if (duplicado === 9) {
+                // Si coinciden 10 atributos, es duplicado
+                if (duplicado === 10) {
                     cDuplicado++;
                 }
             }
