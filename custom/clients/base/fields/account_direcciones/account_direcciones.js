@@ -765,7 +765,8 @@
             duplicado += ((direccion[key].ciudad ?? "").trim() === (this.nuevaDireccion.ciudad ?? "").trim()) ? 1 : 0;
             duplicado += ((direccion[key].colonia ?? "").trim() === (this.nuevaDireccion.colonia ?? "").trim()) ? 1 : 0;
             duplicado += ((direccion[key].calle ?? "").trim().toLowerCase() === (this.nuevaDireccion.calle ?? "").trim().toLowerCase()) ? 1 : 0;
-            duplicado += ((direccion[key].numext ?? "").trim().toLowerCase() === (this.nuevaDireccion.numext ?? "").trim().toLowerCase()) ? 1 : 0;            
+            duplicado += ((direccion[key].numext ?? "").trim().toLowerCase() === (this.nuevaDireccion.numext ?? "").trim().toLowerCase()) ? 1 : 0;
+            duplicado += ((direccion[key].numint ?? "").trim().toLowerCase() === (this.nuevaDireccion.numint ?? "").trim().toLowerCase()) ? 1 : 0;            
             var inactivoA = parseInt(direccion[key].inactivo) || 0;
             var inactivoB = parseInt(this.nuevaDireccion.inactivo) || 0;
             duplicado += (inactivoA === inactivoB) ? 1 : 0;
@@ -774,8 +775,8 @@
             //Valida Direcciones Fiscal y Administración
             if (direccion[key].indicadorSeleccionados.includes('^2^') && direccion[key].inactivo == 0) { cDireccionFiscal = cDireccionFiscal + 1; }
             if (direccion[key].indicadorSeleccionados.includes('^16^') && direccion[key].inactivo == 0) { cDireccionAdmin = cDireccionAdmin + 1; }
-            //Si coinciden 9 atributos, es duplicado
-            if (duplicado === 9) {
+            //Si coinciden 10 atributos, es duplicado
+            if (duplicado === 10) {
                 cDuplicado++;
             }
         });
