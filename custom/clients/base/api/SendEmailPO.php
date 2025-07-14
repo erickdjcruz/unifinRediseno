@@ -380,12 +380,7 @@ class SendEmailPO extends SugarApi
                 $email_asesor_alianza,
                 $esAprobadorNoDirectorPO
             );
-
-            if ($esAprobadorNoDirectorPO == 1) {
-                $response .= "<br>Se envió notificación a Ricardo Gerardo";
-            } else {
-                $response = "<br>Se envió notificación de rechazo a: " . $asesorName . " , " . $nombre_asesor_alianza;
-            }
+            $response = "<br>Se envió notificación de rechazo a: " . $asesorName . " , " . $nombre_asesor_alianza;
         }
 
         //Resetea banderas
@@ -1573,7 +1568,7 @@ class SendEmailPO extends SugarApi
 
             $GLOBALS['log']->fatal("ENVIANDO CORREO TO_APROBADORES_NO_DIRECTOR (NOTIFICACION): " . $keyNombre . " - " . $email);
             $mailer->addRecipientsTo(new EmailIdentity($email, $keyNombre));
-            
+
             $result = $mailer->send();
         } catch (Exception $e) {
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
