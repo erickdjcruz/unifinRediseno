@@ -126,15 +126,17 @@ class SendEmailPO extends SugarApi
             $body_mail = $this->buildBodyEmailVoBo($name_comercial, $asesorName, $beanPO->name, $linkPO);
             //Enviando correo
             if ($esUsuarioGC === 1) {
+                $destinatarios = [];
                 // SI NO HAY DIRECTOR COMERCIAL O REGIONAL MANDA NOTIFICACION A APROBADOR (NO DIRECTOR) - RICARDO GERARDO            
                 $this->sendEmailNotificationPO($nombreEmpresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail, $esUsuarioGC);
                 $listaIdAprobadorReenvio = $app_list_strings['aprobador_reenvio_po_gc_list'];
                 if (!empty($listaIdAprobadorReenvio)) {
                     foreach ($listaIdAprobadorReenvio as $keyNombre => $idAprobadorReenvio) {
-                        $GLOBALS['log']->fatal("APROBADOR_REENVIO: " . $keyNombre . " - " . $idAprobadorReenvio);
+                        $GLOBALS['log']->fatal("APROBADOR_REENVIO_SEND_EMAIL_PO: " . $keyNombre . " - " . $idAprobadorReenvio);
+                        $destinatarios[] = $keyNombre; 
                     }
                 }
-                $response = "Se envió notificación a: " . $keyNombre;
+                $response = "Se envió notificación a: " . implode(', ', $destinatarios);
                 $beanPO->id_director_vobo_c = $idAprobadorReenvio;
             } else {
                 //ToDO: Antes de enviar, validar que si se haya encontrado un director para enviar notificación y no se intenta mandar correo a una dirección vacía 
