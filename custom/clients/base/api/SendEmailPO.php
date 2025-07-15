@@ -122,10 +122,12 @@ class SendEmailPO extends SugarApi
         }
         //----- REENVIO -----
         if ($envio_previo > 0) {
+            $GLOBALS['log']->fatal("******** REENVIO **********: " . $envio_previo);
             //$response = "SI HAY ENVIO PREVIO: Enviar correo al director de asesor comercial y cc: director regional. Contenido: Email VoBo Director PO";
             $body_mail = $this->buildBodyEmailVoBo($name_comercial, $asesorName, $beanPO->name, $linkPO);
             //Enviando correo
             if ($esUsuarioGC === 1) {
+                $GLOBALS['log']->fatal("******** USUARIO LISTA GENERATION CENTER **********: " . $esUsuarioGC);
                 $destinatarios = [];
 
                 $listaEmailsCCAprobadoresNoDirector = $app_list_strings['correo_aprobadores_po_gc_list'];
@@ -134,7 +136,7 @@ class SendEmailPO extends SugarApi
                         $GLOBALS['log']->fatal("APROBADORES_NO_DIRECTOR (NOTIFICACION): " . $keyNombre . " - " . $email);
                         $body_mail_cg = $this->buildBodyEmailVoBo($keyNombre, $asesorName, $beanPO->name, $linkPO);
                         // SI NO HAY DIRECTOR COMERCIAL O REGIONAL MANDA NOTIFICACION A APROBADOR (NO DIRECTOR) - RICARDO GERARDO            
-                        $this->sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg);
+                        $this->sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg, $asesorName, $email_asesor);
                     }
                 }
 
@@ -148,6 +150,7 @@ class SendEmailPO extends SugarApi
                 $response = "Se envió notificación a: " . implode(', ', $destinatarios);
                 $beanPO->id_director_vobo_c = $idAprobadorReenvio;
             } else {
+                $GLOBALS['log']->fatal("******** SI NO ES USUARIO GENERATION CENTER NOTIFICA A DIRECTOR COMERCIAL O REGIONAL **********");
                 //ToDO: Antes de enviar, validar que si se haya encontrado un director para enviar notificación y no se intenta mandar correo a una dirección vacía 
                 if ($email_comercial != "" || $email_regional != "") {
                     $this->sendEmailNotificationPO($nombreEmpresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail, $esUsuarioGC);
@@ -161,6 +164,7 @@ class SendEmailPO extends SugarApi
             $updateP = "UPDATE prospects_cstm set envio_correo_po_c = 2 where  id_c ='{$beanPO->id}';";
             $db->query($updateP);
         } else {
+            $GLOBALS['log']->fatal("******** ENVIO **********");
             //No hay envío previo ----- ENVIO -----
             $link_unileasing = $url_unileasing . "/api/crm/contact/create?crm_id=" . $id_prospecto . "&assessor_id=" . $id_asesor;
 
@@ -1553,7 +1557,7 @@ class SendEmailPO extends SugarApi
         }
     }
 
-    public function sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg)
+    public function sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg, $asesorName, $email_asesor)
     {
         try {
             global $app_list_strings;
@@ -1569,6 +1573,25 @@ class SendEmailPO extends SugarApi
             $GLOBALS['log']->fatal("ENVIANDO CORREO TO_APROBADORES_NO_DIRECTOR (NOTIFICACION): " . $keyNombre . " - " . $email);
             $mailer->addRecipientsTo(new EmailIdentity($email, $keyNombre));
 
+            if ($email_asesor != "") {
+                $mailer->addRecipientsCc(new EmailIdentity($email_asesor, $asesorName));
+            }
+
+            $listaLiderGC = $app_list_strings['lider_generation_center_list'];
+            if (!empty($listaLiderGC)) {
+                foreach ($listaLiderGC as $keyNombre => $idLider) {
+                    $id_lider_gc = $idLider;
+                    $GLOBALS['log']->fatal("CC_LIDER_GENERATION_CENTER (BOTIFICACION): " . $keyNombre . " - " . $email);
+                }
+
+                $beanLider = BeanFactory::retrieveBean('Users', $id_lider_gc, array('disable_row_level_security' => true));
+                $nombreLider = $beanLider->first_name . " " . $beanLider->last_name;
+                $emailLider = $beanLider->email1;
+
+                if ($emailLider != "") {
+                    $mailer->addRecipientsCc(new EmailIdentity($emailLider, $nombreLider));
+                }
+            }
             $result = $mailer->send();
         } catch (Exception $e) {
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
