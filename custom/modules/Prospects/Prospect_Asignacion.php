@@ -50,30 +50,29 @@ class Prospects_AsignacionPO
         $resultsepomun = $db->query($queryValMunicipio);
         if ($resultsepomun->num_rows > 0) {
           while ($row1 = $db->fetchByAssoc($resultsepomun)) {
-            $municipio = $row1['municipio'];
+            $lbl_municipio = $row1['municipio'];
+            $id_estado = $row1['id_estado'];
             $GLOBALS['log']->fatal("ID ENCONTRADO PARA ASIGNACIÓN: " . $id_asignado);
           }
-
-          $queryMunicipio = "SELECT DISTINCT(sepo.municipio) , sepo.id_municipio, sepo.id_estado, sepo.estado, asigna.*
-          FROM dir_sepomex sepo , unifin_asignacion_po  asigna
-          WHERE
-           UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('{$municipio}', 'Á','A'), 'É','E'), 'Í','I'), 'Ó','O'), 'Ú','U')) = 
-                UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(sepo.municipio, 'Á','A'), 'É','E'), 'Í','I'), 'Ó','O'), 'Ú','U'))
-          AND LENGTH(sepo.id_municipio) < 5
-          AND asigna.zona_geografica='{$valor_zona_geografica}' 
-          AND sepo.id_municipio = asigna.municipio
-          GROUP BY  sepo.id_municipio, sepo.municipio, sepo.id_estado , sepo.estado, asigna.id;";
+          
+          $queryMunicipio = "SELECT * FROM unifin_asignacion_po where zona_geografica='{$valor_zona_geografica}' and municipio = ( 
+            SELECT DISTINCT(id_municipio) FROM dir_sepomex sepo 
+            WHERE id_estado = '{$id_estado}'
+              AND UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('{$lbl_municipio}', 'Á','A'), 'É','E'), 'Í','I'), 'Ó','O'), 'Ú','U')) = 
+                UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(municipio, 'Á','A'), 'É','E'), 'Í','I'), 'Ó','O'), 'Ú','U'))
+              AND LENGTH(id_municipio) < 5
+            GROUP BY id_municipio, municipio, id_estado , estado
+          );";
 
           $GLOBALS['log']->fatal("QUERY NUEVA ZONA:". $queryMunicipio);
           $resultNpo = $db->query($queryMunicipio);
           if ($resultNpo->num_rows > 0) {
             while ($row2 = $db->fetchByAssoc($resultNpo)) {
-              $zonageografica_q = $row2['zona_geografica'];
               $municipio_q = $row2['municipio'];
               $id_asignado_q = $row2['asignado_id'];
               $id_asignado = $id_asignado_q;
               $insert_asignacion_po = "INSERT INTO `unifin_asignacion_po` (`id`,`zona_geografica`,`municipio`,`equipos`,`date_modified`,`modified_by`,`asignado_id`) VALUES 
-              (UUID(),'{$zonageografica_q}','{$municipio_q}','',NOW(),'300c54cc-4fcd-11e8-8bcb-00155d967407','{$id_asignado_q}');";
+              (UUID(),'{$valor_zona_geografica}','{$municipio}','',NOW(),'300c54cc-4fcd-11e8-8bcb-00155d967407','{$id_asignado_q}');";
               $GLOBALS['log']->fatal("insert asigna po:". $insert_asignacion_po);
               $GLOBALS['db']->query($insert_asignacion_po);
 
