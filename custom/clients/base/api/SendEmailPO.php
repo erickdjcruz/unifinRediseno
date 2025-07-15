@@ -126,15 +126,26 @@ class SendEmailPO extends SugarApi
             $body_mail = $this->buildBodyEmailVoBo($name_comercial, $asesorName, $beanPO->name, $linkPO);
             //Enviando correo
             if ($esUsuarioGC === 1) {
-                // SI NO HAY DIRECTOR COMERCIAL O REGIONAL MANDA NOTIFICACION A APROBADOR (NO DIRECTOR) - RICARDO GERARDO            
-                $this->sendEmailNotificationPO($nombreEmpresa, $email_comercial, $name_comercial, $email_regional, $name_regional, $body_mail, $esUsuarioGC);
+                $destinatarios = [];
+
+                $listaEmailsCCAprobadoresNoDirector = $app_list_strings['correo_aprobadores_po_gc_list'];
+                if (!empty($listaEmailsCCAprobadoresNoDirector)) {
+                    foreach ($listaEmailsCCAprobadoresNoDirector as $keyNombre => $email) {
+                        $GLOBALS['log']->fatal("APROBADORES_NO_DIRECTOR (NOTIFICACION): " . $keyNombre . " - " . $email);
+                        $body_mail_cg = $this->buildBodyEmailVoBo($keyNombre, $asesorName, $beanPO->name, $linkPO);
+                        // SI NO HAY DIRECTOR COMERCIAL O REGIONAL MANDA NOTIFICACION A APROBADOR (NO DIRECTOR) - RICARDO GERARDO            
+                        $this->sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg);
+                    }
+                }
+
                 $listaIdAprobadorReenvio = $app_list_strings['aprobador_reenvio_po_gc_list'];
                 if (!empty($listaIdAprobadorReenvio)) {
                     foreach ($listaIdAprobadorReenvio as $keyNombre => $idAprobadorReenvio) {
-                        $GLOBALS['log']->fatal("APROBADOR_REENVIO: " . $keyNombre . " - " . $idAprobadorReenvio);
+                        $GLOBALS['log']->fatal("APROBADOR_REENVIO_SEND_EMAIL_PO: " . $keyNombre . " - " . $idAprobadorReenvio);
+                        $destinatarios[] = $keyNombre;
                     }
                 }
-                $response = "Se envió notificación a: " . $keyNombre;
+                $response = "Se envió notificación a: " . implode(', ', $destinatarios);
                 $beanPO->id_director_vobo_c = $idAprobadorReenvio;
             } else {
                 //ToDO: Antes de enviar, validar que si se haya encontrado un director para enviar notificación y no se intenta mandar correo a una dirección vacía 
@@ -369,12 +380,7 @@ class SendEmailPO extends SugarApi
                 $email_asesor_alianza,
                 $esAprobadorNoDirectorPO
             );
-
-            if ($esAprobadorNoDirectorPO == 1) {
-                $response .= "<br>Se envió notificación a Ricardo Gerardo";
-            } else {
-                $response = "<br>Se envió notificación de rechazo a: " . $asesorName . " , " . $nombre_asesor_alianza;
-            }
+            $response = "<br>Se envió notificación de rechazo a: " . $asesorName . " , " . $nombre_asesor_alianza;
         }
 
         //Resetea banderas
@@ -1514,7 +1520,7 @@ class SendEmailPO extends SugarApi
         return $mailHTML;
     }
 
-    public function sendEmailNotificationPO($nombre_empresa, $email, $name_email, $email_cc, $name_email_cc, $body_correo, $esAprobadorNoDirectorPO)
+    public function sendEmailNotificationPO($nombre_empresa, $email, $name_email, $email_cc, $name_email_cc, $body_correo)
     {
 
         try {
@@ -1527,7 +1533,6 @@ class SendEmailPO extends SugarApi
             $body = trim($body_correo);
             $mailer->setHtmlBody($body);
             $mailer->clearRecipients();
-
             //SI EXISTE EMAIL COMERCIAL 
             if ($email != "") {
                 //DIRECCION PRINCIPAL A EMAIL COMERCIAL
@@ -1540,20 +1545,30 @@ class SendEmailPO extends SugarApi
                 //DIRECCION PRINCIPAL A EMAIL REGIONAL
                 $mailer->addRecipientsTo(new EmailIdentity($email_cc, $name_email_cc));
             }
-
-            //VALIDA SI SON APROBADORES (NO DIRECTOR)
-            $GLOBALS['log']->fatal("ES_CC_APROBADORES_NO_DIRECTOR (NOTIFICACION): " . $esAprobadorNoDirectorPO);
-            if ($esAprobadorNoDirectorPO === 1) {
-                $listaEmailsCCAprobadoresNoDirector = $app_list_strings['correo_aprobadores_po_gc_list'];
-                if (!empty($listaEmailsCCAprobadoresNoDirector)) {
-                    foreach ($listaEmailsCCAprobadoresNoDirector as $keyNombre => $email) {
-                        $GLOBALS['log']->fatal("CC_APROBADORES_NO_DIRECTOR (NOTIFICACION): " . $keyNombre . " - " . $email);
-                        $mailer->addRecipientsCc(new EmailIdentity($email, $keyNombre));
-                    }
-                }
-            }
-
             $GLOBALS['log']->fatal("ENVIANDO CORREO A: " . $email . " / " . $email_cc);
+            $result = $mailer->send();
+        } catch (Exception $e) {
+            $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
+            $GLOBALS['log']->fatal(print_r($e, true));
+        }
+    }
+
+    public function sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg)
+    {
+        try {
+            global $app_list_strings;
+            $mailer = MailerFactory::getSystemDefaultMailer();
+            $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
+            $mailer->setSubject('Reenvio Onboarding ' . $nombreEmpresa);
+            $mailer->addAttachment(new \EmbeddedImage('Recurso-1unileasingazul', 'custom/images_email/Recurso-1unileasingazul.png', 'Recurso-1unileasingazul'), "Recurso-1unileasingazul");
+            $mailer->addAttachment(new \EmbeddedImage('Copia_de_Recurso-2unileasingazulLOW', 'custom/images_email/Copia_de_Recurso-2unileasingazulLOW.png', 'Copia_de_Recurso-2unileasingazulLOW'), "Copia_de_Recurso-2unileasingazulLOW");
+            $body = trim($body_mail_cg);
+            $mailer->setHtmlBody($body);
+            $mailer->clearRecipients();
+
+            $GLOBALS['log']->fatal("ENVIANDO CORREO TO_APROBADORES_NO_DIRECTOR (NOTIFICACION): " . $keyNombre . " - " . $email);
+            $mailer->addRecipientsTo(new EmailIdentity($email, $keyNombre));
+
             $result = $mailer->send();
         } catch (Exception $e) {
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
