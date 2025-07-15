@@ -806,8 +806,8 @@
             $('[data-name="detalle_origen_c"]').css('pointer-events', 'none');
             self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').remove();
         }
-        //READONLY: ORIGEN - MARKETING  / DETALLE ORIGEN - ORGANICO
-        if (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80') {
+        //READONLY: ORIGEN - MARKETING  / DETALLE ORIGEN - ORGANICO / ESTATUS: CONVERTIDO
+        if (this.model.get('origen_c') === '1' && this.model.get('detalle_origen_c') === '80' && this.model.get('estatus_po_c') === '3') {
             $('[data-name="potencial_lead_c"]').css('pointer-events', 'none');
             $('[data-name="activos_interes_c"]').css('pointer-events', 'none');
             $('[data-name="mes_operacion_c"]').css('pointer-events', 'none');
