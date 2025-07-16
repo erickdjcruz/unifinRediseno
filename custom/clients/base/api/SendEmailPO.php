@@ -130,24 +130,43 @@ class SendEmailPO extends SugarApi
                 $GLOBALS['log']->fatal("******** USUARIO LISTA GENERATION CENTER **********: " . $esUsuarioGC);
                 $destinatarios = [];
 
+                $listaLiderGC = $app_list_strings['lider_generation_center_list'];
+                if (!empty($listaLiderGC)) {
+                    foreach ($listaLiderGC as $keyNombre => $idLider) {
+                        //OBTIENE LIDER DE GENERATION LIST
+                        $id_lider_gc = $idLider;
+                        $GLOBALS['log']->fatal("ID_LIDER " . $id_lider_gc);
+                    }
+
+                    $beanLider = BeanFactory::retrieveBean('Users', $id_lider_gc, ['disable_row_level_security' => true]);
+                    if ($beanLider) {
+                        $nombreLider = $beanLider->first_name . " " . $beanLider->last_name;
+                        $emailLider = $beanLider->email1;
+                    } else {
+                        $GLOBALS['log']->fatal("NO SE ENCONTRO ID_LIDER_GENERATION_CENTER: ". $id_lider_gc);
+                    }
+                }
+                //ENVIA CORREO A LOS APROBADORES
                 $listaEmailsCCAprobadoresNoDirector = $app_list_strings['correo_aprobadores_po_gc_list'];
                 if (!empty($listaEmailsCCAprobadoresNoDirector)) {
                     foreach ($listaEmailsCCAprobadoresNoDirector as $keyNombre => $email) {
                         $GLOBALS['log']->fatal("APROBADORES_NO_DIRECTOR (NOTIFICACION): " . $keyNombre . " - " . $email);
                         $body_mail_cg = $this->buildBodyEmailVoBo($keyNombre, $asesorName, $beanPO->name, $linkPO);
-                        // SI NO HAY DIRECTOR COMERCIAL O REGIONAL MANDA NOTIFICACION A APROBADOR (NO DIRECTOR) - RICARDO GERARDO            
-                        $this->sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg, $asesorName, $email_asesor);
+                        // SI NO HAY DIRECTOR COMERCIAL O REGIONAL MANDA NOTIFICACION A APROBADOR (NO DIRECTOR) - RICARDO GERARDO   
+                        $this->sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg, $asesorName, $email_asesor, $nombreLider, $emailLider);
                     }
                 }
-
+                //OBTIENE EL ID DEL APROBADOR
                 $listaIdAprobadorReenvio = $app_list_strings['aprobador_reenvio_po_gc_list'];
                 if (!empty($listaIdAprobadorReenvio)) {
-                    foreach ($listaIdAprobadorReenvio as $keyNombre => $idAprobadorReenvio) {
+                    foreach ($listaIdAprobadorReenvio as $keyNombre => $idAprobador) {
+                        $idAprobadorReenvio = $idAprobador;
                         $GLOBALS['log']->fatal("APROBADOR_REENVIO_SEND_EMAIL_PO: " . $keyNombre . " - " . $idAprobadorReenvio);
                         $destinatarios[] = $keyNombre;
                     }
                 }
-                $response = "Se envió notificación a: " . implode(', ', $destinatarios);
+                
+                $response = "Se envió notificación a: " . implode(', ', $destinatarios) . ", Asesor: " . $asesorName . " y a Líder Generation Center: " . $nombreLider;
                 $beanPO->id_director_vobo_c = $idAprobadorReenvio;
             } else {
                 $GLOBALS['log']->fatal("******** SI NO ES USUARIO GENERATION CENTER NOTIFICA A DIRECTOR COMERCIAL O REGIONAL **********");
@@ -1557,7 +1576,7 @@ class SendEmailPO extends SugarApi
         }
     }
 
-    public function sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg, $asesorName, $email_asesor)
+    public function sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg, $asesorName, $email_asesor, $nombreLider, $emailLider)
     {
         try {
             global $app_list_strings;
@@ -1576,21 +1595,8 @@ class SendEmailPO extends SugarApi
             if ($email_asesor != "") {
                 $mailer->addRecipientsCc(new EmailIdentity($email_asesor, $asesorName));
             }
-
-            $listaLiderGC = $app_list_strings['lider_generation_center_list'];
-            if (!empty($listaLiderGC)) {
-                foreach ($listaLiderGC as $keyNombre => $idLider) {
-                    $id_lider_gc = $idLider;
-                    $GLOBALS['log']->fatal("CC_LIDER_GENERATION_CENTER (BOTIFICACION): " . $keyNombre . " - " . $email);
-                }
-
-                $beanLider = BeanFactory::retrieveBean('Users', $id_lider_gc, array('disable_row_level_security' => true));
-                $nombreLider = $beanLider->first_name . " " . $beanLider->last_name;
-                $emailLider = $beanLider->email1;
-
-                if ($emailLider != "") {
-                    $mailer->addRecipientsCc(new EmailIdentity($emailLider, $nombreLider));
-                }
+            if ($emailLider != "") {
+                $mailer->addRecipientsCc(new EmailIdentity($emailLider, $nombreLider));
             }
             $result = $mailer->send();
         } catch (Exception $e) {
