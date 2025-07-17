@@ -11,6 +11,7 @@ class Prospects_AsignacionPO
       $GLOBALS['log']->fatal("ENTRA ASIGNACIÓN DESDE API");
 
       if (!empty($bean->zona_geografica_c)) {
+        $val_original = $bean->zona_geografica_c;
         $valor_zona_geografica = $app_list_strings['mapeo_dire_estado_zona_geografica_list'][$bean->zona_geografica_c];
 
         $GLOBALS['log']->fatal("ZONA GEOGRAFICA ENCONTRADA: " . $valor_zona_geografica);
@@ -57,7 +58,7 @@ class Prospects_AsignacionPO
           
           $queryMunicipio = "SELECT * FROM unifin_asignacion_po where zona_geografica='{$valor_zona_geografica}' and municipio = ( 
             SELECT DISTINCT(id_municipio) FROM dir_sepomex sepo 
-            WHERE id_estado = '{$id_estado}'
+            WHERE id_estado = '{$id_estado}' 
               AND UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('{$lbl_municipio}', 'Á','A'), 'É','E'), 'Í','I'), 'Ó','O'), 'Ú','U')) = 
                 UPPER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(municipio, 'Á','A'), 'É','E'), 'Í','I'), 'Ó','O'), 'Ú','U'))
               AND LENGTH(id_municipio) < 5
