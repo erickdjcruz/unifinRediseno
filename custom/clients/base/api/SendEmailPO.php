@@ -89,7 +89,6 @@ class SendEmailPO extends SugarApi
         $GLOBALS['log']->fatal('PO (SEND_EMAIL_PROSPECT) - ORIGEN - DETALLE ' . $origen . ' - ' . $detalleOrigen . ' --- ' . $esAlianzaVendors);
         $esAlianzaReditus = ($origen === '12' && $detalleOrigen === '117') ? 1 : 0; //Valida si es Alianza Reditus
         $GLOBALS['log']->fatal('PO (SEND_EMAIL_PROSPECT) - ORIGEN - DETALLE ' . $origen . ' - ' . $detalleOrigen . ' --- ' . $esAlianzaReditus);
-        $esAprobadorNoDirector_PO = 0; //BANDERA PARA APROBADORES (NO DIRECTOR)
         //VALIDA LOS USUARIOS DE LA LISTA GENERATION CENTER EN SESION
         $usuarios_gc_list = $app_list_strings['usuarios_generation_center_list'];
         $esUsuarioGC = in_array($currentUserId, $usuarios_gc_list) ? 1 : 0;
@@ -130,23 +129,26 @@ class SendEmailPO extends SugarApi
                 $GLOBALS['log']->fatal("******** USUARIO LISTA GENERATION CENTER **********: " . $esUsuarioGC);
                 $destinatarios = [];
 
+                //ENVIA CORREO A LOS APROBADORES
                 $listaEmailsCCAprobadoresNoDirector = $app_list_strings['correo_aprobadores_po_gc_list'];
                 if (!empty($listaEmailsCCAprobadoresNoDirector)) {
                     foreach ($listaEmailsCCAprobadoresNoDirector as $keyNombre => $email) {
                         $GLOBALS['log']->fatal("APROBADORES_NO_DIRECTOR (NOTIFICACION): " . $keyNombre . " - " . $email);
                         $body_mail_cg = $this->buildBodyEmailVoBo($keyNombre, $asesorName, $beanPO->name, $linkPO);
-                        // SI NO HAY DIRECTOR COMERCIAL O REGIONAL MANDA NOTIFICACION A APROBADOR (NO DIRECTOR) - RICARDO GERARDO            
-                        $this->sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg, $asesorName, $email_asesor);
+                        // SI NO HAY DIRECTOR COMERCIAL O REGIONAL MANDA NOTIFICACION A APROBADOR (NO DIRECTOR) - RICARDO GERARDO   
+                        $this->sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg);
                     }
                 }
-
+                //OBTIENE EL ID DEL APROBADOR
                 $listaIdAprobadorReenvio = $app_list_strings['aprobador_reenvio_po_gc_list'];
                 if (!empty($listaIdAprobadorReenvio)) {
-                    foreach ($listaIdAprobadorReenvio as $keyNombre => $idAprobadorReenvio) {
+                    foreach ($listaIdAprobadorReenvio as $keyNombre => $idAprobador) {
+                        $idAprobadorReenvio = $idAprobador;
                         $GLOBALS['log']->fatal("APROBADOR_REENVIO_SEND_EMAIL_PO: " . $keyNombre . " - " . $idAprobadorReenvio);
                         $destinatarios[] = $keyNombre;
                     }
                 }
+
                 $response = "Se envió notificación a: " . implode(', ', $destinatarios);
                 $beanPO->id_director_vobo_c = $idAprobadorReenvio;
             } else {
@@ -199,8 +201,7 @@ class SendEmailPO extends SugarApi
                     $nombre_vendedor,
                     $email_vendedor,
                     $esAlianzaVendors,
-                    $esAlianzaReditus,
-                    $esAprobadorNoDirector_PO
+                    $esAlianzaReditus
                 );
                 $response .= "<br>Se envió notificación a: " . $asesorName . " , " . $name_comercial . " , " . $name_regional . " , " . $nombre_asesor_alianza;
             }
@@ -248,6 +249,20 @@ class SendEmailPO extends SugarApi
         $esAprobadorNoDirectorPO = in_array($currentUserIdAE, $usuarios_ar_list) ? 1 : 0;
         $GLOBALS['log']->fatal("esAprobadorNoDirectorPO-AUTORIZA: " . $esAprobadorNoDirectorPO);
 
+        $listaLiderGC = $app_list_strings['lider_generation_center_list'];
+        if (!empty($listaLiderGC)) {
+            $keys = array_keys($listaLiderGC);
+            $primer_id_asignado = $keys[0]; // Primer key
+            $id_lider_gc = $app_list_strings['lider_generation_center_list'][$primer_id_asignado];
+
+            $beanLider = BeanFactory::retrieveBean('Users', $id_lider_gc, ['disable_row_level_security' => true]);
+            if ($beanLider) {
+                $nombreLider = $beanLider->first_name . " " . $beanLider->last_name;
+                $emailLider = $beanLider->email1;
+                $GLOBALS['log']->fatal("LIDER_GENERATION_LIST (AUTORIZA): " . $nombreLider . " - " . $emailLider);
+            }
+        }
+
         $id_director_regional = $this->getIdDirectorRegional($beanAsesor);
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
 
@@ -284,31 +299,31 @@ class SendEmailPO extends SugarApi
         //Enviando correo al asesor cc a Director Comercial y Director Regional
         $body_mail_asesor = $this->buildBodyNotificationAsesor($asesorName, $beanPO->name);
 
-        if (!empty($email_asesor) || $esAprobadorNoDirectorPO == 1) {
-            $this->sendEmailAsesorPO(
-                $body_mail_asesor,
-                $nombreEmpresa,
-                $email_asesor,
-                $asesorName,
-                $email_comercial,
-                $name_comercial,
-                $email_regional,
-                $name_regional,
-                $nombre_asesor_alianza,
-                $email_asesor_alianza,
-                $esAlianzaKonnect,
-                $nombre_gerente_credito,
-                $email_gerente_credito,
-                $nombre_vendedor,
-                $email_vendedor,
-                $esAlianzaVendors,
-                $esAlianzaReditus,
-                $esAprobadorNoDirectorPO
-            );
-
-            if ($esAprobadorNoDirectorPO == 1) {
-                $response .= "<br>Se envió notificación a Ricardo Gerardo";
-            } else {
+        if ($esAprobadorNoDirectorPO == 1) {
+            //NOTIFICACION GENERATION CENTER
+            $this->sendEmailAsesorAceptacionPO_GC($body_mail_asesor, $nombreEmpresa, $email_asesor, $asesorName, $emailLider, $nombreLider);
+            $response .= "<br>Se envió notificación a: " . $asesorName . " y a Líder Generation Center: " . $nombreLider;
+        } else {
+            if (!empty($email_asesor)) {
+                $this->sendEmailAsesorPO(
+                    $body_mail_asesor,
+                    $nombreEmpresa,
+                    $email_asesor,
+                    $asesorName,
+                    $email_comercial,
+                    $name_comercial,
+                    $email_regional,
+                    $name_regional,
+                    $nombre_asesor_alianza,
+                    $email_asesor_alianza,
+                    $esAlianzaKonnect,
+                    $nombre_gerente_credito,
+                    $email_gerente_credito,
+                    $nombre_vendedor,
+                    $email_vendedor,
+                    $esAlianzaVendors,
+                    $esAlianzaReditus
+                );
                 $response .= "<br>Se envió notificación a: " . $asesorName . " , " . $name_comercial . " , " . $name_regional . " , " . $nombre_asesor_alianza;
             }
         }
@@ -347,6 +362,20 @@ class SendEmailPO extends SugarApi
         $esAprobadorNoDirectorPO = in_array($currentUserIdRE, $usuarios_ar_list) ? 1 : 0;
         $GLOBALS['log']->fatal("esAprobadorNoDirectorPO-RECHAZO: " . $esAprobadorNoDirectorPO);
 
+        $listaLiderGC = $app_list_strings['lider_generation_center_list'];
+        if (!empty($listaLiderGC)) {
+            $keys = array_keys($listaLiderGC);
+            $primer_id_asignado = $keys[0]; // Primer key
+            $id_lider_gc = $app_list_strings['lider_generation_center_list'][$primer_id_asignado];
+
+            $beanLider = BeanFactory::retrieveBean('Users', $id_lider_gc, ['disable_row_level_security' => true]);
+            if ($beanLider) {
+                $nombreLider = $beanLider->first_name . " " . $beanLider->last_name;
+                $emailLider = $beanLider->email1;
+                $GLOBALS['log']->fatal("LIDER_GENERATION_LIST (RECHAZO): " . $nombreLider . " - " . $emailLider);
+            }
+        }
+
         $id_director_regional = $this->getIdDirectorRegional($beanAsesor);
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
 
@@ -370,23 +399,27 @@ class SendEmailPO extends SugarApi
 
         $body_correo_rechazo = $this->buildBodyRechazo($asesorName, $beanPO->name);
 
-        if (!empty($email_asesor) || $esAprobadorNoDirectorPO == 1) {
-            $this->sendEmailNotificationRechazo(
-                $body_correo_rechazo,
-                $nombreEmpresa,
-                $email_asesor,
-                $asesorName,
-                $email_comercial,
-                $name_comercial,
-                $email_regional,
-                $name_regional,
-                $nombre_asesor_alianza,
-                $email_asesor_alianza,
-                $esAprobadorNoDirectorPO
-            );
-            $response = "<br>Se envió notificación de rechazo a: " . $asesorName . " , " . $nombre_asesor_alianza;
+        if ($esAprobadorNoDirectorPO == 1) {
+            //NOTIFICACION GENERATION CENTER
+            $this->sendEmailAsesorRechazoPO_GC($body_correo_rechazo, $nombreEmpresa, $email_asesor, $asesorName, $emailLider, $nombreLider);
+            $response .= "<br>Se envió notificación a: " . $asesorName . " y a Líder Generation Center: " . $nombreLider;
+        } else {
+            if (!empty($email_asesor)) {
+                $this->sendEmailNotificationRechazo(
+                    $body_correo_rechazo,
+                    $nombreEmpresa,
+                    $email_asesor,
+                    $asesorName,
+                    $email_comercial,
+                    $name_comercial,
+                    $email_regional,
+                    $name_regional,
+                    $nombre_asesor_alianza,
+                    $email_asesor_alianza
+                );
+                $response = "<br>Se envió notificación de rechazo a: " . $asesorName . " , " . $nombre_asesor_alianza;
+            }
         }
-
         //Resetea banderas
         $GLOBALS['log']->fatal('Reestablece id de director y permanece bandera de envío previo');
         //$beanPO->envio_correo_po_c = 0;
@@ -1557,7 +1590,7 @@ class SendEmailPO extends SugarApi
         }
     }
 
-    public function sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg, $asesorName, $email_asesor)
+    public function sendEmailNotificaPO_GC($nombreEmpresa, $email, $keyNombre, $body_mail_cg)
     {
         try {
             global $app_list_strings;
@@ -1572,26 +1605,6 @@ class SendEmailPO extends SugarApi
 
             $GLOBALS['log']->fatal("ENVIANDO CORREO TO_APROBADORES_NO_DIRECTOR (NOTIFICACION): " . $keyNombre . " - " . $email);
             $mailer->addRecipientsTo(new EmailIdentity($email, $keyNombre));
-
-            if ($email_asesor != "") {
-                $mailer->addRecipientsCc(new EmailIdentity($email_asesor, $asesorName));
-            }
-
-            $listaLiderGC = $app_list_strings['lider_generation_center_list'];
-            if (!empty($listaLiderGC)) {
-                foreach ($listaLiderGC as $keyNombre => $idLider) {
-                    $id_lider_gc = $idLider;
-                    $GLOBALS['log']->fatal("CC_LIDER_GENERATION_CENTER (BOTIFICACION): " . $keyNombre . " - " . $email);
-                }
-
-                $beanLider = BeanFactory::retrieveBean('Users', $id_lider_gc, array('disable_row_level_security' => true));
-                $nombreLider = $beanLider->first_name . " " . $beanLider->last_name;
-                $emailLider = $beanLider->email1;
-
-                if ($emailLider != "") {
-                    $mailer->addRecipientsCc(new EmailIdentity($emailLider, $nombreLider));
-                }
-            }
             $result = $mailer->send();
         } catch (Exception $e) {
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
@@ -1656,8 +1669,7 @@ class SendEmailPO extends SugarApi
         $nombre_vendedor,
         $email_vendedor,
         $esAlianzaVendors,
-        $esAlianzaReditus,
-        $esAprobadorNoDirectorPO
+        $esAlianzaReditus
     ) {
         try {
             global $app_list_strings;
@@ -1716,17 +1728,6 @@ class SendEmailPO extends SugarApi
                     }
                 }
             }
-            //VALIDA SI SON APROBADORES (NO DIRECTOR)
-            $GLOBALS['log']->fatal("ES_CC_APROBADORES_NO_DIRECTOR (AUTORIZA): " . $esAprobadorNoDirectorPO);
-            if ($esAprobadorNoDirectorPO === 1) {
-                $listaEmailsCCAprobadoresNoDirector = $app_list_strings['correo_aprobadores_po_gc_list'];
-                if (!empty($listaEmailsCCAprobadoresNoDirector)) {
-                    foreach ($listaEmailsCCAprobadoresNoDirector as $keyNombre => $email) {
-                        $GLOBALS['log']->fatal("CC_APROBADORES_NO_DIRECTOR (AUTORIZA): " . $keyNombre . " - " . $email);
-                        $mailer->addRecipientsCc(new EmailIdentity($email, $keyNombre));
-                    }
-                }
-            }
 
             $GLOBALS['log']->fatal("ENVIANDO CORREO ASESOR: " . $email_asesor);
             $GLOBALS['log']->fatal("ENVIANDO CORREO COMERCIAL: " . $email_comercial);
@@ -1734,6 +1735,32 @@ class SendEmailPO extends SugarApi
             $GLOBALS['log']->fatal("ENVIANDO CORREO ASESOR ALIANZA: " . $email_asesor_alianza);
             $GLOBALS['log']->fatal("ENVIANDO CORREO GERENTE CREDITO VENDORS: " . $email_gerente_credito);
             $GLOBALS['log']->fatal("ENVIANDO CORREO VENDEDOR VENDORS: " . $email_vendedor);
+            $result = $mailer->send();
+        } catch (Exception $e) {
+            $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
+            $GLOBALS['log']->fatal(print_r($e, true));
+        }
+    }
+
+    public function sendEmailAsesorAceptacionPO_GC($body_mail_asesor, $nombreEmpresa, $email_asesor, $asesorName, $emailLider, $nombreLider)
+    {
+        try {
+            global $app_list_strings;
+            $mailer = MailerFactory::getSystemDefaultMailer();
+            $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
+            $mailer->setSubject('Seguimiento Unileasing / ' . $nombreEmpresa);
+            $mailer->addAttachment(new \EmbeddedImage('Recurso-1unileasingazul', 'custom/images_email/Recurso-1unileasingazul.png', 'Recurso-1unileasingazul'), "Recurso-1unileasingazul");
+            $mailer->addAttachment(new \EmbeddedImage('Copia_de_Recurso-2unileasingazulLOW', 'custom/images_email/Copia_de_Recurso-2unileasingazulLOW.png', 'Copia_de_Recurso-2unileasingazulLOW'), "Copia_de_Recurso-2unileasingazulLOW");
+            $body = trim($body_mail_asesor);
+            $mailer->setHtmlBody($body);
+            $mailer->clearRecipients();
+
+            $GLOBALS['log']->fatal("ENVIANDO CORREO AL ASESOR_GC (NOTIFICACION): " . $email_asesor . " - " . $asesorName);
+            $mailer->addRecipientsTo(new EmailIdentity($email_asesor, $asesorName));
+
+            if ($emailLider != '') {
+                $mailer->addRecipientsCc(new EmailIdentity($emailLider, $nombreLider));
+            }
             $result = $mailer->send();
         } catch (Exception $e) {
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
@@ -1751,8 +1778,7 @@ class SendEmailPO extends SugarApi
         $email_regional,
         $name_regional,
         $nombre_asesor_alianza,
-        $email_asesor_alianza,
-        $esAprobadorNoDirectorPO
+        $email_asesor_alianza
     ) {
         try {
             global $app_list_strings;
@@ -1778,22 +1804,37 @@ class SendEmailPO extends SugarApi
             if ($email_asesor_alianza != "") {
                 $mailer->addRecipientsTo(new EmailIdentity($email_asesor_alianza, $nombre_asesor_alianza));
             }
-            //VALIDA SI SON APROBADORES (NO DIRECTOR)
-            $GLOBALS['log']->fatal("ES_CC_APROBADORES_NO_DIRECTOR (RECHAZO): " . $esAprobadorNoDirectorPO);
-            if ($esAprobadorNoDirectorPO === 1) {
-                $listaEmailsCCAprobadoresNoDirector = $app_list_strings['correo_aprobadores_po_gc_list'];
-                if (!empty($listaEmailsCCAprobadoresNoDirector)) {
-                    foreach ($listaEmailsCCAprobadoresNoDirector as $keyNombre => $email) {
-                        $GLOBALS['log']->fatal("CC_APROBADORES_NO_DIRECTOR (RECHAZO): " . $keyNombre . " - " . $email);
-                        $mailer->addRecipientsCc(new EmailIdentity($email, $keyNombre));
-                    }
-                }
-            }
 
             $GLOBALS['log']->fatal("ENVIANDO CORREO DE RECHAZO ASESOR: " . $email_asesor);
             $GLOBALS['log']->fatal("ENVIANDO CORREO DE RECHAZO COMERCIAL: " . $email_comercial);
             $GLOBALS['log']->fatal("ENVIANDO CORREO DE RECHAZO REGIONAL: " . $email_regional);
             $GLOBALS['log']->fatal("ENVIANDO CORREO DE RECHAZO ASESOR ALIANZA: " . $email_asesor_alianza);
+            $result = $mailer->send();
+        } catch (Exception $e) {
+            $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
+            $GLOBALS['log']->fatal(print_r($e, true));
+        }
+    }
+
+    public function sendEmailAsesorRechazoPO_GC($body_mail_asesor, $nombreEmpresa, $email_asesor, $asesorName, $emailLider, $nombreLider)
+    {
+        try {
+            global $app_list_strings;
+            $mailer = MailerFactory::getSystemDefaultMailer();
+            $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
+            $mailer->setSubject('Rechazo Reenvío Unileasing / ' . $nombreEmpresa);
+            $mailer->addAttachment(new \EmbeddedImage('Recurso-1unileasingazul', 'custom/images_email/Recurso-1unileasingazul.png', 'Recurso-1unileasingazul'), "Recurso-1unileasingazul");
+            $mailer->addAttachment(new \EmbeddedImage('Copia_de_Recurso-2unileasingazulLOW', 'custom/images_email/Copia_de_Recurso-2unileasingazulLOW.png', 'Copia_de_Recurso-2unileasingazulLOW'), "Copia_de_Recurso-2unileasingazulLOW");
+            $body = trim($body_mail_asesor);
+            $mailer->setHtmlBody($body);
+            $mailer->clearRecipients();
+
+            $GLOBALS['log']->fatal("ENVIANDO CORREO AL ASESOR_GC (NOTIFICACION): " . $email_asesor . " - " . $asesorName);
+            $mailer->addRecipientsTo(new EmailIdentity($email_asesor, $asesorName));
+
+            if ($emailLider != '') {
+                $mailer->addRecipientsCc(new EmailIdentity($emailLider, $nombreLider));
+            }
             $result = $mailer->send();
         } catch (Exception $e) {
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
