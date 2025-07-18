@@ -333,10 +333,10 @@
         //Función para eliminar opciones del campo origen
         this.estableceOpcionesOrigen();
         //Clic solicitar CIEC
-        this.context.on('button:solicitar_ciec:click', this.solicitar_ciec_function, this);
+        // this.context.on('button:solicitar_ciec:click', this.solicitar_ciec_function, this);
         this.context.on('button:alta_po:click', this.muestra_modal_alta_po, this);
         //Oculta Menú Solicitar CIEC
-        this.model.on('sync', this.ocultaSolicitarCIEC, this);
+        // this.model.on('sync', this.ocultaSolicitarCIEC, this);
         //Parche utilizado para ocultar las filas que siguen mostrándose aunque ningún campo se encuentren en ellas
         this.model.on('sync', this.hideRowsNoHideByDependency, this);
         //Se bloquean campos de nombre para los registros tipo "Cliente"
@@ -8937,7 +8937,7 @@
                 //Final de funcion, mandamos ejecutar funcion de requniclick
                 this.validaReqUniclickInfo();
                 //Ejecuta funcion para boton CIEC
-                this.muestraCIEC();
+                // this.muestraCIEC();
                 //render a campo cstm Clientes analizate
                 analizate_cl.render();
 
@@ -9137,20 +9137,20 @@
         }
     },
 
-    muestraCIEC: function () {
-        //Validamos que el usuario logueado sea el mismo asignado a alguno de los productos de la cuenta
-        var leasing = App.user.attributes.id == contexto_cuenta.ResumenProductos.leasing.assigned_user_id && contexto_cuenta.ResumenProductos.leasing.tipo_cuenta == '3' ? true : false;;
-        var factoring = App.user.attributes.id == contexto_cuenta.ResumenProductos.factoring.assigned_user_id && contexto_cuenta.ResumenProductos.factoring.tipo_cuenta == '3' ? true : false;;
-        var creditauto = App.user.attributes.id == contexto_cuenta.ResumenProductos.credito_auto.assigned_user_id && contexto_cuenta.ResumenProductos.credito_auto.tipo_cuenta == '3' ? true : false;;
-        var fleet = App.user.attributes.id == contexto_cuenta.ResumenProductos.fleet.assigned_user_id && contexto_cuenta.ResumenProductos.fleet.tipo_cuenta == '3' ? true : false;;
-        var uniclick = App.user.attributes.id == contexto_cuenta.ResumenProductos.uniclick.assigned_user_id && contexto_cuenta.ResumenProductos.uniclick.tipo_cuenta == '3' ? true : false;;
+    // muestraCIEC: function () {
+    //     //Validamos que el usuario logueado sea el mismo asignado a alguno de los productos de la cuenta
+    //     var leasing = App.user.attributes.id == contexto_cuenta.ResumenProductos.leasing.assigned_user_id && contexto_cuenta.ResumenProductos.leasing.tipo_cuenta == '3' ? true : false;;
+    //     var factoring = App.user.attributes.id == contexto_cuenta.ResumenProductos.factoring.assigned_user_id && contexto_cuenta.ResumenProductos.factoring.tipo_cuenta == '3' ? true : false;;
+    //     var creditauto = App.user.attributes.id == contexto_cuenta.ResumenProductos.credito_auto.assigned_user_id && contexto_cuenta.ResumenProductos.credito_auto.tipo_cuenta == '3' ? true : false;;
+    //     var fleet = App.user.attributes.id == contexto_cuenta.ResumenProductos.fleet.assigned_user_id && contexto_cuenta.ResumenProductos.fleet.tipo_cuenta == '3' ? true : false;;
+    //     var uniclick = App.user.attributes.id == contexto_cuenta.ResumenProductos.uniclick.assigned_user_id && contexto_cuenta.ResumenProductos.uniclick.tipo_cuenta == '3' ? true : false;;
 
-        if (leasing == true || factoring == true || creditauto == true || fleet == true || uniclick == true) {
-            $('[name="solicitar_ciec"]').show();
-        } else {
-            $('[name="solicitar_ciec"]').hide();
-        }
-    },
+    //     if (leasing == true || factoring == true || creditauto == true || fleet == true || uniclick == true) {
+    //         $('[name="solicitar_ciec"]').show();
+    //     } else {
+    //         $('[name="solicitar_ciec"]').hide();
+    //     }
+    // },
 
     _panel_anlzt_proveedor: function () {
         if (this.model.get('tipo_registro_cuenta_c') == '5' || this.model.get('esproveedor_c') == true) {
@@ -9188,19 +9188,19 @@
         });
     },
 
-    ocultaSolicitarCIEC: function () {
-        var cliente = (this.model.get("tipo_registro_cuenta_c") == 3 || this.model.get("tipo_registro_cuenta_c") == 2 || this.model.get("tipo_registro_cuenta_c") == 4) ? true : false;
-        var botonSC = this.getField("solicitar_ciec");
-        if (botonSC) {
-            botonSC.listenTo(botonSC, "render", function () {
-                if (cliente) {
-                    botonSC.show();
-                } else {
-                    botonSC.hide();
-                }
-            });
-        }
-    },
+    // ocultaSolicitarCIEC: function () {
+    //     var cliente = (this.model.get("tipo_registro_cuenta_c") == 3 || this.model.get("tipo_registro_cuenta_c") == 2 || this.model.get("tipo_registro_cuenta_c") == 4) ? true : false;
+    //     var botonSC = this.getField("solicitar_ciec");
+    //     if (botonSC) {
+    //         botonSC.listenTo(botonSC, "render", function () {
+    //             if (cliente) {
+    //                 botonSC.show();
+    //             } else {
+    //                 botonSC.hide();
+    //             }
+    //         });
+    //     }
+    // },
 
     /*
     Función utilizada como parche (en la actualización a la version 12 de sugar) para poder ocultar las filas que siguen mostrándose en la vista
@@ -9218,56 +9218,56 @@
         });
     },
 
-    solicitar_ciec_function: function () {
-        //Valida que sea proveedor para reenviar
-        if (this.model.get('tipo_registro_cuenta_c') == "1" || this.model.get("tipo_registro_cuenta_c") == 5) {
-            app.alert.show('No_Cliente', {
-                level: 'error',
-                messages: 'Sólo se puede solcitar CIEC para cuentas de tipo Cliente, Persona o Prospecto.',
-                autoClose: false
-            });
-            return;
-        }
+    // solicitar_ciec_function: function () {
+    //     //Valida que sea proveedor para reenviar
+    //     if (this.model.get('tipo_registro_cuenta_c') == "1" || this.model.get("tipo_registro_cuenta_c") == 5) {
+    //         app.alert.show('No_Cliente', {
+    //             level: 'error',
+    //             messages: 'Sólo se puede solcitar CIEC para cuentas de tipo Cliente, Persona o Prospecto.',
+    //             autoClose: false
+    //         });
+    //         return;
+    //     }
 
-        if (this.model.get('email1') == "" || this.model.get('email1') == undefined) {
-            app.alert.show('No_Envio', {
-                level: 'error',
-                messages: 'La cuenta no contiene un correo electrónico.',
-                autoClose: false
-            });
-            return;
-        }
-        App.alert.show('eventoEnvioMailCliente', {
-            level: 'process',
-            title: 'Cargando, por favor espere.',
-        });
+    //     if (this.model.get('email1') == "" || this.model.get('email1') == undefined) {
+    //         app.alert.show('No_Envio', {
+    //             level: 'error',
+    //             messages: 'La cuenta no contiene un correo electrónico.',
+    //             autoClose: false
+    //         });
+    //         return;
+    //     }
+    //     App.alert.show('eventoEnvioMailCliente', {
+    //         level: 'process',
+    //         title: 'Cargando, por favor espere.',
+    //     });
 
-        //enviar elementos de la cuenta
-        var api_params = {
-            "idCuenta": this.model.id,
-            "idUsuario": App.user.id
-        };
-        var url = app.api.buildURL('solicitaCIECCliente/', null, null);
-        app.api.call('create', url, api_params, {
-            success: function (data) {
-                App.alert.dismiss('eventoEnvioMailCliente');
-                var levelStatus = (data['status'] == '200') ? 'success' : 'error';
-                app.alert.show('Correo_reenviado', {
-                    level: levelStatus,
-                    messages: data['message'],
-                    autoClose: false
-                });
-            },
-            error: function (e) {
-                App.alert.dismiss('eventoEnvioMailCliente');
-                app.alert.show('Correo_no_reenviado', {
-                    level: 'error',
-                    messages: 'No se ha podido generar solicitud CIEC. Intente nuevamente.',
-                    autoClose: false
-                });
-            }
-        });
-    },
+    //     //enviar elementos de la cuenta
+    //     var api_params = {
+    //         "idCuenta": this.model.id,
+    //         "idUsuario": App.user.id
+    //     };
+    //     var url = app.api.buildURL('solicitaCIECCliente/', null, null);
+    //     app.api.call('create', url, api_params, {
+    //         success: function (data) {
+    //             App.alert.dismiss('eventoEnvioMailCliente');
+    //             var levelStatus = (data['status'] == '200') ? 'success' : 'error';
+    //             app.alert.show('Correo_reenviado', {
+    //                 level: levelStatus,
+    //                 messages: data['message'],
+    //                 autoClose: false
+    //             });
+    //         },
+    //         error: function (e) {
+    //             App.alert.dismiss('eventoEnvioMailCliente');
+    //             app.alert.show('Correo_no_reenviado', {
+    //                 level: 'error',
+    //                 messages: 'No se ha podido generar solicitud CIEC. Intente nuevamente.',
+    //                 autoClose: false
+    //             });
+    //         }
+    //     });
+    // },
 
     muestra_modal_alta_po: function () {
 

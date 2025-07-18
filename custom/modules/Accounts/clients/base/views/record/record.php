@@ -243,13 +243,13 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
         //   'label' => 'Tarea IE Proveedor Quantico',
         //   'event' => 'button:proveedor_quantico:click',
         // ),
-        19 => 
-        array (
-          'name' => 'solicitar_ciec',
-          'type' => 'rowaction',
-          'label' => 'Solicitar CIEC',
-          'event' => 'button:solicitar_ciec:click',
-        ),
+        // 19 => 
+        // array (
+        //   'name' => 'solicitar_ciec',
+        //   'type' => 'rowaction',
+        //   'label' => 'Solicitar CIEC',
+        //   'event' => 'button:solicitar_ciec:click',
+        // ),
       ),
     ),
     9 => 
