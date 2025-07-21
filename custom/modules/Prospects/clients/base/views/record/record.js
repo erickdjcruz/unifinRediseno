@@ -95,12 +95,11 @@
 
             var btnDesvincular = this.getField('desvincular_vendor');
             var estatus = this.model.get('estatus_po_c');
-            if (estatus == '3') {
-                btnDesvincular.setDisabled(false);
+            var detalleOrigenVendors = this.model.get('detalle_origen_c');
+            if (estatus === '3' && detalleOrigenVendors === '116') {
                 btnDesvincular.show();
             } else {
-                btnDesvincular.setDisabled(true);
-                btnDesvincular.hide();
+                btnDesvincular.dispose();
             }
         });
     },
@@ -2483,7 +2482,7 @@
 
                 // Hide the desvincular button after click
                 var btnDesvincular = self.getField('desvincular_vendor');
-                btnDesvincular.hide();
+                btnDesvincular.dispose();
 
                 // Show success message
                 app.alert.show("desvinculado", {
