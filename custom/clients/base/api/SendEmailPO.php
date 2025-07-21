@@ -2563,7 +2563,7 @@ class SendEmailPO extends SugarApi
                                                                     <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                             <p style="margin: 0; margin-bottom: 16px;">Estimado/a, <strong>' . $nombreLiderGC . '</strong></p>
-                                                                            <p style="margin: 0; margin-bottom: 16px;">Se ha asignado el público objetivo <a id="linkPO" href="' . $link_po . '"> <strong>' . $nombre_po . '</strong></a> para su seguimiento, favor de vaidar.</p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Se ha asignado el público objetivo <a id="linkPO" href="' . $link_po . '"> <strong>' . $nombre_po . '</strong></a> para su seguimiento, favor de validar.</p>
                                                                             <br>
                                                                             <p style="margin: 0; margin-bottom: 16px;">Si tienes alguna duda contactar a:</p>
                                                                             <p style="margin: 0;">Equipo CRM</p>
