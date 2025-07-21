@@ -20,6 +20,9 @@
         //Solicitar edición de origen
         this.context.on('button:cambiar_origen:click', this.solicta_cambio_origen, this);
 
+        //Desvincular vendor
+        this.context.on('button:desvincular_vendor:click', this.desvincularVendor, this);
+
         //this.model.on('sync', this._hideBtnConvert, this);
         this._readonlyFields();
         this.events['keypress [name=phone_mobile]'] = 'validaSoloNumerosTel';
@@ -89,6 +92,16 @@
                 console.log("Modelo sincronizado y vista renderizada");
                 this.carga_inicial = false;
             });
+
+            var btnDesvincular = this.getField('desvincular_vendor');
+            var estatus = this.model.get('estatus_po_c');
+            if (estatus == '3') {
+                btnDesvincular.setDisabled(false);
+                btnDesvincular.show();
+            } else {
+                btnDesvincular.setDisabled(true);
+                btnDesvincular.hide();
+            }
         });
     },
 
@@ -2410,7 +2423,7 @@
     },
 
     _limpiaCamposDOAlianza: function () {
-        console.log("LIMPIA CAMPOS DEPENDIENTES DEL GRUPO ALIANZA");
+        // console.log("LIMPIA CAMPOS DEPENDIENTES DEL GRUPO ALIANZA");
         var campos = ["franquicia_c", "asesor_alianza_c", "email_aa_c", "telefono_aa_c"];
         var valores = {};
 
@@ -2423,6 +2436,120 @@
         if (!_.isEmpty(valores)) {
             this.model.set(valores);
         }
+    },
+
+    desvincularVendor: function () {
+        var self = this;
+        // Show confirmation dialog
+        app.alert.show("confirm_desvincular", {
+            level: "confirmation",
+            messages: "¿Estás seguro que deseas desvincular este Vendor? Esto permitirá editar el origen del PO.",
+            autoClose: false,
+            onConfirm: function () {
+                // Clear vendor fields
+                self.model.set({
+                    'id_franquicia_vendors_c': '',
+                    'label_franquicia_vendors_c': '',
+                    'origen_bloqueado_c': false
+                });
+
+                // Enable origin fields editing
+                self.noEditFields = _.without(self.noEditFields, 'origen_c', 'detalle_origen_c');
+
+                // Remove readonly from UI elements
+                self.$('[data-name="origen_c"]').css('pointer-events', 'auto');
+                self.$('[data-name="detalle_origen_c"]').css('pointer-events', 'auto');
+                self.$('.record-edit-link-wrapper[data-name=origen_c]').show();
+                self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').show();
+                self.$('[data-name="franquicia_c"]').css('pointer-events', '');
+                self.$('[data-name="asesor_alianza_c"]').css('pointer-events', '');
+                self.$('[data-name="email_aa_c"]').css('pointer-events', '');                
+                self.$('[data-name="telefono_aa_c"]').css('pointer-events', '');
+
+                self._setOpcionesSinVendor();
+
+                // If detalle_origen was vendors (116), reset it
+                if (self.model.get('detalle_origen_c') === '116') {
+                    self.model.set('detalle_origen_c', '');
+                }
+
+                // Show edit button temporarily
+                var editButton = self.getField('edit_button');
+                editButton.setDisabled(false);
+                editButton.show();
+
+                // Enter edit mode
+                self.editClicked();
+
+                // Hide the desvincular button after click
+                var btnDesvincular = self.getField('desvincular_vendor');
+                btnDesvincular.hide();
+
+                // Show success message
+                app.alert.show("desvinculado", {
+                    level: "success",
+                    messages: "Vendor desvinculado. Ahora puedes editar el origen y detalle origen.",
+                    autoClose: true
+                });
+
+                // Focus on origen field
+                setTimeout(function () {
+                    self.$('[data-name="origen_c"] input').focus();
+                }, 500);
+            }
+        });
+    },
+
+    _setOpcionesSinVendor() {
+        var opciones_detalle_origen = app.lang.getAppListStrings('detalle_origen_list');
+        var permisosGestionTeamLeader = app.user.attributes.gestion_team_leaders_c || "";
+        console.log("permisosGestionTeamLeader_origen ", permisosGestionTeamLeader);
+
+        // Mapeo de permisos a valores
+        var permisosMap = {
+            "^soc_creditaria^": ["12", "13"],
+            "^utility_trailers^": ["114"],
+            "^konnect^": ["115"],
+            "^reditus^": ["117"]
+        };
+
+        // Función para obtener todos los valores permitidos según permisos
+        var obtenerValores = function (permisos, map) {
+            var resultado = new Set();
+            Object.keys(map).forEach(function (clave) {
+                if (permisos.includes(clave)) {
+                    map[clave].forEach(valor => resultado.add(valor));
+                }
+            });
+            return Array.from(resultado);
+        };
+
+        // Función auxiliar para filtrar opciones
+        var filtrarOpcionesSinVendors = function (opciones, listaPermitida) {
+            Object.keys(opciones).forEach(function (key) {
+                if (!listaPermitida.includes(key)) {
+                    delete opciones[key];
+                }
+            });
+            return opciones; // Retorna el objeto filtrado
+        };
+
+        // Función reutilizable para actualizar las opciones y el valor del campo detalle_origen_c
+        var actualizarDetalleOrigen = function (opciones_detalle_origen) {
+            // Forzamos la actualización de las opciones en la vista
+            var field = this.getField("detalle_origen_c");
+            if (field) {
+                field.items = opciones_detalle_origen;  // Actualiza la lista de valores del dropdown
+                field.render();  // Vuelve a pintar el campo
+            }
+        };
+
+        //DETALLE ORIGEN                
+        var opcionesPermitidas = obtenerValores(permisosGestionTeamLeader, permisosMap); // Obtiene las opciones de detalle según permisos
+        // Aplica filtro
+        opciones_detalle_origen = filtrarOpcionesSinVendors(opciones_detalle_origen, opcionesPermitidas);
+        this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
+        actualizarDetalleOrigen.call(this, opciones_detalle_origen);
     },
 
 })

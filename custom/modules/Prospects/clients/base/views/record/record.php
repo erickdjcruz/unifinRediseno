@@ -151,6 +151,14 @@ array (
                 'label' => 'Solicitar Cambio Origen',
                 'acl_action' => 'view',
               ),
+              13 =>
+              array (
+                'type' => 'rowaction',
+                'event' => 'button:desvincular_vendor:click',
+                'name' => 'desvincular_vendor',
+                'label' => 'Desvincular vendor',
+                'acl_action' => 'edit',
+              ),
             ),
           ),
           5 => 
