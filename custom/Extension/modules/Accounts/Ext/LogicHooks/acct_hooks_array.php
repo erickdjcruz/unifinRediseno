@@ -246,13 +246,13 @@ $hook_array['before_save'][] = Array(
     'ActualizaOrigen'
 );
 
-// $hook_array['before_save'][] = Array(
-//     22,
-//     'Actualiza numero empleados intervalo',
-//     'custom/modules/Accounts/Account_Hooks.php',
-//     'Account_Hooks',
-//     'ActualizaEmpleadosDDW'
-// );
+$hook_array['before_save'][] = Array(
+    22,
+    'Actualiza numero empleados intervalo',
+    'custom/modules/Accounts/Account_Hooks.php',
+    'Account_Hooks',
+    'ActualizaEmpleadosDDW'
+);
 $hook_array['before_save'][] = Array(
     24,
     'Logic Hook situacion grupo empresarial',//Just a quick comment about the logic of it
