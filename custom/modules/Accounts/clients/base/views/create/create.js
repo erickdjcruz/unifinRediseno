@@ -751,8 +751,10 @@
 
 		//Valida Integración con Dynamics365
 		this.model.addValidationTask('requestDynamics', _.bind(this.requestDynamics, this));
-
+        //ESTABLECE OPCIONES DE ORIGEN
         this.estableceOpcionesOrigen();
+        //CHANGE NUMERO DE EMPLEADOS
+        this.model.on('change:total_empleados_c', this.actualizaEmpleadosRango, this);
     },
 
     /** BEGIN CUSTOMIZATION:
@@ -3695,4 +3697,32 @@
         }
         callback(null, fields, errors);
     },
+
+    actualizaEmpleadosRango: function () {
+        //ACTUALIZA EL NUMERO DE EMPLEADOS DE ACUERDO AL NUMERO EXACTO DE EMPLEADOS
+        var totalEmpleados = parseInt(this.model.get('total_empleados_c'));
+
+        if (!isNaN(totalEmpleados) && totalEmpleados >= 0) {
+            let rango = '';
+
+            if (totalEmpleados <= 10) {
+                rango = '0a10';
+            } else if (totalEmpleados <= 50) {
+                rango = '11a50';
+            } else if (totalEmpleados <= 100) {
+                rango = '51a100';
+            } else if (totalEmpleados <= 250) {
+                rango = '101a250';
+            } else if (totalEmpleados <= 500) {
+                rango = '251a500';
+            } else if (totalEmpleados <= 1000) {
+                rango = '501a1000';
+            } else {
+                rango = '1001';
+            }
+            // Asigna automáticamente el valor al campo empleados_c
+            this.model.set('empleados_c', rango);
+        }
+    },
+    
 })

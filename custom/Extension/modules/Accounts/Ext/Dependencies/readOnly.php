@@ -204,24 +204,24 @@ $dependencies['Accounts']['comenta_ca_c'] = array
 );
 
 // solo lectura si el campo numero exato de empleados es vacio o null
-$dependencies['Accounts']['empleados_c'] = array
-(
-    'hooks' => array("edit"),
-    'trigger' => 'true',
-    'triggerFields' => array('total_empleados_c'),
-    'onload' => true,
-    'actions' => array(
-        array(
-            'name' => 'ReadOnly',
-            'params' => array(
-                'target' => 'empleados_c',
-                'label' => 'LBL_EMPLEADOS',
-                'value' => 'not(equal($total_empleados_c, ""))',
-            ),
-        ),
-    ),
-    'notActions' => array(),
-);
+// $dependencies['Accounts']['empleados_c'] = array
+// (
+//     'hooks' => array("edit"),
+//     'trigger' => 'true',
+//     'triggerFields' => array('total_empleados_c'),
+//     'onload' => true,
+//     'actions' => array(
+//         array(
+//             'name' => 'ReadOnly',
+//             'params' => array(
+//                 'target' => 'empleados_c',
+//                 'label' => 'LBL_EMPLEADOS',
+//                 'value' => 'not(equal($total_empleados_c, ""))',
+//             ),
+//         ),
+//     ),
+//     'notActions' => array(),
+// );
 
 // solo lectura si el campo Ventas Anuales Uni2 esta en true
 

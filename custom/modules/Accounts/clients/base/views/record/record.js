@@ -200,7 +200,7 @@
 
         /* EJC: 2025-03-24
          Ajuste para tipo de cuenta proveedor, no edite       */
-         this.model.on('sync', this.blockProveedor, this);
+        this.model.on('sync', this.blockProveedor, this);
         /*
          AF. 12-02-2018
          Ajuste para mostrar direcciones y teléfonos
@@ -345,6 +345,8 @@
         this.model.on('sync', this.dynamics365, this);
         //ASIGNACION AUTOMATICA
         // this.context.on('button:solicitud_asignacion:click', this.solicitudAsignacionCuenta, this);
+        //CHANGE NUMERO DE EMPLEADOS
+        this.model.on('change:total_empleados_c', this.actualizaEmpleadosRango, this);
     },
 
     /** Asignacion modal */
@@ -1409,6 +1411,27 @@
         this.$('div[data-name=account_vista360]').find('div.record-label').addClass('hide');
         //OCULTA ó MUESTRA BOTON DE SOLICITUD ASIGNACION
         // this._hideBtnSolicitudAsignacion();
+
+        //PERMISO POTENCIAL
+        var permisoPotencial = app.user.attributes.permisos_potencial_c ? 1 : 0;
+        var numExactoEmpleados = this.getField('total_empleados_c');
+        var ventasAnuales = this.getField('ventas_anuales_c');
+        // Si tiene permiso, habilitamos los campos
+        if (permisoPotencial === 1) {
+            if (numExactoEmpleados) numExactoEmpleados.setDisabled(false);
+            $('[data-name="total_empleados_c"]').attr('style', '');
+            if (ventasAnuales) this.getField('ventas_anuales_c').setDisabled(false);
+            $('[data-name="ventas_anuales_c"]').attr('style', '');
+
+        } else {
+            // Si no tiene valor, se pone como "solo lectura", se quito dependencia
+            if (!this.model.get('total_empleados_c')) {
+                if (numExactoEmpleados) {
+                    numExactoEmpleados.setDisabled(true);
+                    $('[data-name="total_empleados_c"]').attr('style', 'pointer-events:none');
+                }
+            }
+        }
     },
 
     editClicked: function () {
@@ -3611,13 +3634,13 @@
             this.model.set("esproveedor_c", true);
             var tipoProveedor = new String(this.model.get('tipo_proveedor_c'));
             //if (tipoProveedor.length == 0) {
-                /*app.alert.show("Proveedor Requerido", {
-                 level: "error",
-                 title: "Debe seleccionar un un tipo de proveedor al menos",
-                 autoClose: false
-                 });*/
-                //errors['tipo_proveedor_c'] = errors['tipo_proveedor_c'] || {};
-                //errors['tipo_proveedor_c'].required = true;
+            /*app.alert.show("Proveedor Requerido", {
+             level: "error",
+             title: "Debe seleccionar un un tipo de proveedor al menos",
+             autoClose: false
+             });*/
+            //errors['tipo_proveedor_c'] = errors['tipo_proveedor_c'] || {};
+            //errors['tipo_proveedor_c'].required = true;
             //}
             //Validacion de Actividad Economica - antes macrosector
             /*if ($('.list_ae').select2('val') == "0" || $('.list_ae').select2('val') == '' || $('.list_ae')[0].innerText.trim() == "" || $('.list_ae').select2('val') == null) {
@@ -3642,69 +3665,69 @@
                 errors['rfc_c'].required = true;
             }
             //if (this.model.get('tipodepersona_c') != 'Persona Moral') {
-                /*app.alert.show("Fecha de nacimiento requerida", {
-                 level: "error",
-                 title: "El campo fecha de nacimiento es requerido",
-                 autoClose: false
-                 });*/
-                /*
-                if (this.model.get('fechadenacimiento_c') == '' || this.model.get('fechadenacimiento_c') == null) {
-                    errors['fechadenacimiento_c'] = errors['fechadenacimiento_c'] || {};
-                    errors['fechadenacimiento_c'].required = true;
-                }
-                */
-                /*app.alert.show("Pais de nacimiento requerido", {
-                 level: "error",
-                 title: "El campo pa\u00EDs de nacimiento es requerido",
-                 autoClose: false
-                 });
-                if (this.model.get('pais_nacimiento_c') == '' || this.model.get('pais_nacimiento_c') == null) {
-                    errors['pais_nacimiento_c'] = errors['pais_nacimiento_c'] || {};
-                    errors['pais_nacimiento_c'].required = true;
-                }
-                if (this.model.get('estado_nacimiento_c') == "" || this.model.get('estado_nacimiento_c') == null) {
-                    errors['estado_nacimiento_c'] = errors['estado_nacimiento_c'] || {};
-                    errors['estado_nacimiento_c'].required = true;
-                }
-                */
-                /*app.alert.show("Estado civil requerido", {
-                 level: "error",
-                 //title: "El campo estado civil es requerido",
-                 autoClose: false
-                 });*/
-                /*if (this.model.get('estadocivil_c') == '' || this.model.get('estadocivil_c') == null) {
-                    errors['estadocivil_c'] = errors['estadocivil_c'] || {};
-                    errors['estadocivil_c'].required = true;
-                }*/
+            /*app.alert.show("Fecha de nacimiento requerida", {
+             level: "error",
+             title: "El campo fecha de nacimiento es requerido",
+             autoClose: false
+             });*/
+            /*
+            if (this.model.get('fechadenacimiento_c') == '' || this.model.get('fechadenacimiento_c') == null) {
+                errors['fechadenacimiento_c'] = errors['fechadenacimiento_c'] || {};
+                errors['fechadenacimiento_c'].required = true;
+            }
+            */
+            /*app.alert.show("Pais de nacimiento requerido", {
+             level: "error",
+             title: "El campo pa\u00EDs de nacimiento es requerido",
+             autoClose: false
+             });
+            if (this.model.get('pais_nacimiento_c') == '' || this.model.get('pais_nacimiento_c') == null) {
+                errors['pais_nacimiento_c'] = errors['pais_nacimiento_c'] || {};
+                errors['pais_nacimiento_c'].required = true;
+            }
+            if (this.model.get('estado_nacimiento_c') == "" || this.model.get('estado_nacimiento_c') == null) {
+                errors['estado_nacimiento_c'] = errors['estado_nacimiento_c'] || {};
+                errors['estado_nacimiento_c'].required = true;
+            }
+            */
+            /*app.alert.show("Estado civil requerido", {
+             level: "error",
+             //title: "El campo estado civil es requerido",
+             autoClose: false
+             });*/
+            /*if (this.model.get('estadocivil_c') == '' || this.model.get('estadocivil_c') == null) {
+                errors['estadocivil_c'] = errors['estadocivil_c'] || {};
+                errors['estadocivil_c'].required = true;
+            }*/
 
-                /*app.alert.show("Profesion requerido", {
-                 level: "error",
-                 title: "El campo profesi\u00F3n es requerido",
-                 autoClose: false
-                 });*/
-                // if (this.model.get('profesion_c') == '' || this.model.get('profesion_c') == null) {
-                //     errors['profesion_c'] = errors['profesion_c'] || {};
-                //     errors['profesion_c'].required = true;
-                // }
+            /*app.alert.show("Profesion requerido", {
+             level: "error",
+             title: "El campo profesi\u00F3n es requerido",
+             autoClose: false
+             });*/
+            // if (this.model.get('profesion_c') == '' || this.model.get('profesion_c') == null) {
+            //     errors['profesion_c'] = errors['profesion_c'] || {};
+            //     errors['profesion_c'].required = true;
+            // }
             //} else {
-                /*app.alert.show("Pais de constitucion", {
-                 level: "error",
-                 title: "El campo pa\u00EDs de constituci\u00F3n es requerido",
-                 autoClose: false
-                 });*/
-                /*if (this.model.get('pais_nacimiento_c') == '' || this.model.get('pais_nacimiento_c') == null) {
-                    errors['pais_nacimiento_c'] = errors['pais_nacimiento_c'] || {};
-                    errors['pais_nacimiento_c'].required = true;
-                }
-                if (this.model.get('estado_nacimiento_c') == "" || this.model.get('estado_nacimiento_c') == null) {
-                    errors['estado_nacimiento_c'] = errors['estado_nacimiento_c'] || {};
-                    errors['estado_nacimiento_c'].required = true;
-                }
-                if (this.model.get('fechaconstitutiva_c') == '' || this.model.get('fechaconstitutiva_c') == null) {
-                    errors['fechaconstitutiva_c'] = errors['fechaconstitutiva_c'] || {};
-                    errors['fechaconstitutiva_c'].required = true;
-                }
-                */
+            /*app.alert.show("Pais de constitucion", {
+             level: "error",
+             title: "El campo pa\u00EDs de constituci\u00F3n es requerido",
+             autoClose: false
+             });*/
+            /*if (this.model.get('pais_nacimiento_c') == '' || this.model.get('pais_nacimiento_c') == null) {
+                errors['pais_nacimiento_c'] = errors['pais_nacimiento_c'] || {};
+                errors['pais_nacimiento_c'].required = true;
+            }
+            if (this.model.get('estado_nacimiento_c') == "" || this.model.get('estado_nacimiento_c') == null) {
+                errors['estado_nacimiento_c'] = errors['estado_nacimiento_c'] || {};
+                errors['estado_nacimiento_c'].required = true;
+            }
+            if (this.model.get('fechaconstitutiva_c') == '' || this.model.get('fechaconstitutiva_c') == null) {
+                errors['fechaconstitutiva_c'] = errors['fechaconstitutiva_c'] || {};
+                errors['fechaconstitutiva_c'].required = true;
+            }
+            */
             //}
         }
         callback(null, fields, errors);
@@ -6878,16 +6901,16 @@
     /*************Valida Genero *****************/
     validaGenero: function (fields, errors, callback) {
         var genero = this.model.get('genero_c');
-        if(!(this.model.get('tipo_registro_cuenta_c') == '4' || this.model.get('tipo_registro_cuenta_c') == '5' || this.model.get('esproveedor_c') == true)){
+        if (!(this.model.get('tipo_registro_cuenta_c') == '4' || this.model.get('tipo_registro_cuenta_c') == '5' || this.model.get('esproveedor_c') == true)) {
             if ((genero == "" || genero == null) && (this.model.get('tipodepersona_c') == "Persona Fisica" ||
-                this.model.get('tipodepersona_c') == "Persona Fisica con Actividad Empresarial") ) {
+                this.model.get('tipodepersona_c') == "Persona Fisica con Actividad Empresarial")) {
                 errors['genero_c'] = errors['genero_c'] || {};
                 errors['genero_c'].required = true;
                 callback(null, fields, errors);
             } else {
                 callback(null, fields, errors);
             }
-        }else{
+        } else {
             callback(null, fields, errors);
         }
     },
@@ -8697,7 +8720,7 @@
                         'label_div': '',
                         'label_grp': '',
                         'label_cls': '',
-                        'ResumenSAT':{
+                        'ResumenSAT': {
                             'aes': {
                                 'id_actividad_economica_sat': '',
                                 'actividad_economica_sat': ''
@@ -8736,7 +8759,7 @@
                         'label_div': '',
                         'label_grp': '',
                         'label_cls': '',
-                        'ResumenSAT':{
+                        'ResumenSAT': {
                             'aes': {
                                 'id_actividad_economica_sat': '',
                                 'actividad_economica_sat': ''
@@ -8747,7 +8770,7 @@
                     clasf_sectorial.ActividadEconomica.ae.id = campo1;
                     clasf_sectorial.ActividadEconomica.sse.id = campo2;
                     clasf_sectorial.ActividadEconomica.se.id = campo3;
-                    clasf_sectorial.ActividadEconomica.ms.id = campo4;                                        
+                    clasf_sectorial.ActividadEconomica.ms.id = campo4;
                     clasf_sectorial.ActividadEconomica.label_div = app.lang.getAppListStrings('pb_division_list')[clasf_sectorial.ResumenCliente.pb.pb_division];
                     clasf_sectorial.ActividadEconomica.label_grp = app.lang.getAppListStrings('pb_grupo_list')[clasf_sectorial.ResumenCliente.pb.pb_grupo];
                     clasf_sectorial.ActividadEconomica.label_cls = app.lang.getAppListStrings('pb_clase_list')[clasf_sectorial.ResumenCliente.pb.pb_clase];
@@ -9508,7 +9531,7 @@
     //                 var estatusAtencion = contexto_cuenta.ResumenProductos.leasing.estatus_atencion;
     //                 var tipodeCuenta = contexto_cuenta.ResumenProductos.leasing.tipo_cuenta;
     //                 var esDiferenteRegion = !esMismaRegion;
-    
+
     //                 //VALIDACION 0-PENDIENTE DE ASIGNAR: Usuario = 0-pendiente o estatus atención = desatendido o estatus usuario = inactivo o puesto usuario <> asesor comercial
     //                 esValidoProcesoCeroPendienteAsignar = esPendienteAsignar || (tipodeCuenta !== '3' && estatusAtencion === '2') || status === "Inactive" || !posicionOperativaLeasing.includes("^3^");                  
     //                 if (!esValidoProcesoCeroPendienteAsignar && !esMismaRegion && !esDiferenteRegion) {
@@ -9579,7 +9602,7 @@
     //                     }
     //                 }                    
     //             }
-                
+
     //         } else {
     //             app.alert.show('sa_asignacion_activa', {
     //                 level: 'error',
@@ -9657,13 +9680,40 @@
     //     }
     // },
 
-    blockProveedor: function () {        
+    blockProveedor: function () {
         //Bloquear el registro completo 
-        if(this.model.get('tipo_registro_cuenta_c') == '5'){
+        if (this.model.get('tipo_registro_cuenta_c') == '5') {
             $(".record-cell").attr("style", "pointer-events:none");
-            $('[name="edit_button"].rowaction').hide();    
+            $('[name="edit_button"].rowaction').hide();
             //this.ocultaOpcionesSubpanel();
         }
-    },    
+    },
+
+    actualizaEmpleadosRango: function () {
+        //ACTUALIZA EL NUMERO DE EMPLEADOS DE ACUERDO AL NUMERO EXACTO DE EMPLEADOS
+        var totalEmpleados = parseInt(this.model.get('total_empleados_c'));
+
+        if (!isNaN(totalEmpleados) && totalEmpleados >= 0) {
+            let rango = '';
+
+            if (totalEmpleados <= 10) {
+                rango = '0a10';
+            } else if (totalEmpleados <= 50) {
+                rango = '11a50';
+            } else if (totalEmpleados <= 100) {
+                rango = '51a100';
+            } else if (totalEmpleados <= 250) {
+                rango = '101a250';
+            } else if (totalEmpleados <= 500) {
+                rango = '251a500';
+            } else if (totalEmpleados <= 1000) {
+                rango = '501a1000';
+            } else {
+                rango = '1001';
+            }
+            // Asigna automáticamente el valor al campo empleados_c
+            this.model.set('empleados_c', rango);
+        }
+    },
 
 })

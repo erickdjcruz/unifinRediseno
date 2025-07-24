@@ -2080,30 +2080,30 @@ where rfc_c = '{$bean->rfc_c}' and
 
     }
 
-    public function ActualizaEmpleadosDDW($bean_account = null, $event = null, $args = null)
-    {
-        $totalEmpleados = $bean_account->total_empleados_c;
-        //ACTUALIZA LA LISTA DE NÚMERO DE EMPLEADOS CONTRA EL NÚMERO DE EMPLEADOS EXACTOS
-        if ($totalEmpleados >= 0) {
-            $GLOBALS['log']->fatal("TOTAL EMPLEADOS EXACTOS ". $totalEmpleados);
-            if ($totalEmpleados <= 10) {
-                $bean_account->empleados_c = '0a10';
-            } elseif ($totalEmpleados <= 50) {
-                $bean_account->empleados_c = '11a50';
-            } elseif ($totalEmpleados <= 100) {
-                $bean_account->empleados_c = '51a100';
-            } elseif ($totalEmpleados <= 250) {
-                $bean_account->empleados_c = '101a250';
-            } elseif ($totalEmpleados <= 500) {
-                $bean_account->empleados_c = '251a500';
-            } elseif ($totalEmpleados <= 1000) {
-                $bean_account->empleados_c = '501a1000';
-            } else {
-                $bean_account->empleados_c = '1001';
-            }
-            $GLOBALS['log']->fatal("ACTUALIZA LISTA DE EMPLEADOS ". $bean_account->empleados_c);
-        }
-    }
+    // public function ActualizaEmpleadosDDW($bean_account = null, $event = null, $args = null)
+    // {
+    //     $totalEmpleados = $bean_account->total_empleados_c;
+    //     //ACTUALIZA LA LISTA DE NÚMERO DE EMPLEADOS CONTRA EL NÚMERO DE EMPLEADOS EXACTOS
+    //     if ($totalEmpleados >= 0) {
+    //         $GLOBALS['log']->fatal("TOTAL EMPLEADOS EXACTOS ". $totalEmpleados);
+    //         if ($totalEmpleados <= 10) {
+    //             $bean_account->empleados_c = '0a10';
+    //         } elseif ($totalEmpleados <= 50) {
+    //             $bean_account->empleados_c = '11a50';
+    //         } elseif ($totalEmpleados <= 100) {
+    //             $bean_account->empleados_c = '51a100';
+    //         } elseif ($totalEmpleados <= 250) {
+    //             $bean_account->empleados_c = '101a250';
+    //         } elseif ($totalEmpleados <= 500) {
+    //             $bean_account->empleados_c = '251a500';
+    //         } elseif ($totalEmpleados <= 1000) {
+    //             $bean_account->empleados_c = '501a1000';
+    //         } else {
+    //             $bean_account->empleados_c = '1001';
+    //         }
+    //         $GLOBALS['log']->fatal("ACTUALIZA LISTA DE EMPLEADOS ". $bean_account->empleados_c);
+    //     }
+    // }
 
     public function func_grupo_empresarial($bean = null, $event = null, $args = null)
     {
