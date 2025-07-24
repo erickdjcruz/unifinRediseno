@@ -347,6 +347,8 @@
         // this.context.on('button:solicitud_asignacion:click', this.solicitudAsignacionCuenta, this);
         //CHANGE NUMERO DE EMPLEADOS
         this.model.on('change:total_empleados_c', this.actualizaEmpleadosRango, this);
+        //PERMISO POTENCIAL
+        this.model.on('sync', this._permisoPotencial, this);
     },
 
     /** Asignacion modal */
@@ -1410,28 +1412,7 @@
         this.$('.record-edit-link-wrapper[data-name="account_vista360"]').remove();
         this.$('div[data-name=account_vista360]').find('div.record-label').addClass('hide');
         //OCULTA ó MUESTRA BOTON DE SOLICITUD ASIGNACION
-        // this._hideBtnSolicitudAsignacion();
-
-        //PERMISO POTENCIAL
-        var permisoPotencial = app.user.attributes.permisos_potencial_c ? 1 : 0;
-        var numExactoEmpleados = this.getField('total_empleados_c');
-        var ventasAnuales = this.getField('ventas_anuales_c');
-        // Si tiene permiso, habilitamos los campos
-        if (permisoPotencial === 1) {
-            if (numExactoEmpleados) numExactoEmpleados.setDisabled(false);
-            $('[data-name="total_empleados_c"]').attr('style', '');
-            if (ventasAnuales) this.getField('ventas_anuales_c').setDisabled(false);
-            $('[data-name="ventas_anuales_c"]').attr('style', '');
-
-        } else {
-            // Si no tiene valor, se pone como "solo lectura", se quito dependencia
-            if (!this.model.get('total_empleados_c')) {
-                if (numExactoEmpleados) {
-                    numExactoEmpleados.setDisabled(true);
-                    $('[data-name="total_empleados_c"]').attr('style', 'pointer-events:none');
-                }
-            }
-        }
+        // this._hideBtnSolicitudAsignacion();        
     },
 
     editClicked: function () {
@@ -9713,6 +9694,30 @@
             }
             // Asigna automáticamente el valor al campo empleados_c
             this.model.set('empleados_c', rango);
+        }
+    },
+
+    _permisoPotencial: function () {
+        //PERMISO POTENCIAL
+        var permisoPotencial = app.user.attributes.permisos_potencial_c ? 1 : 0;
+        var numExactoEmpleados = this.getField('total_empleados_c');
+        var ventasAnuales = this.getField('ventas_anuales_c');
+        // Si tiene permiso, habilitamos los campos
+        if (permisoPotencial === 1) {
+            if (numExactoEmpleados) numExactoEmpleados.setDisabled(false);
+            $('[data-name="total_empleados_c"]').attr('style', '');
+            if (ventasAnuales) this.getField('ventas_anuales_c').setDisabled(false);
+            $('[data-name="ventas_anuales_c"]').attr('style', '');
+
+        } else {
+            // Si no tiene valor, se pone como "solo lectura", se quito dependencia
+            console.log("this.model.get('total_empleados_c') ", this.model.get('total_empleados_c'));
+            if (!this.model.get('total_empleados_c')) {
+                if (numExactoEmpleados) {
+                    numExactoEmpleados.setDisabled(true);
+                    $('[data-name="total_empleados_c"]').attr('style', 'pointer-events:none');
+                }
+            }
         }
     },
 
