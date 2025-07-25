@@ -680,6 +680,9 @@ array (
               ),
               70 => 
               array (
+                'readonly' => false,
+                'name' => 'permisos_potencial_c',
+                'label' => 'LBL_PERMISOS_POTENCIAL_C',
               ),
             ),
           ),

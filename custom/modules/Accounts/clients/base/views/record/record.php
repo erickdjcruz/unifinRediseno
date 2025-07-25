@@ -1150,7 +1150,6 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
         array (
           'name' => 'total_empleados_c',
           'label' => 'LBL_TOTAL_EMPLEADOS_C',
-          'readonly' => true,
         ),
         5 => 
         array (
