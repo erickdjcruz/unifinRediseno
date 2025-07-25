@@ -245,24 +245,24 @@ $dependencies['Accounts']['tct_ano_ventas_ddw_c'] = array
 );
 
 // solo lectura si el campo Ventas Anuales Uni2 esta en true
-$dependencies['Accounts']['ventas_anuales_c'] = array
-(
-    'hooks' => array("edit"),
-    'trigger' => 'true',
-    'triggerFields' => array('ventas_anuales_uni2_c'),
-    'onload' => true,
-    'actions' => array(
-        array(
-            'name' => 'ReadOnly',
-            'params' => array(
-                'target' => 'ventas_anuales_c',
-                'label' => 'LBL_EMPLEADOS',
-                'value' => 'equal($ventas_anuales_uni2_c, true)',
-            ),
-        ),
-    ),
-    'notActions' => array(),
-);
+// $dependencies['Accounts']['ventas_anuales_c'] = array
+// (
+//     'hooks' => array("edit"),
+//     'trigger' => 'true',
+//     'triggerFields' => array('ventas_anuales_uni2_c'),
+//     'onload' => true,
+//     'actions' => array(
+//         array(
+//             'name' => 'ReadOnly',
+//             'params' => array(
+//                 'target' => 'ventas_anuales_c',
+//                 'label' => 'LBL_EMPLEADOS',
+//                 'value' => 'equal($ventas_anuales_uni2_c, true)',
+//             ),
+//         ),
+//     ),
+//     'notActions' => array(),
+// );
 
 // solo lectura campo rfc
 /*$dependencies['Accounts']['rfc_c'] = array
