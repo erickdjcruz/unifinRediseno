@@ -9682,7 +9682,7 @@
         if (this.model.get('tipo_registro_cuenta_c') == '5') {
             // $(".record-cell").attr("style", "pointer-events:none");
             //PERMISO POTENCIAL
-             var permisoPotencial = app.user.attributes.permisos_potencial_c ? 1 : 0;
+            var permisoPotencial = app.user.attributes.permisos_potencial_c ? 1 : 0;
             //Bloquea todos los campos, excepto si tiene permisoPotencial
             $(".record-cell").each(function () {
                 var fieldName = $(this).data("name");
@@ -9740,10 +9740,32 @@
             this.$('[data-name="total_empleados_c"]').closest('.record-cell').removeClass('record-cell-readonly');
             this.$('[data-name="ventas_anuales_c"]').closest('.record-cell').removeClass('record-cell-readonly');
 
+            var fieldTotalEmpleados = this.getField('total_empleados_c');
+            var fielVentasAnuales = this.getField('total_empleados_c');
+            if (fieldTotalEmpleados) {
+                fieldTotalEmpleados.setDisabled(false);
+            }
+            if (fielVentasAnuales) {
+                fielVentasAnuales.setDisabled(false);
+            }
+
         } else {
             // Si no tiene valor, se pone como "solo lectura", se quito dependencia
             if (!this.model.get('total_empleados_c')) {
                 $('[data-name="total_empleados_c"]').attr('style', 'pointer-events:none');
+                var fieldEMP = this.getField('total_empleados_c');
+                if (fieldEMP) {
+                    fieldEMP.setDisabled(true);
+                }
+            }
+            // Solo lectura si el campo Ventas Anuales Uni2 esta en true
+            if (this.model.get('ventas_anuales_uni2_c')) {
+                console.log("READONLY-VENTAS-ANUALES-UNI2");
+                $('[data-name="ventas_anuales_c"]').attr('style', 'pointer-events:none');
+                var fieldVA = this.getField('ventas_anuales_c');
+                if (fieldVA) {
+                    fieldVA.setDisabled(true);
+                }
             }
         }
     },
