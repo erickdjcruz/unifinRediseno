@@ -5085,6 +5085,8 @@
     },
 
     blockRecordNoContactar: function () {
+        //PERMISO POTENCIAL
+        var permisoPotencial = app.user.attributes.permisos_potencial_c ? 1 : 0;
         //Consulta resumen para validar bloqueo de registro
         //if(!app.user.attributes.tct_no_contactar_chk_c && !app.user.attributes.bloqueo_credito_c && !app.user.attributes.bloqueo_cumple_c) {
         var url = app.api.buildURL('tct02_Resumen/' + this.model.get('id'), null, null);
@@ -5098,7 +5100,21 @@
 
                     this.context.param_equipo = equipo;
                     //Bloquear el registro completo y mostrar alerta
-                    $(".record-cell").attr("style", "pointer-events:none");
+                    // $(".record-cell").attr("style", "pointer-events:none");
+
+                    //Bloquea todos los campos, excepto si tiene permisoPotencial
+                    $(".record-cell").each(function () {
+                        var fieldName = $(this).data("name");
+                        // Si el usuario tiene permiso, excluye los campos especiales
+                        if (permisoPotencial === 1 &&
+                            (fieldName === "total_empleados_c" || fieldName === "ventas_anuales_c")) {
+                            // No bloquear
+                            return;
+                        }
+                        // Bloquear campo
+                        $(this).css("pointer-events", "none");
+                    });
+
                     $('[name="edit_button"].rowaction').hide();
 
                     this.ocultaOpcionesSubpanel();
@@ -9664,7 +9680,22 @@
     blockProveedor: function () {
         //Bloquear el registro completo 
         if (this.model.get('tipo_registro_cuenta_c') == '5') {
-            $(".record-cell").attr("style", "pointer-events:none");
+            // $(".record-cell").attr("style", "pointer-events:none");
+            //PERMISO POTENCIAL
+             var permisoPotencial = app.user.attributes.permisos_potencial_c ? 1 : 0;
+            //Bloquea todos los campos, excepto si tiene permisoPotencial
+            $(".record-cell").each(function () {
+                var fieldName = $(this).data("name");
+                // Si el usuario tiene permiso, excluye los campos especiales
+                if (permisoPotencial === 1 &&
+                    (fieldName === "total_empleados_c" || fieldName === "ventas_anuales_c")) {
+                    // No bloquear
+                    return;
+                }
+                // Bloquear campo
+                $(this).css("pointer-events", "none");
+            });
+
             $('[name="edit_button"].rowaction').hide();
             //this.ocultaOpcionesSubpanel();
         }
@@ -9700,23 +9731,19 @@
     _permisoPotencial: function () {
         //PERMISO POTENCIAL
         var permisoPotencial = app.user.attributes.permisos_potencial_c ? 1 : 0;
-        var numExactoEmpleados = this.getField('total_empleados_c');
-        var ventasAnuales = this.getField('ventas_anuales_c');
         // Si tiene permiso, habilitamos los campos
         if (permisoPotencial === 1) {
-            if (numExactoEmpleados) numExactoEmpleados.setDisabled(false);
-            $('[data-name="total_empleados_c"]').attr('style', '');
-            if (ventasAnuales) this.getField('ventas_anuales_c').setDisabled(false);
-            $('[data-name="ventas_anuales_c"]').attr('style', '');
+            console.log("permisoPotencial ", permisoPotencial);
+            // Si tiene permiso, habilitamos los campos
+            this.$('[data-name="total_empleados_c"]').css('pointer-events', '');
+            this.$('[data-name="ventas_anuales_c"]').css('pointer-events', '');
+            this.$('[data-name="total_empleados_c"]').closest('.record-cell').removeClass('record-cell-readonly');
+            this.$('[data-name="ventas_anuales_c"]').closest('.record-cell').removeClass('record-cell-readonly');
 
         } else {
             // Si no tiene valor, se pone como "solo lectura", se quito dependencia
-            console.log("this.model.get('total_empleados_c') ", this.model.get('total_empleados_c'));
             if (!this.model.get('total_empleados_c')) {
-                if (numExactoEmpleados) {
-                    numExactoEmpleados.setDisabled(true);
-                    $('[data-name="total_empleados_c"]').attr('style', 'pointer-events:none');
-                }
+                $('[data-name="total_empleados_c"]').attr('style', 'pointer-events:none');
             }
         }
     },
