@@ -9750,13 +9750,11 @@
             }
 
         } else {
-            // Si no tiene valor, se pone como "solo lectura", se quito dependencia
-            if (!this.model.get('total_empleados_c')) {
-                $('[data-name="total_empleados_c"]').attr('style', 'pointer-events:none');
-                var fieldEMP = this.getField('total_empleados_c');
-                if (fieldEMP) {
-                    fieldEMP.setDisabled(true);
-                }
+            // Se pone como "solo lectura" numero exacto de empleados, se quito dependencia
+            $('[data-name="total_empleados_c"]').attr('style', 'pointer-events:none');
+            var fieldEMP = this.getField('total_empleados_c');
+            if (fieldEMP) {
+                fieldEMP.setDisabled(true);
             }
             // Solo lectura si el campo Ventas Anuales Uni2 esta en true
             if (this.model.get('ventas_anuales_uni2_c')) {
