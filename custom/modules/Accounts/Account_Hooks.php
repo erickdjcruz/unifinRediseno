@@ -424,7 +424,7 @@ SQL;
                         */
 
                         try {
-                            //$GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Update *784 " . $query);
+                            $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Update *784 " . $query);
                             
                             //$resultado = $db->query($query);
                             //$resultadoRelacion=$db->query($queryUpdateRelacion);
