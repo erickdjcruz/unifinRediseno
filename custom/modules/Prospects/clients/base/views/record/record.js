@@ -938,13 +938,12 @@
             if (valorActual && opciones.hasOwnProperty(valorActual) && !listaPermitida.includes(valorActual)) {
                 listaPermitida = listaPermitida.concat([valorActual]);
             }
-
             Object.keys(opciones).forEach(function (key) {
                 if (!listaPermitida.includes(key)) {
                     delete opciones[key];
                 }
             });
-            return opciones; // Retorna el objeto filtrado
+            return opciones;
         };
         // Función reutilizable para actualizar las opciones y el valor del campo detalle_origen_c
         var actualizarCampoDetalleOrigen = function (opciones_detalle_origen, nuevoValor) {
@@ -989,6 +988,10 @@
                 actualizarCampoOrigen.call(this, opciones_origen, '12');
                 //DETALLE ORIGEN                
                 var opcionesPermitidas = obtenerValoresPermitidos(permisosGestionTeamLeader, permisosMap); // Obtiene las opciones de detalle según permisos
+                //VALIDA SI ES DETALLE ORIGEN LEASING EN ALIANZA
+                if (valorDetalleActual === "113") {
+                    valorDetalleActual = null;
+                }                
                 // Aplica filtro
                 opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, opcionesPermitidas, valorDetalleActual);
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
