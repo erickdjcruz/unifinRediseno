@@ -10,6 +10,7 @@ require_once 'include/utils/file_utils.php';
 
 class analizate_hooks  {
     public function EnvioMail($bean = null, $event = null, $args = null) {
+      /*
         //Notificaciones
         if($bean->tipo_registro_cuenta_c == '2'|| $bean->tipo_registro_cuenta_c == '3'|| $bean->tipo_registro_cuenta_c == '4'){
             //Notificación Cliente
@@ -259,6 +260,7 @@ class analizate_hooks  {
                 }
             }
         }
+      */
     }
 
     public function ActualizaRobina($bean = null, $event = null, $args = null) {

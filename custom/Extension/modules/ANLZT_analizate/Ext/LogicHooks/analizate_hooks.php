@@ -6,6 +6,7 @@
  * Time: 11:48 AM
  */
 
+ /*
 $hook_array['after_save'][] = Array(
     1,
     'Envía y reenvia Correo',
@@ -13,7 +14,7 @@ $hook_array['after_save'][] = Array(
     'analizate_hooks',
     'EnvioMail'
 );
-
+*/
 $hook_array['after_save'][] = Array(
     2,
     'Actualiza información en cuenta a partir de JSON ROBINA',
