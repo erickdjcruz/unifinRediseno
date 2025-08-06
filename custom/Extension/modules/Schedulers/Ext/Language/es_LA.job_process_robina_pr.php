@@ -1,0 +1,3 @@
+<?php
+$mod_strings['LBL_JOB_PROCESS_ROBINA_PR'] = 'PROCESO ROBINA WEB HOOK.';
+?>

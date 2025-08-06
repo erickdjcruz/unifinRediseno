@@ -138,7 +138,7 @@ class GetInfoRFCbyQR extends SugarApi
             $GLOBALS['log']->fatal($url_ticket);
             $GLOBALS['log']->fatal($body);
             $response1 = $this->callCreateTicket($url_ticket, $token, $body);
-            $GLOBALS['log']->fatal( 'creo ticket' );
+            $GLOBALS['log']->fatal( 'creo ticket por archivo' );
             //$GLOBALS['log']->fatal( print_r($response,true) );
             $GLOBALS['log']->fatal( 'ticket:'.$response1['id'] );
             //$response = json_decode($response, true);

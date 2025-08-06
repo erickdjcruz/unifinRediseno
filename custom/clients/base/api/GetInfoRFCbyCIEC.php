@@ -90,7 +90,7 @@ class GetInfoRFCbyCIEC extends SugarApi
     public function getInfoByCIEC( $api, $args ){
 
         require_once("custom/Levementum/UnifinAPI.php");
-        global $sugar_config;
+        global $sugar_config, $db;
         $GLOBALS['log']->fatal("SERVICIO getDAta CIEC");
 
         $rfc = $args['rfc'] ?? null;
@@ -177,8 +177,9 @@ class GetInfoRFCbyCIEC extends SugarApi
                 //$url_csf=$sugar_config['regimenes_sat_url'].'/webhook-requests/retrieve/'.$ticket;
                 $url_csf=$sugar_config['regimenes_sat_url'].'/orders/retrieve/'.$ticket;
                 $pendiente = true;
-                $maxTries = 10;
+                $maxTries = 16;
                 $try = 0;
+                $error_robina=false;
 
                 while ($pendiente && $try < $maxTries) {
                     $try++;
@@ -191,42 +192,66 @@ class GetInfoRFCbyCIEC extends SugarApi
                     $GLOBALS['log']->fatal("Status final recibido:". $status);
                     if (!$status) {
                         // Opcional: esperar antes de siguiente intento para evitar saturar la API
-                        sleep(10);
+                        $checkAuditQuery = "SELECT id, ticket, rfc, response_status_robina, crm_status_process FROM robina_auditoria_peticiones WHERE ticket = '".$ticket."'  ORDER BY date_entered DESC LIMIT 1";
+                        $auditResult = $db->query($checkAuditQuery);
+                        
+                        if ($auditResult && $db->getRowCount($auditResult) > 0) {
+                            while ($row = $db->fetchByAssoc($auditResult)) {
+                                $aid = $row['id'];
+                                $status = $row['crm_status_process'];
+                                $statusCode = $row['response_status_robina'];
+
+                                if($statusCode=='E01'){
+                                    $error_robina = true;
+                                }
+                                
+                                $GLOBALS['log']->fatal("Ticket ".$ticket." procesado");
+                                $pendiente = false;
+                            }
+                        }else{
+                            sleep(15);
+                        }
                     }else {
                         $pendiente = false;
                     }
                 }
 
                 if(!$pendiente){
-                    // Última llamada para obtener el resultado final
-                    $url_csf = $sugar_config['regimenes_sat_url'] . '/tax-status/retrieve/' . $rfc;
-                    $GLOBALS['log']->fatal('url_csf - retrieve: '.$url_csf );
-                    $response = $this->callValidateCSF($url_csf, $token);
+                    if(!$error_robina){
+                        // Última llamada para obtener el resultado final
+                        $url_csf = $sugar_config['regimenes_sat_url'] . '/tax-status/retrieve/' . $rfc;
+                        $GLOBALS['log']->fatal('url_csf - retrieve: '.$url_csf );
+                        $response = $this->callValidateCSF($url_csf, $token);
 
-                    $response['ticket'] = $ticket;
+                        $response['ticket'] = $ticket;
 
-                    //$GLOBALS['log']->fatal( print_r($response,true) );                    
-                    if (isset($response['detail'][0]['msg']) && $response['detail'][0]['msg'] === 'value is not a valid dict') {
+                        //$GLOBALS['log']->fatal( print_r($response,true) );                    
+                        if (isset($response['detail'][0]['msg']) && $response['detail'][0]['msg'] === 'value is not a valid dict') {
+                            $resultado['success'] = false;
+                            $resultado['codeerror'] = 403;
+                            $resultado['messageerror'] = 'No se encontraron datos del RFC';
+                            $GLOBALS['log']->fatal('Error consulta de RFC');
+                            return $resultado; // Termina aquí y regresa el error
+                        }
+                        
+                        if (isset($response['detail']) && $response['detail'] === 'No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.') {
+                            $resultado['success'] = false;
+                            $resultado['codeerror'] = 403;
+                            $resultado['messageerror'] = 'No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.';
+                            $GLOBALS['log']->fatal('No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.');
+                            return $resultado; // Termina aquí y regresa el error
+                        }
+                        $GLOBALS['log']->fatal("Respuesta final-completa-regresa data");
+                        //$resultado['codeerror'] = 0;
+                        //$resultado['messageerror'] = 'Consulta realizada correctamente';
+                        //$resultado['data'] = json_decode($response, true);
+                        $resultado = $response;
+                        $resultado['success'] = true;
+                    }else{
                         $resultado['success'] = false;
-                        $resultado['codeerror'] = 403;
-                        $resultado['messageerror'] = 'No se encontraron datos del RFC';
-                        $GLOBALS['log']->fatal('Error consulta de RFC');
-                        return $resultado; // Termina aquí y regresa el error
+                        $resultado['codeerror'] = 204;
+                        $resultado['messageerror'] = "Error al recuperar información del RFC por CIEC.";    
                     }
-                    
-                    if (isset($response['detail']) && $response['detail'] === 'No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.') {
-                        $resultado['success'] = false;
-                        $resultado['codeerror'] = 403;
-                        $resultado['messageerror'] = 'No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.';
-                        $GLOBALS['log']->fatal('No se encontraron constancias, por favor asegurese de haber realizado la petición de descarga previamente.');
-                        return $resultado; // Termina aquí y regresa el error
-                    }
-                    $GLOBALS['log']->fatal("Respuesta final-completa-regresa data");
-                    //$resultado['codeerror'] = 0;
-                    //$resultado['messageerror'] = 'Consulta realizada correctamente';
-                    //$resultado['data'] = json_decode($response, true);
-                    $resultado = $response;
-                    $resultado['success'] = true;
                 } else {
                     $resultado['success'] = false;
                     $resultado['codeerror'] = 204;

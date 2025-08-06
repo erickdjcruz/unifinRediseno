@@ -28,7 +28,7 @@ class crm_robina_class
             //      $idCliente = $args['idCliente'];
             
             $rfc = $bean->rfc;
-            $date_issued = $bean->vigencia;
+            $date_issued = $bean->fecha_emision;
             $vigencia = gmdate("Y-m-d");
             //$vigencia = $date_issued;
             
@@ -64,6 +64,9 @@ class crm_robina_class
                 if( !empty($responseCSF_base64) ){
                     //Envia petición hacia alfresco
                     $body_request_alfresco = $this->createBodyRequestAlfresco( $idCliente, $b64CSFVal, $rfc.'.pdf', $date_issued );
+                    $GLOBALS['log']->fatal( print_r($body_request_alfresco,true) );
+                    $GLOBALS['log']->fatal( print_r($url_alfresco,true) );
+                
                     $response_upload_alfresco = $this->callUploadDocument( $url_alfresco, $body_request_alfresco );
                     
                     $GLOBALS['log']->fatal( "Respuesta upload Alfresco:" );
@@ -107,6 +110,7 @@ class crm_robina_class
                     $body_request_quantico_validator = $this->createBodyRequest( $idCliente, "ValDigital", $b64Val, $vigencia );
                     // envio quantico validador
                     $response_upload_valDig = $this->callUploadDocument( $url_expediente, $body_request_quantico_validator );
+                    $GLOBALS['log']->fatal( print_r($body_request_quantico_validator,true) );
                     $GLOBALS['log']->fatal("Petición quantico: ".$url_expediente);
                     $GLOBALS['log']->fatal( "Respuesta upload Validación Digital:" );
                     //$GLOBALS['log']->fatal($url_expediente);
