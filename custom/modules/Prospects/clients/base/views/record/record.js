@@ -499,6 +499,14 @@
             }, this);
         }, this);
 
+        //VALIDA DETALLE ORIGEN REQUERIDO EN ALIANZA
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '' || this.model.get('detalle_origen_c') == null)) {
+            campos = campos + '<b>' + 'Detalle Origen' + '</b><br>';
+
+            errors['detalle_origen_c'] = errors['detalle_origen_c'] || {};
+            errors['detalle_origen_c'].required = true;
+        }
+        //ALIANZA CON DETALLE ORIGEN
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
             this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
@@ -652,6 +660,11 @@
                 break;
         }
 
+        //VALIDA DETALLE ORIGEN REQUERIDO EN ALIANZA
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '' || this.model.get('detalle_origen_c') == null)) {
+            campos_req.push('detalle_origen_c');
+        }
+        //ALIANZA CON SU DETALLE ORIGEN
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
             this.model.get('detalle_origen_c') == '115' || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
@@ -2462,7 +2475,7 @@
                 self.$('.record-edit-link-wrapper[data-name=detalle_origen_c]').show();
                 self.$('[data-name="franquicia_c"]').css('pointer-events', '');
                 self.$('[data-name="asesor_alianza_c"]').css('pointer-events', '');
-                self.$('[data-name="email_aa_c"]').css('pointer-events', '');                
+                self.$('[data-name="email_aa_c"]').css('pointer-events', '');
                 self.$('[data-name="telefono_aa_c"]').css('pointer-events', '');
 
                 self._setOpcionesSinVendor();
