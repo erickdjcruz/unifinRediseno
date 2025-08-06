@@ -599,6 +599,11 @@
             campos_req.push('nombre_empresa_c');
         }
 
+        //VALIDA DETALLE ORIGEN REQUERIDO EN ALIANZA
+        if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '' || this.model.get('detalle_origen_c') == undefined)) {
+            campos_req.push('detalle_origen_c');
+        }
+        //REQUERIDOS ALIANZA
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '12' || this.model.get('detalle_origen_c') == '13' || this.model.get('detalle_origen_c') == '114' ||
             this.model.get('detalle_origen_c') == '115'  || this.model.get('detalle_origen_c') == '116' || this.model.get('detalle_origen_c') == '117')) {
             //CAMPOS REQUERIDOS DE ALIANZAS
