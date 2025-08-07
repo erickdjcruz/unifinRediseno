@@ -6,6 +6,7 @@
         this._super("initialize", [options]);
 
         this.carga_inicial = true;
+        this.vendorDesvinculado = false;
 
         this.model.addValidationTask('check_Requeridos', _.bind(this.valida_requeridos_min, this));
         this.model.on('sync', this._readonlyFields, this);
@@ -921,6 +922,13 @@
             "^reditus^": ["117"]
         };
 
+        // Si el vendor ya fue desvinculado, eliminamos la opción vendors[116] del mapa
+        if (this.vendorDesvinculado) {
+            if (permisosMap["^vendors^"]) {
+                permisosMap["^vendors^"] = [];
+            }
+        }
+
         // Función para obtener todos los valores permitidos según permisos
         var obtenerValoresPermitidos = function (permisos, map) {
             var resultado = new Set();
@@ -991,7 +999,7 @@
                 //VALIDA SI ES DETALLE ORIGEN LEASING EN ALIANZA
                 if (valorDetalleActual === "113") {
                     valorDetalleActual = null;
-                }                
+                }
                 // Aplica filtro
                 opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, opcionesPermitidas, valorDetalleActual);
                 this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
@@ -2482,6 +2490,7 @@
                 self.$('[data-name="telefono_aa_c"]').css('pointer-events', '');
 
                 self._setOpcionesSinVendor();
+                self.vendorDesvinculado = true;
 
                 // If detalle_origen was vendors (116), reset it
                 if (self.model.get('detalle_origen_c') === '116') {
@@ -2516,6 +2525,7 @@
     },
 
     _setOpcionesSinVendor() {
+        var opciones_origen = app.lang.getAppListStrings('origen_lead_list');
         var opciones_detalle_origen = app.lang.getAppListStrings('detalle_origen_list');
         var permisosGestionTeamLeader = app.user.attributes.gestion_team_leaders_c || "";
         console.log("permisosGestionTeamLeader_origen ", permisosGestionTeamLeader);
@@ -2526,6 +2536,16 @@
             "^utility_trailers^": ["114"],
             "^konnect^": ["115"],
             "^reditus^": ["117"]
+        };
+
+        // Función auxiliar para filtrar cualquier lista de opciones por claves permitidas
+        var filtrarOpciones = function (opciones, permitidos) {
+            Object.keys(opciones).forEach(function (key) {
+                if (!permitidos.includes(key)) {
+                    delete opciones[key];
+                }
+            });
+            return opciones;
         };
 
         // Función para obtener todos los valores permitidos según permisos
@@ -2539,14 +2559,19 @@
             return Array.from(resultado);
         };
 
-        // Función auxiliar para filtrar opciones
-        var filtrarOpcionesSinVendors = function (opciones, listaPermitida) {
-            Object.keys(opciones).forEach(function (key) {
-                if (!listaPermitida.includes(key)) {
-                    delete opciones[key];
-                }
-            });
-            return opciones; // Retorna el objeto filtrado
+        // Función reutilizable para actualizar el campo origen_c
+        var actualizarCampoOrigen = function (opciones_origen, nuevoValor) {
+            var field = this.getField("origen_c");
+            if (field) {
+                field.items = opciones_origen;
+                field.render();
+            }
+
+            var valorActual = this.model.get('origen_c');
+            if (!opciones_origen.hasOwnProperty(valorActual)) {
+                this.model.unset('origen_c');
+                this.model.set('origen_c', nuevoValor);
+            }
         };
 
         // Función reutilizable para actualizar las opciones y el valor del campo detalle_origen_c
@@ -2562,9 +2587,32 @@
         //DETALLE ORIGEN                
         var opcionesPermitidas = obtenerValores(permisosGestionTeamLeader, permisosMap); // Obtiene las opciones de detalle según permisos
         // Aplica filtro
-        opciones_detalle_origen = filtrarOpcionesSinVendors(opciones_detalle_origen, opcionesPermitidas);
+        opciones_detalle_origen = filtrarOpciones(opciones_detalle_origen, opcionesPermitidas);
         this.model.fields['detalle_origen_c'].options = opciones_detalle_origen;
         actualizarDetalleOrigen.call(this, opciones_detalle_origen);
+
+        // Si ya no hay opciones (solo tenía Vendors)
+        if (_.isEmpty(opciones_detalle_origen)) {
+            // Asignar Leasing (origen_c = 20, detalle_origen_c = 113)
+            if (this.model.get('origen_c') !== '20') {
+                this.model.set('origen_c', '20');
+            }
+            if (this.model.get('detalle_origen_c') !== '113') {
+                this.model.set('detalle_origen_c', '113');
+            }
+
+            // Filtrar origen dejando solo Leasing
+            opciones_origen = filtrarOpciones(opciones_origen, ["20"]);
+            this.model.fields['origen_c'].options = opciones_origen;
+            actualizarCampoOrigen.call(this, opciones_origen, '20');
+
+            // Forzar render visual de campos
+            var fieldOrigen = this.getField('origen_c');
+            if (fieldOrigen) fieldOrigen.render();
+
+            var fieldDetalle = this.getField('detalle_origen_c');
+            if (fieldDetalle) fieldDetalle.render();
+        }
     },
 
 })
