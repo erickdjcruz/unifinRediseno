@@ -7,6 +7,7 @@
 
         this.carga_inicial = true;
         this.vendorDesvinculado = false;
+        this.origenDetalleModificado = false;
 
         this.model.addValidationTask('check_Requeridos', _.bind(this.valida_requeridos_min, this));
         this.model.on('sync', this._readonlyFields, this);
@@ -101,6 +102,31 @@
                 btnDesvincular.show();
             } else {
                 btnDesvincular.dispose();
+            }
+        });
+        // Marcar si cambió origen o detalle después de desvincular
+        this.model.on('change:origen_c change:detalle_origen_c', () => {
+            if (this.vendorDesvinculado) {
+                this.origenDetalleModificado = true;
+            }
+        });
+        // Después de guardar, mostrar mensaje y ocultar botón si corresponde
+        this.model.on('sync', () => {
+            if (this.vendorDesvinculado && this.origenDetalleModificado) {
+                app.alert.show("desvinculado", {
+                    level: "success",
+                    messages: "Vendor desvinculado.",
+                    autoClose: false
+                });
+
+                var btnDesvincular = this.getField('desvincular_vendor');
+                if (btnDesvincular) {
+                    btnDesvincular.dispose();
+                }
+
+                // Resetear banderas
+                this.vendorDesvinculado = false;
+                this.origenDetalleModificado = false;
             }
         });
     },
@@ -2504,17 +2530,6 @@
 
                 // Enter edit mode
                 self.editClicked();
-
-                // Hide the desvincular button after click
-                var btnDesvincular = self.getField('desvincular_vendor');
-                btnDesvincular.dispose();
-
-                // Show success message
-                app.alert.show("desvinculado", {
-                    level: "success",
-                    messages: "Vendor desvinculado. Ahora puedes editar el origen y detalle origen.",
-                    autoClose: true
-                });
 
                 // Focus on origen field
                 setTimeout(function () {
