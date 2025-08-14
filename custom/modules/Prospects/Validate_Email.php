@@ -81,7 +81,7 @@ class Validate_Email
                     INNER JOIN prospects_cstm pc ON p.id = pc.id_c
                     LEFT JOIN email_addr_bean_rel er ON er.bean_id = p.id AND er.deleted = 0
                     LEFT JOIN email_addresses e ON e.id = er.email_address_id
-                    WHERE e.email_address = '{$email}' AND pc.excluye_campana_c = 0";
+                    WHERE e.email_address = '{$email}' ";
 
                 $queryResultEmail = $db->query($qEmailExists);
 
