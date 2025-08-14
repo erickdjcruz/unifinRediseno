@@ -177,7 +177,7 @@ class GetInfoRFCbyCIEC extends SugarApi
                 //$url_csf=$sugar_config['regimenes_sat_url'].'/webhook-requests/retrieve/'.$ticket;
                 $url_csf=$sugar_config['regimenes_sat_url'].'/orders/retrieve/'.$ticket;
                 $pendiente = true;
-                $maxTries = 16;
+                $maxTries = 13;
                 $try = 0;
                 $error_robina=false;
 
@@ -185,7 +185,7 @@ class GetInfoRFCbyCIEC extends SugarApi
                     $try++;
                     $GLOBALS['log']->fatal('url_csf - retrieve:'.$url_csf );
                     $response=$this->callGetTicketCIEC($url_csf, $token );                    
-                    //$GLOBALS['log']->fatal( print_r($response,true) );                    
+                    $GLOBALS['log']->fatal( print_r($response,true) );                    
                     // Decodificar el JSON a un arreglo
                     //$latestItem = json_decode($response, true);
                     $status = $response['is_json_data'] ?? null;
@@ -248,22 +248,22 @@ class GetInfoRFCbyCIEC extends SugarApi
                         $resultado = $response;
                         $resultado['success'] = true;
                     }else{
-                        $resultado['success'] = false;
+                        $resultado['success'] = 0;
                         $resultado['codeerror'] = 204;
                         $resultado['messageerror'] = "Error al recuperar información del RFC por CIEC.";    
                     }
                 } else {
-                    $resultado['success'] = false;
-                    $resultado['codeerror'] = 204;
+                    $resultado['success'] = 0;
+                    $resultado['codeerror'] = 205;
                     $resultado['messageerror'] = "Demasiado tiempo de espera al recuperar información del RFC.";
                 }                
             } else {
-                $resultado['success'] = false;
-                $resultado['codeerror'] = 204;
+                $resultado['success'] = 0;
+                $resultado['codeerror'] = 206;
                 $resultado['messageerror'] = "Respuesta sin datos válidos de ID o createdAt";
             }
         } else {
-            $resultado['success'] = false;
+            $resultado['success'] = 0;
             $resultado['codeerror'] = 401;
             $resultado['messageerror'] = "No se pudo obtener el token o respuesta inválida";
         }
