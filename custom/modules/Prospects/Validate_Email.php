@@ -2,138 +2,138 @@
 require_once 'include/api/SugarApiException.php';
 class Validate_Email
 {
-    public function existsEmail($bean = null, $event = null, $args = null)
-    {
-        global $db;
-        $id_publico_objetivo = $bean->id;
-        //$email = $bean->email1;
+    // public function existsEmail($bean = null, $event = null, $args = null)
+    // {
+    //     global $db;
+    //     $id_publico_objetivo = $bean->id;
+    //     //$email = $bean->email1;
 
-        $GLOBALS['log']->fatal('excluye_campana_c');
-        $GLOBALS['log']->fatal($bean->excluye_campana_c);
-        if (!$bean->excluye_campana_c){
+    //     $GLOBALS['log']->fatal('excluye_campana_c');
+    //     $GLOBALS['log']->fatal($bean->excluye_campana_c);
+    //     if (!$bean->excluye_campana_c){
 
-            /*$qEmailExists = "SELECT p.id id_po,pc.clean_name_c,e.email_address from prospects p
-            inner join prospects_cstm pc on p.id=pc.id_c
-            left join email_addr_bean_rel er on er.bean_id = p.id and er.deleted=0
-            left join email_addresses e on e.id=er.email_address_id and e.deleted =0
-            WHERE e.email_address = '{$email}' and pc.excluye_campana_c = 0";
+    //         /*$qEmailExists = "SELECT p.id id_po,pc.clean_name_c,e.email_address from prospects p
+    //         inner join prospects_cstm pc on p.id=pc.id_c
+    //         left join email_addr_bean_rel er on er.bean_id = p.id and er.deleted=0
+    //         left join email_addresses e on e.id=er.email_address_id and e.deleted =0
+    //         WHERE e.email_address = '{$email}' and pc.excluye_campana_c = 0";
             
-            $queryResultEmail = $db->query($qEmailExists);
-            $ids_po = array();
-            if ($queryResultEmail->num_rows > 0) {
+    //         $queryResultEmail = $db->query($qEmailExists);
+    //         $ids_po = array();
+    //         if ($queryResultEmail->num_rows > 0) {
     
-                while ($row = $GLOBALS['db']->fetchByAssoc($queryResultEmail)) {
-                    $id_po = $row['id_po'];
-                    $name_po = $row['clean_name_c'];
-                    if( $id_po != $id_publico_objetivo ){
-                        array_push( $ids_po, array( "id_po" => $id_po,"name_po" => $name_po ) );
-                    }
-                }
-            }
+    //             while ($row = $GLOBALS['db']->fetchByAssoc($queryResultEmail)) {
+    //                 $id_po = $row['id_po'];
+    //                 $name_po = $row['clean_name_c'];
+    //                 if( $id_po != $id_publico_objetivo ){
+    //                     array_push( $ids_po, array( "id_po" => $id_po,"name_po" => $name_po ) );
+    //                 }
+    //             }
+    //         }
             
-            $str_link_po = "";
-            if( count($ids_po) > 0 ){
-                for ($i=0; $i < count($ids_po); $i++) { 
-                    $str_link_po .= $ids_po[$i]["name_po"].',';
-                }
+    //         $str_link_po = "";
+    //         if( count($ids_po) > 0 ){
+    //             for ($i=0; $i < count($ids_po); $i++) { 
+    //                 $str_link_po .= $ids_po[$i]["name_po"].',';
+    //             }
                 
-            }
-            if($db->getRowCount($queryResultEmail) > 0 && count($ids_po) > 0){
-                if( $_SESSION['platform'] == 'base' ){
-                    throw new SugarApiExceptionInvalidParameter('No se puede guardar el registro. El correo electrónico '.$email.' ya existe en Público Objetivo en los siguientes registros: ' .$str_link_po. ' favor de corregir');
-                }
-            }
-            */ 
-            // Obtener todos los correos electrónicos asociados
-            $emails = [];
-            $ids_emails = [];
+    //         }
+    //         if($db->getRowCount($queryResultEmail) > 0 && count($ids_po) > 0){
+    //             if( $_SESSION['platform'] == 'base' ){
+    //                 throw new SugarApiExceptionInvalidParameter('No se puede guardar el registro. El correo electrónico '.$email.' ya existe en Público Objetivo en los siguientes registros: ' .$str_link_po. ' favor de corregir');
+    //             }
+    //         }
+    //         */ 
+    //         // Obtener todos los correos electrónicos asociados
+    //         $emails = [];
+    //         $ids_emails = [];
 
-            /*$sql = "SELECT ea.email_address FROM email_addr_bean_rel eabr
-                INNER JOIN email_addresses ea ON ea.id = eabr.email_address_id AND ea.deleted = 0
-                WHERE eabr.bean_id = '{$id_publico_objetivo}'
-                AND eabr.deleted = 0";
+    //         /*$sql = "SELECT ea.email_address FROM email_addr_bean_rel eabr
+    //             INNER JOIN email_addresses ea ON ea.id = eabr.email_address_id AND ea.deleted = 0
+    //             WHERE eabr.bean_id = '{$id_publico_objetivo}'
+    //             AND eabr.deleted = 0";
 
-            $res = $db->query($sql);
-            while ($row = $db->fetchByAssoc($res)) {
-                $emails[] = $row['email_address'];
-            }
-            */
-            if (!empty($bean->emailAddress->addresses)) {
-                foreach ($bean->emailAddress->addresses as $emailData) {
-                    if (!empty($emailData['email_address'])) {
-                        $emails[] = $emailData['email_address'];
-                    }
-                }
-            }
-            $GLOBALS['log']->fatal('emails_prospects');
-            $GLOBALS['log']->fatal(print_r($emails,true));
+    //         $res = $db->query($sql);
+    //         while ($row = $db->fetchByAssoc($res)) {
+    //             $emails[] = $row['email_address'];
+    //         }
+    //         */
+    //         if (!empty($bean->emailAddress->addresses)) {
+    //             foreach ($bean->emailAddress->addresses as $emailData) {
+    //                 if (!empty($emailData['email_address'])) {
+    //                     $emails[] = $emailData['email_address'];
+    //                 }
+    //             }
+    //         }
+    //         $GLOBALS['log']->fatal('emails_prospects');
+    //         $GLOBALS['log']->fatal(print_r($emails,true));
 
-            $ids_po = array();
-            $str_link_po = "";
+    //         $ids_po = array();
+    //         $str_link_po = "";
 
-            foreach ($emails as $email) {
-                $email = $db->quote($email); // Escapar el valor
+    //         foreach ($emails as $email) {
+    //             $email = $db->quote($email); // Escapar el valor
 
-                //$GLOBALS['log']->fatal('EMAIL'.$email);
+    //             //$GLOBALS['log']->fatal('EMAIL'.$email);
 
-                $qEmailExists = "SELECT p.id id_po, pc.clean_name_c, e.email_address, e.id as idemail
-                    FROM prospects p
-                    INNER JOIN prospects_cstm pc ON p.id = pc.id_c
-                    LEFT JOIN email_addr_bean_rel er ON er.bean_id = p.id AND er.deleted = 0
-                    LEFT JOIN email_addresses e ON e.id = er.email_address_id
-                    WHERE e.email_address = '{$email}' ";
+    //             $qEmailExists = "SELECT p.id id_po, pc.clean_name_c, e.email_address, e.id as idemail
+    //                 FROM prospects p
+    //                 INNER JOIN prospects_cstm pc ON p.id = pc.id_c
+    //                 LEFT JOIN email_addr_bean_rel er ON er.bean_id = p.id AND er.deleted = 0
+    //                 LEFT JOIN email_addresses e ON e.id = er.email_address_id
+    //                 WHERE e.email_address = '{$email}' ";
 
-                $queryResultEmail = $db->query($qEmailExists);
+    //             $queryResultEmail = $db->query($qEmailExists);
 
-                while ($row = $db->fetchByAssoc($queryResultEmail)) {
-                    $id_po = $row['id_po'];
-                    $name_po = $row['clean_name_c'];
-                    $id_email = $row['idemail'];
+    //             while ($row = $db->fetchByAssoc($queryResultEmail)) {
+    //                 $id_po = $row['id_po'];
+    //                 $name_po = $row['clean_name_c'];
+    //                 $id_email = $row['idemail'];
 
-                    if ($id_po != $id_publico_objetivo) {
-                        $ids_emails[] = $id_email;
-                        $ids_po[] = array("id_po" => $id_po, "name_po" => $name_po);
-                        $str_link_po .= $name_po . ', ';
-                    }
-                }
-            }
+    //                 if ($id_po != $id_publico_objetivo) {
+    //                     $ids_emails[] = $id_email;
+    //                     $ids_po[] = array("id_po" => $id_po, "name_po" => $name_po);
+    //                     $str_link_po .= $name_po . ', ';
+    //                 }
+    //             }
+    //         }
             
-            $GLOBALS['log']->fatal(print_r($ids_emails,true));
+    //         $GLOBALS['log']->fatal(print_r($ids_emails,true));
 
-            if (!empty($ids_po)) {
-                // Marcar como eliminado el/los correos recién agregados
-                if (!empty($ids_emails)) {
-                    $ids_str = "'" . implode("','", $ids_emails) . "'";
+    //         if (!empty($ids_po)) {
+    //             // Marcar como eliminado el/los correos recién agregados
+    //             if (!empty($ids_emails)) {
+    //                 $ids_str = "'" . implode("','", $ids_emails) . "'";
                     
-                    // Marcar en email_addresses
-                    $db->query("UPDATE email_addresses SET deleted = 1 WHERE id IN ($ids_str)");
+    //                 // Marcar en email_addresses
+    //                 $db->query("UPDATE email_addresses SET deleted = 1 WHERE id IN ($ids_str)");
 
-                    // Marcar en la relación
-                    $db->query("UPDATE email_addr_bean_rel SET deleted = 1 WHERE email_address_id IN ($ids_str) AND bean_id = '{$id_publico_objetivo}'");
-                }
+    //                 // Marcar en la relación
+    //                 $db->query("UPDATE email_addr_bean_rel SET deleted = 1 WHERE email_address_id IN ($ids_str) AND bean_id = '{$id_publico_objetivo}'");
+    //             }
 
-                $str_link_po = rtrim($str_link_po, ', ');
-                if ($_SESSION['platform'] == 'base') {
-                    throw new SugarApiExceptionInvalidParameter(
-                        'No se puede guardar el registro. Uno o más correos electrónicos ya existen en Público Objetivo en los siguientes registros: '
-                        . $str_link_po . '. Favor de corregir.'
-                    );
-                }
-            }
-            /*
-            if (!empty($ids_po)) {
-                $str_link_po = rtrim($str_link_po, ', ');
-                if ($_SESSION['platform'] == 'base') {
-                    throw new SugarApiExceptionInvalidParameter(
-                        'No se puede guardar el registro. Uno o más correos electrónicos ya existen en Público Objetivo en los siguientes registros: '
-                        . $str_link_po . '. Favor de corregir.'
-                    );
-                }
-            }
-            */
-        }
+    //             $str_link_po = rtrim($str_link_po, ', ');
+    //             if ($_SESSION['platform'] == 'base') {
+    //                 throw new SugarApiExceptionInvalidParameter(
+    //                     'No se puede guardar el registro. Uno o más correos electrónicos ya existen en Público Objetivo en los siguientes registros: '
+    //                     . $str_link_po . '. Favor de corregir.'
+    //                 );
+    //             }
+    //         }
+    //         /*
+    //         if (!empty($ids_po)) {
+    //             $str_link_po = rtrim($str_link_po, ', ');
+    //             if ($_SESSION['platform'] == 'base') {
+    //                 throw new SugarApiExceptionInvalidParameter(
+    //                     'No se puede guardar el registro. Uno o más correos electrónicos ya existen en Público Objetivo en los siguientes registros: '
+    //                     . $str_link_po . '. Favor de corregir.'
+    //                 );
+    //             }
+    //         }
+    //         */
+    //     }
 
-    }
+    // }
 
     public function checkUpdateEmailPO($bean = null, $event = null, $args = null){
 
