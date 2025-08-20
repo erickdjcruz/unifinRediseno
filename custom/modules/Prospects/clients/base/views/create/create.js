@@ -63,6 +63,8 @@
         // Cambia etiquetas vendor
         this.model.on('change:detalle_origen_c', this.cambiarEtiquetasVendor, this);
         this.on('render', this.cambiarEtiquetasVendor, this);
+        // Agregar la validación de correos duplicados
+        this.model.addValidationTask('check_email_duplicate', _.bind(this.validateDuplicateEmails, this));
     },
 
     delegateButtonEvents: function () {
@@ -1414,5 +1416,63 @@
             labelEmailAsesorAlianza.text('Email del Asesor de Alianza');
             labelTelefonoAsesorAlianza.text('Teléfono del Asesor de Alianza');
         }        
+    },
+
+    /**
+     * Valida si los correos ingresados ya existen en otros prospectos
+     */
+    validateDuplicateEmails: function (fields, errors, callback) {        
+        var emails = [];
+
+        if (this.model.get('email') && _.isArray(this.model.get('email'))) {
+            _.each(this.model.get('email'), function (e) {
+                if (e.email_address) {
+                    emails.push(e.email_address);
+                }
+            });
+        }
+
+        if (emails.length === 0) {
+            return callback(null, fields, errors);
+        }
+
+        app.api.call(
+            'create', 
+            app.api.buildURL('Prospects/validateEmail'),
+            {
+                emails: emails,
+                record_id: this.model.get('id') || ''
+            },
+            {
+                success: function (data) {
+                    if (data.duplicate && data.emails) {
+                        var mensaje = '';
+                        _.each(data.emails, function (prospects, correo) {
+                            _.each(prospects, function (prospecto) {
+                                var url = '#Prospects/' + prospecto.id;
+                                mensaje += 'El correo <b>' + _.escape(correo) +
+                                '</b> ya existe en el prospecto <a href="' + url +
+                                '" target="_blank"><b>' + _.escape(prospecto.nombre) +
+                                '</b></a><br>';
+                            });
+                        });
+
+                        app.alert.show("emails_duplicados_po", {
+                            level: "error",
+                            messages: mensaje,
+                            autoClose: false
+                        });
+
+                        errors['email'] = errors['email'] || {};
+                        errors['email'].email_duplicate = mensaje;
+                    }
+
+                    callback(null, fields, errors);
+                },
+                error: function () {
+                    callback(null, fields, errors);
+                }
+            }
+        );
     },
 })

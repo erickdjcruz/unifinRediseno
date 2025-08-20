@@ -115,7 +115,7 @@
          * @date 16-10-2015
          * Al ser proveedor debe solicitar como obligatorio el tipo de proveedor
          * */
-        this.model.addValidationTask('tipo_proveedor_requerido', _.bind(this.validaProveedorRequerido, this));
+        // this.model.addValidationTask('tipo_proveedor_requerido', _.bind(this.validaProveedorRequerido, this));
         /* END */
         this.model.addValidationTask('valida_potencial_campos_autos', _.bind(this.nodigitos, this));
 
@@ -318,7 +318,7 @@
         //Ocultar panel Analizate
         this.$("[data-panelname='LBL_RECORDVIEW_PANEL18']").hide();
         //this.model.addValidationTask('UniclickCanal', _.bind(this.requeridosUniclickCanal, this));
-        this.model.addValidationTask('tipo_proveedor_compras', _.bind(this.tipoProveedor, this));
+        // this.model.addValidationTask('tipo_proveedor_compras', _.bind(this.tipoProveedor, this));
         //Limpia los campos dependientes de Origen y Detalle Origen
         this.model.on('change:origen_cuenta_c', this._cleanDependenciesOrigen, this);
         this.model.on('change:detalle_origen_c', this._cleanDependencies, this);
@@ -462,9 +462,9 @@
           this.$('div[data-name=rfc_c]').css("pointer-events", "none");
           this.$('div[data-name="generar_rfc_c"]').hide();
         }
-        if (App.user.attributes.puestousuario_c != 32 && App.user.attributes.puestousuario_c != 47) {
-          this.$('div[data-name=tipo_proveedor_compras_c]').css("pointer-events", "none");
-        }
+        // if (App.user.attributes.puestousuario_c != 32 && App.user.attributes.puestousuario_c != 47) {
+        //   this.$('div[data-name=tipo_proveedor_compras_c]').css("pointer-events", "none");
+        // }
     },
 
     _ActualizaEtiquetas: function () {
@@ -1179,21 +1179,21 @@
      * Al ser proveedor debe solicitar como obligatorio el tipo de proveedor
      * @type function
      * */
-    validaProveedorRequerido: function (fields, errors, callback) {
-        if (this.model.get('tipo_registro_cuenta_c') == '5') {
-            var tipoProveedor = new String(this.model.get('tipo_proveedor_c'));
-            if (tipoProveedor.length == 0) {
-                /*app.alert.show("Proveedor Requerido", {
-                    level: "error",
-                    title: "Debe seleccionar un un tipo de proveedor al menos",
-                    autoClose: false
-                });*/
-                errors['tipo_proveedor_c'] = errors['tipo_proveedor_c'] || {};
-                errors['tipo_proveedor_c'].required = true;
-            }
-        }
-        callback(null, fields, errors);
-    },
+    // validaProveedorRequerido: function (fields, errors, callback) {
+    //     if (this.model.get('tipo_registro_cuenta_c') == '5') {
+    //         var tipoProveedor = new String(this.model.get('tipo_proveedor_c'));
+    //         if (tipoProveedor.length == 0) {
+    //             /*app.alert.show("Proveedor Requerido", {
+    //                 level: "error",
+    //                 title: "Debe seleccionar un un tipo de proveedor al menos",
+    //                 autoClose: false
+    //             });*/
+    //             errors['tipo_proveedor_c'] = errors['tipo_proveedor_c'] || {};
+    //             errors['tipo_proveedor_c'].required = true;
+    //         }
+    //     }
+    //     callback(null, fields, errors);
+    // },
     /* END */
 
     /**
@@ -2387,16 +2387,16 @@
         }
     },
 
-    tipoProveedor: function (fields, errors, callback) {
-        if ((this.model.get('esproveedor_c') || this.model.get('tipo_registro_cuenta_c') == '5') && (App.user.attributes.puestousuario_c == 32 || App.user.attributes.puestousuario_c == 47) && (this.model.get('tipo_proveedor_compras_c') == null || this.model.get('tipo_proveedor_compras_c') == '') ) {
-            app.alert.show("tipo_proveedor_compras_c", {
-                level: "error",
-                title: 'Hace falta seleccionar un valor para el campo Tipo de proveedor compras',
-                autoClose: false
-            });
-            errors['tipo_proveedor_compras_c'] = errors['tipo_proveedor_compras_c'] || {};
-            errors['tipo_proveedor_compras_c'].required = true;
-        }
-        callback(null, fields, errors);
-    },
+    // tipoProveedor: function (fields, errors, callback) {
+    //     if ((this.model.get('esproveedor_c') || this.model.get('tipo_registro_cuenta_c') == '5') && (App.user.attributes.puestousuario_c == 32 || App.user.attributes.puestousuario_c == 47) && (this.model.get('tipo_proveedor_compras_c') == null || this.model.get('tipo_proveedor_compras_c') == '') ) {
+    //         app.alert.show("tipo_proveedor_compras_c", {
+    //             level: "error",
+    //             title: 'Hace falta seleccionar un valor para el campo Tipo de proveedor compras',
+    //             autoClose: false
+    //         });
+    //         errors['tipo_proveedor_compras_c'] = errors['tipo_proveedor_compras_c'] || {};
+    //         errors['tipo_proveedor_compras_c'].required = true;
+    //     }
+    //     callback(null, fields, errors);
+    // },
 })

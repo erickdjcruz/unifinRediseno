@@ -21,13 +21,13 @@
      'setCleanName'
  );
 
- $hook_array['before_save'][] = Array(
-     4,
-     'Validacion de duplicados RFC',
-     'custom/modules/Prospects/Validate_Email.php',
-     'Validate_Email',
-     'existsEmail'
- );
+//  $hook_array['before_save'][] = Array(
+//      4,
+//      'Validacion de duplicados RFC',
+//      'custom/modules/Prospects/Validate_Email.php',
+//      'Validate_Email',
+//      'existsEmail'
+//  );
 
 //  $hook_array['before_save'][] = Array(
 //      5,
@@ -46,13 +46,13 @@
      'func_validate_rfc'
  );
 */
- $hook_array['before_save'][] = Array(
-     7,
-     'Validacion REUS email y telefonos',
-     'custom/modules/Prospects/valida_reus.php',
-     'class_po_reus',
-     'func_po_reus'
- );
+//  $hook_array['before_save'][] = Array(
+//      7,
+//      'Validacion REUS email y telefonos',
+//      'custom/modules/Prospects/valida_reus.php',
+//      'class_po_reus',
+//      'func_po_reus'
+//  );
  $hook_array['before_save'][] = Array(
      8,
      'Consulta Servicio de C4 para Teléfonos',

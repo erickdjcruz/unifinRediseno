@@ -326,18 +326,18 @@
           $('div[data-name=rfc_c]').css("pointer-events", "none");
           $('[data-name="generar_rfc_c"]').hide();
         }
-        if (App.user.attributes.puestousuario_c != 32 && App.user.attributes.puestousuario_c != 47) {
-            //Se agrega validacion para la lista de Vendors y puedan editar el campo Tipo Proveedor Compras C
-            var Banderita=0;
-            Object.entries(App.lang.getAppListStrings('equipo_a_eco_y_est_list')).forEach(([key, value]) => {
-                if(value==App.user.attributes.id){
-                    Banderita=1;
-                }
-            });
-            if(Banderita!=1){
-                this.$('div[data-name=tipo_proveedor_compras_c]').css("pointer-events", "none");
-            }
-        }
+        // if (App.user.attributes.puestousuario_c != 32 && App.user.attributes.puestousuario_c != 47) {
+        //     //Se agrega validacion para la lista de Vendors y puedan editar el campo Tipo Proveedor Compras C
+        //     var Banderita=0;
+        //     Object.entries(App.lang.getAppListStrings('equipo_a_eco_y_est_list')).forEach(([key, value]) => {
+        //         if(value==App.user.attributes.id){
+        //             Banderita=1;
+        //         }
+        //     });
+        //     if(Banderita!=1){
+        //         this.$('div[data-name=tipo_proveedor_compras_c]').css("pointer-events", "none");
+        //     }
+        // }
 
         //Oculta campos de Dynamics
         $('[data-name="control_dynamics_365_c"]').hide();
@@ -566,7 +566,7 @@
         //Validacion para el formato de los campos nombre y apellidos.
         this.model.addValidationTask('validaformato3campos', _.bind(this.validaformato, this));
         this.model.addValidationTask('validacamposcurppass', _.bind(this.validapasscurp, this));
-        this.model.addValidationTask('porcentajeIVA', _.bind(this.validaiva, this));
+        // this.model.addValidationTask('porcentajeIVA', _.bind(this.validaiva, this));
 
         //Validacion para que la fecha de nac/constitutiva sea igual al RFC
         this.model.addValidationTask('Valida_RFC', _.bind(this.validaRFC, this));
@@ -743,7 +743,7 @@
         //Ocultar panel Analizate
         this.$("[data-panelname='LBL_RECORDVIEW_PANEL18']").hide();
         //this.model.addValidationTask('UniclickCanal', _.bind(this.requeridosUniclickCanal, this));
-        this.model.addValidationTask('tipo_proveedor_compras', _.bind(this.tipoProveedor, this));
+        // this.model.addValidationTask('tipo_proveedor_compras', _.bind(this.tipoProveedor, this));
         this.model.addValidationTask('clean_name', _.bind(this.cleanName, this));
 
         //Validation task que muestra modal sobre duplicados
@@ -1798,16 +1798,16 @@
     validaProveedorRequerido: function (fields, errors, callback) {
         if (this.model.get('tipo_registro_cuenta_c') == 'Proveedor' || this.model.get('esproveedor_c') == true) {
             this.model.set("esproveedor_c", true);
-            var tipoProveedor = new String(this.model.get('tipo_proveedor_c'));
-            if (tipoProveedor.length == 0) {
-                /*app.alert.show("Proveedor Requerido", {
-                 level: "error",
-                 title: "Debe seleccionar un tipo de proveedor al menos",
-                 autoClose: false
-                 });*/
-                errors['tipo_proveedor_c'] = errors['tipo_proveedor_c'] || {};
-                errors['tipo_proveedor_c'].required = true;
-            }
+            // var tipoProveedor = new String(this.model.get('tipo_proveedor_c'));
+            // if (tipoProveedor.length == 0) {
+            //     /*app.alert.show("Proveedor Requerido", {
+            //      level: "error",
+            //      title: "Debe seleccionar un tipo de proveedor al menos",
+            //      autoClose: false
+            //      });*/
+            //     errors['tipo_proveedor_c'] = errors['tipo_proveedor_c'] || {};
+            //     errors['tipo_proveedor_c'].required = true;
+            // }
             //Validacion de Actividad Economica - antes macrosector
             /*if ($('.list_ae').select2('val') == "0" || $('.list_ae').select2('val') == '' || $('.list_ae').select2('val') == null) {
 
@@ -3153,35 +3153,35 @@
         callback(null, fields, errors);
     },
 
-    validaiva: function (fields, errors, callback) {
-        if (this.model.get('tipo_registro_cuenta_c') == "5" || this.model.get('esproveedor_c') == true) {
-            if (this.model.get('iva_c') !== "" && this.model.get('iva_c') != undefined && (Number(this.model.get('iva_c')) <= 0 || Number(this.model.get('iva_c')) > 100.00)) {
-                if (parseFloat(this.model.get('iva_c')) <= 0.0000) {
-                    errors['iva_c'] = errors['iva_c'] || {};
-                    errors['iva_c'].required = true;
+    // validaiva: function (fields, errors, callback) {
+    //     if (this.model.get('tipo_registro_cuenta_c') == "5" || this.model.get('esproveedor_c') == true) {
+    //         if (this.model.get('iva_c') !== "" && this.model.get('iva_c') != undefined && (Number(this.model.get('iva_c')) <= 0 || Number(this.model.get('iva_c')) > 100.00)) {
+    //             if (parseFloat(this.model.get('iva_c')) <= 0.0000) {
+    //                 errors['iva_c'] = errors['iva_c'] || {};
+    //                 errors['iva_c'].required = true;
 
-                    app.alert.show("Iva_mayor_a_cero", {
-                        level: "error",
-                        messages: "El campo <b>% de IVA</b> debe ser mayor a cero.",
-                        autoClose: false
-                    });
-                }
-                // Valida valor mayor a 100
-                if (parseFloat(this.model.get('iva_c')) > 100.00) {
+    //                 app.alert.show("Iva_mayor_a_cero", {
+    //                     level: "error",
+    //                     messages: "El campo <b>% de IVA</b> debe ser mayor a cero.",
+    //                     autoClose: false
+    //                 });
+    //             }
+    //             // Valida valor mayor a 100
+    //             if (parseFloat(this.model.get('iva_c')) > 100.00) {
 
-                    errors['iva_c'] = errors['iva_c'] || {};
-                    errors['iva_c'].required = true;
+    //                 errors['iva_c'] = errors['iva_c'] || {};
+    //                 errors['iva_c'].required = true;
 
-                    app.alert.show("Iva_menor_a_cero", {
-                        level: "error",
-                        messages: "El campo <b>% de IVA</b> debe ser menor o igual a cien.",
-                        autoClose: false
-                    });
-                }
-            }
-        }
-        callback(null, fields, errors);
-    },
+    //                 app.alert.show("Iva_menor_a_cero", {
+    //                     level: "error",
+    //                     messages: "El campo <b>% de IVA</b> debe ser menor o igual a cien.",
+    //                     autoClose: false
+    //                 });
+    //             }
+    //         }
+    //     }
+    //     callback(null, fields, errors);
+    // },
     nodigitos: function (fields, errors, callback) {
         if ($('.campo1pa').val() != "" || $('.campo2pa').val() != "" || $('.campo3pa').val() != "" || $('.campo4pa').val() != "") {
             if ($('.campo1pa').val() !== "") {
@@ -3458,18 +3458,18 @@
         callback(null, fields, errors);
     },
 
-    tipoProveedor: function (fields, errors, callback) {
-        if ((this.model.get('esproveedor_c') || this.model.get('tipo_registro_cuenta_c') == '5') && (App.user.attributes.puestousuario_c == 32 || App.user.attributes.puestousuario_c == 47) && (this.model.get('tipo_proveedor_compras_c') == null || this.model.get('tipo_proveedor_compras_c') == '') ) {
-            app.alert.show("tipo_proveedor_compras_c", {
-                level: "error",
-                title: 'Hace falta seleccionar un valor para el campo Tipo de proveedor compras',
-                autoClose: false
-            });
-            errors['tipo_proveedor_compras_c'] = errors['tipo_proveedor_compras_c'] || {};
-            errors['tipo_proveedor_compras_c'].required = true;
-        }
-        callback(null, fields, errors);
-    },
+    // tipoProveedor: function (fields, errors, callback) {
+    //     if ((this.model.get('esproveedor_c') || this.model.get('tipo_registro_cuenta_c') == '5') && (App.user.attributes.puestousuario_c == 32 || App.user.attributes.puestousuario_c == 47) && (this.model.get('tipo_proveedor_compras_c') == null || this.model.get('tipo_proveedor_compras_c') == '') ) {
+    //         app.alert.show("tipo_proveedor_compras_c", {
+    //             level: "error",
+    //             title: 'Hace falta seleccionar un valor para el campo Tipo de proveedor compras',
+    //             autoClose: false
+    //         });
+    //         errors['tipo_proveedor_compras_c'] = errors['tipo_proveedor_compras_c'] || {};
+    //         errors['tipo_proveedor_compras_c'].required = true;
+    //     }
+    //     callback(null, fields, errors);
+    // },
 
 	/* Valida RFC con servicio de revisión del padron de contribuyentes */
 	//        this.model.on('change:tipodepersona_c', this._ActualizaEtiquetas, this);
