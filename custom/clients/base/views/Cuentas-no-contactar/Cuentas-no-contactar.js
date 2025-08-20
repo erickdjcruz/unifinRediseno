@@ -23,7 +23,7 @@
 
   initialize: function (options) {
     this._super("initialize", [options]);
-    this.tipo_cuenta = app.lang.getAppListStrings("tipo_registro_cuenta_list");
+    this.tipo_cuenta = app.lang.getAppListStrings("tipo_registro_cuenta_no_contactar_list");
     this.condicion_list = app.lang.getAppListStrings("condicion_cliente_list");
     delete this.tipo_cuenta[1];
     this.loadView = false;
