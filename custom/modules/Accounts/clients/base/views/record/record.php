@@ -1005,58 +1005,58 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
         ),
       ),
     ),
-    // 10 => 
-    // array (
-    //   'newTab' => false,
-    //   'panelDefault' => 'collapsed',
-    //   'name' => 'LBL_RECORDVIEW_PANEL22',
-    //   'label' => 'LBL_RECORDVIEW_PANEL22',
-    //   'columns' => 2,
-    //   'placeholders' => 1,
-    //   'fields' => 
-    //   array (
-    //     0 => 
-    //     array (
-    //       'name' => 'tipo_proveedor_compras_c',
-    //       'label' => 'LBL_TIPO_PROVEEDOR_COMPRAS',
-    //     ),
-    //     1 => 
-    //     array (
-    //       'readonly' => false,
-    //       'name' => 'vendor_c',
-    //       'label' => 'LBL_VENDOR',
-    //     ),
-    //     2 => 
-    //     array (
-    //       'name' => 'tipo_proveedor_c',
-    //       'label' => 'LBL_TIPO_PROVEEDOR',
-    //     ),
-    //     3 => 
-    //     array (
-    //       'readonly' => false,
-    //       'name' => 'codigo_vendor_c',
-    //       'label' => 'LBL_CODIGO_VENDOR_C',
-    //     ),
-    //     4 => 
-    //     array (
-    //       'name' => 'alta_proveedor_c',
-    //       'label' => 'LBL_ALTA_PROVEEDOR_C',
-    //     ),
-    //     5 => 
-    //     array (
-    //     ),
-    //     6 => 
-    //     array (
-    //       'name' => 'iva_c',
-    //       'label' => 'LBL_IVA',
-    //     ),
-    //     7 => 
-    //     array (
-    //       'name' => 'es_referenciador_c',
-    //       'label' => 'LBL_ES_REFERENCIADOR_C',
-    //     ),
-    //   ),
-    // ),
+    10 => 
+    array (
+      'newTab' => false,
+      'panelDefault' => 'collapsed',
+      'name' => 'LBL_RECORDVIEW_PANEL22',
+      'label' => 'LBL_RECORDVIEW_PANEL22',
+      'columns' => 2,
+      'placeholders' => 1,
+      // 'fields' => 
+      // array (
+      //   0 => 
+      //   array (
+      //     'name' => 'tipo_proveedor_compras_c',
+      //     'label' => 'LBL_TIPO_PROVEEDOR_COMPRAS',
+      //   ),
+      //   1 => 
+      //   array (
+      //     'readonly' => false,
+      //     'name' => 'vendor_c',
+      //     'label' => 'LBL_VENDOR',
+      //   ),
+      //   2 => 
+      //   array (
+      //     'name' => 'tipo_proveedor_c',
+      //     'label' => 'LBL_TIPO_PROVEEDOR',
+      //   ),
+      //   3 => 
+      //   array (
+      //     'readonly' => false,
+      //     'name' => 'codigo_vendor_c',
+      //     'label' => 'LBL_CODIGO_VENDOR_C',
+      //   ),
+      //   4 => 
+      //   array (
+      //     'name' => 'alta_proveedor_c',
+      //     'label' => 'LBL_ALTA_PROVEEDOR_C',
+      //   ),
+      //   5 => 
+      //   array (
+      //   ),
+      //   6 => 
+      //   array (
+      //     'name' => 'iva_c',
+      //     'label' => 'LBL_IVA',
+      //   ),
+      //   7 => 
+      //   array (
+      //     'name' => 'es_referenciador_c',
+      //     'label' => 'LBL_ES_REFERENCIADOR_C',
+      //   ),
+      // ),
+    ),
     11 => 
     array (
       'newTab' => false,
