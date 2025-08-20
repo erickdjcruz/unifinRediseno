@@ -349,6 +349,7 @@
         this.model.on('change:total_empleados_c', this.actualizaEmpleadosRango, this);
         //PERMISO POTENCIAL
         this.model.on('sync', this._permisoPotencial, this);
+        this.alertWHRobina();
     },
 
     /** Asignacion modal */
@@ -9766,6 +9767,30 @@
                 }
             }
         }
+    },
+
+    alertWHRobina: function () {
+        if(this.model.attributes.id!=undefined){
+            app.api.call("read", app.api.buildURL("GetEstatusWHRobinaError?idCuenta=" + this.model.attributes.id, null, null, {}), null, {
+                success: _.bind(function (data) {
+                    if (data['Error']){
+                        app.alert.show("alert_error_robina", {
+                            level: "info",
+                            messages: data['MensajeError'],
+                            autoClose: false
+                        });
+                    }
+                    if (data['Alerta']){
+                        app.alert.show("alert_timeout_robina_sat", {
+                            level: "info",
+                            messages: data['MensajeError'],
+                            autoClose: false
+                        });
+                    }
+                }, this)
+            });
+        }
+        
     },
 
 })

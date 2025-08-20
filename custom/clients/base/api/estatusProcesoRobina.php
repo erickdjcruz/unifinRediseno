@@ -26,6 +26,7 @@ class estatusProcesoRobina extends SugarApi
 
     public function validaEstatusRobina($api, $args)
     {
+        global $db;
         $resultado = ['status' => '300']; // Valor por defecto
         try {
             $idCuenta = isset($args['idCuenta']) ? $args['idCuenta'] : '';
@@ -37,9 +38,11 @@ class estatusProcesoRobina extends SugarApi
                 ORDER BY date_modified DESC 
                 LIMIT 1;";
                 //$GLOBALS['log']->fatal("query: " . $query);
-                $result = $GLOBALS['db']->query($query);
-                $row = $GLOBALS['db']->fetchByAssoc($result);
+                $result = $db->query($query);
 
+                while ($row = $db->fetchByAssoc($result)) {
+                    $resultado['estatus_procesado'] = $row['estatus_procesado'];
+                }
                 //$GLOBALS['log']->fatal(print_r($row,true));
                 $resultado['estatus_procesado'] = $row['estatus_procesado'];
                 if (!empty($row)) {
