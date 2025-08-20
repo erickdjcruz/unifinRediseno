@@ -1132,7 +1132,7 @@
 						success: _.bind(function (data) {
 							app.alert.dismiss('procesando');
 							if (data != null) {
-								if (data.detail == undefined) {
+								if (data.success) {
 									var indice_indicador = 0;
 									var Completo = '';
 									var RFC = data["rfc"].toUpperCase();
@@ -1883,7 +1883,7 @@
 									app.alert.show('errorCIEC', {
 										level: 'warning',
 										//messages: 'No se pudo identificar una estructura válida para el documento y/o no cumple con la estructura oficial del SAT.\nPor lo tanto, no se pueden validar los datos del contribuyente con los del SAT',
-										messages: data.error,
+										messages: data.messageerror,
 										autoClose: false
 									});
 

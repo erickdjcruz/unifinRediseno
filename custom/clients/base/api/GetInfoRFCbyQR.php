@@ -108,12 +108,19 @@ class GetInfoRFCbyQR extends SugarApi
         $instanciaAPI = new UnifinAPI();
         $responseToken = $instanciaAPI->postSimilarityToken( $url_token, $user, $password  );
 
+        $resultado = [
+            'success' => false,
+            'codeerror' => 500,
+            'messageerror' => 'Error no especificado',
+            'data' => []
+        ];
+
         if( !empty($responseToken) ){
             $token = $responseToken['access_token'];
             $response=$this->callValidateCSF($url_csf, $token , $file_pdf);
 
         }
-
+        //$GLOBALS['log']->fatal( $response );
         $rfc =  $response['rfc'] ?? null;
         $GLOBALS['log']->fatal( "rfc:".$rfc );
         
@@ -139,33 +146,44 @@ class GetInfoRFCbyQR extends SugarApi
             $GLOBALS['log']->fatal($body);
             $response1 = $this->callCreateTicket($url_ticket, $token, $body);
             $GLOBALS['log']->fatal( 'creo ticket por archivo' );
-            //$GLOBALS['log']->fatal( print_r($response,true) );
+            $GLOBALS['log']->fatal( print_r($response1,true) );
             $GLOBALS['log']->fatal( 'ticket:'.$response1['id'] );
             //$response = json_decode($response, true);
             
-            if (isset($response1['detail'][0]['msg']) && $response1['detail'][0]['msg'] === 'value is not a valid dict') {
-                $response1['codeerror'] = 400;
-                $response1['messageerror'] = 'No se encontraron datos del RFC';
+            if (!isset($response1['detail'][0]['msg']) && isset($response1['detail'])) {
+                $resultado['codeerror'] = 402;
+                $resultado['messageerror'] = $response1['detail'];
                 $GLOBALS['log']->fatal('Error crear ticket');
-                //return $response1; // Termina aquí y regresa el error
+                return $resultado; // Termina aquí y regresa el error
+            }
+
+            if (isset($response1['detail'][0]['msg']) && $response1['detail'][0]['msg'] === 'value is not a valid dict') {
+                $resultado['codeerror'] = 400;
+                $resultado['messageerror'] = 'No se encontraron datos del RFC';
+                $resultado['success'] = 0;
+                $GLOBALS['log']->fatal('Error crear ticket');
+                return $resultado; // Termina aquí y regresa el error
             }
             $ticket = '';
 
             // Validar y extraer datos
             if (!empty($response1['id']) && !empty($response1['createdAt'])) {
                 $ticket = $response1['id'];
-                $response['ticket'] = $ticket;
+                $resultado['ticket'] = $ticket;
+                $resultado['success'] = 1;
                 $GLOBALS['log']->fatal( 'ticket: '. $ticket);
             }else{
-                $response1['error'] = 'Ticket no generado';
-                $response1['error_code'] = '401';
+                $resultado['success'] = 0;
+                $resultado['messageerror'] = 'Ticket no generado';
+                $resultado['codeerror'] = '401';
             }
         }else{
-            $response1['error'] = 'RFC no encontrado';
-            $response1['error_code'] = '401';
+            $resultado['success'] = 0;
+            $resultado['messageerror'] = 'No sé pudo realizar el proceso de validación del RFC, favor de intentarlo en unos minutos';
+            $resultado['codeerror'] = '401';
         }
 
-        return $response;
+        return $resultado;
     }
 
     /*

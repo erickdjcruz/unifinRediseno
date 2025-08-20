@@ -156,7 +156,7 @@ class GetInfoRFCbyCIEC extends SugarApi
             $GLOBALS['log']->fatal($body);
             $response = $this->callCreateTicket($url_ticket, $token, $body);
             $GLOBALS['log']->fatal( 'creo ticket' );
-            //$GLOBALS['log']->fatal( print_r($response,true) );
+            $GLOBALS['log']->fatal( print_r($response,true) );
             //$response = json_decode($response, true);
             
             if (isset($response['detail'][0]['msg']) && $response['detail'][0]['msg'] === 'value is not a valid dict') {
@@ -165,6 +165,14 @@ class GetInfoRFCbyCIEC extends SugarApi
                 $GLOBALS['log']->fatal('Error crear ticket');
                 return $resultado; // Termina aquí y regresa el error
             }
+
+            if (!isset($response['detail'][0]['msg']) && isset($response['detail'])) {
+                $resultado['codeerror'] = 402;
+                $resultado['messageerror'] = $response['detail'];
+                $GLOBALS['log']->fatal('Error crear ticket');
+                return $resultado; // Termina aquí y regresa el error
+            }
+
             $ticket = '';
             $createdAt = '';
 
