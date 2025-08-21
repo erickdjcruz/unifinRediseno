@@ -1,8 +1,9 @@
 <?php
- // created: 2025-08-21 13:01:19
+ // created: 2025-08-21 14:42:51
 
 $app_list_strings['backlog_motivo_declinacion_list']=array (
-  'requerido' => 'Requerido',
-  'auditable' => 'Auditable',
-  'informable' => 'Informable',
+  '' => '',
+  1 => 'Requerido',
+  2 => 'Auditable',
+  3 => 'Informable',
 );

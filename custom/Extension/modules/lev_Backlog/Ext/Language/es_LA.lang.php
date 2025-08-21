@@ -96,3 +96,4 @@ $mod_strings['LBL_MOTIVO_REACTIVACION_C'] = 'Motivo de Reactivación';
 $mod_strings['LBL_FECHA_SOL_REACTIVACION_C'] = 'Fecha solicitud reactivación';
 $mod_strings['LBL_FECHA_REACTIVACION_C'] = 'Fecha reactivación aprobada';
 $mod_strings['LBL_FECHA_REACTIVACION_NEG_C'] = 'Fecha reactivación rechazada';
+$mod_strings['LBL_ESTATUS_BACKLOG_C'] = 'Estatus Backlog';
