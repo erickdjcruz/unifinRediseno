@@ -169,6 +169,7 @@ class GetInfoRFCbyQR extends SugarApi
             // Validar y extraer datos
             if (!empty($response1['id']) && !empty($response1['createdAt'])) {
                 $ticket = $response1['id'];
+                $resultado = $response;
                 $resultado['ticket'] = $ticket;
                 $resultado['success'] = 1;
                 $GLOBALS['log']->fatal( 'ticket: '. $ticket);
