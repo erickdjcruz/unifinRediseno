@@ -1046,7 +1046,8 @@
 						messages: 'No se tiene información de CIEC, se tuvo demasiado tiempo de espera para la solicitud de datos SAT.',
 						autoClose: false
 					});
-						
+
+					contextol.validarServicioQR(); 						
 				}
 			});
 		} else {			
@@ -1137,6 +1138,7 @@
 									var Completo = '';
 									var RFC = data["rfc"].toUpperCase();
 									var ticket = data["ticket"];
+									var noticket = data["noticket"];
 									//var PathQR=data[0]["path_img_qr"];
 									var Correo = data["email"];
 									var CP = data["address"]["postalCode"];
@@ -1271,8 +1273,10 @@
 
 															//NUEVO SERVICIO PROCESO ROBINA API
 																							//(RFC, fechaEmision , ticket)
-															if(RFC != null && ticket != null){
+															if(RFC != null && ticket != null && noticket == false){
 																contextol.registroProcesoRobinaAPI(RFC, FechaEmision, ticket,contexto_cuenta.model.get('id'));
+															}else{
+																contextol.FileintegraCSF(contexto_cuenta.model.get('id'), RFC, window.result, FechaEmision);
 															}
 
 															$btnCIEC.prop('disabled', false);
