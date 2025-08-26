@@ -20,14 +20,14 @@
         this.model.on("change:monto_final_comprometido_c", _.bind(this.setRI, this));
         //this.model.on("change:ri_final_comprometida_c", _.bind(this.setEtapa, this));
         this.model.addValidationTask('igualaMontosFinales', _.bind(this.igualaMontoFinalOpp, this));
-        this.model.addValidationTask('camponovacio',_.bind(this.validacampoconversion,this));
-        
-		/************  CAmbiar valores tipo PRoducto LEasing   *****************/
-		this.model.addValidationTask('num_tipo_producto',_.bind(this.num_tipo_leasing, this));
-		this.model.addValidationTask('tipo_producto_requerido',_.bind(this.tipo_producto_requerido, this));
-		/*********** ---- ***********************/
-		
-		this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
+        this.model.addValidationTask('camponovacio', _.bind(this.validacampoconversion, this));
+
+        /************  CAmbiar valores tipo PRoducto LEasing   *****************/
+        this.model.addValidationTask('num_tipo_producto', _.bind(this.num_tipo_leasing, this));
+        this.model.addValidationTask('tipo_producto_requerido', _.bind(this.tipo_producto_requerido, this));
+        /*********** ---- ***********************/
+
+        this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
         this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
 
         // validación de los campos con formato númerico
@@ -45,6 +45,8 @@
         this.model.on('sync', this.probabilidadreq, this);
         this.model.on('sync', this.refinanciamientoblock, this);
 
+        // Validación monto comprometido
+        this.model.addValidationTask('valida_monto_comprometido', _.bind(this.validarMontoComprometido, this));
     },
 
     _render: function () {
@@ -53,7 +55,7 @@
         //Se ocultan banderas
         $('[data-name="tct_carga_masiva_chk_c"]').hide();
         $('[data-name="tct_bloqueo_txf_c"]').hide();
-        
+
         if (this.model.dataFetched) {
             this.$('[data-name=editar]').hide();
             self.model.set("editar", true);
@@ -63,7 +65,7 @@
             }
         }
 
-        var usuario = app.data.createBean('Users', {id: app.user.get('id')});
+        var usuario = app.data.createBean('Users', { id: app.user.get('id') });
         usuario.fetch({
             success: _.bind(function (modelo) {
 
@@ -80,7 +82,7 @@
                 var lista = this.getField('producto_c');
                 lista.items = op2;
                 lista.render();
-                if(this.model.get('producto_c')==null){
+                if (this.model.get('producto_c') == null) {
                     if (this.productos[0] == "4") {
                         this.model.set('producto_c', '4');
                     } else if (this.productos[0] == "1") {
@@ -98,7 +100,7 @@
                 //this.model.set("region", modelo.get("region_c"));
             }, this)
         });
-		this.$(".record-cell[data-name='blank_space']").hide();
+        this.$(".record-cell[data-name='blank_space']").hide();
     },
 
     /**
@@ -133,33 +135,33 @@
 
     },
 
-    blockRecordNoContactar:function () {
-		if(!app.user.attributes.tct_no_contactar_chk_c && !app.user.attributes.bloqueo_credito_c && !app.user.attributes.bloqueo_cumple_c) {
-			var id_cuenta=this.model.get('account_id_c');
-			if(id_cuenta!='' && id_cuenta != undefined){
-				var account = app.data.createBean('Accounts', {id:this.model.get('account_id_c')});
-				account.fetch({
-					success: _.bind(function (model) {
-						var url = app.api.buildURL('tct02_Resumen/' + this.model.get('account_id_c'), null, null);
-						app.api.call('read', url, {}, {
-							success: _.bind(function (data) {
-								if (data.bloqueo_cartera_c || data.bloqueo2_c || data.bloqueo3_c) {
-									app.alert.show("cuentas_no_contactar", {
-										level: "error",
-										title: "Cuenta No Contactable<br>",
-										messages: "Cualquier duda o aclaraci\u00F3n, favor de contactar al \u00E1rea de <b>Administraci\u00F3n de cartera</b>",
-										autoClose: false
-									});
-									//Bloquear el registro completo y mostrar alerta
-									$('.record').attr('style','pointer-events:none');
-									$('.subpanel').attr('style', 'pointer-events:none');
-								}
-							}, this)
-						});
-					}, this)
-				});
-			}
-		}
+    blockRecordNoContactar: function () {
+        if (!app.user.attributes.tct_no_contactar_chk_c && !app.user.attributes.bloqueo_credito_c && !app.user.attributes.bloqueo_cumple_c) {
+            var id_cuenta = this.model.get('account_id_c');
+            if (id_cuenta != '' && id_cuenta != undefined) {
+                var account = app.data.createBean('Accounts', { id: this.model.get('account_id_c') });
+                account.fetch({
+                    success: _.bind(function (model) {
+                        var url = app.api.buildURL('tct02_Resumen/' + this.model.get('account_id_c'), null, null);
+                        app.api.call('read', url, {}, {
+                            success: _.bind(function (data) {
+                                if (data.bloqueo_cartera_c || data.bloqueo2_c || data.bloqueo3_c) {
+                                    app.alert.show("cuentas_no_contactar", {
+                                        level: "error",
+                                        title: "Cuenta No Contactable<br>",
+                                        messages: "Cualquier duda o aclaraci\u00F3n, favor de contactar al \u00E1rea de <b>Administraci\u00F3n de cartera</b>",
+                                        autoClose: false
+                                    });
+                                    //Bloquear el registro completo y mostrar alerta
+                                    $('.record').attr('style', 'pointer-events:none');
+                                    $('.subpanel').attr('style', 'pointer-events:none');
+                                }
+                            }, this)
+                        });
+                    }, this)
+                });
+            }
+        }
     },
 
     checkInVentas: function (evt) {
@@ -484,7 +486,7 @@
 
     setEtapa: function () {
         //Se aplican validaciones únicamente cuando el producto No es de CRÉDITO SIMPLE
-        if(this.model.get('producto_c') != "2"){
+        if (this.model.get('producto_c') != "2") {
             //Se recalcula la distribuci�n de montos en cada etapa
             var RI = 0;
             if (parseFloat(this.model.get("monto_final_comprometido_c")) > 0) {
@@ -578,21 +580,21 @@
         }
     },
 
-    mesbacklog: function (fields,errors,callback){
+    mesbacklog: function (fields, errors, callback) {
         var mes = this.model.get("mes");
         var mesActual = (new Date).getMonth();
         var anoActual = (new Date).getFullYear();
-        var anobacklog= this.model.get('anio');
+        var anobacklog = this.model.get('anio');
         var edicion = 0;
 
 
         if (anobacklog < anoActual) {
-            edicion=1;
+            edicion = 1;
         }
-        if (mes < mesActual && anobacklog==anoActual) {
-                edicion=1;
+        if (mes < mesActual && anobacklog == anoActual) {
+            edicion = 1;
         }
-        if(edicion > 0){
+        if (edicion > 0) {
             app.alert.show("Edicion de Backlog", {
                 level: "error",
                 messages: "No se puede editar un Backlog pasado.",
@@ -626,109 +628,133 @@
         callback(null, fields, errors);
     },
 
-        probabilidadreq: function (){
-            var mes = this.model.get("mes");
-            var mesActual = (new Date).getMonth();
-            var anoActual = (new Date).getFullYear();
-            var anobacklog= this.model.get('anio');
+    probabilidadreq: function () {
+        var mes = this.model.get("mes");
+        var mesActual = (new Date).getMonth();
+        var anoActual = (new Date).getFullYear();
+        var anobacklog = this.model.get('anio');
 
-            if (mes >= mesActual) {
-                $('[data-name="tct_conversion_c"]').attr('style', 'pointer-events:block;');
-            } else {
-                $('[data-name="tct_conversion_c"]').attr('style', 'pointer-events:none;');
-            }
-            if (anobacklog > anoActual) {
-                $('[data-name="tct_conversion_c"]').attr('style', 'pointer-events:block;');
-            }
-        },
-
-      validacampoconversion: function(fields, errors, callback){
-          if (this.model.get('tct_conversion_c')=="" || this.model.get('tct_conversion_c')==undefined) {
-              errors['tct_conversion_c'] = errors['tct_conversion_c'] || {};
-              errors['tct_conversion_c'].required = true;
-          }
-          //Valda valor menor o igual a 0
-          if (parseFloat(this.model.get('tct_conversion_c')) <= 0){
-
-              errors['tct_conversion_c'] = errors['tct_conversion_c'] || {};
-              errors['tct_conversion_c'].required = true;
-
-              app.alert.show("Campo con valor cero", {
-                  level: "error",
-                  messages: "El campo <b>Probabilidad de Conversión</b> debe ser mayor a cero.",
-                  autoClose: false
-              });
-
-          }
-          // Valida valor mayor a 100
-          if (parseFloat(this.model.get('tct_conversion_c')) > 100){
-
-              errors['tct_conversion_c'] = errors['tct_conversion_c'] || {};
-              errors['tct_conversion_c'].required = true;
-
-              app.alert.show("conversion_mayor_cien", {
-                  level: "error",
-                  messages: "El campo <b>Probabilidad de Conversión</b> debe ser menor o igual a cien.",
-                  autoClose: false
-              });
-
-          }
-          callback(null, fields, errors);
-      },
-	  
-	  num_tipo_leasing: function(fields, errors, callback) {
-		var tiposnum = app.lang.getAppListStrings('num_tipo_op_leasing_list');
-		var data1 = this.model.get('tct_tipo_op_leasing_mls_c');
-		var producto = this.model.get('producto_c');
-		var salida = [];
-		
-		if(producto == "2"){
-			if(this.model.get('comision_c') == undefined){
-				errors['comision_c'] = errors['comision_c'] || {};
-				errors['comision_c'].required = true;
-			}
-			if(parseFloat(this.model.get('comision_c')) <= 0.0 ){
-				errors['tct_conversion_c'] = errors['tct_conversion_c'] || {};
-				errors['tct_conversion_c'].required = true;
-				app.alert.show("comision", {
-					level: "error",
-					messages: "El campo <b>Comisión</b> debe ser mayor a 0.",
-					autoClose: false
-				});
-			}
-		}
-        callback(null, fields, errors);
-    },
-	
-	tipo_producto_requerido: function(fields, errors, callback) {
-		var producto = this.model.get('producto_c');
-		var salida = [];
-		
-		if(producto == "1"){
-			if(this.model.get('num_tipo_op_leasing_c')=='' || this.model.get('num_tipo_op_leasing_c')==null){
-				errors['num_tipo_op_leasing_c'] = errors['num_tipo_op_leasing_c'] || {};
-				errors['num_tipo_op_leasing_c'].required = true;
-			}
-		}else if(producto == "2"){
-			if(this.model.get('num_tipo_op_credito_c')== '' || this.model.get('num_tipo_op_credito_c')== null){
-				errors['num_tipo_op_credito_c'] = errors['num_tipo_op_credito_c'] || {};
-				errors['num_tipo_op_credito_c'].required = true;
-			}
-		}
-		callback(null, fields, errors);
-    },
-
-    refinanciamientoblock: function (){
-            var existe=0;
-            var usuario= App.user.attributes.id;
-            var usuarios_refinanciamiento = app.lang.getAppListStrings('equipo_central_bl_list');
-            Object.keys(usuarios_refinanciamiento).forEach(key => {
-                if (usuarios_refinanciamiento[key] == usuario) {
-                        existe++;
-                    }
-                });
-            if (existe==0){                
-                $('[data-name="refinanciamiento_c"]').attr('style', 'pointer-events:none');
+        if (mes >= mesActual) {
+            $('[data-name="tct_conversion_c"]').attr('style', 'pointer-events:block;');
+        } else {
+            $('[data-name="tct_conversion_c"]').attr('style', 'pointer-events:none;');
+        }
+        if (anobacklog > anoActual) {
+            $('[data-name="tct_conversion_c"]').attr('style', 'pointer-events:block;');
         }
     },
+
+    validacampoconversion: function (fields, errors, callback) {
+        if (this.model.get('tct_conversion_c') == "" || this.model.get('tct_conversion_c') == undefined) {
+            errors['tct_conversion_c'] = errors['tct_conversion_c'] || {};
+            errors['tct_conversion_c'].required = true;
+        }
+        //Valda valor menor o igual a 0
+        if (parseFloat(this.model.get('tct_conversion_c')) <= 0) {
+
+            errors['tct_conversion_c'] = errors['tct_conversion_c'] || {};
+            errors['tct_conversion_c'].required = true;
+
+            app.alert.show("Campo con valor cero", {
+                level: "error",
+                messages: "El campo <b>Probabilidad de Conversión</b> debe ser mayor a cero.",
+                autoClose: false
+            });
+
+        }
+        // Valida valor mayor a 100
+        if (parseFloat(this.model.get('tct_conversion_c')) > 100) {
+
+            errors['tct_conversion_c'] = errors['tct_conversion_c'] || {};
+            errors['tct_conversion_c'].required = true;
+
+            app.alert.show("conversion_mayor_cien", {
+                level: "error",
+                messages: "El campo <b>Probabilidad de Conversión</b> debe ser menor o igual a cien.",
+                autoClose: false
+            });
+
+        }
+        callback(null, fields, errors);
+    },
+
+    num_tipo_leasing: function (fields, errors, callback) {
+        var tiposnum = app.lang.getAppListStrings('num_tipo_op_leasing_list');
+        var data1 = this.model.get('tct_tipo_op_leasing_mls_c');
+        var producto = this.model.get('producto_c');
+        var salida = [];
+
+        if (producto == "2") {
+            if (this.model.get('comision_c') == undefined) {
+                errors['comision_c'] = errors['comision_c'] || {};
+                errors['comision_c'].required = true;
+            }
+            if (parseFloat(this.model.get('comision_c')) <= 0.0) {
+                errors['tct_conversion_c'] = errors['tct_conversion_c'] || {};
+                errors['tct_conversion_c'].required = true;
+                app.alert.show("comision", {
+                    level: "error",
+                    messages: "El campo <b>Comisión</b> debe ser mayor a 0.",
+                    autoClose: false
+                });
+            }
+        }
+        callback(null, fields, errors);
+    },
+
+    tipo_producto_requerido: function (fields, errors, callback) {
+        var producto = this.model.get('producto_c');
+        var salida = [];
+
+        if (producto == "1") {
+            if (this.model.get('num_tipo_op_leasing_c') == '' || this.model.get('num_tipo_op_leasing_c') == null) {
+                errors['num_tipo_op_leasing_c'] = errors['num_tipo_op_leasing_c'] || {};
+                errors['num_tipo_op_leasing_c'].required = true;
+            }
+        } else if (producto == "2") {
+            if (this.model.get('num_tipo_op_credito_c') == '' || this.model.get('num_tipo_op_credito_c') == null) {
+                errors['num_tipo_op_credito_c'] = errors['num_tipo_op_credito_c'] || {};
+                errors['num_tipo_op_credito_c'].required = true;
+            }
+        }
+        callback(null, fields, errors);
+    },
+
+    refinanciamientoblock: function () {
+        var existe = 0;
+        var usuario = App.user.attributes.id;
+        var usuarios_refinanciamiento = app.lang.getAppListStrings('equipo_central_bl_list');
+        Object.keys(usuarios_refinanciamiento).forEach(key => {
+            if (usuarios_refinanciamiento[key] == usuario) {
+                existe++;
+            }
+        });
+        if (existe == 0) {
+            $('[data-name="refinanciamiento_c"]').attr('style', 'pointer-events:none');
+        }
+    },
+
+    /**
+     * Valida que monto_comprometido <= monto_con_solicitud_c
+     */
+    validarMontoComprometido: function (fields, errors, callback) {
+        var montoComprometido = parseFloat(this.model.get('monto_comprometido')) || 0;
+        var montoSolicitud = parseFloat(this.model.get('monto_con_solicitud_c')) || 0;
+
+        console.log("[Validación] monto_comprometido:", montoComprometido, "monto_con_solicitud_c:", montoSolicitud);
+
+        // Si monto_comprometido es mayor que monto_con_solicitud_c
+        if (montoComprometido > montoSolicitud) {
+
+            app.alert.show('valida_monto_comprometido', {
+                level: 'error',
+                messages: 'El <b>Monto Comprometido</b> excede la línea aprobada.',
+                autoClose: false
+            });
+
+            errors['monto_comprometido'] = errors['monto_comprometido'] || {};
+            errors['monto_comprometido'].required = true;
+        }     
+        callback(null, fields, errors);
+    }
 })

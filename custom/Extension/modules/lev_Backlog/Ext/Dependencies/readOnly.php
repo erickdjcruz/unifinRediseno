@@ -147,22 +147,22 @@ $dependencies['lev_Backlog']['etapa_readonly'] = array(
     ),
 );
 
-$dependencies['lev_Backlog']['monto_comprometido_readonly'] = array(
-    'hooks' => array("all"),
-    'trigger' => 'true',
-    'triggerFields' => array('editar'),
-    'onload' => true,
-    'actions' => array(
-        array(
-            'name' => 'ReadOnly',
-            'params' => array(
-                'target' => 'monto_comprometido',
-                'label' => 'monto_comprometido_label',
-                'value' => 'not(equal($numero_de_backlog, ""))', //'not(equal($estatus_de_la_operacion, "Activa"))',
-            ),
-        ),
-    ),
-);
+// $dependencies['lev_Backlog']['monto_comprometido_readonly'] = array(
+//     'hooks' => array("all"),
+//     'trigger' => 'true',
+//     'triggerFields' => array('editar'),
+//     'onload' => true,
+//     'actions' => array(
+//         array(
+//             'name' => 'ReadOnly',
+//             'params' => array(
+//                 'target' => 'monto_comprometido',
+//                 'label' => 'monto_comprometido_label',
+//                 'value' => 'not(equal($numero_de_backlog, ""))', //'not(equal($estatus_de_la_operacion, "Activa"))',
+//             ),
+//         ),
+//     ),
+// );
 
 $dependencies['lev_Backlog']['name_readonly'] = array(
     'hooks' => array("all"),
