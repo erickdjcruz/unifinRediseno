@@ -63,7 +63,7 @@ class GetEstatusWHRobina extends SugarApi
 
                         if ($queryE->num_rows > 0) {
                             $response['Error'] = true;
-                            $response['MensajeError'] = 'No se pudo validar CIEC, favor de intentar de nuevo. En caso de persistencia favor de validar con el administrador.';
+                            $response['MensajeError'] = 'No se pudo validar CIEC, Se obtuvieron los datos más actuales que se tienen.';
                         }else{
                             
                             $selectCuentaWH = "SELECT id 

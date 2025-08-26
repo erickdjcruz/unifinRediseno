@@ -218,7 +218,7 @@ class IntegracionesCSF extends SugarApi
             $response_base64=$this->callDigitalVal($url_digital_val, $token );
             //$GLOBALS['log']->fatal( "response_base64: " . !empty($response_base64) );
             if( !empty($response_base64) ){
-                file_put_contents('custom/csf/validator.pdf', $response_base64);
+                file_put_contents('custom/csf/validator_'.$rfc.'.pdf', $response_base64);
                 $response['robina']= "Validación digital de CSF generada correctamente";
 
                 //Envía Constancia de Situación Fiscal hacia Quantico
@@ -238,7 +238,7 @@ class IntegracionesCSF extends SugarApi
                 $response['quantico_csf']= $response_upload_csf['Message'];
                 */
                 //Envía Validación Digital hacia Quantico
-                $b64Val = chunk_split(base64_encode(file_get_contents('custom/csf/validator.pdf')));
+                $b64Val = chunk_split(base64_encode(file_get_contents('custom/csf/validator_'.$rfc.'.pdf')));
                 // recupera pdf validador digital-base64
                 $body_request_quantico_validator = $this->createBodyRequest( $idCliente, "ValDigital", $b64Val, $vigencia );
                 // envio quantico validador

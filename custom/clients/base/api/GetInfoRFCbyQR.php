@@ -123,6 +123,7 @@ class GetInfoRFCbyQR extends SugarApi
         //$GLOBALS['log']->fatal( $response );
         $rfc =  $response['rfc'] ?? null;
         $GLOBALS['log']->fatal( "rfc:".$rfc );
+        $noticket = false;
         
         if($rfc != null){
            // Fechas dinámicas
@@ -154,7 +155,8 @@ class GetInfoRFCbyQR extends SugarApi
                 $resultado['codeerror'] = 402;
                 $resultado['messageerror'] = $response1['detail'];
                 $GLOBALS['log']->fatal('Error crear ticket');
-                return $resultado; // Termina aquí y regresa el error
+                $noticket = true;
+                // return $resultado; // Termina aquí y regresa el error
             }
 
             if (isset($response1['detail'][0]['msg']) && $response1['detail'][0]['msg'] === 'value is not a valid dict') {
@@ -162,21 +164,23 @@ class GetInfoRFCbyQR extends SugarApi
                 $resultado['messageerror'] = 'No se encontraron datos del RFC';
                 $resultado['success'] = 0;
                 $GLOBALS['log']->fatal('Error crear ticket');
-                return $resultado; // Termina aquí y regresa el error
+                $noticket = true;
+                //return $resultado; // Termina aquí y regresa el error
             }
             $ticket = '';
-
+            $resultado = $response;
             // Validar y extraer datos
             if (!empty($response1['id']) && !empty($response1['createdAt'])) {
                 $ticket = $response1['id'];
-                $resultado = $response;
+                $resultado['noticket'] = $noticket;                
                 $resultado['ticket'] = $ticket;
                 $resultado['success'] = 1;
                 $GLOBALS['log']->fatal( 'ticket: '. $ticket);
             }else{
-                $resultado['success'] = 0;
-                $resultado['messageerror'] = 'Ticket no generado';
-                $resultado['codeerror'] = '401';
+                $resultado['noticket'] = $noticket;
+                $resultado['success'] = 1;
+                //$resultado['messageerror'] = 'Ticket no generado';
+                //$resultado['codeerror'] = '401';
             }
         }else{
             $resultado['success'] = 0;
