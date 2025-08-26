@@ -85,6 +85,7 @@ class CustomCurrentUserApi extends CurrentUserApi
         $userArray['current_user']['gestion_team_leaders_c'] = $current_user->gestion_team_leaders_c;
         $userArray['current_user']['captura_direccion_sepomex_c'] = $current_user->captura_direccion_sepomex_c;
         $userArray['current_user']['permisos_potencial_c'] = $current_user->permisos_potencial_c;
+        $userArray['current_user']['backlog_tipificacion_c'] = $current_user->backlog_tipificacion_c;
         return $userArray;
     }
 }

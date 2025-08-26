@@ -47,6 +47,8 @@
 
         // Validación monto comprometido
         this.model.addValidationTask('valida_monto_comprometido', _.bind(this.validarMontoComprometido, this));
+        // Valida permiso de tipificacion riesgo
+        this.model.on('sync', this.checkPermisoTipificacion, this);
     },
 
     _render: function () {
@@ -740,8 +742,7 @@
     validarMontoComprometido: function (fields, errors, callback) {
         var montoComprometido = parseFloat(this.model.get('monto_comprometido')) || 0;
         var montoSolicitud = parseFloat(this.model.get('monto_con_solicitud_c')) || 0;
-
-        console.log("[Validación] monto_comprometido:", montoComprometido, "monto_con_solicitud_c:", montoSolicitud);
+        // console.log("[Validación] monto_comprometido:", montoComprometido, "monto_con_solicitud_c:", montoSolicitud);
 
         // Si monto_comprometido es mayor que monto_con_solicitud_c
         if (montoComprometido > montoSolicitud) {
@@ -754,7 +755,33 @@
 
             errors['monto_comprometido'] = errors['monto_comprometido'] || {};
             errors['monto_comprometido'].required = true;
-        }     
+        }
         callback(null, fields, errors);
-    }
+    },
+
+    /**
+     * Función que valida si el usuario puede editar el campo tipificacion_riesgo_c
+     */
+    checkPermisoTipificacion: function () {
+        var permisoBacklogTipificacion = app.user.attributes.backlog_tipificacion_c ? 1 : 0;    
+        var fieldTipificacionRiesgo = this.getField('tipificacion_riesgo_c');
+
+        var listaEdicionTipificacion = [];    //Recupera Ids de usuarios que pueden editar backlog tipificación
+        Object.entries(App.lang.getAppListStrings('usuarios_permiso_backlog_tipificar_list')).forEach(([key, value]) => {
+            listaEdicionTipificacion.push(value);
+        });
+        listaEdicionTipificacion.includes(app.user.attributes.id);
+        //Valida permiso backlog tipificación y si existe el usuario en sesión en la lista de permisos backlog tipificación
+        if (permisoBacklogTipificacion === 1 && listaEdicionTipificacion.includes(app.user.attributes.id)) {
+            if (fieldTipificacionRiesgo) {
+                fieldTipificacionRiesgo.setDisabled(false);
+            }
+            
+        } else {
+            if (fieldTipificacionRiesgo) {
+                fieldTipificacionRiesgo.setDisabled(true);
+            }
+        }
+    },
+
 })

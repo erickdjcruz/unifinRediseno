@@ -76,3 +76,4 @@ $mod_strings['LBL_GESTION_UTILITY_TRAILERS_PO'] = 'Gestion Utility Trailers PO';
 $mod_strings['LBL_GESTION_TEAM_LEADERS_C'] = 'Gestión Team Leaders';
 $mod_strings['LBL_CAPTURA_DIRECCION_SEPOMEX'] = 'Captura Dirección Sepomex';
 $mod_strings['LBL_PERMISOS_POTENCIAL_C'] = 'Permisos Potencial';
+$mod_strings['LBL_BACKLOG_TIPIFICACION'] = 'Permiso Backlog Tipificación';
