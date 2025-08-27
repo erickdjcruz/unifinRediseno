@@ -684,6 +684,15 @@ array (
                 'name' => 'permisos_potencial_c',
                 'label' => 'LBL_PERMISOS_POTENCIAL_C',
               ),
+              71 => 
+              array (
+                'readonly' => false,
+                'name' => 'backlog_tipificacion_c',
+                'label' => 'LBL_BACKLOG_TIPIFICACION',
+              ),
+              72 => 
+              array (
+              ),
             ),
           ),
         ),
