@@ -49,6 +49,8 @@
         this.model.addValidationTask('valida_monto_comprometido', _.bind(this.validarMontoComprometido, this));
         // Valida permiso de tipificacion riesgo
         this.model.on('sync', this.checkPermisoTipificacion, this);
+        //ReadOnly Estatus Backlog Declinada
+        this.model.on('sync', this._readOnlyEstatusDeclinada, this);
     },
 
     _render: function () {
@@ -763,7 +765,7 @@
      * Función que valida si el usuario puede editar el campo tipificacion_riesgo_c
      */
     checkPermisoTipificacion: function () {
-        var permisoBacklogTipificacion = app.user.attributes.backlog_tipificacion_c ? 1 : 0;    
+        var permisoBacklogTipificacion = app.user.attributes.backlog_tipificacion_c ? 1 : 0;
         var fieldTipificacionRiesgo = this.getField('tipificacion_riesgo_c');
 
         var listaEdicionTipificacion = [];    //Recupera Ids de usuarios que pueden editar backlog tipificación
@@ -776,11 +778,19 @@
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(false);
             }
-            
+
         } else {
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(true);
             }
+        }
+    },
+
+    _readOnlyEstatusDeclinada: function () {
+        //Bloquear el registro completo cuando Estatus Backlog es Declinada
+        if (this.model.get('estatus_backlog_c') === '2') {
+            $(".record-cell").attr("style", "pointer-events:none");
+            $('[name="edit_button"].rowaction').hide();
         }
     },
 
