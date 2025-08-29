@@ -546,6 +546,11 @@ array (
                 'name' => 'tct_bloqueo_txf_c',
                 'label' => 'LBL_TCT_BLOQUEO_TXF',
               ),
+              61 => 
+              array (
+                'name' => 'monto_c',
+                'label' => 'LBL_MONTO_C',
+              ),
             ),
           ),
           2 => 
