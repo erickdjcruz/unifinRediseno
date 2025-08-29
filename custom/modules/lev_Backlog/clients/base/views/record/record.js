@@ -745,7 +745,7 @@
      */
     validarMontoComprometido: function (fields, errors, callback) {
         var montoComprometido = parseFloat(this.model.get('monto_comprometido')) || 0;
-        var montoSolicitud = parseFloat(this.model.get('monto_con_solicitud_c')) || 0;
+        var montoSolicitud = parseFloat(this.model.get('monto_c')) || 0;
         // console.log("[Validación] monto_comprometido:", montoComprometido, "monto_con_solicitud_c:", montoSolicitud);
 
         // Si monto_comprometido es mayor que monto_con_solicitud_c
