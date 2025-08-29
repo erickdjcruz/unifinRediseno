@@ -43,6 +43,13 @@ array (
                 'label' => 'LBL_EDIT_BUTTON_LABEL',
                 'acl_action' => 'edit',
               ),
+			  1 => 
+			  array (
+				'name' => 'reactiva_bkl',
+				'type' => 'rowaction',
+				'label' => 'Reactivación',
+				'event' => 'button:reactiva_bkl:click',
+			  ),
             ),
           ),
           3 => 
