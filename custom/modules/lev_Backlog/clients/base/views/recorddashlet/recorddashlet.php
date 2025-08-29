@@ -5,7 +5,7 @@ array (
   array (
     'view' => 
     array (
-      'record' => 
+      'recorddashlet' => 
       array (
         'buttons' => 
         array (
@@ -43,13 +43,6 @@ array (
                 'label' => 'LBL_EDIT_BUTTON_LABEL',
                 'acl_action' => 'edit',
               ),
-			  1 => 
-			  array (
-				'name' => 'reactiva_bkl',
-				'type' => 'rowaction',
-				'label' => 'Reactivación',
-				'event' => 'button:reactiva_bkl:click',
-			  ),
             ),
           ),
           3 => 
@@ -77,22 +70,6 @@ array (
                 'readonly' => true,
               ),
               1 => 'name',
-              2 => 
-              array (
-                'name' => 'favorite',
-                'label' => 'LBL_FAVORITE',
-                'type' => 'favorite',
-                'readonly' => true,
-                'dismiss_label' => true,
-              ),
-              3 => 
-              array (
-                'name' => 'follow',
-                'label' => 'LBL_FOLLOW',
-                'type' => 'follow',
-                'readonly' => true,
-                'dismiss_label' => true,
-              ),
             ),
           ),
           1 => 
@@ -253,9 +230,6 @@ array (
               ),
               27 => 
               array (
-                'readonly' => false,
-                'name' => 'fecha_compromiso_c',
-                'label' => 'LBL_FECHA_COMPROMISO_C',
               ),
               28 => 
               array (
@@ -552,6 +526,25 @@ array (
           array (
             'newTab' => false,
             'panelDefault' => 'expanded',
+            'name' => 'LBL_RECORDVIEW_PANEL2',
+            'label' => 'LBL_RECORDVIEW_PANEL2',
+            'columns' => 2,
+            'placeholders' => 1,
+            'fields' => 
+            array (
+              0 => 
+              array (
+                'readonly' => false,
+                'name' => 'fecha_compromiso_c',
+                'label' => 'LBL_FECHA_COMPROMISO_C',
+                'span' => 12,
+              ),
+            ),
+          ),
+          3 => 
+          array (
+            'newTab' => false,
+            'panelDefault' => 'expanded',
             'name' => 'LBL_RECORDVIEW_PANEL1',
             'label' => 'LBL_RECORDVIEW_PANEL1',
             'columns' => 2,
@@ -581,10 +574,6 @@ array (
               ),
             ),
           ),
-        ),
-        'templateMeta' => 
-        array (
-          'useTabs' => false,
         ),
       ),
     ),

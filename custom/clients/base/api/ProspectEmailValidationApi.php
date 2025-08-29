@@ -34,14 +34,13 @@ class ProspectEmailValidationApi extends SugarApi
         $emails_found = []; 
 
         foreach ($emails as $email) {
-            $query = "
-            SELECT p.id AS id_po, pc.clean_name_c AS nombre, ea.email_address
+            $query = "SELECT p.id AS id_po, pc.clean_name_c AS nombre, ea.email_address
             FROM prospects p
             INNER JOIN prospects_cstm pc ON p.id = pc.id_c
             INNER JOIN email_addr_bean_rel eabr ON eabr.bean_id = p.id AND eabr.deleted = 0
-            INNER JOIN email_addresses ea ON ea.id = eabr.email_address_id
-            WHERE ea.email_address = '{$email}'
-            ";
+            INNER JOIN email_addresses ea ON ea.id = eabr.email_address_id and ea.deleted =0
+            WHERE ea.email_address = '{$email}' and pc.excluye_campana_c = 0 ; ";
+
             $result = $db->query($query);
             while ($row = $db->fetchByAssoc($result)) {
                 if (empty($prospectId) || $row['id_po'] !== $prospectId) {
