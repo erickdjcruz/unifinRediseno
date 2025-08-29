@@ -49,6 +49,8 @@
         this.model.addValidationTask('valida_monto_comprometido', _.bind(this.validarMontoComprometido, this));
         // Valida permiso de tipificacion riesgo
         this.model.on('sync', this.checkPermisoTipificacion, this);
+        //boton reactivacion
+		    this.context.on('button:reactiva_bkl:click', this.reactiva_bkl, this);
         //ReadOnly Estatus Backlog Declinada
         this.model.on('sync', this._readOnlyEstatusDeclinada, this);
     },
@@ -784,6 +786,24 @@
                 fieldTipificacionRiesgo.setDisabled(true);
             }
         }
+    },
+
+    reactiva_bkl: function () {
+      if (this.model.get('estatus_backlog_c') == 2) {
+        app.drawer.open({
+          layout: 'reactiva_bkl',
+                  context: {
+            context: this.context,
+                      model: this.model,
+                  },
+              }, function (context, model, update) {});
+          } else {
+        app.alert.show('NoDeclinada', {
+          level: 'error',
+                  messages: 'El Estatus Backlog es diferente a Declinada',
+                  autoClose: false
+              });
+		  }
     },
 
     _readOnlyEstatusDeclinada: function () {
