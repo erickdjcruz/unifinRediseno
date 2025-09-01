@@ -50,9 +50,9 @@
                 route = '#bwc/index.php?entryPoint=ExpedienteMod';
                 break;
 
-            case '#ExpedienteUniclick':
-                route = '#Home/layout/expedienteUniclick';
-                break;
+            // case '#ExpedienteUniclick':
+            //     route = '#Home/layout/expedienteUniclick';
+            //     break;
 
 
             case '#CotizadorProspectos':
