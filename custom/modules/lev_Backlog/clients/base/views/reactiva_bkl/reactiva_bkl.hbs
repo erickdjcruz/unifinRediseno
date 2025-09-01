@@ -63,20 +63,21 @@
             <div class="modal-body">
 				<div class="row-fluid">
                     <div class="span2"></div>
-                    <div class="span8 record-cell" data-type="text" style="margin-top:15px">
-						<div class="ellipsis_inline record-label" data-bs-placement="top">
-							<span class="text-overflow">Ingresa el motivo de reactivación: </span>
-							<span class="normal index" data-fieldname="motivo_reactivacion_c" data-index="">
-								<span sfuuid="3393" class="edit" style="" tabindex="-1">
-									<input type="text" id="motivo-reactivacion" value=""/>
-								</span>
-							</span>
-						</div>
+                    <div class="span8 record-cell" data-type="text" style="margin-top:20px">
+						<label for="motivo-reactivacion" class="record-label" style="font-weight:bold; display:block; margin-bottom:8px;">
+							Motivo de reactivación <span style="color:red">*</span>
+						</label>
+						<textarea id="motivo-reactivacion" 
+								  name="motivo-reactivacion" 
+								  rows="4"
+								  placeholder="Ejemplo: El cliente solicitó continuar con el proceso..." 
+								  style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px; resize:vertical; font-size:14px;">
+						</textarea>
                     </div>
                 </div>
-                <div>
-					<button class="span6 btn" id="btn-cancelar">Cancelar</button>
-                    <button class="span6 btn btn-primary" id="btn-solicitar-aprobacion">Solicitar aprobación</button>
+                <div style="display:flex; justify-content:space-between; margin-top:25px;">
+					<button class="btn btn-light" id="btn-cancelar" style="flex:1; margin-right:10px; border-radius:8px;">Cancelar</button>
+                    <button class="btn btn-primary" id="btn-solicitar-aprobacion" style="flex:1; border-radius:8px;">Solicitar aprobación</button>
                 </div>
 			</div>
 		</div>
