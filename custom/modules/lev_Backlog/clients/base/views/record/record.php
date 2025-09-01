@@ -43,13 +43,13 @@ array (
                 'label' => 'LBL_EDIT_BUTTON_LABEL',
                 'acl_action' => 'edit',
               ),
-			  1 => 
-			  array (
-				'name' => 'reactiva_bkl',
-				'type' => 'rowaction',
-				'label' => 'Reactivación',
-				'event' => 'button:reactiva_bkl:click',
-			  ),
+              1 => 
+              array (
+                'name' => 'reactiva_bkl',
+                'type' => 'rowaction',
+                'label' => 'Reactivación',
+                'event' => 'button:reactiva_bkl:click',
+              ),
             ),
           ),
           3 => 
@@ -550,6 +550,12 @@ array (
               array (
                 'name' => 'monto_c',
                 'label' => 'LBL_MONTO_C',
+              ),
+              62 => 
+              array (
+                'readonly' => false,
+                'name' => 'aprueba_reactivacion_c',
+                'label' => 'LBL_APRUEBA_REACTIVACION',
               ),
             ),
           ),

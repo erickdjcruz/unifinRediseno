@@ -58,4 +58,54 @@ class Backlog_platform_user
 
     }
 
+    public function actualizaSolicitud($bean = null, $event = null, $args = null)
+    {
+        // Corregimos la condición del log (agregando paréntesis)
+        $GLOBALS['log']->fatal("platform: " . (isset($_SESSION['platform']) ? $_SESSION['platform'] : 'no definido'));
+        
+        // Validamos que no se ejecute desde API externas
+        if (isset($_SESSION['platform']) && $_SESSION['platform'] != 'base') {
+            
+            $linkopor = 'lev_backlog_opportunities';
+
+            if ($bean->load_relationship($linkopor)) {
+                $linkFound = true;
+                
+                $GLOBALS['log']->fatal("Link encontrado: " . $linkopor);
+                
+                // Obtenemos los IDs relacionados
+                $relatedIds = $bean->$linkopor->get();
+
+                $GLOBALS['log']->fatal("Related IDs: " . print_r($relatedIds, true));
+
+                if (!empty($relatedIds)) {
+                    // Tomamos el primer relacionado
+                    $relatedId = reset($relatedIds);
+
+                    // Obtenemos el bean relacionado
+                    $relatedBean = BeanFactory::getBean('Opportunities', $relatedId);
+
+                    if ($relatedBean && !empty($relatedBean->idsolicitud_c)) {
+                        // Seteamos el campo en el bean padre
+                        $bean->numero_de_solicitud = $relatedBean->idsolicitud_c;
+                        
+                        $GLOBALS['log']->fatal("numero_de_solicitud actualizado: " . $bean->numero_de_solicitud);
+                    } else {
+                        $GLOBALS['log']->fatal("Related bean no encontrado o idsolicitud_c vacío");
+                    }
+                } else {
+                    $GLOBALS['log']->fatal("No hay IDs relacionados");
+                }
+            }
+            
+            if (!$linkFound) {
+                $GLOBALS['log']->fatal("No se pudo cargar ninguna relación");
+                // Debug: verificar relaciones disponibles
+                $GLOBALS['log']->fatal("Relaciones disponibles: " . print_r($bean->get_linked_fields(), true));
+            }
+        } else {
+            $GLOBALS['log']->fatal("Ejecución diferente API, no se procesa");
+        }
+    }
+
 }

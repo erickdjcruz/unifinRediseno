@@ -7,21 +7,25 @@ class class_Backlog_Notificacion
     function func_Backlog_Notificacion($bean, $event, $arguments)
     {
         $apiSendEmailBacklog = new SendEmailBacklog();
-        $montoComprometidoAnterior = $bean->fetched_row['monto_comprometido'];
-        $montoComprometidoNuevo = $bean->monto_comprometido;
-        $fechaCompromisoAnterior = $bean->fetched_row['fecha_compromiso_c'];
-        $fechaCompromisoNuevo = $bean->fecha_compromiso_c;
-        $tipificacionRiesgoAnterior = $bean->fetched_row['tipificacion_riesgo_c'];
-        $tipificacionRiesgoNuevo = $bean->tipificacion_riesgo_c;
-        $estatusBacklogAnterior = $bean->fetched_row['estatus_backlog_c'];
-        $estatusBacklogNuevo = $bean->estatus_backlog_c;     
-        $motivoDeclinacion = $bean->motivo_declinacion_c;     
+
+        $montoComprometidoAnterior = (float)($bean->fetched_row['monto_comprometido'] ?? 0);
+        $montoComprometidoNuevo    = (float)($bean->monto_comprometido ?? 0);
+        $fechaCompromisoAnterior   = (string)($bean->fetched_row['fecha_compromiso_c'] ?? '');
+        $fechaCompromisoNuevo      = (string)($bean->fecha_compromiso_c ?? '');
+        $estatusBacklogAnterior    = (string)($bean->fetched_row['estatus_backlog_c'] ?? '');
+        $estatusBacklogNuevo       = (string)($bean->estatus_backlog_c ?? '');
+
+        $motivoDeclinacion          = $bean->motivo_declinacion_c ?? '';
+        $tipificacionRiesgoNuevo = $bean->tipificacion_riesgo_c ?? '';
+
+        $estatusBacklogAnterior     = $estatusBacklogNuevo = '2';
+
     
         //DETECTA CAMBIO DE CAMPOS PARA NOTIFICACION
-        if ($montoComprometidoAnterior != $montoComprometidoNuevo || $fechaCompromisoAnterior != $fechaCompromisoNuevo || $tipificacionRiesgoAnterior != $tipificacionRiesgoNuevo) {
+        if ($montoComprometidoAnterior != $montoComprometidoNuevo || $fechaCompromisoAnterior != $fechaCompromisoNuevo ) {
             $GLOBALS['log']->fatal("Cambio detectado en monto_comprometido: de $montoComprometidoAnterior a $montoComprometidoNuevo");            
             $GLOBALS['log']->fatal("Cambio detectado en fecha_compromiso_c: de $fechaCompromisoAnterior a $fechaCompromisoNuevo");
-            $GLOBALS['log']->fatal("Cambio detectado en tipificacion_riesgo_c: de $tipificacionRiesgoAnterior a $tipificacionRiesgoNuevo");
+            $GLOBALS['log']->fatal("Cambio detectado en estatus_backlog_c: de $estatusBacklogAnterior a $estatusBacklogNuevo");
             
             $bodyCambio = array(
                 'tipo' => 'cambio',

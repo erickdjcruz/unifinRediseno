@@ -18,7 +18,7 @@
         // Convertir a objeto Date
         var dateObj = new Date(timestamp);
         // Formato SugarCRM DATETIME (YYYY-MM-DD HH:mm:ss)
-        var formattedDateTime = app.date(dateObj).format('YYYY-MM-DD HH:mm:ss');
+        var formattedDateTime = app.date(dateObj).format('YYYY-MM-DD[T]HH:mm:ssZ');
 
         console.log('ID recibido:', this.idBL);
         console.log('Acción recibida:', this.accion);
@@ -59,7 +59,11 @@
 
                             //VALIDA PERMISOS DE APROBACION
                             if(Object.values(approvalList).includes(app.user.id) || aprobador_dir == app.user.id){
-                                this.puedeAprobar= true;
+                                this.puedeAprobar = true;
+                            }
+
+                            if(this.puedeAprobar  && this.rechaza){
+                                this.puedeAprobarRechazo = true;
                             }
 
                             if (!this.puedeAprobar) {
@@ -88,27 +92,13 @@
                                         } else {
                                             // Actualizar el BL
                                             var actualizaBL = {
+                                                idRegistro : data.id,
                                                 aprueba_reactivacion_c: 'ACEPTAR',
                                                 estatus_backlog_c: '1',
+                                                motivo_declinacion_c: '',
                                                 fecha_reactivacion_c: formattedDateTime
                                             };
-                                            var updateUrl = app.api.buildURL('lev_Backlog/' + this.idBL, null, null);
-                                            app.api.call('update', updateUrl, actualizaBL, {
-                                                success: _.bind(function (resBLnse) {
-                                                    //INICIA PROCESO DE ACEPTACION
-                                                    this.aceptaCambioOrigen(this.idBL);
-
-                                                }, this),
-                                                error: function (error) {
-                                                    console.error('Error al actualizar el Backlog:', error);
-                                                    alert("Ocurrió un error al actualizar el Backlog");
-                                                    // Redirigir después de 2 segundos
-                                                    _.delay(function () {
-                                                        app.router.navigate("#lev_Backlog", { trigger: true });
-                                                    }, 2000);
-                                                    return;
-                                                }
-                                            });
+                                            this.decisionCambioBL(actualizaBL);
                                         }
                                     } else {
                                         alert("El Backlog no se encuentra bloqueado actualmente");
@@ -124,28 +114,13 @@
                                     if(estatus_backlog_c == '2' && aprueba_reactivacion != 'RECHAZAR'){                                        
                                         // Actualizar el BL
                                         var updatePayload = {
+                                            idRegistro : data.id,
                                             aprueba_reactivacion_c: 'RECHAZAR',
-                                            fecha_reactivacion_c: formattedDateTime
+                                            estatus_backlog_c: '2',
+                                            fecha_reactivacion_neg_c: formattedDateTime
                                         };
-
-                                        var updateUrl = app.api.buildURL('lev_Backlog/' + this.idBL, null, null);
-                                        app.api.call('update', updateUrl, updatePayload, {
-                                            success: _.bind(function (resBLnse) {
-                                                //INICIA PROCESO DE RECHAZO
-                                                this.rechazaCambioOrigen(this.idBL);
-
-                                            }, this),
-                                            error: function (error) {
-                                                console.error('Error al actualizar el Backlog:', error);
-                                                alert("Ocurrió un error al actualizar el Backlog");
-                                                // Redirigir después de 2 segundos
-                                                _.delay(function () {
-                                                    app.router.navigate("#lev_Backlog", { trigger: true });
-                                                }, 2000);
-                                                return;
-                                            }
-                                        });
-
+                                        this.decisionCambioBL(updatePayload);
+                                        
                                     } else if (estatus_backlog_c == '2' && aprueba_reactivacion == 'RECHAZAR'){
                                         alert("El Backlog ya ha sido rechazado anteriormente");
                                         // Redirigir después de 2 segundos
@@ -186,7 +161,7 @@
         this._render();
     },
 
-    aceptaCambioOrigen: function (idBL) {
+    decisionCambioBL: function (idBL) {
         console.log("...ACEPTA REACTIVACION BACKLOG...");
         this.msgExitoso = 0;
 
@@ -195,11 +170,7 @@
             title: 'Procesando',
         });
 
-        var argsAcepta = {
-            "id_BL": idBL,
-            "accion": 'Aceptada'
-        };
-        app.api.call("create", app.api.buildURL("notificaReactivaBL", null, null, argsAcepta), null, {
+        app.api.call("create", app.api.buildURL("notificaReactivaBL", null, null, idBL), null, {
             success: _.bind(function (resBLnse) {
                 app.alert.dismiss('procesa_acepta_reactivacion_bl');
                 if (resBLnse.status == '200') {
