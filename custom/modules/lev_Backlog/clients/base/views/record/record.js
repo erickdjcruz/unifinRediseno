@@ -29,7 +29,7 @@
 
         //Reactivar Backlog
         this.context.on('button:reactivar_backlog:click', this.reactivarBacklog, this);
-		
+
         // validación de los campos con formato númerico
         this.events['keydown [name=dif_residuales_c]'] = 'checkInVentas';
         this.events['keydown [name=tasa_c]'] = 'checkInVentas';
@@ -53,47 +53,9 @@
          // Valida permiso de tipificacion riesgo
         this.model.on('sync', this.checkPermisoTipificacion, this);
 
-        // Configura bandera reactivación backlog
-        this.model.once('sync', () => {
-            console.log("Modelo sincronizado y vista renderizada");
-            this.carga_inicial = false;
-            this.on('render', () => {
-                console.log("Modelo sincronizado y vista renderizada");
-                this.carga_inicial = false;
-            });
-
-            var btnReactivaar = this.getField('solicitud_reactivacion');
-            var estatus = this.model.get('estatus_po_c');
-            var detalleOrigenVendors = this.model.get('detalle_origen_c');
-            if (estatus === '3' && detalleOrigenVendors === '116') {
-                btnDesvincular.show();
-            } else {
-                btnDesvincular.dispose();
-            }
-        });
-
         this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
         this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
-		
-        // Después de guardar, mostrar mensaje y ocultar botón si corresponde
-        this.model.on('sync', () => {
-            if (this.vendorDesvinculado && this.origenDetalleModificado) {
-                app.alert.show("desvinculado", {
-                    level: "success",
-                    messages: "Vendor desvinculado.",
-                    autoClose: false
-                });
 
-                var btnDesvincular = this.getField('desvincular_vendor');
-                if (btnDesvincular) {
-                    btnDesvincular.dispose();
-                }
-
-                // Resetear banderas
-                this.vendorDesvinculado = false;
-                this.origenDetalleModificado = false;
-            }
-        });
     },
 
     _render: function () {
@@ -878,4 +840,3 @@
     },
 
 })
-
