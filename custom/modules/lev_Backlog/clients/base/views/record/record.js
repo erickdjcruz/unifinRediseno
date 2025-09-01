@@ -27,6 +27,9 @@
         this.model.addValidationTask('tipo_producto_requerido', _.bind(this.tipo_producto_requerido, this));
         /*********** ---- ***********************/
 
+        //Reactivar Backlog
+        this.context.on('button:reactivar_backlog:click', this.reactivarBacklog, this);
+
         this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
         this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
 
@@ -47,12 +50,53 @@
 
         // Validación monto comprometido
         this.model.addValidationTask('valida_monto_comprometido', _.bind(this.validarMontoComprometido, this));
-        // Valida permiso de tipificacion riesgo
+        /// Validación dependencia declinada
+        this.model.addValidationTask('validaDependenciaDeclinada', _.bind(this.validaDependenciaDeclinada, this));
+
+         // Valida permiso de tipificacion riesgo
         this.model.on('sync', this.checkPermisoTipificacion, this);
-        //boton reactivacion
-		    this.context.on('button:reactiva_bkl:click', this.reactiva_bkl, this);
-        //ReadOnly Estatus Backlog Declinada
-        this.model.on('sync', this._readOnlyEstatusDeclinada, this);
+
+        // Configura bandera reactivación backlog
+        this.model.once('sync', () => {
+            console.log("Modelo sincronizado y vista renderizada");
+            this.carga_inicial = false;
+            this.on('render', () => {
+                console.log("Modelo sincronizado y vista renderizada");
+                this.carga_inicial = false;
+            });
+
+            var btnReactivaar = this.getField('solicitud_reactivacion');
+            var estatus = this.model.get('estatus_po_c');
+            var detalleOrigenVendors = this.model.get('detalle_origen_c');
+            if (estatus === '3' && detalleOrigenVendors === '116') {
+                btnDesvincular.show();
+            } else {
+                btnDesvincular.dispose();
+            }
+        });
+
+        htis.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
+        this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
+
+        // Después de guardar, mostrar mensaje y ocultar botón si corresponde
+        this.model.on('sync', () => {
+            if (this.vendorDesvinculado && this.origenDetalleModificado) {
+                app.alert.show("desvinculado", {
+                    level: "success",
+                    messages: "Vendor desvinculado.",
+                    autoClose: false
+                });
+
+                var btnDesvincular = this.getField('desvincular_vendor');
+                if (btnDesvincular) {
+                    btnDesvincular.dispose();
+                }
+
+                // Resetear banderas
+                this.vendorDesvinculado = false;
+                this.origenDetalleModificado = false;
+            }
+        });
     },
 
     _render: function () {
@@ -744,10 +788,10 @@
      * Valida que monto_comprometido <= monto_con_solicitud_c
      */
     validarMontoComprometido: function (fields, errors, callback) {
+        
         var montoComprometido = parseFloat(this.model.get('monto_comprometido')) || 0;
         var montoSolicitud = parseFloat(this.model.get('monto_c')) || 0;
         // console.log("[Validación] monto_comprometido:", montoComprometido, "monto_con_solicitud_c:", montoSolicitud);
-
         // Si monto_comprometido es mayor que monto_con_solicitud_c
         if (montoComprometido > montoSolicitud) {
 
@@ -764,10 +808,32 @@
     },
 
     /**
+     * Valida dependencia estatus backlog
+     */
+    validaDependenciaDeclinada (fields, errors, callback) {
+
+        var estatus = this.model.get('estatus_backlog_c') || '';
+        var motivodecli = this.model.get('motivo_declinacion_c') || '';
+        
+        if (estatus == '2' && motivodecli=='') {
+
+            app.alert.show('valida_declinacion', {
+                level: 'error',
+                messages: 'El <b>Motivo de Declinación</b> es requerido para esta opción.',
+                autoClose: false
+            });
+
+            errors['valida_declinacion'] = errors['valida_declinacion'] || {};
+            errors['valida_declinacion'].required = true;
+        }
+        callback(null, fields, errors);
+    },
+
+    /**
      * Función que valida si el usuario puede editar el campo tipificacion_riesgo_c
      */
     checkPermisoTipificacion: function () {
-        var permisoBacklogTipificacion = app.user.attributes.backlog_tipificacion_c ? 1 : 0;
+        var permisoBacklogTipificacion = app.user.attributes.backlog_tipificacion_c ? 1 : 0;    
         var fieldTipificacionRiesgo = this.getField('tipificacion_riesgo_c');
 
         var listaEdicionTipificacion = [];    //Recupera Ids de usuarios que pueden editar backlog tipificación
@@ -780,7 +846,7 @@
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(false);
             }
-
+            
         } else {
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(true);
