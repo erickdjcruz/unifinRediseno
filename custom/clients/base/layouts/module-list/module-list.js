@@ -6,7 +6,7 @@
 	_addDefaultMenus: function() {
 		var moduleList = app.metadata.getModuleNames({filter: 'display_tab', access: 'read'});
         //moduleList.push('Expediente');
-        moduleList.push('ExpedienteUniclick');
+        // moduleList.push('ExpedienteUniclick');
 		var creditaria = 0;
 		var roles = app.user.attributes.roles;
 		for(var i=0;i<roles.length;i++)
