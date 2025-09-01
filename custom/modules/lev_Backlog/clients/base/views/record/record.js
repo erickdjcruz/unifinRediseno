@@ -21,6 +21,8 @@
         //this.model.on("change:ri_final_comprometida_c", _.bind(this.setEtapa, this));
         this.model.addValidationTask('igualaMontosFinales', _.bind(this.igualaMontoFinalOpp, this));
         this.model.addValidationTask('camponovacio', _.bind(this.validacampoconversion, this));
+        this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
+        this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
 
         /************  CAmbiar valores tipo PRoducto LEasing   *****************/
         this.model.addValidationTask('num_tipo_producto', _.bind(this.num_tipo_leasing, this));
@@ -49,13 +51,12 @@
         this.model.addValidationTask('valida_monto_comprometido', _.bind(this.validarMontoComprometido, this));
         /// Validación dependencia declinada
         this.model.addValidationTask('validaDependenciaDeclinada', _.bind(this.validaDependenciaDeclinada, this));
-
          // Valida permiso de tipificacion riesgo
-        this.model.on('sync', this.checkPermisoTipificacion, this);
-
-        this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
-        this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
-
+        this.model.on('sync', this.checkPermisoTipificacion, this);        
+        //Boton Reactivación 
+        this.context.on('button:reactiva_bkl:click', this.reactiva_bkl, this);
+        //ReadOnly Estatus Backlog Declinada
+        this.model.on('sync', this._readOnlyEstatusDeclinada, this);
     },
 
     _render: function () {
