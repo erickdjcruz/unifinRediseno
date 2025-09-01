@@ -37,11 +37,16 @@ class reactiva_bkl extends SugarApi
         $fecha_actualizacion   = isset($args['fecha_reactivacion_c']) ? $args['fecha_reactivacion_c'] : '';
         $fecha_actualizacion_neg = isset($args['fecha_reactivacion_neg_c']) ? $args['fecha_reactivacion_neg_c'] : '';
         $estatus               = isset($args['estatus_backlog_c']) ? $args['estatus_backlog_c'] : '';
-
+        
+        $response = [];
+        $response['status'] = '';
+        $response['description'] = '';
+        
         $GLOBALS['log']->fatal("aprueba".$aprueba);
         $GLOBALS['log']->fatal("estatus".$estatus);
+        $GLOBALS['log']->fatal("fecha_actualizacion".$fecha_actualizacion);
+        $GLOBALS['log']->fatal("fecha_actualizacion_neg".$fecha_actualizacion_neg);
 
-        $accion = isset($args['accion']) ? $args['accion'] : '--';
         $id_bl = $idRegistro;
 
         $beanBL = BeanFactory::retrieveBean('lev_Backlog', $idRegistro, array('disable_row_level_security' => true));
@@ -63,24 +68,27 @@ class reactiva_bkl extends SugarApi
         
         //$beanBL->fecha_sol_reactivacion_c = $fechasolicitud;
         if($aprueba=='ACEPTAR'){
+            $accion = 'Aceptada';
+
             $beanBL->fecha_reactivacion_c = $fecha_actualizacion;
             $beanBL->aprobador_reactivacion_c = '';
-            $beanBL->motivo_reactivacion = '';
+            $beanBL->motivo_reactivacion_c = '';
+            $beanBL->motivo_declinacion_c = '';
             $beanBL->fecha_sol_reactivacion_c = '';
             $beanBL->estatus_backlog_c = $estatus;
         }
         if($aprueba=='RECHAZAR'){
+            $accion = 'Rechazada';
+
             $beanBL->fecha_reactivacion_neg_c = $fecha_actualizacion_neg;
         }
 
         $GLOBALS['log']->fatal("Backlog antes save- api estatus:".$beanBL->estatus_backlog_c);
-        $beanBL->save();
+        $GLOBALS['log']->fatal("Backlog fecha_reactivacion_neg_c:".$beanBL->fecha_reactivacion_neg_c);
 
         global $current_user, $sugar_config, $app_list_strings;
         
-        $response = [];
-        $response['status'] = '';
-        $response['description'] = '';
+        
         //Recupera BL
         $link_bl = $GLOBALS['sugar_config']['site_url'] . '/#lev_Backlog/' . $id_bl;
         $nbacklog = $beanBL->numero_de_backlog;
@@ -108,6 +116,7 @@ class reactiva_bkl extends SugarApi
         $nombre_asesor = $beanAsesor->first_name . " " . $beanAsesor->last_name;
 
         try {
+            $GLOBALS['log']->fatal("datos de envio");
             $GLOBALS['log']->fatal($nombre_asesor);
             $GLOBALS['log']->fatal($nbacklog);
             $GLOBALS['log']->fatal($link_bl);
@@ -123,8 +132,9 @@ class reactiva_bkl extends SugarApi
             $body = trim($body_correo);
             $mailer->setHtmlBody($body);
             $mailer->clearRecipients();
+            $GLOBALS['log']->fatal("emails" .$correoAsesor . " - " . $email_comercial);
             //Agrega destinatarios
-            $mailer->addRecipientsTo(new EmailIdentity($correoAsesor));
+            $mailer->addRecipientsTo(new EmailIdentity($correoAsesor , $email_comercial));
 
             $result = $mailer->send();
             $response['status'] = '200';
@@ -134,6 +144,12 @@ class reactiva_bkl extends SugarApi
             $GLOBALS['log']->fatal(print_r($e, true));
             $response['status'] = '500';
             $response['description'] = $e;
+        }
+
+        try{
+            $beanBL->save();
+        } catch (Exception $e) {
+            $GLOBALS['log']->fatal(print_r($e, true));
         }
         return $response;
     }
@@ -145,10 +161,15 @@ class reactiva_bkl extends SugarApi
         $aprueba = $args["aprueba_reactivacion_c"];
         $fechasolicitud = $args["fecha_sol_reactivacion_c"];
 
+        $GLOBALS['log']->fatal("fechasolicitud reactivacion backlog".$fechasolicitud);
+
         $beanBkl = BeanFactory::retrieveBean('lev_Backlog', $idRegistro, array('disable_row_level_security' => true));
         $idAsesor = $beanBkl->assigned_user_id;
 
         $beanAsesor = BeanFactory::retrieveBean('Users', $idAsesor, array('disable_row_level_security' => true));
+        $correoAsesor = $beanAsesor->email1;
+        $nombre_asesor = $beanAsesor->first_name . " " . $beanAsesor->last_name;
+
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
         if($id_director_comercial != ""){
             $info_comercial = $this->getInfoUser($id_director_comercial);
@@ -169,8 +190,9 @@ class reactiva_bkl extends SugarApi
         $beanBkl->save();
         
         $bodyCorreo = $this->buildBodyEnviaPeticionAutorizacionDirector( $name_comercial, $idRegistro , $motivo);
+        $GLOBALS['log']->fatal("emails" .$correoAsesor . " - " . $email_comercial);
         if(!empty($email_comercial)){
-            $this->sendEmailPeticionAutorizacionDirector($email_comercial,$bodyCorreo,$beanBkl->name, $cuenta,$numsol , $idRegistro, $id_director_comercial, $motivo);
+            $this->sendEmailPeticionAutorizacionDirector($correoAsesor ,$email_comercial,$bodyCorreo,$beanBkl->name, $cuenta,$numsol , $idRegistro, $id_director_comercial, $motivo);
             return array(
                 "status" => "success",
                 "msj" => "Se ha enviado el correo"
@@ -211,7 +233,7 @@ class reactiva_bkl extends SugarApi
         return $user;
     }
 
-    public function sendEmailPeticionAutorizacionDirector($emailDirector, $body_correo, $cuenta , $numsol , $idRegistro, $id_director_comercial, $motivo){
+    public function sendEmailPeticionAutorizacionDirector($correoAsesor , $emailDirector, $body_correo, $cuenta , $numsol , $idRegistro, $id_director_comercial, $motivo){
         try{
             $mailer = MailerFactory::getSystemDefaultMailer();
             $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
@@ -219,7 +241,8 @@ class reactiva_bkl extends SugarApi
             $body = trim($body_correo);
             $mailer->setHtmlBody($body);
             $mailer->clearRecipients();
-            $mailer->addRecipientsTo(new EmailIdentity($emailDirector, $emailDirector));
+            $mailer->addAttachment(new \EmbeddedImage('Copia_de_Recurso-2unileasingazulLOW', 'custom/images_email/Copia_de_Recurso-2unileasingazulLOW.png', 'Copia_de_Recurso-2unileasingazulLOW'), "Copia_de_Recurso-2unileasingazulLOW");
+            $mailer->addRecipientsTo(new EmailIdentity($correoAsesor, $emailDirector));
             $result = $mailer->send();
         } catch (Exception $e){
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
@@ -335,34 +358,156 @@ class reactiva_bkl extends SugarApi
                 }
             </style>
             </head>
-                <body style="background-color: #e4e7e7; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;"><p align="justify"><font face="verdana" color="#635f5f">Hola '.$nombreDirectorComercial.',<br><br>
-                El asesor a tu cargo, '.$asesor.', solicita tu visto bueno para reactivar la operación del cliente '.$cliente.',<br>
-                (ID '.$solicitud.'), actualmente Declinada.<br><br>
-                Motivo breve del asesor: <p>'.$motivo.'</p><br>
-                Datos de referencia:<br>
-                Estatus actual: Declinada<br>
-                Monto autorizado/preautorizado: '.$monto.'<br>
-                Monto prometido: '.$prometido.'<br>
-                Fecha prometida: '.$fecha.'<br>
-                Origen: '.$origen.'<br>
-                Puedes autorizar o rechazar la reactivación aquí:<br>
-                '.$htmlAcepta.' | '.$htmlRechaza.' | '.$htmlLink.'<br>
-                Esta acción quedará registrada en el historial. Cualquier cambio notificará al asesor y a ti.<br>
-                Si tienes alguna duda contactar a:<br>
-                Equipo CRM<br>
-                Inteligencia de Negocios<br>
-                Tel.: (55)5249 5800 Ext.5737 y 5677<br>
-                <br><br>Atentamente Unifin</font></p>
-                <br><br><img border="0" id="bannerUnifin" src="https://www.unifin.com.mx/ri/front/img/logo.png">
-                <br><span style="font-size:8.5pt;color:#757b80">____________________________________________</span>
-                <p class="MsoNormal" style="text-align: justify;">
-                <span style="font-size: 7.5pt; font-family: \'Arial\',sans-serif; color: #212121;">
-                    Este correo electrónico y sus anexos pueden contener información CONFIDENCIAL para uso exclusivo de su destinatario. Si ha recibido este correo por error, por favor, notifíquelo al remitente y bórrelo de su sistema.
-                    Las opiniones expresadas en este correo son las de su autor y no son necesariamente compartidas o apoyadas por UNIFIN, quien no asume aquí obligaciones ni se responsabiliza del contenido de este correo, a menos que dicha información sea confirmada por escrito por un representante legal autorizado.
-                    No se garantiza que la transmisión de este correo sea segura o libre de errores, podría haber sido viciada, perdida, destruida, haber llegado tarde, de forma incompleta o contener VIRUS.
-                    Asimismo, los datos personales, que en su caso UNIFIN pudiera recibir a través de este medio, mantendrán la seguridad y privacidad en los términos de la Ley Federal de Protección de Datos Personales; para más información consulte nuestro <a href="https://www.unifin.com.mx/aviso-de-privacidad" target="_blank">Aviso de Privacidad</a>  publicado en <a href="http://www.unifin.com.mx/" target="_blank">www.unifin.com.mx</a>
-                </span>
-                </p>
+            <body style="background-color: #e4e7e7; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+            <table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e4e7e7;" width="100%">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #56adff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:6px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:9px;"> </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
+                                                                        <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Hola! <strong>' . $nombreDirectorComercial . '</strong></p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">El asesor a tu cargo, '.$asesor.', solicita tu visto bueno para reactivar la operación del cliente '.$cliente.',<br>
+                                                                                (ID '.$solicitud.'), actualmente Declinada.<br><br>
+                                                                                Motivo breve del asesor: <p>'.$motivo.'</p><br>
+                                                                                Datos de referencia:<br>
+                                                                                Estatus actual: Declinada<br>
+                                                                                Monto autorizado/preautorizado: '.$monto.'<br>
+                                                                                Monto prometido: '.$prometido.'<br>
+                                                                                Fecha prometida: '.$fecha.'<br>
+                                                                                Origen: '.$origen.'<br>
+                                                                                Puedes autorizar o rechazar la reactivación aquí:<br>
+                                                                                '.$htmlLink.'<br>
+
+                                                                                <table border="0" cellpadding="10" cellspacing="0" class="button_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                                                                <tr>
+                                                                                    <td class="">
+                                                                                        <div align="center" class="alignment"><!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" style="height:43px;width:136px;v-text-anchor:middle;" arcsize="63%" stroke="false" fillcolor="#05aa6d"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px"><![endif]-->
+                                                                                            <div style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#05aa6d;border-radius:27px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;">
+                                                                                            <span style="word-break: break-word; line-height: 32px;">
+                                                                                                <a id="linkPO" href="' .  $aceptabkl . '"><strong>Aceptar<br></strong></a>
+                                                                                            </span>
+                                                                                            </span></div><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+                                                                                        </div>
+                                                                                        </td>
+                                                                                        <td class="pad">
+                                                                                        <div align="center" class="alignment"><!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" style="height:43px;width:136px;v-text-anchor:middle;" arcsize="63%" stroke="false" fillcolor="#e46962"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px"><![endif]-->
+                                                                                            <div style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#e46962;border-radius:27px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;">
+                                                                                            <span style="word-break: break-word; line-height: 32px;">
+                                                                                                <a id="linkPO" href="' . $rechazabkl . '"><strong>Rechazar<br></strong></a>
+                                                                                            </span>
+                                                                                            </span></div><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                </table>
+
+
+
+                                                                                Esta acción quedará registrada en el historial. Cualquier cambio notificará al asesor y a ti.<br>
+                                                                            </p>
+                                                                            <br>
+                                                                            <p style="margin: 0;">Si tienes alguna duda contactar a:<br>
+                                                                            Equipo CRM<br>
+                                                                            Inteligencia de Negocios<br>
+                                                                            Tel.: (55)5249 5800 Ext.5737 y 5677<br></p>
+                                                                            <p style="margin: 0;">Atentamente, UNIFIN.</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; padding-top: 15px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:20px;width:100%;">
+                                                                        <div align="center" class="alignment" style="line-height:10px"><img src="cid:Copia_de_Recurso-2unileasingazulLOW" style="display: block; height: auto; border: 0; max-width: 102px; width: 100%;" width="102"/></div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cdd2d9;" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #dde1e9; color: #000; width: 600px; margin: 0 auto;" width="600">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                                                <tr>
+                                                                    <td class="pad" style="padding-bottom:25px;padding-left:30px;padding-right:30px;padding-top:25px;">
+                                                                        <div style="color:#000000;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:12px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:14.399999999999999px;">
+                                                                            <p style="margin: 0;"><em>Información confidencial y exclusiva para uso interno de Unifin.</em></p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table><!-- End -->
             </body>';
         return $mailHTML;
     }
