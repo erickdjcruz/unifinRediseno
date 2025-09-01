@@ -99,5 +99,5 @@ $mod_strings['LBL_FECHA_REACTIVACION_NEG_C'] = 'Fecha reactivación rechazada';
 $mod_strings['LBL_ESTATUS_BACKLOG_C'] = 'Estatus Backlog';
 $mod_strings['LBL_RECORDVIEW_PANEL2'] = 'Datos compromiso';
 $mod_strings['LBL_MONTO'] = 'Monto';
-$mod_strings['LBL_APRUEBA_REACTIVACION'] = 'LBL_APRUEBA_REACTIVACION';
-$mod_strings['LBL_APROBADOR_REACTIVACION'] = 'LBL_APROBADOR_REACTIVACION';
+$mod_strings['LBL_APRUEBA_REACTIVACION'] = 'Estatus Reactivación';
+$mod_strings['LBL_APROBADOR_REACTIVACION'] = 'Aprobador Reactivación';
