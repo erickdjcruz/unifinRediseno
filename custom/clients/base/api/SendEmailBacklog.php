@@ -26,13 +26,6 @@ class SendEmailBacklog extends SugarApi
         $id_backlog = isset($args['id_backlog']) ? $args['id_backlog'] : '';
         $id_cuenta = isset($args['id_cuenta']) ? $args['id_cuenta'] : '';
         $id_asesor = isset($args['id_asesor']) ? $args['id_asesor'] : '';
-        $monto_comp_anterior = isset($args['monto_comp_anterior']) ? number_format((float)$args['monto_comp_anterior'], 2, '.', ',') : '';
-        $monto_comp_nuevo = isset($args['monto_comp_nuevo']) ? number_format((float)$args['monto_comp_nuevo'], 2, '.', ',') : '';
-        $fecha_comp_anterior = isset($args['fecha_comp_anterior']) ? $args['fecha_comp_anterior'] : '';
-        $fecha_comp_nuevo = isset($args['fecha_comp_nuevo']) ? $args['fecha_comp_nuevo'] : '';
-        $tipificacion_anterior = isset($args['tipificacion_anterior']) ? $args['tipificacion_anterior'] : '';
-        $tipificacion_nuevo = isset($args['tipificacion_nuevo']) ? $args['tipificacion_nuevo'] : '';
-        $motivo_declinacion = isset($args['motivo_declinacion']) ? $args['motivo_declinacion'] : '';
         $emailDirector = '';
         $nombreDirector = '';
 
@@ -40,20 +33,31 @@ class SendEmailBacklog extends SugarApi
         $GLOBALS['log']->fatal("nombre_backlog " . $nombre_backlog);
         $GLOBALS['log']->fatal("id_backlog " . $id_backlog);
         $GLOBALS['log']->fatal("id_cuenta " . $id_cuenta);
-        $GLOBALS['log']->fatal("id_asesor " . $id_asesor);
-        $GLOBALS['log']->fatal("monto_comp_anterior " . $monto_comp_anterior);
-        $GLOBALS['log']->fatal("monto_comp_nuevo " . $monto_comp_nuevo);
-        $GLOBALS['log']->fatal("fecha_comp_anterior " . $fecha_comp_anterior);
-        $GLOBALS['log']->fatal("fecha_comp_nuevo " . $fecha_comp_nuevo);
-        $GLOBALS['log']->fatal("tipificacion_anterior " . $tipificacion_anterior);
-        $GLOBALS['log']->fatal("tipificacion_nuevo " . $tipificacion_nuevo);
-        $GLOBALS['log']->fatal("motivo_declinacion " . $motivo_declinacion);
+        $GLOBALS['log']->fatal("id_asesor " . $id_asesor);        
 
         $response = [];
         $response['status'] = '';
         $response['description'] = '';
         //Link Backlog
         $link_backlog = $GLOBALS['sugar_config']['site_url'] . '/#lev_Backlog/' . $id_backlog;
+        //Backlog
+        $beanBL = BeanFactory::retrieveBean('lev_Backlog', $id_backlog, array('disable_row_level_security' => true));
+        $monto_comp_anterior = number_format($beanBL->fetched_row['monto_comprometido'], 2, '.', ',');
+        $monto_comp_nuevo = number_format($beanBL->monto_comprometido, 2, '.', ',');
+        $fecha_comp_anterior = $beanBL->fetched_row['fecha_compromiso_c'];
+        $fecha_comp_nuevo = $beanBL->fecha_compromiso_c;
+        $tipificacion_anterior = $beanBL->fetched_row['tipificacion_riesgo_c'];
+        $tipificacion_nuevo = $beanBL->tipificacion_riesgo_c;
+        $motivo_declinacion = $beanBL->motivo_declinacion_c;
+
+        $GLOBALS['log']->fatal("monto_comp_anterior " . $monto_comp_anterior);
+        $GLOBALS['log']->fatal("monto_comp_nuevo " . $monto_comp_nuevo);
+        $GLOBALS['log']->fatal("fecha_comp_anterior " . $fecha_comp_anterior);
+        $GLOBALS['log']->fatal("fecha_comp_nuevo " . $fecha_comp_nuevo);
+        $GLOBALS['log']->fatal("tipificacion_anterior " . $tipificacion_anterior);
+        $GLOBALS['log']->fatal("tipificacion_nuevo " . $tipificacion_nuevo);
+        $GLOBALS['log']->fatal("motivo_declinacion " . $motivo_declinacion);        
+        
         //Asesor
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $nombreAsesor = $beanAsesor->first_name . " " . $beanAsesor->last_name;
