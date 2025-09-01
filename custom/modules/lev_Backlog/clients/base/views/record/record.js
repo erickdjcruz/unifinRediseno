@@ -50,7 +50,10 @@
 
         // Validación monto comprometido
         this.model.addValidationTask('valida_monto_comprometido', _.bind(this.validarMontoComprometido, this));
-        // Valida permiso de tipificacion riesgo
+        /// Validación dependencia declinada
+        this.model.addValidationTask('validaDependenciaDeclinada', _.bind(this.validaDependenciaDeclinada, this));
+
+         // Valida permiso de tipificacion riesgo
         this.model.on('sync', this.checkPermisoTipificacion, this);
 
         // Configura bandera reactivación backlog
@@ -71,6 +74,9 @@
                 btnDesvincular.dispose();
             }
         });
+
+        htis.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
+        this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
 
         // Después de guardar, mostrar mensaje y ocultar botón si corresponde
         this.model.on('sync', () => {
@@ -802,6 +808,28 @@
     },
 
     /**
+     * Valida dependencia estatus backlog
+     */
+    validaDependenciaDeclinada (fields, errors, callback) {
+
+        var estatus = this.model.get('estatus_backlog_c') || '';
+        var motivodecli = this.model.get('motivo_declinacion_c') || '';
+        
+        if (estatus == '2' && motivodecli=='') {
+
+            app.alert.show('valida_declinacion', {
+                level: 'error',
+                messages: 'El <b>Motivo de Declinación</b> es requerido para esta opción.',
+                autoClose: false
+            });
+
+            errors['valida_declinacion'] = errors['valida_declinacion'] || {};
+            errors['valida_declinacion'].required = true;
+        }
+        callback(null, fields, errors);
+    },
+
+    /**
      * Función que valida si el usuario puede editar el campo tipificacion_riesgo_c
      */
     checkPermisoTipificacion: function () {
@@ -823,6 +851,32 @@
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(true);
             }
+        }
+    },
+
+    reactiva_bkl: function () {
+      if (this.model.get('estatus_backlog_c') == 2) {
+        app.drawer.open({
+          layout: 'reactiva_bkl',
+                  context: {
+            context: this.context,
+                      model: this.model,
+                  },
+              }, function (context, model, update) {});
+          } else {
+        app.alert.show('NoDeclinada', {
+          level: 'error',
+                  messages: 'El Estatus Backlog es diferente a Declinada',
+                  autoClose: false
+              });
+		  }
+    },
+
+    _readOnlyEstatusDeclinada: function () {
+        //Bloquear el registro completo cuando Estatus Backlog es Declinada
+        if (this.model.get('estatus_backlog_c') === '2') {
+            $(".record-cell").attr("style", "pointer-events:none");
+            $('[name="edit_button"].rowaction').hide();
         }
     },
 

@@ -51,3 +51,17 @@ $hook_array['before_save'][] = Array(
     'class_Backlog_Admin',
     'func_Backlog_Admin'
 );
+$hook_array['before_save'][] = Array(
+    8,
+    'Con la relación de solicitud se obtiene el número de solicitud',
+    'custom/modules/lev_Backlog/Backlog_platform.php',
+    'Backlog_platform_user',
+    'actualizaSolicitud'
+);
+$hook_array['after_save'][] = Array(
+    9,
+    'Envia correo de notificacion cuando cambia el valor en los campos de monto, fecha y estatus Declinada al Director',
+    'custom/modules/lev_Backlog/notificaciones_backlog.php',
+    'class_Backlog_Notificacion',
+    'func_Backlog_Notificacion'
+);

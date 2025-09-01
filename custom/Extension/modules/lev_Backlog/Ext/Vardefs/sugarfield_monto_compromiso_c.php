@@ -1,5 +1,5 @@
 <?php
- // created: 2025-08-21 12:47:18
+ // created: 2025-08-30 05:39:59
 $dictionary['lev_Backlog']['fields']['monto_compromiso_c']['labelValue']='Monto compromiso';
 $dictionary['lev_Backlog']['fields']['monto_compromiso_c']['full_text_search']=array (
   'enabled' => '0',

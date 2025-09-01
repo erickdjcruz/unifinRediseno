@@ -206,6 +206,11 @@
                 $('#SE5').addClass('success');
                 $("#SE5").html("Val firmas formatos U");
             }
+            if (subetapa=="NV") {
+                $("#SE5").removeClass('ocult');
+                $('#SE5').addClass('success');
+                $("#SE5").html("Aprobada No Vigente");
+            }
         }
         if (etapa=="R"){
             //Agrega clase current para sombrear en color actual al pipeline

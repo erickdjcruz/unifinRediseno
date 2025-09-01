@@ -1,4 +1,11 @@
 <?php
- // created: 2019-04-15 17:19:11
-$dictionary['lev_Backlog']['fields']['monto_comprometido']['audited'] = true;
+ // created: 2025-08-25 17:32:32
+$dictionary['lev_Backlog']['fields']['monto_comprometido']['audited']=true;
+$dictionary['lev_Backlog']['fields']['monto_comprometido']['default']=0.0;
+$dictionary['lev_Backlog']['fields']['monto_comprometido']['hidemassupdate']=false;
+$dictionary['lev_Backlog']['fields']['monto_comprometido']['related_fields']=array (
+  0 => 'currency_id',
+  1 => 'base_rate',
+);
 
+ ?>

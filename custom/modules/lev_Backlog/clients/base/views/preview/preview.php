@@ -5,59 +5,8 @@ array (
   array (
     'view' => 
     array (
-      'record' => 
+      'preview' => 
       array (
-        'buttons' => 
-        array (
-          0 => 
-          array (
-            'type' => 'button',
-            'name' => 'cancel_button',
-            'label' => 'LBL_CANCEL_BUTTON_LABEL',
-            'css_class' => 'btn-invisible btn-link',
-            'showOn' => 'edit',
-          ),
-          1 => 
-          array (
-            'type' => 'rowaction',
-            'event' => 'button:save_button:click',
-            'name' => 'save_button',
-            'label' => 'LBL_SAVE_BUTTON_LABEL',
-            'css_class' => 'btn btn-primary',
-            'showOn' => 'edit',
-            'acl_action' => 'edit',
-          ),
-          2 => 
-          array (
-            'type' => 'actiondropdown',
-            'name' => 'main_dropdown',
-            'primary' => true,
-            'showOn' => 'view',
-            'buttons' => 
-            array (
-              0 => 
-              array (
-                'type' => 'rowaction',
-                'event' => 'button:edit_button:click',
-                'name' => 'edit_button',
-                'label' => 'LBL_EDIT_BUTTON_LABEL',
-                'acl_action' => 'edit',
-              ),
-              1 => 
-              array (
-                'name' => 'reactiva_bkl',
-                'type' => 'rowaction',
-                'label' => 'Reactivación',
-                'event' => 'button:reactiva_bkl:click',
-              ),
-            ),
-          ),
-          3 => 
-          array (
-            'name' => 'sidebar_toggle',
-            'type' => 'sidebartoggle',
-          ),
-        ),
         'panels' => 
         array (
           0 => 
@@ -77,22 +26,6 @@ array (
                 'readonly' => true,
               ),
               1 => 'name',
-              2 => 
-              array (
-                'name' => 'favorite',
-                'label' => 'LBL_FAVORITE',
-                'type' => 'favorite',
-                'readonly' => true,
-                'dismiss_label' => true,
-              ),
-              3 => 
-              array (
-                'name' => 'follow',
-                'label' => 'LBL_FOLLOW',
-                'type' => 'follow',
-                'readonly' => true,
-                'dismiss_label' => true,
-              ),
             ),
           ),
           1 => 
@@ -198,6 +131,7 @@ array (
               ),
               17 => 
               array (
+                'span' => 12,
               ),
               18 => 
               array (
@@ -206,6 +140,7 @@ array (
               ),
               19 => 
               array (
+                'span' => 12,
               ),
               20 => 
               array (
@@ -214,6 +149,7 @@ array (
               ),
               21 => 
               array (
+                'span' => 12,
               ),
               22 => 
               array (
@@ -253,9 +189,7 @@ array (
               ),
               27 => 
               array (
-                'readonly' => false,
-                'name' => 'fecha_compromiso_c',
-                'label' => 'LBL_FECHA_COMPROMISO_C',
+                'span' => 12,
               ),
               28 => 
               array (
@@ -326,7 +260,6 @@ array (
               array (
                 'name' => 'motivo_cancelacion_c',
                 'label' => 'LBL_MOTIVO_CANCELACION_C',
-                'span' => 12,
               ),
               37 => 
               array (
@@ -335,6 +268,7 @@ array (
               ),
               38 => 
               array (
+                'span' => 12,
               ),
               39 => 
               array (
@@ -343,6 +277,7 @@ array (
               ),
               40 => 
               array (
+                'span' => 12,
               ),
               41 => 
               array (
@@ -367,14 +302,12 @@ array (
               43 => 
               array (
                 'name' => 'description',
-                'span' => 12,
               ),
               44 => 
               array (
                 'name' => 'progreso',
                 'studio' => 'visible',
                 'label' => 'LBL_PROGRESO',
-                'span' => 12,
               ),
               45 => 
               array (
@@ -409,6 +342,7 @@ array (
               ),
               48 => 
               array (
+                'span' => 12,
               ),
               49 => 
               array (
@@ -546,20 +480,27 @@ array (
                 'name' => 'tct_bloqueo_txf_c',
                 'label' => 'LBL_TCT_BLOQUEO_TXF',
               ),
-              61 => 
-              array (
-                'name' => 'monto_c',
-                'label' => 'LBL_MONTO_C',
-              ),
-              62 => 
-              array (
-                'readonly' => false,
-                'name' => 'aprueba_reactivacion_c',
-                'label' => 'LBL_APRUEBA_REACTIVACION',
-              ),
             ),
           ),
           2 => 
+          array (
+            'newTab' => false,
+            'panelDefault' => 'expanded',
+            'name' => 'LBL_RECORDVIEW_PANEL2',
+            'label' => 'LBL_RECORDVIEW_PANEL2',
+            'columns' => 2,
+            'placeholders' => 1,
+            'fields' => 
+            array (
+              0 => 
+              array (
+                'readonly' => false,
+                'name' => 'fecha_compromiso_c',
+                'label' => 'LBL_FECHA_COMPROMISO_C',
+              ),
+            ),
+          ),
+          3 => 
           array (
             'newTab' => false,
             'panelDefault' => 'expanded',
@@ -595,7 +536,7 @@ array (
         ),
         'templateMeta' => 
         array (
-          'useTabs' => false,
+          'maxColumns' => 1,
         ),
       ),
     ),
