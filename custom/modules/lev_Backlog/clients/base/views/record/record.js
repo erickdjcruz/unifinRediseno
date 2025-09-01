@@ -29,10 +29,7 @@
 
         //Reactivar Backlog
         this.context.on('button:reactivar_backlog:click', this.reactivarBacklog, this);
-
-        this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
-        this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
-
+		
         // validación de los campos con formato númerico
         this.events['keydown [name=dif_residuales_c]'] = 'checkInVentas';
         this.events['keydown [name=tasa_c]'] = 'checkInVentas';
@@ -75,9 +72,9 @@
             }
         });
 
-        htis.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
+        this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
         this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
-
+		
         // Después de guardar, mostrar mensaje y ocultar botón si corresponde
         this.model.on('sync', () => {
             if (this.vendorDesvinculado && this.origenDetalleModificado) {
@@ -881,3 +878,4 @@
     },
 
 })
+
