@@ -58,7 +58,7 @@ $hook_array['before_save'][] = Array(
     'Backlog_platform_user',
     'actualizaSolicitud'
 );
-$hook_array['after_save'][] = Array(
+$hook_array['before_save'][] = Array(
     9,
     'Envia correo de notificacion cuando cambia el valor en los campos de monto, fecha y estatus Declinada al Director',
     'custom/modules/lev_Backlog/notificaciones_backlog.php',

@@ -14,31 +14,18 @@ class class_Backlog_Notificacion
         $fechaCompromisoNuevo      = (string)($bean->fecha_compromiso_c ?? '');
         $estatusBacklogAnterior    = (string)($bean->fetched_row['estatus_backlog_c'] ?? '');
         $estatusBacklogNuevo       = (string)($bean->estatus_backlog_c ?? '');
-
-        $motivoDeclinacion          = $bean->motivo_declinacion_c ?? '';
-        $tipificacionRiesgoNuevo = $bean->tipificacion_riesgo_c ?? '';
-
-        $estatusBacklogAnterior     = $estatusBacklogNuevo = '2';
-
-    
+        
         //DETECTA CAMBIO DE CAMPOS PARA NOTIFICACION
         if ($montoComprometidoAnterior != $montoComprometidoNuevo || $fechaCompromisoAnterior != $fechaCompromisoNuevo ) {
             $GLOBALS['log']->fatal("Cambio detectado en monto_comprometido: de $montoComprometidoAnterior a $montoComprometidoNuevo");            
             $GLOBALS['log']->fatal("Cambio detectado en fecha_compromiso_c: de $fechaCompromisoAnterior a $fechaCompromisoNuevo");
-            $GLOBALS['log']->fatal("Cambio detectado en estatus_backlog_c: de $estatusBacklogAnterior a $estatusBacklogNuevo");
             
             $bodyCambio = array(
                 'tipo' => 'cambio',
                 'nombre_backlog' => $bean->name,
                 'id_backlog' => $bean->id,
                 'id_cuenta' => $bean->account_id_c,
-                'id_asesor' => $bean->assigned_user_id,
-                'monto_comp_anterior' => $montoComprometidoAnterior,
-                'monto_comp_nuevo' => $montoComprometidoNuevo,
-                'fecha_comp_anterior' => $fechaCompromisoAnterior,
-                'fecha_comp_nuevo' => $fechaCompromisoNuevo,
-                'tipificacion_anterior' => $tipificacionRiesgoAnterior,
-                'tipificacion_nuevo' => $tipificacionRiesgoNuevo,
+                'id_asesor' => $bean->assigned_user_id
             );
             //ENVIA CORREO DE NOTIFICACION
             $response = $apiSendEmailBacklog->notificaCorreoDirectorBacklog(null, $bodyCambio);
@@ -52,11 +39,7 @@ class class_Backlog_Notificacion
                 'nombre_backlog' => $bean->name,
                 'id_backlog' => $bean->id,
                 'id_cuenta' => $bean->account_id_c,
-                'id_asesor' => $bean->assigned_user_id,
-                'monto_comp_nuevo' => $montoComprometidoNuevo,
-                'fecha_comp_nuevo' => $fechaCompromisoNuevo,
-                'tipificacion_nuevo' => $tipificacionRiesgoNuevo,
-                'motivo_declinacion' => $motivoDeclinacion,
+                'id_asesor' => $bean->assigned_user_id
             );
             //ENVIA CORREO DE NOTIFICACION
             $response = $apiSendEmailBacklog->notificaCorreoDirectorBacklog(null, $bodyBaja);
