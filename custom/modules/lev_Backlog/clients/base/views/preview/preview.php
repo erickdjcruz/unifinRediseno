@@ -486,24 +486,6 @@ array (
           array (
             'newTab' => false,
             'panelDefault' => 'expanded',
-            'name' => 'LBL_RECORDVIEW_PANEL2',
-            'label' => 'LBL_RECORDVIEW_PANEL2',
-            'columns' => 2,
-            'placeholders' => 1,
-            'fields' => 
-            array (
-              0 => 
-              array (
-                'readonly' => false,
-                'name' => 'fecha_compromiso_c',
-                'label' => 'LBL_FECHA_COMPROMISO_C',
-              ),
-            ),
-          ),
-          3 => 
-          array (
-            'newTab' => false,
-            'panelDefault' => 'expanded',
             'name' => 'LBL_RECORDVIEW_PANEL1',
             'label' => 'LBL_RECORDVIEW_PANEL1',
             'columns' => 2,
