@@ -11,7 +11,7 @@ class backlog_hooks {
 
     public function setFormatName($bean = null, $event = null, $args = null){
 
-        if($bean->lev_backlog_opportunitiesopportunities_ida == null) {
+        // if($bean->lev_backlog_opportunitiesopportunities_ida == null) {
             $account = BeanFactory::retrieveBean('Accounts', $bean->account_id_c);
             $api="";
             $args=[];
@@ -21,11 +21,9 @@ class backlog_hooks {
                 $numeroDeFolio = $callApi->RecuperaID($api, $args);
                 $bean->numero_de_backlog = $numeroDeFolio['Id'];
             }
-
             //BackLog Mes Año – FolioBacklog - Cliente
             $bean->name = 'BackLog ' . $bean->mes . " " . $bean->anio . " - " . $bean->numero_de_backlog . " - " . $account->name;
-
-        }
+        // }
     }
 
     public function setComentarios($bean = null, $event = null, $args = null){
