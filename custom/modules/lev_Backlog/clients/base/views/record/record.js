@@ -51,7 +51,7 @@
         this.model.addValidationTask('valida_monto_comprometido', _.bind(this.validarMontoComprometido, this));
         /// Validación dependencia declinada
         this.model.addValidationTask('validaDependenciaDeclinada', _.bind(this.validaDependenciaDeclinada, this));
-         // Valida permiso de tipificacion riesgo
+        // Valida permiso de tipificacion riesgo
         this.model.on('sync', this.checkPermisoTipificacion, this);        
         //Boton Reactivación 
         this.context.on('button:reactiva_bkl:click', this.reactiva_bkl, this);
@@ -628,6 +628,15 @@
                 }
             }, this);
         }, this);
+
+        //VALIDA FECHA COMPROMISO
+        if (this.model.get('fecha_compromiso_c') == '' || this.model.get('fecha_compromiso_c') == null) {
+            campos = campos + '<b>' + 'Fecha compromiso' + '</b><br>';
+
+            errors['fecha_compromiso_c'] = errors['fecha_compromiso_c'] || {};
+            errors['fecha_compromiso_c'].required = true;
+        }
+
         if (campos) {
             app.alert.show("Campos Requeridos", {
                 level: "error",
@@ -790,23 +799,16 @@
     },
 
     /**
-     * Función que valida si el usuario puede editar el campo tipificacion_riesgo_c
+     * Valida permiso si el usuario puede editar el campo tipificacion_riesgo_c
      */
     checkPermisoTipificacion: function () {
         var permisoBacklogTipificacion = app.user.attributes.backlog_tipificacion_c ? 1 : 0;    
         var fieldTipificacionRiesgo = this.getField('tipificacion_riesgo_c');
-
-        var listaEdicionTipificacion = [];    //Recupera Ids de usuarios que pueden editar backlog tipificación
-        Object.entries(App.lang.getAppListStrings('usuarios_permiso_backlog_tipificar_list')).forEach(([key, value]) => {
-            listaEdicionTipificacion.push(value);
-        });
-        listaEdicionTipificacion.includes(app.user.attributes.id);
-        //Valida permiso backlog tipificación y si existe el usuario en sesión en la lista de permisos backlog tipificación
-        if (permisoBacklogTipificacion === 1 && listaEdicionTipificacion.includes(app.user.attributes.id)) {
+        //Valida permiso backlog tipificación
+        if (permisoBacklogTipificacion === 1) {
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(false);
-            }
-            
+            }            
         } else {
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(true);
