@@ -88,6 +88,8 @@ class Backlog_platform_user
                     if ($relatedBean && !empty($relatedBean->idsolicitud_c)) {
                         // Seteamos el campo en el bean padre
                         $bean->numero_de_solicitud = $relatedBean->idsolicitud_c;
+                        $bean->assigned_user_id = $relatedBean->assigned_user_id;
+                        $bean->monto_original = $relatedBean->monto_c;
                         
                         $GLOBALS['log']->fatal("numero_de_solicitud actualizado: " . $bean->numero_de_solicitud);
                     } else {
