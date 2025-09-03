@@ -20,7 +20,7 @@
             
            
                 {{#notEq module "CotizadorProspectos"}}
-                    {{#notEq module "ExpedienteUniclick"}}
+                    {{!-- {{#notEq module "ExpedienteUniclick"}} --}}
                         
                             <!--{{#notEq module "Quantico"}}-->
                     {{#if meta.alias}} {{module}} {{else}} {{str 'LBL_MODULE_NAME' module}} {{/if}}
@@ -35,7 +35,7 @@
     
     
     {{#eq module "CotizadorProspectos"}} {{str 'Cotizador IPAD'}} {{/eq}}
-    {{#eq module "ExpedienteUniclick"}} {{str 'Expediente Uniclick'}} {{/eq}}
+    {{!-- {{#eq module "ExpedienteUniclick"}} {{str 'Expediente Uniclick'}} {{/eq}} --}}
     {{#eq module "Expediente"}} {{str 'Expediente Unifin'}} {{/eq}}
     
     <!--{{#eq module "Quantico"}}{{str 'Quantico'}} -->
@@ -46,7 +46,7 @@
     {{#notEq module "Expediente"}}
         
             {{#notEq module "CotizadorProspectos"}}
-                {{#notEq module "ExpedienteUniclick"}}
+                {{!-- {{#notEq module "ExpedienteUniclick"}} --}}
                     
                     <!-- {{#notEq module "Quantico"}}-->
         <a class="btn btn-invisible btn-link module-name" href="#{{buildRoute module=module}}" data-route="#{{buildRoute module=module}}" track="click:{{module}}" aria-label="{{str 'LBL_MODULE_NAME' module}}">{{str 'LBL_MODULE_NAME' module}}</a>
@@ -78,7 +78,7 @@
                 <li> <a class="ellipsis_inline"  tabindex="-1" href="#{{buildRoute module=module}}" data-route="#bwc/index.php?entryPoint=ExpedienteMod" track="click:{{module}}"><i class="fa fa-clipboard"></i>Expediente Unifin</a></li>
 
 
-                <li> <a class="ellipsis_inline"  tabindex="-1" href="#{{buildRoute module=module}}" data-route="#bwc/index.php?entryPoint=ExpedienteUniclick" track="click:{{module}}"><i class="fa fa-users"></i>Expediente Uniclick</a></li>
+                {{!-- <li> <a class="ellipsis_inline"  tabindex="-1" href="#{{buildRoute module=module}}" data-route="#bwc/index.php?entryPoint=ExpedienteUniclick" track="click:{{module}}"><i class="fa fa-users"></i>Expediente Uniclick</a></li> --}}
             </ul>
         </div>
     {{/eq}}

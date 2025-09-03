@@ -1,5 +1,8 @@
 ({
     extendsFrom: 'BaseView',
+    events: {
+        'submit #comentarioForm': 'enviarComentario'
+    },
 
     initialize: function (options) {
         this._super("initialize", [options]);
@@ -164,6 +167,7 @@
     decisionCambioBL: function (idBL) {
         console.log("...ACEPTA REACTIVACION BACKLOG...");
         this.msgExitoso = 0;
+        this.msgRechazado = 0;
 
         app.alert.show('procesa_acepta_reactivacion_bl', {
             level: 'process',
@@ -174,10 +178,15 @@
             success: _.bind(function (resBLnse) {
                 app.alert.dismiss('procesa_acepta_reactivacion_bl');
                 if (resBLnse.status == '200') {
-                    this.msgExitoso = 1;
+                    if(idBL.aprueba_reactivacion_c=="ACEPTAR"){
+                        this.msgExitoso = 1;
+                    }else if(idBL.aprueba_reactivacion_c=="RECHAZAR"){
+                        this.msgRechazado = 1;
+                    }
+                    
                     app.alert.show('alert_autoriza_reasignacion_bl', {
                         level: 'success',
-                        messages: 'Reasignación Autorizado...',
+                        messages: 'Reasignación Atendida...',
                     });
                     this.render(); // Asegura que el mensaje aparezca en la vista
                     // Redirigir después de 2 segundos

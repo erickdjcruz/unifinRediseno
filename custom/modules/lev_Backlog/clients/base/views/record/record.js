@@ -21,6 +21,8 @@
         //this.model.on("change:ri_final_comprometida_c", _.bind(this.setEtapa, this));
         this.model.addValidationTask('igualaMontosFinales', _.bind(this.igualaMontoFinalOpp, this));
         this.model.addValidationTask('camponovacio', _.bind(this.validacampoconversion, this));
+        this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
+        this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
 
         /************  CAmbiar valores tipo PRoducto LEasing   *****************/
         this.model.addValidationTask('num_tipo_producto', _.bind(this.num_tipo_leasing, this));
@@ -29,9 +31,6 @@
 
         //Reactivar Backlog
         this.context.on('button:reactivar_backlog:click', this.reactivarBacklog, this);
-
-        this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
-        this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
 
         // validación de los campos con formato númerico
         this.events['keydown [name=dif_residuales_c]'] = 'checkInVentas';
@@ -52,51 +51,12 @@
         this.model.addValidationTask('valida_monto_comprometido', _.bind(this.validarMontoComprometido, this));
         /// Validación dependencia declinada
         this.model.addValidationTask('validaDependenciaDeclinada', _.bind(this.validaDependenciaDeclinada, this));
-
-         // Valida permiso de tipificacion riesgo
-        this.model.on('sync', this.checkPermisoTipificacion, this);
-
-        // Configura bandera reactivación backlog
-        this.model.once('sync', () => {
-            console.log("Modelo sincronizado y vista renderizada");
-            this.carga_inicial = false;
-            this.on('render', () => {
-                console.log("Modelo sincronizado y vista renderizada");
-                this.carga_inicial = false;
-            });
-
-            var btnReactivaar = this.getField('solicitud_reactivacion');
-            var estatus = this.model.get('estatus_po_c');
-            var detalleOrigenVendors = this.model.get('detalle_origen_c');
-            if (estatus === '3' && detalleOrigenVendors === '116') {
-                btnDesvincular.show();
-            } else {
-                btnDesvincular.dispose();
-            }
-        });
-
-        htis.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
-        this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
-
-        // Después de guardar, mostrar mensaje y ocultar botón si corresponde
-        this.model.on('sync', () => {
-            if (this.vendorDesvinculado && this.origenDetalleModificado) {
-                app.alert.show("desvinculado", {
-                    level: "success",
-                    messages: "Vendor desvinculado.",
-                    autoClose: false
-                });
-
-                var btnDesvincular = this.getField('desvincular_vendor');
-                if (btnDesvincular) {
-                    btnDesvincular.dispose();
-                }
-
-                // Resetear banderas
-                this.vendorDesvinculado = false;
-                this.origenDetalleModificado = false;
-            }
-        });
+        // Valida permiso de tipificacion riesgo
+        this.model.on('sync', this.checkPermisoTipificacion, this);        
+        //Boton Reactivación 
+        this.context.on('button:reactiva_bkl:click', this.reactiva_bkl, this);
+        //ReadOnly Estatus Backlog Declinada
+        this.model.on('sync', this._readOnlyEstatusDeclinada, this);
     },
 
     _render: function () {
@@ -668,6 +628,15 @@
                 }
             }, this);
         }, this);
+
+        //VALIDA FECHA COMPROMISO
+        if (this.model.get('fecha_compromiso_c') == '' || this.model.get('fecha_compromiso_c') == null) {
+            campos = campos + '<b>' + 'Fecha compromiso' + '</b><br>';
+
+            errors['fecha_compromiso_c'] = errors['fecha_compromiso_c'] || {};
+            errors['fecha_compromiso_c'].required = true;
+        }
+
         if (campos) {
             app.alert.show("Campos Requeridos", {
                 level: "error",
@@ -830,23 +799,16 @@
     },
 
     /**
-     * Función que valida si el usuario puede editar el campo tipificacion_riesgo_c
+     * Valida permiso si el usuario puede editar el campo tipificacion_riesgo_c
      */
     checkPermisoTipificacion: function () {
         var permisoBacklogTipificacion = app.user.attributes.backlog_tipificacion_c ? 1 : 0;    
         var fieldTipificacionRiesgo = this.getField('tipificacion_riesgo_c');
-
-        var listaEdicionTipificacion = [];    //Recupera Ids de usuarios que pueden editar backlog tipificación
-        Object.entries(App.lang.getAppListStrings('usuarios_permiso_backlog_tipificar_list')).forEach(([key, value]) => {
-            listaEdicionTipificacion.push(value);
-        });
-        listaEdicionTipificacion.includes(app.user.attributes.id);
-        //Valida permiso backlog tipificación y si existe el usuario en sesión en la lista de permisos backlog tipificación
-        if (permisoBacklogTipificacion === 1 && listaEdicionTipificacion.includes(app.user.attributes.id)) {
+        //Valida permiso backlog tipificación
+        if (permisoBacklogTipificacion === 1) {
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(false);
-            }
-            
+            }            
         } else {
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(true);

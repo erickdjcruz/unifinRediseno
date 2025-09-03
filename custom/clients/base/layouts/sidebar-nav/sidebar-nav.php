@@ -152,19 +152,19 @@ $viewdefs['base']['layout']['sidebar-nav'] = [
                             ],
                         ],
                     ],
-                    [
-                        'view' => [
-                            'name' => 'sidebar-nav-item-expediente',
-                            'type' => 'sidebar-nav-item-module',
-                            'icon' => 'sicon-data-table',
-                            'display_type' => 'abbreviation',
-                            'abbreviation' => 'Qu',
-                            'label' => 'Expediente Uniclick',
-                            //'secondary_action' => true,
-                            'route' => 'bwc/index.php?entryPoint=ExpedienteUniclick',
-                            'template' => 'sidebar-nav-item',
-                        ],
-                    ],
+                    // [
+                    //     'view' => [
+                    //         'name' => 'sidebar-nav-item-expediente',
+                    //         'type' => 'sidebar-nav-item-module',
+                    //         'icon' => 'sicon-data-table',
+                    //         'display_type' => 'abbreviation',
+                    //         'abbreviation' => 'Qu',
+                    //         'label' => 'Expediente Uniclick',
+                    //         //'secondary_action' => true,
+                    //         'route' => 'bwc/index.php?entryPoint=ExpedienteUniclick',
+                    //         'template' => 'sidebar-nav-item',
+                    //     ],
+                    // ],
                     [
                         'view' => [
                             'name' => 'sidebar-nav-item-expediente',

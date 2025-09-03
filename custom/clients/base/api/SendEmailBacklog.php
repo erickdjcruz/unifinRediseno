@@ -124,7 +124,7 @@ class SendEmailBacklog extends SugarApi
 
                 $response['status'] = '200';
                 $response['description'] = 'Se generó envío de correo';
-                $GLOBALS['log']->fatal("Se envió correo de notificación al Director...");
+                $GLOBALS['log']->fatal("Se envió correo de notificación al Director... " . $nombreDirector . " - " . $emailDirector);
             } else {
                 $response['status'] = '401';
                 $response['description'] = 'No se encontró correo del Director a notificar';
