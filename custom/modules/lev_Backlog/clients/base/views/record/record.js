@@ -792,8 +792,8 @@
                 autoClose: false
             });
 
-            errors['valida_declinacion'] = errors['valida_declinacion'] || {};
-            errors['valida_declinacion'].required = true;
+            errors['motivo_declinacion_c'] = errors['motivo_declinacion_c'] || {};
+            errors['motivo_declinacion_c'].required = true;
         }
         callback(null, fields, errors);
     },
