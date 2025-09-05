@@ -110,8 +110,13 @@ AND rc.seguimiento_bc_c = 1 ";
         $beanDireccionFiscal = $this->getDireFiscal($idCliente);
 
         if ($beanDireccionFiscal != "") {
+            $GLOBALS['log']->fatal("tieneDireccionFiscal ID: " . $beanDireccionFiscal->id . " NOMBRE: " . $beanDireccionFiscal->name);
+
+            $tieneDireccionBR = $this->tieneDireBuroCredito($idCliente);
+            $GLOBALS['log']->fatal("tieneDireBuroCredito: " . ($tieneDireccionBR ? 'true' : 'false'));
+
             //Se genera nueva Dirección Buró de Crédito solo si el Cliente no cuenta con una
-            if (!$this->tieneDireBuroCredito($idCliente)) {
+            if (!$tieneDireccionBR) {
                 $beanNuevaDireccionBuro = BeanFactory::newBean('dire_Direccion');
 
                 $beanNuevaDireccionBuro->name = $beanDireccionFiscal->name;
@@ -138,17 +143,23 @@ AND rc.seguimiento_bc_c = 1 ";
                     "msg" => "El Cliente " . $beanCliente->name . " se ha establecido para seguimiento de Buró de Crédito",
                     "id_direccion" => $beanNuevaDireccionBuro->id
                 );
+
+                $GLOBALS['log']->fatal("El Cliente " . $beanCliente->name . " se ha establecido para seguimiento de Buró de Crédito - id_direccion: " . $beanNuevaDireccionBuro->id); 
+
             } else {
                 $response = array(
                     "msg" => "El Cliente " . $beanCliente->name . " se ha establecido para seguimiento de Buró de Crédito",
                     "id_direccion" => "Ya cuenta con dirección Buró de Crédito previa"
                 );
+
+                $GLOBALS['log']->fatal("El Cliente " . $beanCliente->name . " se ha establecido para seguimiento de Buró de Crédito - id_direccion: Ya cuenta con dirección Buró de Crédito previa"); 
             }
         } else {
             $response = array(
                 "msg" => "El Cliente " . $beanCliente->name . " se ha establecido para seguimiento de Buró de Crédito",
                 "id_direccion" => ""
             );
+            $GLOBALS['log']->fatal("El Cliente " . $beanCliente->name . " se ha establecido para seguimiento de Buró de Crédito - id_direccion: SIN DIRECCION"); 
         }
 
         return $response;
