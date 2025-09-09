@@ -49,12 +49,20 @@ array (
               ),
               4 => 
               array (
+                'name' => 'estatus_backlog_c',
+                'label' => 'LBL_ESTATUS_BACKLOG_C',
+                'enabled' => true,
+                'readonly' => false,
+                'default' => true,
+              ),
+              5 => 
+              array (
                 'name' => 'progreso',
                 'label' => 'LBL_PROGRESO',
                 'enabled' => true,
                 'default' => true,
               ),
-              5 => 
+              6 => 
               array (
                 'label' => 'LBL_DATE_MODIFIED',
                 'enabled' => true,
@@ -62,14 +70,14 @@ array (
                 'name' => 'date_modified',
                 'readonly' => true,
               ),
-              6 => 
+              7 => 
               array (
                 'name' => 'mes',
                 'label' => 'LBL_MES',
                 'enabled' => true,
                 'default' => false,
               ),
-              7 => 
+              8 => 
               array (
                 'name' => 'rango_bl_c',
                 'label' => 'LBL_RANGO_BL',
@@ -77,7 +85,7 @@ array (
                 'readonly' => false,
                 'default' => false,
               ),
-              8 => 
+              9 => 
               array (
                 'name' => 'team_name',
                 'label' => 'LBL_TEAM',
