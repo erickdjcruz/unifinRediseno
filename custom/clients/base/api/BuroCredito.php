@@ -128,7 +128,44 @@ AND rc.seguimiento_bc_c = 1 ";
                 $beanNuevaDireccionBuro->dire_direccion_dire_coloniadire_colonia_ida = $beanDireccionFiscal->dire_direccion_dire_coloniadire_colonia_ida;
                 $beanNuevaDireccionBuro->dire_direccion_dire_ciudaddire_ciudad_ida = $beanDireccionFiscal->dire_direccion_dire_ciudaddire_ciudad_ida;
                 */
-                $beanNuevaDireccionBuro->dir_sepomex_dire_direcciondir_sepomex_ida = $beanDireccionFiscal->dir_sepomex_dire_direcciondir_sepomex_ida;
+
+                $idSepomex = $beanDireccionFiscal->dir_sepomex_dire_direcciondir_sepomex_ida;
+                $args_dir_sepomex = [];
+                
+                $sqlQuery = "SELECT id , codigo_postal ,  colonia , municipio , estado , ciudad , id_pais, id_estado, id_ciudad, id_municipio, id_colonia 
+                from dir_sepomex where id = '{$idSepomex}';";
+                $result = $GLOBALS['db']->query($sqlQuery);
+                $ciudadf = $cpf = $coloniaf = $municipiof = $estadof = ''; 
+
+                $idPais = $idEstado = $idCiudad = $idMunicipio = $idColonia = "";
+
+                $arreglo = [" ","", ".", "-", "_", "Sin Colonia", "SIN COLONIA","OTRA NO ESPECIFICADA EN EL CATALOGO"];
+                while($row = $GLOBALS['db']->fetchByAssoc($result)) {
+                    if(in_array( $row['ciudad'], $arreglo) ){
+
+                        $idPais = $row['id_pais'];
+                        $idEstado = $row['id_estado'];
+                        $idCiudad = $row['id_ciudad'];
+                        $idMunicipio = $row['id_municipio'];
+                        $idColonia = $row['id_colonia'];
+
+                        $args_dir_sepomex['module'] =  'DireccionesQR';
+                        $args_dir_sepomex['cp'] = $row['codigo_postal'];
+                        $args_dir_sepomex['indice'] = 0;
+                        $args_dir_sepomex['colonia_rfc'] = $row['colonia'] ;
+                        $args_dir_sepomex['ciudad_rfc'] = $row['municipio'];
+                        $args_dir_sepomex['entidad_rfc'] = $row['estado'];
+                        $args_dir_sepomex['ciudad_csf'] = $row['municipio'];
+                        array_push($args_dir_sepomex,$row);
+
+                        $apigetSepomex = new getDireccionCPQR();
+                        $response = $apigetSepomex->getAddressByCPQR(null, $args_dir_sepomex);
+                        $idSepomex = $response['id'];
+                    }                    
+                }
+               
+                $beanNuevaDireccionBuro->description = "{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
+                $beanNuevaDireccionBuro->dir_sepomex_dire_direcciondir_sepomex_ida = $idSepomex;
 
                 $beanNuevaDireccionBuro->calle = $beanDireccionFiscal->calle;
                 $beanNuevaDireccionBuro->numext = $beanDireccionFiscal->numext;
@@ -147,6 +184,8 @@ AND rc.seguimiento_bc_c = 1 ";
                 $GLOBALS['log']->fatal("El Cliente " . $beanCliente->name . " se ha establecido para seguimiento de Buró de Crédito - id_direccion: " . $beanNuevaDireccionBuro->id); 
 
             } else {
+                $GLOBALS['log']->fatal("id_direccion api buro: " . $direccion_row['id']);                 
+                /*************************************************************************** */
                 $response = array(
                     "msg" => "El Cliente " . $beanCliente->name . " se ha establecido para seguimiento de Buró de Crédito",
                     "id_direccion" => "Ya cuenta con dirección Buró de Crédito previa"
@@ -225,4 +264,3 @@ AND rc.seguimiento_bc_c = 1 ";
     }
 
 }
-
