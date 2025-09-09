@@ -30,7 +30,8 @@ class reactiva_bkl extends SugarApi
     public function notificaReactivaBL($api, $args)
     {
         $GLOBALS['log']->fatal("---------- notificaReactivacion BL -----------");
-        
+        global $db, $current_user;
+
         $idRegistro            = isset($args['idRegistro']) ? $args['idRegistro'] : '';
         $motivo                = isset($args['motivo_declinacion_c']) ? $args['motivo_declinacion_c'] : '';
         $aprueba               = isset($args['aprueba_reactivacion_c']) ? $args['aprueba_reactivacion_c'] : '';
@@ -47,6 +48,9 @@ class reactiva_bkl extends SugarApi
         $GLOBALS['log']->fatal("fecha_actualizacion".$fecha_actualizacion);
         $GLOBALS['log']->fatal("fecha_actualizacion_neg".$fecha_actualizacion_neg);
 
+        $dt = new DateTime($fecha_actualizacion);
+        $dt1 = new DateTime($fecha_actualizacion_neg);
+        
         $id_bl = $idRegistro;
 
         $beanBL = BeanFactory::retrieveBean('lev_Backlog', $idRegistro, array('disable_row_level_security' => true));
@@ -70,17 +74,22 @@ class reactiva_bkl extends SugarApi
         if($aprueba=='ACEPTAR'){
             $accion = 'Aceptada';
 
-            $beanBL->fecha_reactivacion_c = $fecha_actualizacion;
+            $beanBL->fecha_reactivacion_c = $dt->format("Y-m-d H:i:s"); ;
             $beanBL->aprobador_reactivacion_c = '';
             $beanBL->motivo_reactivacion_c = '';
             $beanBL->motivo_declinacion_c = '';
             $beanBL->fecha_sol_reactivacion_c = '';
             $beanBL->estatus_backlog_c = $estatus;
+            //$query = "UPDATE lev_backlog_cstm set fecha_reactivacion_c = '{$fecha_actualizacion}' WHERE id_c = '{$beanBL->id}'";
+            //$result = $db->query($query);
         }
         if($aprueba=='RECHAZAR'){
             $accion = 'Rechazada';
 
-            $beanBL->fecha_reactivacion_neg_c = $fecha_actualizacion_neg;
+            $beanBL->fecha_reactivacion_neg_c = $dt1->format("Y-m-d H:i:s"); ;
+
+            //$query = "UPDATE lev_backlog_cstm set fecha_reactivacion_neg_c = '{$fecha_actualizacion_neg}' WHERE id_c = '{$beanBL->id}'";
+            //$result = $db->query($query);
         }
 
         $GLOBALS['log']->fatal("Backlog antes save- api estatus:".$beanBL->estatus_backlog_c);
@@ -190,9 +199,9 @@ class reactiva_bkl extends SugarApi
         $beanBkl->save();
         
         $bodyCorreo = $this->buildBodyEnviaPeticionAutorizacionDirector( $name_comercial, $idRegistro , $motivo);
-        $GLOBALS['log']->fatal("emails" .$correoAsesor . " - " . $email_comercial);
+        $GLOBALS['log']->fatal("email director" . $email_comercial);
         if(!empty($email_comercial)){
-            $this->sendEmailPeticionAutorizacionDirector($correoAsesor ,$email_comercial,$bodyCorreo,$beanBkl->name, $cuenta,$numsol , $idRegistro, $id_director_comercial, $motivo);
+            $this->sendEmailPeticionAutorizacionDirector( $email_comercial,$bodyCorreo,$beanBkl->name, $cuenta,$numsol , $idRegistro, $id_director_comercial, $motivo);
             return array(
                 "status" => "success",
                 "msj" => "Se ha enviado el correo"
@@ -233,7 +242,7 @@ class reactiva_bkl extends SugarApi
         return $user;
     }
 
-    public function sendEmailPeticionAutorizacionDirector($correoAsesor , $emailDirector, $body_correo, $cuenta , $numsol , $idRegistro, $id_director_comercial, $motivo){
+    public function sendEmailPeticionAutorizacionDirector($emailDirector, $body_correo, $cuenta , $numsol , $idRegistro, $id_director_comercial, $motivo){
         try{
             $mailer = MailerFactory::getSystemDefaultMailer();
             $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
@@ -242,7 +251,7 @@ class reactiva_bkl extends SugarApi
             $mailer->setHtmlBody($body);
             $mailer->clearRecipients();
             $mailer->addAttachment(new \EmbeddedImage('Copia_de_Recurso-2unileasingazulLOW', 'custom/images_email/Copia_de_Recurso-2unileasingazulLOW.png', 'Copia_de_Recurso-2unileasingazulLOW'), "Copia_de_Recurso-2unileasingazulLOW");
-            $mailer->addRecipientsTo(new EmailIdentity($correoAsesor, $emailDirector));
+            $mailer->addRecipientsTo(new EmailIdentity( $emailDirector));
             $result = $mailer->send();
         } catch (Exception $e){
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");

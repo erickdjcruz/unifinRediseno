@@ -51,11 +51,11 @@
                 autoClose: true
             });
         }
-        if (mensajeCorreo.length > 300 || mensajeCorreo.length < 250){
+        if (mensajeCorreo.length > 300 ){
             error = true;
             app.alert.show('mensajeVacio', {
                 level: 'error',
-                messages: 'El texto de Motivo de reactivación tiene que ser entre 250–300 caracteres.',
+                messages: 'El texto de Motivo de reactivación no tiene que ser mayor a 300 caracteres.',
                 autoClose: true
             });
         }
