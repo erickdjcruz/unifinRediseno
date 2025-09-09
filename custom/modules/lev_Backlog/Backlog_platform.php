@@ -59,7 +59,7 @@ class Backlog_platform_user
     }
 
     public function actualizaSolicitud($bean = null, $event = null, $args = null)
-    {
+    {       
         // Corregimos la condición del log (agregando paréntesis)
         $GLOBALS['log']->fatal("platform: " . (isset($_SESSION['platform']) ? $_SESSION['platform'] : 'no definido'));
         
@@ -99,6 +99,11 @@ class Backlog_platform_user
                     $GLOBALS['log']->fatal("No hay IDs relacionados");
                 }
             }
+
+            if($bean->assigned_user_id != '' && $bean->assigned_user_id != null){
+                $beanUsuario = BeanFactory::retrieveBean('Users', $bean->assigned_user_id , array('disable_row_level_security' => true));
+                $bean->equipo = $beanUsuario->equipo_c;
+            }            
             
             if (!$linkFound) {
                 $GLOBALS['log']->fatal("No se pudo cargar ninguna relación");
