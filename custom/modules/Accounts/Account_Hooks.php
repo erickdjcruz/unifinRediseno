@@ -538,7 +538,7 @@ SQL;
         $GLOBALS['log']->fatal("******DIRECCION DE BURÓ*****");
         //Validación para evitar que entre proceso cuando no se ha establecido valor en dirección de buró
         if (is_countable($bean->account_direccion_buro_credito)) {
-            if (count($bean->account_direccion_buro_credito) > 0) {
+            if (count($bean->account_direccion_buro_credito) == 1) {
                 foreach ($bean->account_direccion_buro_credito as $direccion_row) {
                     $direccion = BeanFactory::getBean('dire_Direccion', $direccion_row['id']);
                     if (empty($direccion_row['id'])) {
@@ -576,8 +576,28 @@ SQL;
                     //
                     // populate related account id
                     $direccion->accounts_dire_direccion_1accounts_ida = $bean->id;
-
-
+					// Related Sepomex
+					$id_postal = $direccion_row['valCodigoPostal'];
+					$id_colonia = $direccion_row['colonia'];
+                    $query_sepomex="SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}' and id_colonia='{$id_colonia}'";
+                    $id_sepomex = '';
+                    $result_sepomex = $db->query($query_sepomex);
+                    while ($row = $GLOBALS['db']->fetchByAssoc($result_sepomex)) {
+                        $namePais=$row['pais'];
+                        $idPais=$row['id_pais'];
+                        $nameCP=$row['codigo_postal'];
+                        $nameEstado=$row['estado'];
+                        $idEstado=$row['id_estado'];
+                        $nameCiudad=$row['ciudad'];
+                        $idCiudad=$row['id_ciudad'];
+                        $nameColonia=$row['colonia'];
+                        $idColonia=$row['id_colonia'];
+                        $nameMunicipio=$row['municipio'];
+                        $idMunicipio=$row['id_municipio'];
+                        $id_sepomex = $row['id'];
+                    }
+                    $direccion->description="{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
+					$direccion->dir_sepomex_dire_direcciondir_sepomex_ida=$id_sepomex;
                     $nombre_colonia_query = "Select name from dire_colonia where id ='" . $direccion_row['colonia'] . "'";
                     $nombre_municipio_query = "Select name from dire_municipio where id ='" . $direccion_row['municipio'] . "'";
                     $querycolonia = $db->query($nombre_colonia_query);
@@ -585,9 +605,7 @@ SQL;
                     $querymunicipio = $db->query($nombre_municipio_query);
                     $municipioName = $db->fetchByAssoc($querymunicipio);
                     $direccion_completa = $direccion_row['calle'] . " " . $direccion_row['numext'] . " " . ($direccion_row['numint'] != "" ? "Int: " . $direccion_row['numint'] : "") . ", Colonia " . $coloniaName['name'] . ", Municipio " . $municipioName['name'];
-
                     $direccion->name = $direccion_completa;
-
                     if ($direccion->load_relationship('dire_direccion_dire_pais')) {
                         if ($direccion_row['pais'] !== $direccion->dire_direccion_dire_paisdire_pais_ida) {
                             $direccion->dire_direccion_dire_pais->delete($direccion->id);
