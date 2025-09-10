@@ -225,6 +225,11 @@ class getDireccionCPQR extends SugarApi
             $id_sepomex = Uuid::uuid1();
             $GLOBALS['log']->fatal('id_sepomex',$id_sepomex);
             $name = "$pais $cod_postal $estado_QR $colonia_QR";
+
+            $estado_QR  = ($estado_QR == '_') ? '' : $estado_QR;
+            $ciudad_csf  = ($ciudad_csf == '_') ? '' : $ciudad_csf;
+            $ciudad_QR  = ($ciudad_QR == '_') ? '' : $ciudad_QR;
+            $colonia_QR  = ($colonia_QR == '_') ? '' : $colonia_QR;
             
             // Insertar en dir_sepomex
             $insert_query = "INSERT IGNORE INTO dir_sepomex (id, name, date_entered, date_modified, modified_user_id, created_by, description, deleted, pais, id_pais, codigo_postal, estado, id_estado, ciudad, id_ciudad, municipio, id_municipio, colonia, id_colonia, team_id, team_set_id) 

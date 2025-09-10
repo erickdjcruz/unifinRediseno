@@ -27,6 +27,15 @@
 		this.getUserInfo();
 	},
 
+	normalizarTexto: function(texto) {
+		if (!texto) return '';
+	    texto = texto.toUpperCase();
+		texto = texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+		texto = texto.trim().replace(/\s+/g, " ");
+
+    	return texto;
+    },
+
 	render: function () {
 		this._super("render");
 		$("div.record-label[data-name='rfc_qr']").attr('style', 'pointer-events:none;');
@@ -607,8 +616,8 @@
 													}
 												});
 												// Agrega Dirección
-												//Colonia = (Colonia == ' ' || Colonia == '') ? '_' : Colonia;
-												//Ciudad = (Ciudad == '') ? '_' : Ciudad;
+												Colonia = (Colonia == ' ' || Colonia == '') ? '_' : Colonia;
+												Ciudad = (Ciudad == '') ? '_' : Ciudad;
 
 												var strUrl = 'DireccionesQR/' + CP + '/0/' + Colonia + '/' + Municipio + '/' + Estado + '/' + Ciudad;
 												strUrl = strUrl.replaceAll(' ', '+');
@@ -652,7 +661,7 @@
 																listColonia[i]['idColonia'] = list_colonias[i].idColonia;
 																listColonia[i]['nameColonia'] = list_colonias[i].nameColonia;
 																listColonia[i]['idCodigoPostal'] = list_colonias[i].idCodigoPostal;
-																if (list_colonias[i].nameColonia == Colonia) auxColonia = list_colonias[i].idColonia;
+																auxColonia = list_colonias[i].idColonia;
 															}
 															/*if(auxColonia==''){
 																listColonia['']="";
@@ -663,7 +672,8 @@
 															var idSinCiudad = '';
 															for (var i = 0; i < list_ciudades.length; i++) {
 																listCiudad[list_ciudades[i].idCiudad] = list_ciudades[i].nameCiudad;
-																if (list_ciudades[i].nameCiudad.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase() == Ciudad.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase()) auxCiudad = list_ciudades[i].idCiudad;
+																//if (list_ciudades[i].nameCiudad.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase() == Ciudad.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase()) auxCiudad = list_ciudades[i].idCiudad;
+																auxCiudad = list_ciudades[i].idCiudad;
 																idSinCiudad = (list_ciudades[i].nameCiudad == 'SIN CIUDAD') ? list_ciudades[i].idCiudad : idSinCiudad;
 															}
 
@@ -991,7 +1001,7 @@
 														var sinciudad = [" ","", ".", "-", "_" , "Sin Ciudad", "SIN CIUDAD","OTRA NO ESPECIFICADA EN EL CATALOGO"];
 						
 														
-														if ( contexto_dire_buro.direccionBuro == 0){
+														if ( contexto_dire_buro.direccionBuro.length == 0){
 
 															/***********************/
 															//Itera para validar diferencia en dirección fiscal
@@ -1127,9 +1137,7 @@
 																			var auxMunicipio = '';
 																			for (var i = 0; i < data.municipios.length; i++) {
 																				listMunicipio[data.municipios[i].idMunicipio] = data.municipios[i].nameMunicipio;
-																				if (data.municipios[i].nameMunicipio == Municipio) {
-																					auxMunicipio = data.municipios[i].idMunicipio;
-																				}
+																				auxMunicipio = data.municipios[i].idMunicipio;
 																			}
 
 																			// === Colonia ===
@@ -1141,9 +1149,7 @@
 																					nameColonia: data.colonias[i].nameColonia,
 																					idCodigoPostal: data.colonias[i].idCodigoPostal
 																				};
-																				if (data.colonias[i].nameColonia == Colonia) {
-																					auxColonia = data.colonias[i].idColonia;
-																				}
+																				auxColonia = data.colonias[i].idColonia;
 																			}
 
 																			// === Ciudad ===
@@ -1152,15 +1158,8 @@
 																			var idSinCiudad = '';
 																			for (var i = 0; i < data.ciudades.length; i++) {
 																				listCiudad[data.ciudades[i].idCiudad] = data.ciudades[i].nameCiudad;
-																				if (
-																					data.ciudades[i].nameCiudad.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase() ==
-																					Ciudad.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase()
-																				) {
-																					auxCiudad = data.ciudades[i].idCiudad;
-																				}
-																				if (data.ciudades[i].nameCiudad == 'SIN CIUDAD') {
-																					idSinCiudad = data.ciudades[i].idCiudad;
-																				}
+																				auxCiudad = data.ciudades[i].idCiudad;
+																				idSinCiudad = data.ciudades[i].idCiudad;
 																			}
 
 																			// Validar valores vacíos
@@ -1828,8 +1827,8 @@
 																}
 															});
 															// Agrega Dirección
-															//Colonia = (Colonia == ' ' || Colonia == '') ? '_' : Colonia;
-															//Ciudad = (Ciudad == '') ? '_' : Ciudad;
+															Colonia = (Colonia == ' ' || Colonia == '') ? '_' : Colonia;
+															Ciudad = (Ciudad == '') ? '_' : Ciudad;
 
 															var strUrl = 'DireccionesQR/' + CP + '/0/' + Colonia + '/' + Municipio + '/' + Estado + '/' + Ciudad;
 															strUrl = strUrl.replaceAll(' ', '+');
@@ -1857,37 +1856,37 @@
 																			listEstado[list_estados[i].idEstado] = list_estados[i].nameEstado;
 																			auxEstado = list_estados[i].idEstado;
 																		}
-																		//Municipio
+																		// === Municipio ===
 																		var listMunicipio = {};
 																		var auxMunicipio = '';
-																		for (var i = 0; i < list_municipios.length; i++) {
-																			listMunicipio[list_municipios[i].idMunicipio] = list_municipios[i].nameMunicipio;
-																			if (list_municipios[i].nameMunicipio == Municipio) auxMunicipio = list_municipios[i].idMunicipio;
+																		for (var i = 0; i < data.municipios.length; i++) {
+																			listMunicipio[data.municipios[i].idMunicipio] = data.municipios[i].nameMunicipio;
+																			auxMunicipio = data.municipios[i].idMunicipio;
 																		}
-																		//Colonia
-																		var listColonia = {};
+
+																		// === Colonia ===
+																		var listColonia = [];
 																		var auxColonia = '';
-																		for (var i = 0; i < list_colonias.length; i++) {
-																			//listColonia[list_colonias[i].idColonia] = list_colonias[i].nameColonia;
-																			listColonia[i] = {};
-																			listColonia[i]['idColonia'] = list_colonias[i].idColonia;
-																			listColonia[i]['nameColonia'] = list_colonias[i].nameColonia;
-																			listColonia[i]['idCodigoPostal'] = list_colonias[i].idCodigoPostal;
-																			if (list_colonias[i].nameColonia == Colonia) auxColonia = list_colonias[i].idColonia;
+																		for (var i = 0; i < data.colonias.length; i++) {
+																			listColonia[i] = {
+																				idColonia: data.colonias[i].idColonia,
+																				nameColonia: data.colonias[i].nameColonia,
+																				idCodigoPostal: data.colonias[i].idCodigoPostal
+																			};
+																			auxColonia = data.colonias[i].idColonia;
 																		}
-																		/*if(auxColonia==''){
-																			listColonia['']="";
-																		}*/
-																		//Ciudad
+
+																		// === Ciudad ===
 																		var listCiudad = {};
 																		var auxCiudad = '';
 																		var idSinCiudad = '';
-																		for (var i = 0; i < list_ciudades.length; i++) {
-																			listCiudad[list_ciudades[i].idCiudad] = list_ciudades[i].nameCiudad;
-																			if (list_ciudades[i].nameCiudad.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase() == Ciudad.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase()) auxCiudad = list_ciudades[i].idCiudad;
-																			idSinCiudad = (list_ciudades[i].nameCiudad == 'SIN CIUDAD') ? list_ciudades[i].idCiudad : idSinCiudad;
+																		for (var i = 0; i < data.ciudades.length; i++) {
+																			listCiudad[data.ciudades[i].idCiudad] = data.ciudades[i].nameCiudad;
+																			auxCiudad = data.ciudades[i].idCiudad;
+																			idSinCiudad = data.ciudades[i].idCiudad;
 																		}
 
+																		// Validar valores vacíos
 																		if (auxPais == "") auxPais = Object.keys(listPais)[0];
 																		if (auxEstado == "") auxEstado = Object.keys(listEstado)[0];
 																		if (auxMunicipio == "") auxMunicipio = Object.keys(listMunicipio)[0];
@@ -2211,7 +2210,7 @@
 																	var sincolonia = [" ","", ".", "-", "_", "Sin Colonia", "SIN COLONIA","OTRA NO ESPECIFICADA EN EL CATALOGO"];
 																	var sinciudad = [" ","", ".", "-", "_" , "Sin Ciudad", "SIN CIUDAD","OTRA NO ESPECIFICADA EN EL CATALOGO"];
 									
-																	if ( contexto_dire_buro.direccionBuro == 0){
+																	if ( contexto_dire_buro.direccionBuro.length == 0){
 
 																		/***********************/
 																		//Itera para validar diferencia en dirección fiscal
@@ -2347,9 +2346,7 @@
 																						var auxMunicipio = '';
 																						for (var i = 0; i < data.municipios.length; i++) {
 																							listMunicipio[data.municipios[i].idMunicipio] = data.municipios[i].nameMunicipio;
-																							if (data.municipios[i].nameMunicipio == Municipio) {
-																								auxMunicipio = data.municipios[i].idMunicipio;
-																							}
+																							auxMunicipio = data.municipios[i].idMunicipio;
 																						}
 
 																						// === Colonia ===
@@ -2361,9 +2358,7 @@
 																								nameColonia: data.colonias[i].nameColonia,
 																								idCodigoPostal: data.colonias[i].idCodigoPostal
 																							};
-																							if (data.colonias[i].nameColonia == Colonia) {
-																								auxColonia = data.colonias[i].idColonia;
-																							}
+																							auxColonia = data.colonias[i].idColonia;
 																						}
 
 																						// === Ciudad ===
@@ -2372,15 +2367,8 @@
 																						var idSinCiudad = '';
 																						for (var i = 0; i < data.ciudades.length; i++) {
 																							listCiudad[data.ciudades[i].idCiudad] = data.ciudades[i].nameCiudad;
-																							if (
-																								data.ciudades[i].nameCiudad.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase() ==
-																								Ciudad.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase()
-																							) {
-																								auxCiudad = data.ciudades[i].idCiudad;
-																							}
-																							if (data.ciudades[i].nameCiudad == 'SIN CIUDAD') {
-																								idSinCiudad = data.ciudades[i].idCiudad;
-																							}
+																							auxCiudad = data.ciudades[i].idCiudad;
+																							idSinCiudad = data.ciudades[i].idCiudad;
 																						}
 
 																						// Validar valores vacíos
