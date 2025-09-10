@@ -1,6 +1,6 @@
 <?php
 
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 class reactiva_bkl extends SugarApi
 {
@@ -38,43 +38,43 @@ class reactiva_bkl extends SugarApi
         $fecha_actualizacion   = isset($args['fecha_reactivacion_c']) ? $args['fecha_reactivacion_c'] : '';
         $fecha_actualizacion_neg = isset($args['fecha_reactivacion_neg_c']) ? $args['fecha_reactivacion_neg_c'] : '';
         $estatus               = isset($args['estatus_backlog_c']) ? $args['estatus_backlog_c'] : '';
-        
+
         $response = [];
         $response['status'] = '';
         $response['description'] = '';
-        
-        $GLOBALS['log']->fatal("aprueba".$aprueba);
-        $GLOBALS['log']->fatal("estatus".$estatus);
-        $GLOBALS['log']->fatal("fecha_actualizacion".$fecha_actualizacion);
-        $GLOBALS['log']->fatal("fecha_actualizacion_neg".$fecha_actualizacion_neg);
+
+        $GLOBALS['log']->fatal("aprueba" . $aprueba);
+        $GLOBALS['log']->fatal("estatus" . $estatus);
+        $GLOBALS['log']->fatal("fecha_actualizacion" . $fecha_actualizacion);
+        $GLOBALS['log']->fatal("fecha_actualizacion_neg" . $fecha_actualizacion_neg);
 
         $dt = new DateTime($fecha_actualizacion);
         $dt1 = new DateTime($fecha_actualizacion_neg);
-        
+
         $id_bl = $idRegistro;
 
         $beanBL = BeanFactory::retrieveBean('lev_Backlog', $idRegistro, array('disable_row_level_security' => true));
-        $GLOBALS['log']->fatal("Backlog-name:".$beanBL->name);
-        $GLOBALS['log']->fatal("Backlog id:".$beanBL->id);
-        $GLOBALS['log']->fatal("Backlog estatus:".$beanBL->estatus_backlog_c);
+        $GLOBALS['log']->fatal("Backlog-name:" . $beanBL->name);
+        $GLOBALS['log']->fatal("Backlog id:" . $beanBL->id);
+        $GLOBALS['log']->fatal("Backlog estatus:" . $beanBL->estatus_backlog_c);
 
         $idAsesor = $beanBL->assigned_user_id;
         /********************************************/
         $beanAsesor = BeanFactory::retrieveBean('Users', $idAsesor, array('disable_row_level_security' => true));
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
-        if($id_director_comercial != ""){
+        if ($id_director_comercial != "") {
             $info_comercial = $this->getInfoUser($id_director_comercial);
             $name_comercial = $info_comercial['name'];
             $email_comercial = $info_comercial['email'];
         }
         /*****************************************************/
         $beanBL->aprueba_reactivacion_c = $aprueba;
-        
+
         //$beanBL->fecha_sol_reactivacion_c = $fechasolicitud;
-        if($aprueba=='ACEPTAR'){
+        if ($aprueba == 'ACEPTAR') {
             $accion = 'Aceptada';
 
-            $beanBL->fecha_reactivacion_c = $dt->format("Y-m-d H:i:s"); ;
+            $beanBL->fecha_reactivacion_c = $dt->format("Y-m-d H:i:s");;
             $beanBL->aprobador_reactivacion_c = '';
             $beanBL->motivo_reactivacion_c = '';
             $beanBL->motivo_declinacion_c = '';
@@ -83,21 +83,21 @@ class reactiva_bkl extends SugarApi
             //$query = "UPDATE lev_backlog_cstm set fecha_reactivacion_c = '{$fecha_actualizacion}' WHERE id_c = '{$beanBL->id}'";
             //$result = $db->query($query);
         }
-        if($aprueba=='RECHAZAR'){
+        if ($aprueba == 'RECHAZAR') {
             $accion = 'Rechazada';
 
-            $beanBL->fecha_reactivacion_neg_c = $dt1->format("Y-m-d H:i:s"); ;
+            $beanBL->fecha_reactivacion_neg_c = $dt1->format("Y-m-d H:i:s");;
 
             //$query = "UPDATE lev_backlog_cstm set fecha_reactivacion_neg_c = '{$fecha_actualizacion_neg}' WHERE id_c = '{$beanBL->id}'";
             //$result = $db->query($query);
         }
 
-        $GLOBALS['log']->fatal("Backlog antes save- api estatus:".$beanBL->estatus_backlog_c);
-        $GLOBALS['log']->fatal("Backlog fecha_reactivacion_neg_c:".$beanBL->fecha_reactivacion_neg_c);
+        $GLOBALS['log']->fatal("Backlog antes save- api estatus:" . $beanBL->estatus_backlog_c);
+        $GLOBALS['log']->fatal("Backlog fecha_reactivacion_neg_c:" . $beanBL->fecha_reactivacion_neg_c);
 
         global $current_user, $sugar_config, $app_list_strings;
-        
-        
+
+
         //Recupera BL
         $link_bl = $GLOBALS['sugar_config']['site_url'] . '/#lev_Backlog/' . $id_bl;
         $nbacklog = $beanBL->numero_de_backlog;
@@ -133,7 +133,7 @@ class reactiva_bkl extends SugarApi
             $GLOBALS['log']->fatal($id_sol);
             $GLOBALS['log']->fatal($accion);
             //Define correo
-            $body_correo = $this->buildBodyRespuestaReasignacion($nombre_asesor , $nbacklog ,$link_bl , $link_sol ,$id_sol ,$accion );
+            $body_correo = $this->buildBodyRespuestaReasignacion($nombre_asesor, $nbacklog, $link_bl, $link_sol, $id_sol, $accion);
             $mailer = MailerFactory::getSystemDefaultMailer();
             $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
             $mailer->setSubject('UNIFIN CRM: Notificación reactivación Backlog ' . $accion);
@@ -141,9 +141,9 @@ class reactiva_bkl extends SugarApi
             $body = trim($body_correo);
             $mailer->setHtmlBody($body);
             $mailer->clearRecipients();
-            $GLOBALS['log']->fatal("emails" .$correoAsesor . " - " . $email_comercial);
+            $GLOBALS['log']->fatal("emails" . $correoAsesor . " - " . $email_comercial);
             //Agrega destinatarios
-            $mailer->addRecipientsTo(new EmailIdentity($correoAsesor , $email_comercial));
+            $mailer->addRecipientsTo(new EmailIdentity($correoAsesor, $email_comercial));
 
             $result = $mailer->send();
             $response['status'] = '200';
@@ -155,7 +155,7 @@ class reactiva_bkl extends SugarApi
             $response['description'] = $e;
         }
 
-        try{
+        try {
             $beanBL->save();
         } catch (Exception $e) {
             $GLOBALS['log']->fatal(print_r($e, true));
@@ -163,14 +163,15 @@ class reactiva_bkl extends SugarApi
         return $response;
     }
 
-    public function autorizaEnvioCorreo($api, $args){
-        
+    public function autorizaEnvioCorreo($api, $args)
+    {
+
         $idRegistro = $args["idRegistro"];
         $motivo = $args['motivo_reactivacion_c'];
         $aprueba = $args["aprueba_reactivacion_c"];
         $fechasolicitud = $args["fecha_sol_reactivacion_c"];
 
-        $GLOBALS['log']->fatal("fechasolicitud reactivacion backlog".$fechasolicitud);
+        $GLOBALS['log']->fatal("fechasolicitud reactivacion backlog" . $fechasolicitud);
 
         $beanBkl = BeanFactory::retrieveBean('lev_Backlog', $idRegistro, array('disable_row_level_security' => true));
         $idAsesor = $beanBkl->assigned_user_id;
@@ -180,7 +181,7 @@ class reactiva_bkl extends SugarApi
         $nombre_asesor = $beanAsesor->first_name . " " . $beanAsesor->last_name;
 
         $id_director_comercial = $this->getIdDirectorComercial($beanAsesor);
-        if($id_director_comercial != ""){
+        if ($id_director_comercial != "") {
             $info_comercial = $this->getInfoUser($id_director_comercial);
             $name_comercial = $info_comercial['name'];
             $email_comercial = $info_comercial['email'];
@@ -197,16 +198,16 @@ class reactiva_bkl extends SugarApi
         $beanBkl->fecha_sol_reactivacion_c = $fechasolicitud;
         $beanBkl->aprobador_reactivacion_c = $id_director_comercial;
         $beanBkl->save();
-        
-        $bodyCorreo = $this->buildBodyEnviaPeticionAutorizacionDirector( $name_comercial, $idRegistro , $motivo);
+
+        $bodyCorreo = $this->buildBodyEnviaPeticionAutorizacionDirector($name_comercial, $idRegistro, $motivo);
         $GLOBALS['log']->fatal("email director" . $email_comercial);
-        if(!empty($email_comercial)){
-            $this->sendEmailPeticionAutorizacionDirector( $email_comercial,$bodyCorreo,$beanBkl->name, $cuenta,$numsol , $idRegistro, $id_director_comercial, $motivo);
+        if (!empty($email_comercial)) {
+            $this->sendEmailPeticionAutorizacionDirector($email_comercial, $bodyCorreo, $beanBkl->name, $cuenta, $numsol, $idRegistro, $id_director_comercial, $motivo);
             return array(
                 "status" => "success",
                 "msj" => "Se ha enviado el correo"
             );
-        }else{
+        } else {
             return array(
                 "status" => "info",
                 "msj" => "El director comercial no cuenta con un email válido"
@@ -214,7 +215,8 @@ class reactiva_bkl extends SugarApi
         }
     }
 
-    public function getIdDirectorComercial($beanAsesor){
+    public function getIdDirectorComercial($beanAsesor)
+    {
         $equipo_principal_asesor = $beanAsesor->equipo_c;
         $id_comercial = "";
         $qGetDirectorComercial = "SELECT id_c,posicion_operativa_c,uc.equipos_c FROM users u 
@@ -231,52 +233,65 @@ class reactiva_bkl extends SugarApi
         return $id_comercial;
     }
 
-    public function getInfoUser($id_user){
+    public function getInfoUser($id_user)
+    {
         $beanUser = BeanFactory::retrieveBean('Users', $id_user, array('disable_row_level_security' => true));
         $emailUser = $beanUser->email1;
         $first_name = $beanUser->first_name;
         $last_name = $beanUser->last_name;
         $user = [];
-        $user['name'] =  $first_name." ".$last_name;
+        $user['name'] =  $first_name . " " . $last_name;
         $user['email'] = $emailUser;
         return $user;
     }
 
-    public function sendEmailPeticionAutorizacionDirector($emailDirector, $body_correo, $cuenta , $numsol , $idRegistro, $id_director_comercial, $motivo){
-        try{
+    public function sendEmailPeticionAutorizacionDirector($emailDirector, $body_correo, $cuenta, $numsol, $idRegistro, $id_director_comercial, $motivo)
+    {
+        try {
+            global $app_list_strings;
             $mailer = MailerFactory::getSystemDefaultMailer();
             $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
-            $mailer->setSubject('VoBo requerido para reactivar operación — '. $cuenta .' - Solicitud: '.$numsol);
+            $mailer->setSubject('VoBo requerido para reactivar operación — ' . $cuenta . ' - Solicitud: ' . $numsol);
             $body = trim($body_correo);
             $mailer->setHtmlBody($body);
             $mailer->clearRecipients();
             $mailer->addAttachment(new \EmbeddedImage('Copia_de_Recurso-2unileasingazulLOW', 'custom/images_email/Copia_de_Recurso-2unileasingazulLOW.png', 'Copia_de_Recurso-2unileasingazulLOW'), "Copia_de_Recurso-2unileasingazulLOW");
-            $mailer->addRecipientsTo(new EmailIdentity( $emailDirector));
+
+            $mailer->addRecipientsTo(new EmailIdentity($emailDirector));
+
+            $listaEmailsCCPeticionAutorizacion = $app_list_strings['backlog_email_cc_peticion_autorizacion_list'];
+            if (!empty($listaEmailsCCPeticionAutorizacion)) {
+                foreach ($listaEmailsCCPeticionAutorizacion as $keyNombre => $email) {
+                    $GLOBALS['log']->fatal("CC_PeticionAutorizacion: " . $email);
+                    $mailer->addRecipientsCc(new EmailIdentity($email));
+                }
+            }
+
             $result = $mailer->send();
-        } catch (Exception $e){
+        } catch (Exception $e) {
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
             $GLOBALS['log']->fatal($e->getMessage());
         }
     }
 
-    public function buildBodyEnviaPeticionAutorizacionDirector($nombreDirectorComercial, $idRegistro , $motivo)
+    public function buildBodyEnviaPeticionAutorizacionDirector($nombreDirectorComercial, $idRegistro, $motivo)
     {
-		$beanBkl = BeanFactory::getBean('lev_Backlog', $idRegistro, array('disable_row_level_security' => true));
-		$idCliente = $beanBkl->account_id_c;
-		$beanCte = BeanFactory::getBean('Accounts', $idCliente, array('disable_row_level_security' => true));
+        $beanBkl = BeanFactory::getBean('lev_Backlog', $idRegistro, array('disable_row_level_security' => true));
+        $idCliente = $beanBkl->account_id_c;
+        $beanCte = BeanFactory::getBean('Accounts', $idCliente, array('disable_row_level_security' => true));
         $asesor = $beanBkl->assigned_user_name;
-		$cliente = $beanBkl->cliente;
-		$solicitud = $beanBkl->numero_de_solicitud;
-		$monto = $beanBkl->monto_c;
-		$prometido = $beanBkl->monto_comprometido;
-		$fecha = $beanBkl->fecha_compromiso_c;
-		$origen = $beanCte->origen_cuenta_c;
-        $linkbkl = $GLOBALS['sugar_config']['site_url'].'/#lev_Backlog/'.$idRegistro;
-        $htmlLink = '<b><a id="linkbkl" href="'.$linkbkl.'">Ver detalle en CRM</a></b>';
-        $aceptabkl = $GLOBALS['sugar_config']['site_url'].'/#lev_Backlog/layout/reactivacionBacklog?accion=aceptar&id='.$idRegistro;
-        $htmlAcepta = '<b><a id="aceptabkl" href="'.$aceptabkl.'">Aprobar</a></b>';
-        $rechazabkl = $GLOBALS['sugar_config']['site_url'].'/#lev_Backlog/layout/reactivacionBacklog?accion=rechazar&id='.$idRegistro;
-        $htmlRechaza = '<b><a id="rechazabkl" href="'.$rechazabkl.'">Rechazar</a></b>';
+        $cliente = $beanBkl->cliente;
+        $solicitud = $beanBkl->numero_de_solicitud;
+        $monto = $beanBkl->monto_c;
+        $prometido = $beanBkl->monto_comprometido;
+        $fecha = $beanBkl->fecha_compromiso_c;
+        $origen = $beanCte->origen_cuenta_c;
+        $linkbkl = $GLOBALS['sugar_config']['site_url'] . '/#lev_Backlog/' . $idRegistro;
+        $htmlLink = '<b><a id="linkbkl" href="' . $linkbkl . '">Ver detalle en CRM</a></b>';
+        $aceptabkl = $GLOBALS['sugar_config']['site_url'] . '/#lev_Backlog/layout/reactivacionBacklog?accion=aceptar&id=' . $idRegistro;
+        $htmlAcepta = '<b><a id="aceptabkl" href="' . $aceptabkl . '">Aprobar</a></b>';
+        $rechazabkl = $GLOBALS['sugar_config']['site_url'] . '/#lev_Backlog/layout/reactivacionBacklog?accion=rechazar&id=' . $idRegistro;
+        $htmlRechaza = '<b><a id="rechazabkl" href="' . $rechazabkl . '">Rechazar</a></b>';
         $mailHTML = '<head>
             <title></title>
             <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
@@ -408,17 +423,17 @@ class reactiva_bkl extends SugarApi
                                                                     <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                             <p style="margin: 0; margin-bottom: 16px;">Hola! <strong>' . $nombreDirectorComercial . '</strong></p>
-                                                                            <p style="margin: 0; margin-bottom: 16px;">El asesor a tu cargo, '.$asesor.', solicita tu visto bueno para reactivar la operación del cliente '.$cliente.',<br>
-                                                                                (ID '.$solicitud.'), actualmente Declinada.<br><br>
-                                                                                Motivo breve del asesor: <p>'.$motivo.'</p><br>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">El asesor a tu cargo, ' . $asesor . ', solicita tu visto bueno para reactivar la operación del cliente ' . $cliente . ',<br>
+                                                                                (ID ' . $solicitud . '), actualmente Declinada.<br><br>
+                                                                                Motivo breve del asesor: <p>' . $motivo . '</p><br>
                                                                                 Datos de referencia:<br>
                                                                                 Estatus actual: Declinada<br>
-                                                                                Monto autorizado/preautorizado: '.$monto.'<br>
-                                                                                Monto prometido: '.$prometido.'<br>
-                                                                                Fecha prometida: '.$fecha.'<br>
-                                                                                Origen: '.$origen.'<br>
+                                                                                Monto autorizado/preautorizado: ' . $monto . '<br>
+                                                                                Monto prometido: ' . $prometido . '<br>
+                                                                                Fecha prometida: ' . $fecha . '<br>
+                                                                                Origen: ' . $origen . '<br>
                                                                                 Puedes autorizar o rechazar la reactivación aquí:<br>
-                                                                                '.$htmlLink.'<br>
+                                                                                ' . $htmlLink . '<br>
 
                                                                                 <table border="0" cellpadding="10" cellspacing="0" class="button_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                                                                                 <tr>
@@ -521,7 +536,7 @@ class reactiva_bkl extends SugarApi
         return $mailHTML;
     }
 
-    public function buildBodyRespuestaReasignacion( $nombre_asesor , $nbacklog ,$link_bl , $link_sol ,$id_sol ,$accion )
+    public function buildBodyRespuestaReasignacion($nombre_asesor, $nbacklog, $link_bl, $link_sol, $id_sol, $accion)
     {
         $mailHTML = '<head>
             <title></title>
@@ -654,7 +669,7 @@ class reactiva_bkl extends SugarApi
                                                                     <td class="pad" style="padding-bottom:25px;padding-left:50px;padding-right:50px;padding-top:25px;">
                                                                         <div style="color:#041e41;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
                                                                             <p style="margin: 0; margin-bottom: 16px;">Hola! <strong>' . $nombre_asesor . '</strong></p>
-                                                                            <p style="margin: 0; margin-bottom: 16px;">Te informamos que tu solicitud para la reactivación del Backlog <a id="linkSO" href="' . $link_bl . '"> <strong>'. $nbacklog .'</strong></a> del Cliente: <a id="linkSO" href="' . $link_so . '"> <strong>' . $id_sol . '</strong></a> ha sido <strong>' . $accion . '</strong> </p>
+                                                                            <p style="margin: 0; margin-bottom: 16px;">Te informamos que tu solicitud para la reactivación del Backlog <a id="linkSO" href="' . $link_bl . '"> <strong>' . $nbacklog . '</strong></a> del Cliente: <a id="linkSO" href="' . $link_so . '"> <strong>' . $id_sol . '</strong></a> ha sido <strong>' . $accion . '</strong> </p>
                                                                             <br/>
                                                                             <p style="margin: 0;">Atentamente, UNIFIN.</p>
                                                                         </div>
