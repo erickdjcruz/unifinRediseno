@@ -186,7 +186,7 @@
                     
                     app.alert.show('alert_autoriza_reasignacion_bl', {
                         level: 'success',
-                        messages: 'Reasignación Atendida...',
+                        messages: 'Reasignación Atendida. El Backlog fue '+resBLnse.accion,
                     });
                     this.render(); // Asegura que el mensaje aparezca en la vista
                     // Redirigir después de 2 segundos

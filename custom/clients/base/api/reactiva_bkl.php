@@ -123,7 +123,7 @@ class reactiva_bkl extends SugarApi
         $beanAsesor = BeanFactory::retrieveBean('Users', $id_asesor, array('disable_row_level_security' => true));
         $correoAsesor = $beanAsesor->email1;
         $nombre_asesor = $beanAsesor->first_name . " " . $beanAsesor->last_name;
-
+        $accionres = '';
         try {
             $GLOBALS['log']->fatal("datos de envio");
             $GLOBALS['log']->fatal($nombre_asesor);
@@ -148,11 +148,16 @@ class reactiva_bkl extends SugarApi
             $result = $mailer->send();
             $response['status'] = '200';
             $response['description'] = 'Se generó envío de correo';
+            if ($aprueba == 'ACEPTAR') $accionres = 'Aceptado';
+            if ($aprueba == 'RECHAZAR') $accionres = 'Rechazado';
+            $response['accion'] = $accionres;
         } catch (Exception $e) {
+            $accionres = 'error';
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar el correo electrónico");
             $GLOBALS['log']->fatal(print_r($e, true));
             $response['status'] = '500';
             $response['description'] = $e;
+            $response['accion'] = $accionres;
         }
 
         try {
@@ -276,22 +281,29 @@ class reactiva_bkl extends SugarApi
 
     public function buildBodyEnviaPeticionAutorizacionDirector($nombreDirectorComercial, $idRegistro, $motivo)
     {
+        global $app_list_strings;
+        $listorigen = $app_list_strings['origen_lead_list'];
+
         $beanBkl = BeanFactory::getBean('lev_Backlog', $idRegistro, array('disable_row_level_security' => true));
         $idCliente = $beanBkl->account_id_c;
         $beanCte = BeanFactory::getBean('Accounts', $idCliente, array('disable_row_level_security' => true));
         $asesor = $beanBkl->assigned_user_name;
         $cliente = $beanBkl->cliente;
         $solicitud = $beanBkl->numero_de_solicitud;
-        $monto = $beanBkl->monto_c;
-        $prometido = $beanBkl->monto_comprometido;
+        $monto = (string)number_format(floatval($beanBkl->monto_original), 2, '.', ',');
+        $prometido = (string)number_format(floatval($beanBkl->monto_comprometido), 2, '.', ',');
         $fecha = $beanBkl->fecha_compromiso_c;
+        $dateObj = new DateTime($fecha);
+        $fecha_formateada = $dateObj->format('d/m/Y'); // dd/mm/aaaa
         $origen = $beanCte->origen_cuenta_c;
+        $valor_origen = isset($listorigen[$origen]) ? $listorigen[$origen] : $origen;
         $linkbkl = $GLOBALS['sugar_config']['site_url'] . '/#lev_Backlog/' . $idRegistro;
         $htmlLink = '<b><a id="linkbkl" href="' . $linkbkl . '">Ver detalle en CRM</a></b>';
         $aceptabkl = $GLOBALS['sugar_config']['site_url'] . '/#lev_Backlog/layout/reactivacionBacklog?accion=aceptar&id=' . $idRegistro;
         $htmlAcepta = '<b><a id="aceptabkl" href="' . $aceptabkl . '">Aprobar</a></b>';
         $rechazabkl = $GLOBALS['sugar_config']['site_url'] . '/#lev_Backlog/layout/reactivacionBacklog?accion=rechazar&id=' . $idRegistro;
         $htmlRechaza = '<b><a id="rechazabkl" href="' . $rechazabkl . '">Rechazar</a></b>';
+
         $mailHTML = '<head>
             <title></title>
             <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
@@ -428,10 +440,10 @@ class reactiva_bkl extends SugarApi
                                                                                 Motivo breve del asesor: <p>' . $motivo . '</p><br>
                                                                                 Datos de referencia:<br>
                                                                                 Estatus actual: Declinada<br>
-                                                                                Monto autorizado/preautorizado: ' . $monto . '<br>
-                                                                                Monto prometido: ' . $prometido . '<br>
-                                                                                Fecha prometida: ' . $fecha . '<br>
-                                                                                Origen: ' . $origen . '<br>
+                                                                                Monto autorizado/preautorizado: $' . $monto . '<br>
+                                                                                Monto prometido: $' . $prometido . '<br>
+                                                                                Fecha prometida: ' . $fecha_formateada . '<br>
+                                                                                Origen: ' . $valor_origen . '<br>
                                                                                 Puedes autorizar o rechazar la reactivación aquí:<br>
                                                                                 ' . $htmlLink . '<br>
 
@@ -533,6 +545,7 @@ class reactiva_bkl extends SugarApi
                 </tbody>
             </table><!-- End -->
             </body>';
+    
         return $mailHTML;
     }
 
