@@ -11,3 +11,4 @@ $mod_strings['LBL_COLONIA'] = 'Colonia';
 $mod_strings['LBL_JSON_AUDIT'] = 'JSON Audit';
 $mod_strings['LBL_CAMBIO_DIRECCION'] = '¿Cambió dirección?';
 $mod_strings['LBL_VALID_CAMBIO_RAZON_SOCIAL'] = 'En proceso de validación';
+$mod_strings['LBL_LOCALIDAD'] = 'Localidad';
