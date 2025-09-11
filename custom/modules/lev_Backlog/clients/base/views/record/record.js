@@ -12,7 +12,6 @@
         this.getCurrentYearMonth();
         this.model.on("change:anio", _.bind(this.getCurrentYearMonth, this));
         //this.model.on("change:cliente", _.bind(this.getTipoCliente, this));
-        this.model.addValidationTask('check_monto_c', _.bind(this._ValidateAmount, this));
         this.model.addValidationTask('check_tipo_cliente', _.bind(this._ValidateTipo, this));
         this.model.on("change:porciento_ri", _.bind(this.calcularRI, this));
         this.model.on("change:monto_comprometido", _.bind(this.calcularRI, this));
@@ -384,21 +383,6 @@
         });
     },
 
-    _ValidateAmount: function (fields, errors, callback) {
-        if (parseFloat(this.model.get('monto_comprometido')) <= 0) {
-            errors['monto_comprometido'] = errors['monto_comprometido'] || {};
-            errors['monto_comprometido'].required = true;
-        }
-
-        /*if (parseFloat(this.model.get('renta_inicial_comprometida')) <= 0)
-        {
-            errors['renta_inicial_comprometida'] = errors['renta_inicial_comprometida'] || {};
-            errors['renta_inicial_comprometida'].required = true;
-        }*/
-
-        callback(null, fields, errors);
-    },
-
     _ValidateTipo: function (fields, errors, callback) {
         if (this.model.get("tipo_c") == "4") {
 
@@ -759,7 +743,7 @@
     validarMontoComprometido: function (fields, errors, callback) {
         
         var montoComprometido = parseFloat(this.model.get('monto_comprometido')) || 0;
-        var montoSolicitud = parseFloat(this.model.get('monto_c')) || 0;
+        var montoSolicitud = parseFloat(this.model.get('monto_original')) || 0;
         // console.log("[Validación] monto_comprometido:", montoComprometido, "monto_con_solicitud_c:", montoSolicitud);
         // Si monto_comprometido es mayor que monto_con_solicitud_c
         if (montoComprometido > montoSolicitud) {
