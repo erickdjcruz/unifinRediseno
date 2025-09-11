@@ -772,7 +772,7 @@
 
             app.alert.show('valida_declinacion', {
                 level: 'error',
-                messages: 'El <b>Motivo de Declinación</b> es requerido para esta opción.',
+                messages: 'El <b>Motivo de Declinación</b> es requerido.',
                 autoClose: false
             });
 
