@@ -778,7 +778,8 @@
 
         // Mapeo de permisos a IDs de opciones
         var mapaPermisos = {
-            "^soc_creditaria^": ["12", "13"],
+            "^soc^": ["12"],
+            "^creditaria^": ["13"],
             "^utility_trailers^": ["114"],
             "^konnect^": ["115"],
             "^vendors^": ["116"],
@@ -823,8 +824,8 @@
             }
         };
 
-        if (permisosGestionTeamLeader.includes("^soc_creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || permisosGestionTeamLeader.includes("^konnect^") || 
-            permisosGestionTeamLeader.includes("^vendors^") || permisosGestionTeamLeader.includes("^reditus^")) {
+        if (permisosGestionTeamLeader.includes("^soc^") || permisosGestionTeamLeader.includes("^creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || 
+            permisosGestionTeamLeader.includes("^konnect^") || permisosGestionTeamLeader.includes("^vendors^") || permisosGestionTeamLeader.includes("^reditus^")) {
             //ORIGEN
             opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]);
             this.model.fields['origen_c'].options = opciones_origen;
@@ -1064,8 +1065,15 @@
         $('[data-name="label_franquicia_vendors_c"]').hide();
 
         var permisosGestionTeamLeader = app.user.attributes.gestion_team_leaders_c || "";
-        //Deshabilita Origen
-        if (!permisosGestionTeamLeader.includes("^soc_creditaria^") && this.model.get('origen_c') === '12' && (this.model.get('detalle_origen_c') === '12' || this.model.get('detalle_origen_c') === '13')) {
+        //READONLY: SOC
+        if (!permisosGestionTeamLeader.includes("^soc^") && this.model.get('origen_c') === '12' && this.model.get('detalle_origen_c') === '12') {
+            self.noEditFields.push('origen_c');
+            $('[data-name="origen_c"]').css('pointer-events', 'none');
+            self.noEditFields.push('detalle_origen_c');
+            $('[data-name="detalle_origen_c"]').css('pointer-events', 'none');
+        }
+        //READONLY: CREDITARIA
+        if (!permisosGestionTeamLeader.includes("^creditaria^") && this.model.get('origen_c') === '12' && this.model.get('detalle_origen_c') === '13') {
             self.noEditFields.push('origen_c');
             $('[data-name="origen_c"]').css('pointer-events', 'none');
             self.noEditFields.push('detalle_origen_c');
