@@ -1,6 +1,6 @@
 {{!--
 /*
- * Creado por: Salvador Lopez salvador.lopez@tactos.com.mx
+ * Creado por: Salvador Lopez salvador.lopez
  */
 --}}
 <script>
@@ -72,9 +72,15 @@
                             <div class="span4">
                                 <label class="record-label">Estado</label>
                                 <select class="row-fluid newEstado select2" data-field="estado" placeholder="" style="font-size: 15px;font-weight: 500;">
-                                    {{#each listEstado}}
-                                        <option value="{{@key}}" {{ifSelected @key ../estado}}>{{this}}</option>
-                                    {{/each}}
+                                    {{#if listEstado.length}}
+                                        {{#each listEstado}}
+                                            <option value="{{@key}}" {{ifSelected @key ../estado}}>{{this}}</option>
+                                        {{/each}}
+                                    {{else}}
+                                        {{#each listEstadoFull}}
+                                            <option value="{{@key}}" {{ifSelected @key ../estado}}>{{this}}</option>
+                                        {{/each}}
+                                    {{/if}}
                                 </select>
                             </div>
                         </div> <!-- Cierra fila 2-->
@@ -98,12 +104,15 @@
                             <div class="span4">
                                 <label class="record-label">Colonia</label>
                                 <select class="row-fluid newColonia select2" data-field="colonia" placeholder="" style="font-size: 15px;font-weight: 500;">
-                                    {{!-- {{#each listColonia}}
-                                        <option value="{{@key}}" {{ifSelected @key ../colonia}}>{{this}}</option>
-                                    {{/each}} --}}
-                                    {{#each listColonia}}
-                                            <option value="{{this.idColonia}}" data-cp="{{this.idCodigoPostal}}" {{ifSelected this.idColonia ../colonia}}>{{this.nameColonia}}</option>
+                                    {{#if listColonia.length}}
+                                        {{#each listColonia}}
+                                        <option value="{{this.idColonia}}" data-cp="{{this.idCodigoPostal}}" {{ifSelected this.idColonia ../colonia}}>{{this.nameColonia}}</option>
                                         {{/each}}
+                                    {{else}}
+                                        {{#each listColoniaFull}}
+                                        <option value="{{this.idColonia}}" data-cp="{{this.idCodigoPostal}}" {{ifSelected this.idColonia ../colonia}}>{{this.nameColonia}}</option>
+                                        {{/each}}
+                                    {{/if}}
                                 </select>
                             </div>
                         </div> <!-- Cierra fila 3-->
