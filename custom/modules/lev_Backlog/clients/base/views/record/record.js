@@ -51,7 +51,7 @@
         /// Validación dependencia declinada
         this.model.addValidationTask('validaDependenciaDeclinada', _.bind(this.validaDependenciaDeclinada, this));
         // Valida permiso de tipificacion riesgo
-        this.model.on('sync', this.checkPermisoTipificacion, this);        
+        this.model.on('sync', this.checkPermisoTipificacion, this);
         //Boton Reactivación 
         this.context.on('button:reactiva_bkl:click', this.reactiva_bkl, this);
         //ReadOnly Estatus Backlog Declinada
@@ -741,7 +741,7 @@
      * Valida que monto_comprometido <= monto_con_solicitud_c
      */
     validarMontoComprometido: function (fields, errors, callback) {
-        
+
         var montoComprometido = parseFloat(this.model.get('monto_comprometido')) || 0;
         var montoSolicitud = parseFloat(this.model.get('monto_original')) || 0;
         // console.log("[Validación] monto_comprometido:", montoComprometido, "monto_con_solicitud_c:", montoSolicitud);
@@ -763,16 +763,16 @@
     /**
      * Valida dependencia estatus backlog
      */
-    validaDependenciaDeclinada (fields, errors, callback) {
+    validaDependenciaDeclinada(fields, errors, callback) {
 
         var estatus = this.model.get('estatus_backlog_c') || '';
         var motivodecli = this.model.get('motivo_declinacion_c') || '';
-        
-        if (estatus == '2' && motivodecli=='') {
+
+        if (estatus == '2' && motivodecli == '') {
 
             app.alert.show('valida_declinacion', {
                 level: 'error',
-                messages: 'El <b>Motivo de Declinación</b> es requerido para esta opción.',
+                messages: 'El <b>Motivo de Declinación</b> es requerido.',
                 autoClose: false
             });
 
@@ -786,13 +786,13 @@
      * Valida permiso si el usuario puede editar el campo tipificacion_riesgo_c
      */
     checkPermisoTipificacion: function () {
-        var permisoBacklogTipificacion = app.user.attributes.backlog_tipificacion_c ? 1 : 0;    
+        var permisoBacklogTipificacion = app.user.attributes.backlog_tipificacion_c ? 1 : 0;
         var fieldTipificacionRiesgo = this.getField('tipificacion_riesgo_c');
         //Valida permiso backlog tipificación
         if (permisoBacklogTipificacion === 1) {
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(false);
-            }            
+            }
         } else {
             if (fieldTipificacionRiesgo) {
                 fieldTipificacionRiesgo.setDisabled(true);
@@ -801,26 +801,33 @@
     },
 
     reactiva_bkl: function () {
-      if (this.model.get('estatus_backlog_c') == 2) {
-        app.drawer.open({
-          layout: 'reactiva_bkl',
-                  context: {
-            context: this.context,
-                      model: this.model,
-                  },
-              }, function (context, model, update) {});
-          } else {
-        app.alert.show('NoDeclinada', {
-          level: 'error',
-                  messages: 'El Estatus Backlog es diferente a Declinada',
-                  autoClose: false
-              });
-		  }
+        if (this.model.get('estatus_backlog_c') == 2) {
+            app.drawer.open({
+                layout: 'reactiva_bkl',
+                context: {
+                    context: this.context,
+                    model: this.model,
+                },
+            }, function (context, model, update) { });
+        } else {
+            app.alert.show('NoDeclinada', {
+                level: 'error',
+                messages: 'El Estatus Backlog es diferente a Declinada',
+                autoClose: false
+            });
+        }
     },
 
     _readOnlyEstatusDeclinada: function () {
         //Bloquear el registro completo cuando Estatus Backlog es Declinada
         if (this.model.get('estatus_backlog_c') === '2') {
+
+            app.alert.show('msg_estatus_declinada', {
+                level: 'warning',
+                messages: 'Esta operación se encuentra declinada. Solicita reactivación a tu director.',
+                autoClose: false
+            });
+
             $(".record-cell").attr("style", "pointer-events:none");
             $('[name="edit_button"].rowaction').hide();
         }
