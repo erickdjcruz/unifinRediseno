@@ -997,6 +997,14 @@
         cont_dir.nuevaDireccion = cont_dir.limpiaNuevaDireccion();
         cont_dir.render();
 
+        //Direcciones Buro
+        if (typeof contexto_dire_buro !== 'undefined' && contexto_dire_buro.direccionBuro) {
+            var account_direccion_buro_credito = app.utils.deepCopy(prev_contexto_dire_buro.direccionBuro);
+            this.model.set('account_direccion_buro_credito', account_direccion_buro_credito);
+            contexto_dire_buro.direccionBuro = account_direccion_buro_credito;
+            contexto_dire_buro.render();
+        }
+
         //PLD
         var accounts_tct_pld_1 = app.utils.deepCopy(contexto_cuenta.prev_ProductosPLD);
         this.model.set('accounts_tct_pld_1', accounts_tct_pld_1);
@@ -5586,9 +5594,7 @@
                 //location.reload();
                 this.get_addresses();
                 this.CamposCstmLoad();
-                /************************************/
-
-                /***********************************/
+                
             }, this);
 
         //Call editable to turn off key and mouse events before fields are disposed (SP-1873)

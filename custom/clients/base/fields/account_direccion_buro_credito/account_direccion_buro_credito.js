@@ -56,6 +56,10 @@
         var idCliente = this.model.get("id");
         contexto_dire_buro.direccionBuro = [];
         contexto_dire_buro.prev_direccionBuro = [];
+
+        prev_contexto_dire_buro = [];
+        prev_contexto_dire_buro.direccionBuro = [];
+
         app.api.call('GET', app.api.buildURL('Accounts/' + idCliente + '/link/accounts_dire_direccion_1?filter[0][indicador][$equals]=64'), null, {
             success: _.bind(function (data) {
                 if (data.records.length > 0) {
@@ -216,6 +220,9 @@
 
                                     //Genera objeto con valores previos para control de cancelar
                                     contexto_dire_buro.prev_direccionBuro = app.utils.deepCopy(contexto_dire_buro.direccionBuro);
+                                    prev_contexto_dire_buro.direccionBuro = app.utils.deepCopy(contexto_dire_buro.direccionBuro);                                        
+                                    //this.prev_direccionBuro = app.utils.deepCopy(contexto_dire_buro.direccionBuro);
+                                  
                                     //Aplica render a campo custom
                                     contexto_dire_buro.render();
 
@@ -258,7 +265,6 @@
                 var strUrl = 'DireccionesCP/' + cp + '/0';
                 app.api.call('GET', app.api.buildURL(strUrl), null, {
                     success: _.bind(function (data) {
-
                         //Limpiar valores de modelo
                         contexto_dire_buro.direccionBuro[0].listPais = {};
                         contexto_dire_buro.direccionBuro[0].listMunicipio = {};
@@ -320,9 +326,12 @@
                                 listColonia[i]['idColonia'] = list_colonias[i].idColonia;
                                 listColonia[i]['nameColonia'] = list_colonias[i].nameColonia;
                                 listColonia[i]['idCodigoPostal'] = list_colonias[i].idCodigoPostal;
+                                listColonia[i]['idMunicipio'] = list_colonias[i].idMunicipio;
                             }
                             contexto_dire_buro.direccionBuro[0].listColonia = listColonia;
-                            contexto_dire_buro.direccionBuro[0].listColoniaFull = listColonia;
+                            contexto_dire_buro.direccionBuro[0].listColoniaFull = listColonia;                            
+                            contexto_dire_buro.direccionBuro[0].colonia = list_colonias[0].idColonia;
+
                             //Ciudad
                             listCiudad = {};
                             for (var i = 0; i < city_list.length; i++) {
@@ -336,6 +345,15 @@
                             contexto_dire_buro.populateEdoByPais(contexto_dire_buro.direccionBuro[0].pais);
                             contexto_dire_buro.populateCiudadesByEstado(contexto_dire_buro.direccionBuro[0].estado);
                             contexto_dire_buro.populateColoniasByMunicipio(contexto_dire_buro.direccionBuro[0].municipio);
+                            /***************************************/
+                            contexto_dire_buro.direccionBuro[0].listColonia = listColonia;
+                            contexto_dire_buro.direccionBuro[0].listEstado = listEstado;
+                            /***************************************/
+                            contexto_dire_buro.direccionBuro[0].pais = Object.keys(listPais)[0];
+                            contexto_dire_buro.direccionBuro[0].estado = Object.keys(listEstado)[0];
+                            contexto_dire_buro.direccionBuro[0].municipio = Object.keys(listMunicipio)[0];
+                            contexto_dire_buro.direccionBuro[0].ciudad = Object.keys(listCiudad)[0];
+                            contexto_dire_buro.direccionBuro[0].colonia = list_colonias[0].idColonia;
 
                         } else {
                             app.alert.show('cp_not_found', {
@@ -415,6 +433,8 @@
         var idColonia = this.$(evt.currentTarget).val();
         //Actualiza modelo
         contexto_dire_buro.direccionBuro[0].colonia = idColonia;
+        idCP = $(evt.currentTarget).find('option:selected').attr('data-cp');
+        contexto_dire_buro.direccionBuro[0].postal = idCP;
 
     },
 

@@ -104,6 +104,7 @@ AND rc.seguimiento_bc_c = 1 ";
         $beanResumen->save();
 
         $response = array();
+        $localidad = $args['localidad'];
 
         //Obtiene direcciones del cliente para que, en caso de tener dirección fiscal, dicha dirección se establece con el nuevo tipo "Buró de Crédito"
         //y se observa en la nueva sección dentro de Cuentas
@@ -119,7 +120,7 @@ AND rc.seguimiento_bc_c = 1 ";
             if (!$tieneDireccionBR) {
                 $beanNuevaDireccionBuro = BeanFactory::newBean('dire_Direccion');
 
-                $beanNuevaDireccionBuro->name = $beanDireccionFiscal->name;
+                //$beanNuevaDireccionBuro->name = $beanDireccionFiscal->name;
                 /*
                 $beanNuevaDireccionBuro->dire_direccion_dire_codigopostaldire_codigopostal_ida = $beanDireccionFiscal->dire_direccion_dire_codigopostaldire_codigopostal_ida;
                 $beanNuevaDireccionBuro->dire_direccion_dire_municipiodire_municipio_ida = $beanDireccionFiscal->dire_direccion_dire_municipiodire_municipio_ida;
@@ -131,38 +132,71 @@ AND rc.seguimiento_bc_c = 1 ";
 
                 $idSepomex = $beanDireccionFiscal->dir_sepomex_dire_direcciondir_sepomex_ida;
                 $args_dir_sepomex = [];
+                $new_sepomex = [];
+                $nuevaDireccion = false;
                 
                 $sqlQuery = "SELECT id , codigo_postal ,  colonia , municipio , estado , ciudad , id_pais, id_estado, id_ciudad, id_municipio, id_colonia 
                 from dir_sepomex where id = '{$idSepomex}';";
                 $result = $GLOBALS['db']->query($sqlQuery);
-                $ciudadf = $cpf = $coloniaf = $municipiof = $estadof = ''; 
-
+                
                 $idPais = $idEstado = $idCiudad = $idMunicipio = $idColonia = "";
 
-                $arreglo = [" ","", ".", "-", "_", "Sin Colonia", "SIN COLONIA","OTRA NO ESPECIFICADA EN EL CATALOGO"];
+                $sincolonia = [" ","", ".", "-", "_", "Sin Colonia", "SIN COLONIA","OTRA NO ESPECIFICADA EN EL CATALOGO"];
+                $sinciudad = [" ","", ".", "-", "_" , "Sin Ciudad", "SIN CIUDAD","OTRA NO ESPECIFICADA EN EL CATALOGO"];
+				
+                //$GLOBALS['log']->fatal("localidad".$beanDireccionFiscal->localidad_c); 
+                //$GLOBALS['log']->fatal("localidad nueva".$beanNuevaDireccionBuro->localidad_c);
+                $GLOBALS['log']->fatal("localidad envio".$localidad); 
+                $colonia = $ciudad = "";
+                $auxRow = null;
+
                 while($row = $GLOBALS['db']->fetchByAssoc($result)) {
-                    if(in_array( $row['ciudad'], $arreglo) ){
-
-                        $idPais = $row['id_pais'];
-                        $idEstado = $row['id_estado'];
-                        $idCiudad = $row['id_ciudad'];
-                        $idMunicipio = $row['id_municipio'];
-                        $idColonia = $row['id_colonia'];
-
-                        $args_dir_sepomex['module'] =  'DireccionesQR';
-                        $args_dir_sepomex['cp'] = $row['codigo_postal'];
-                        $args_dir_sepomex['indice'] = 0;
-                        $args_dir_sepomex['colonia_rfc'] = $row['colonia'] ;
-                        $args_dir_sepomex['ciudad_rfc'] = $row['municipio'];
-                        $args_dir_sepomex['entidad_rfc'] = $row['estado'];
-                        $args_dir_sepomex['ciudad_csf'] = $row['municipio'];
-                        array_push($args_dir_sepomex,$row);
-
-                        $apigetSepomex = new getDireccionCPQR();
-                        $response = $apigetSepomex->getAddressByCPQR(null, $args_dir_sepomex);
-                        $idSepomex = $response['id'];
-                    }                    
+                    $GLOBALS['log']->fatal( print_r($row,true) );
+                    $colonia = $row['colonia'];
+                    $ciudad = $row['ciudad'];  
+                    if(in_array( $row['ciudad'], $sinciudad) || in_array( $row['colonia'], $sincolonia) ){
+                        $GLOBALS['log']->fatal("SIN CIUDAD Y SIN COLONIA"); 
+                        if(in_array( $row['colonia'], $sincolonia)){ $colonia = $localidad;
+                        $GLOBALS['log']->fatal("SIN COLONIA ".$localidad);  }
+                        if(in_array( $row['ciudad'], $sinciudad)){ $ciudad = $row['municipio'] ;
+                        $GLOBALS['log']->fatal("SIN CIUDAD");  }
+                        $nuevaDireccion = true;
+                    }
+                    $auxRow = $row;               
                 }
+                $GLOBALS['log']->fatal( print_r($row,true) );
+                
+                if($nuevaDireccion){                    
+
+                    $new_sepomex['module'] =  'DireccionesQR';
+                    $new_sepomex['cp'] = $auxRow['codigo_postal'];
+                    $new_sepomex['indice'] = 0;
+                    $new_sepomex['colonia_rfc'] = $colonia ;
+                    $new_sepomex['ciudad_rfc'] = $auxRow['municipio'];
+                    $new_sepomex['entidad_rfc'] = $auxRow['estado'];
+                    $new_sepomex['ciudad_csf'] = $ciudad;
+                    array_push($args_dir_sepomex,$new_sepomex);
+
+                    $GLOBALS['log']->fatal("args_dir_sepomex"); 
+                    $GLOBALS['log']->fatal( print_r($args_dir_sepomex,true) );
+
+                    //DireccionesQR/' + CP + '/0/' + Colonia + '/' + Municipio + '/' + Estado + '/' + Ciudad;
+                    $apigetSepomex = new getDireccionCPQR();
+                    $response = $apigetSepomex->getAddressByCPQR(null, $new_sepomex);
+                    $idSepomex = $response['idCP'];
+                    $auxRow = $response;
+                }
+                $GLOBALS['log']->fatal("***************************");
+                $GLOBALS['log']->fatal( print_r($auxRow,true));
+
+                $idPais = $auxRow['paises']['idpais'];
+                $idEstado = $auxRow['estados']['idEstado'];
+                $idCiudad = $auxRow['ciudades']['idCiudad'];
+                $idMunicipio = $auxRow['municipios']['idMunicipio'];
+                $idColonia = $auxRow['colonias']['idColonia'];
+
+                $direccion_completa = $beanDireccionFiscal->calle . " " . $beanDireccionFiscal->numext . " " . ($beanDireccionFiscal->numint != "" ? "Int: " . $beanDireccionFiscal->numint : "") . ", Colonia " . $auxRow['colonias']['nameColonia'] . ", Municipio " . $auxRow['municipios']['nameMunicipio'] ;
+                $beanNuevaDireccionBuro->name = $direccion_completa;
                
                 $beanNuevaDireccionBuro->description = "{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
                 $beanNuevaDireccionBuro->dir_sepomex_dire_direcciondir_sepomex_ida = $idSepomex;
