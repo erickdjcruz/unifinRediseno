@@ -541,6 +541,9 @@ SQL;
             if (count($bean->account_direccion_buro_credito) == 1) {
                 foreach ($bean->account_direccion_buro_credito as $direccion_row) {
                     $direccion = BeanFactory::getBean('dire_Direccion', $direccion_row['id']);
+                    $GLOBALS['log']->fatal("direccion_row");
+                    $GLOBALS['log']->fatal(print_r($direccion_row,true));
+
                     if (empty($direccion_row['id'])) {
                         //generar el guid
                         $guid = create_guid();
@@ -579,8 +582,19 @@ SQL;
 					// Related Sepomex
 					$id_postal = $direccion_row['valCodigoPostal'];
 					$id_colonia = $direccion_row['colonia'];
-                    $query_sepomex="SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}' and id_colonia='{$id_colonia}'";
+                    $id_ciudad = $direccion_row['ciudad'];
+                    $id_municipio = $direccion_row['municipio'];
+                    $id_estado = $direccion_row['estado'];
+                    $id_pais = $direccion_row['pais'];
+
+                    $GLOBALS['log']->fatal("id_postal".$id_postal);
+                    $GLOBALS['log']->fatal("id_colonia".$id_colonia);
+                    $GLOBALS['log']->fatal("ciudad".$direccion_row['ciudad']);
+                    $GLOBALS['log']->fatal("municipio".$direccion_row['municipio']);
+
                     $id_sepomex = '';
+                    $query_sepomex="SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}' and id_colonia='{$id_colonia}'";
+                    
                     $result_sepomex = $db->query($query_sepomex);
                     while ($row = $GLOBALS['db']->fetchByAssoc($result_sepomex)) {
                         $namePais=$row['pais'];
@@ -596,16 +610,51 @@ SQL;
                         $idMunicipio=$row['id_municipio'];
                         $id_sepomex = $row['id'];
                     }
-                    $direccion->description="{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
+
+                    $idPais      = $id_pais == "" ? $idPais : $id_pais;
+                    $idEstado    = $id_estado == "" ? $idEstado : $id_estado;
+                    $idCiudad    = $id_ciudad == "" ? $idCiudad : $id_ciudad;
+                    $idMunicipio = $id_municipio == "" ? $idMunicipio : $id_municipio;
+                    $idColonia   = $id_colonia == "" ? $idColonia : $id_colonia;
+
+                    $query_sepomex_name="SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}';";
+                    
+                    $result_sepomex_name = $db->query($query_sepomex_name);
+                    while ($row = $GLOBALS['db']->fetchByAssoc($result_sepomex_name)) {
+
+                        if($row['id_estado'] == $id_estado){
+                            $nameEstado1=$row['estado'];
+                            $idEstado = $row['id_estado'];
+                        }
+
+                        if($row['id_municipio'] == $id_municipio){
+                            $nameMunicipio1=$row['municipio'];
+                            $idMunicipio = $row['id_municipio'];
+                        }
+
+                        if($row['id_ciudad'] == $id_ciudad){
+                            $nameCiudad1=$row['ciudad'];
+                            $idCiudad = $row['id_ciudad'];
+                        }
+
+                        if($row['id_colonia'] == $id_colonia){
+                            $nameColonia1=$row['colonia'];
+                            $idColonia = $row['id_colonia'];
+                        }
+                    }
+
+                    $desc_aux = "{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
+                    $direccion->description = $desc_aux;
 					$direccion->dir_sepomex_dire_direcciondir_sepomex_ida=$id_sepomex;
-                    $nombre_colonia_query = "Select name from dire_colonia where id ='" . $direccion_row['colonia'] . "'";
-                    $nombre_municipio_query = "Select name from dire_municipio where id ='" . $direccion_row['municipio'] . "'";
-                    $querycolonia = $db->query($nombre_colonia_query);
-                    $coloniaName = $db->fetchByAssoc($querycolonia);
-                    $querymunicipio = $db->query($nombre_municipio_query);
-                    $municipioName = $db->fetchByAssoc($querymunicipio);
-                    $direccion_completa = $direccion_row['calle'] . " " . $direccion_row['numext'] . " " . ($direccion_row['numint'] != "" ? "Int: " . $direccion_row['numint'] : "") . ", Colonia " . $coloniaName['name'] . ", Municipio " . $municipioName['name'];
+                    //$nombre_colonia_query = "Select name from dire_colonia where id ='" . $direccion_row['colonia'] . "'";
+                    //$nombre_municipio_query = "Select name from dire_municipio where id ='" . $direccion_row['municipio'] . "'";
+                    //$querycolonia = $db->query($nombre_colonia_query);
+                    //$coloniaName = $db->fetchByAssoc($querycolonia);
+                    //$querymunicipio = $db->query($nombre_municipio_query);
+                    //$municipioName = $db->fetchByAssoc($querymunicipio);
+                    $direccion_completa = $direccion_row['calle'] . " " . $direccion_row['numext'] . " " . ($direccion_row['numint'] != "" ? "Int: " . $direccion_row['numint'] : "") . ", Colonia " . $nameColonia1 . ", Municipio " . $nameMunicipio1;
                     $direccion->name = $direccion_completa;
+                    /*
                     if ($direccion->load_relationship('dire_direccion_dire_pais')) {
                         if ($direccion_row['pais'] !== $direccion->dire_direccion_dire_paisdire_pais_ida) {
                             $direccion->dire_direccion_dire_pais->delete($direccion->id);
@@ -649,6 +698,7 @@ SQL;
                             $direccion->dire_direccion_dire_colonia->add($direccion_row['colonia']);
                         }
                     }
+                    */
 
                     $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : DIRECCION NOMBRE: " . $direccion_completa);
                     $current_id_list[] = $direccion->id;
@@ -657,14 +707,24 @@ SQL;
                     } else {
                         $inactivo = $direccion->inactivo == 1 ? $direccion->inactivo : 0;
                         $principal = $direccion->principal == 1 ? $direccion->principal : 0;
+                        /***************************************************************************/
+                        
 
                         $query = <<<SQL
-    update dire_direccion set  name = '{$direccion->name}', tipodedireccion = '{$direccion->tipodedireccion}',indicador = '{$direccion->indicador}',  calle = '{$direccion->calle}', numext = '{$direccion->numext}', numint= '{$direccion->numint}', principal=$principal, inactivo =$inactivo  where id = '{$direccion->id}';
+    update dire_direccion set  name = '{$direccion_completa}', tipodedireccion = '{$direccion->tipodedireccion}',indicador = '{$direccion->indicador}',  calle = '{$direccion->calle}', numext = '{$direccion->numext}', numint= '{$direccion->numint}', principal=$principal, inactivo =$inactivo , description = '{$desc_aux}'  where id = '{$direccion->id}';
     SQL;
+
+                        $updatecstm = "UPDATE dire_direccion_cstm set  estado_c = '{$nameEstado1}', municipio_c = '{$nameMunicipio1}', codigo_postal_c = '{$nameCP}',  ciudad_c = '{$nameCiudad1}', colonia_c = '{$nameColonia1}', pais_c = '{$namePais}' where id_c = '{$direccion->id}'";
+                      
+                        $queryrelsepomex = "UPDATE dir_sepomex_dire_direccion_c SET dir_sepomex_dire_direcciondir_sepomex_ida = '{$id_sepomex}' where dir_sepomex_dire_direcciondire_direccion_idb = '{$direccion->id}' AND deleted = 0 ";
                         $GLOBALS['log']->fatal("ACTUALIZANDO DIRECCIÓN DE BURÓ");
-                        $GLOBALS['log']->fatal($query);
+                        $GLOBALS['log']->fatal($query);                        
+                        $GLOBALS['log']->fatal($updatecstm);
+                        $GLOBALS['log']->fatal($queryrelsepomex);
                         try {
                             $resultado = $db->query($query);
+                            $resultado = $db->query($updatecstm);
+                            $resultado = $db->query($queryrelsepomex);
                         } catch (Exception $e) {
                             $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
                         }

@@ -36,6 +36,18 @@
     	return texto;
     },
 
+	getColoniaName: function(listColonia, coloniaKey) {
+		if (!listColonia) return null;
+
+		// Normalizar a array de valores (ya sea array o {0:...,1:...})
+		var items = Array.isArray(listColonia) ? listColonia : Object.values(listColonia);
+
+		// Buscar solo por idColonia
+		var found = items.find(it => String(it.idColonia ?? '') === String(coloniaKey ?? ''));
+
+		return found ? found.nameColonia : null;
+	},
+
 	render: function () {
 		this._super("render");
 		$("div.record-label[data-name='rfc_qr']").attr('style', 'pointer-events:none;');
@@ -528,11 +540,14 @@
 												Object.keys(direccion).forEach(key => {
 													//Valida dirección fiscal
 													if (direccion[key].indicadorSeleccionados.includes('^2^') && direccion[key].inactivo == 0) {
+														var nombreColoniaActual = contextol.getColoniaName(direccion[key].listColonia, direccion[key].colonia) || '';
+
 														cambiaDirFiscal = 0;
 														cambiaDirFiscal = (direccion[key].valCodigoPostal != CP) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
-														cambiaDirFiscal = (direccion[key].listPais[direccion[key].pais] != Pais) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
-														cambiaDirFiscal = (direccion[key].listMunicipio[direccion[key].municipio] != Municipio) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
-														cambiaDirFiscal = (direccion[key].listColonia[direccion[key].colonia] != Colonia) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
+														cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].listPais[direccion[key].pais]) != Pais) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
+														cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].listMunicipio[direccion[key].municipio]) != Municipio) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
+														//cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].listColonia[direccion[key].colonia]) != Colonia) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
+														cambiaDirFiscal = (contextol._limpiezaDatos( nombreColoniaActual ) != Colonia) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
 														cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].calle) != contextol._limpiezaDatos(Calle)) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
 														cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].numext) != contextol._limpiezaDatos(Exterior)) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
 														cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].numint) != contextol._limpiezaDatos(Interior)) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
@@ -1113,7 +1128,7 @@
 																app.api.call('GET', app.api.buildURL(strUrl), null, {
 																	success: function (data) {
 																		// Restaurar valor de Colonia
-																		Colonia = (Colonia == '_') ? ' ' : Colonia;
+																		//Colonia = (Colonia == '_') ? ' ' : Colonia;
 																		var resultadodireBuro=null;
 																		if (data.idCP) {
 																			// === País ===
@@ -1739,11 +1754,13 @@
 															Object.keys(direccion).forEach(key => {
 																//Valida dirección fiscal
 																if (direccion[key].indicadorSeleccionados.includes('^2^') && direccion[key].inactivo == 0) {
+																	var nombreColoniaActual = contextol.getColoniaName(direccion[key].listColonia, direccion[key].colonia) || '';
 																	cambiaDirFiscal = 0;
 																	cambiaDirFiscal = (direccion[key].valCodigoPostal != CP) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
-																	cambiaDirFiscal = (direccion[key].listPais[direccion[key].pais] != Pais) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
-																	cambiaDirFiscal = (direccion[key].listMunicipio[direccion[key].municipio] != Municipio) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
-																	cambiaDirFiscal = (direccion[key].listColonia[direccion[key].colonia] != Colonia) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
+																	cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].listPais[direccion[key].pais]) != Pais) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
+																	cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].listMunicipio[direccion[key].municipio]) != Municipio) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
+																	//cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].listColonia[direccion[key].colonia]) != Colonia) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
+																	cambiaDirFiscal = (contextol._limpiezaDatos( nombreColoniaActual ) != Colonia) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
 																	cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].calle) != contextol._limpiezaDatos(Calle)) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
 																	cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].numext) != contextol._limpiezaDatos(Exterior)) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
 																	cambiaDirFiscal = (contextol._limpiezaDatos(direccion[key].numint) != contextol._limpiezaDatos(Interior)) ? cambiaDirFiscal + 1 : cambiaDirFiscal;
@@ -2728,7 +2745,7 @@
 
 	_limpiezaDatos: function (cadena) {
 
-		cadena = cadena.trim().toLowerCase();
+		cadena = cadena.trim().toUpperCase();
 		cadena = cadena.split(" ").join("");
 		cadena = cadena.replace(".", "");
 		cadena = cadena.replace("-", "");
@@ -2744,6 +2761,8 @@
 		cadena = cadena.replace("\r", "");
 		cadena = cadena.replace("\t", "");
 		cadena = cadena.replace("\n", "");
+		cadena = cadena.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+		cadena = cadena.trim().replace(/\s+/g, " ");
 		return cadena;
 	},
 
