@@ -275,8 +275,8 @@ class SendEmailBacklog extends SugarApi
                                                                             <p style="margin: 0; margin-bottom: 16px;">Antes -> Después:</p>
                                                                             <br>
                                                                             <ul style="margin:0;padding-left:20px;">
-                                                                                <li><strong>Monto prometido:</strong> ' . $monto_comp_anterior . ' → <strong>' . $monto_comp_nuevo . '</strong></li>
-                                                                                <li><strong>Fecha prometida:</strong> ' . $fecha_comp_anterior . ' → <strong>' . $fecha_comp_nuevo . '</strong></li>
+                                                                                <li><strong>Monto Comprometido:</strong> ' . $monto_comp_anterior . ' → <strong>' . $monto_comp_nuevo . '</strong></li>
+                                                                                <li><strong>Fecha Compromiso:</strong> ' . $fecha_comp_anterior . ' → <strong>' . $fecha_comp_nuevo . '</strong></li>
                                                                                 <li><strong>Tipificación de riesgo:</strong> ' . $descripcionTipificacionAnterior . ' → <strong>' . $descripcionTipificacionNuevo . '</strong></li>
                                                                             </ul>
                                                                             <br>
@@ -495,8 +495,8 @@ class SendEmailBacklog extends SugarApi
                                                                             <p style="margin: 0; margin-bottom: 16px;">Últimos datos registrados:</p>
                                                                             <br>
                                                                             <ul style="margin:0;padding-left:20px;">
-                                                                                <li><strong>Monto prometido:</strong> ' . $monto_comp_nuevo . '</strong></li>
-                                                                                <li><strong>Fecha prometida:</strong> ' . $fecha_comp_nuevo . '</strong></li>
+                                                                                <li><strong>Monto Comprometido:</strong> ' . $monto_comp_nuevo . '</strong></li>
+                                                                                <li><strong>Fecha Compromiso:</strong> ' . $fecha_comp_nuevo . '</strong></li>
                                                                                 <li><strong>Tipificación de riesgo:</strong> ' . $descripcionTipificacionNuevo . '</strong></li>
                                                                                 <li><strong>Motivo de baja (si aplica):</strong> ' . $descripcionMotivoDeclinacion . '</strong></li>
                                                                             </ul>
