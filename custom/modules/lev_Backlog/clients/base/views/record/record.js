@@ -620,6 +620,20 @@
             errors['fecha_compromiso_c'] = errors['fecha_compromiso_c'] || {};
             errors['fecha_compromiso_c'].required = true;
         }
+        //VALIDA MONTO COMPROMETIDO
+        if (!this.model.get('monto_comprometido') || parseFloat(this.model.get('monto_comprometido')) <= 0) {
+            campos = campos + '<b>' + 'Monto Comprometido' + '</b><br>';
+
+            errors['monto_comprometido'] = errors['monto_comprometido'] || {};
+            errors['monto_comprometido'].required = true;
+        }
+        //VALIDA TIPO OPERACION PRODUCTO
+        if (this.model.get('num_tipo_op_leasing_c') == '' || this.model.get('num_tipo_op_leasing_c') == null) {
+            campos = campos + '<b>' + 'Tipo Operación Producto' + '</b><br>';
+
+            errors['num_tipo_op_leasing_c'] = errors['num_tipo_op_leasing_c'] || {};
+            errors['num_tipo_op_leasing_c'].required = true;
+        }
 
         if (campos) {
             app.alert.show("Campos Requeridos", {
@@ -819,12 +833,15 @@
     },
 
     _readOnlyEstatusDeclinada: function () {
-        //Bloquear el registro completo cuando Estatus Backlog es Declinada
-        if (this.model.get('estatus_backlog_c') === '2') {
+        var estatus_backlog = this.model.get('estatus_backlog_c');
+        //Bloquear el registro completo cuando Estatus Backlog es Declinada o Invalida
+        if (estatus_backlog === '2' || estatus_backlog === '3') {
+
+            var estatusBL = estatus_backlog === '2' ? 'declinada' : 'inválida';
 
             app.alert.show('msg_estatus_declinada', {
                 level: 'warning',
-                messages: 'Esta operación se encuentra declinada. Solicita reactivación a tu director.',
+                messages: 'Esta operación se encuentra ' + estatusBL + '. Solicita reactivación a tu director.',
                 autoClose: false
             });
 

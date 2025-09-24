@@ -439,10 +439,10 @@ class reactiva_bkl extends SugarApi
                                                                                 (ID ' . $solicitud . '), actualmente Declinada.<br><br>
                                                                                 Motivo breve del asesor: <p>' . $motivo . '</p><br>
                                                                                 Datos de referencia:<br>
-                                                                                Estatus actual: Declinada<br>
+                                                                                Estatus Backlog actual: Declinada<br>
                                                                                 Monto autorizado/preautorizado: $' . $monto . '<br>
-                                                                                Monto prometido: $' . $prometido . '<br>
-                                                                                Fecha prometida: ' . $fecha_formateada . '<br>
+                                                                                Monto Comprometido: $' . $prometido . '<br>
+                                                                                Fecha Compromiso: ' . $fecha_formateada . '<br>
                                                                                 Origen: ' . $valor_origen . '<br>
                                                                                 Puedes autorizar o rechazar la reactivación aquí:<br>
                                                                                 ' . $htmlLink . '<br>
