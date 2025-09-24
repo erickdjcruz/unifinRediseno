@@ -239,7 +239,7 @@ SQL;
             foreach ($bean->account_direcciones as $direccion_row) {
                 /** @var dire_Direccion $direccion */
                 //En caso de que pase la validación validationTask, únicamente guardamos direcciones que tengan valor en postal, es decir, que se llena información en el campo de CP
-                if( !empty( $direccion_row['postal'] )  ){
+                if (!empty($direccion_row['postal'])) {
 
                     $direccion = BeanFactory::getBean('dire_Direccion', $direccion_row['id']);
                     //$id_sepomex_anterior=$direccion->dir_sepomex_dire_direcciondir_sepomex_ida;
@@ -288,31 +288,31 @@ SQL;
                     $municipioName = $db->fetchByAssoc($querymunicipio);
                     */
 
-                    $id_postal=$direccion_row['valCodigoPostal'];
-                    $id_colonia=$direccion_row['colonia'];
-                    $GLOBALS['log']->fatal("POSTAL: ".$id_postal);
-                    $query_sepomex="SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}' and id_colonia='{$id_colonia}'";
+                    $id_postal = $direccion_row['valCodigoPostal'];
+                    $id_colonia = $direccion_row['colonia'];
+                    $GLOBALS['log']->fatal("POSTAL: " . $id_postal);
+                    $query_sepomex = "SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}' and id_colonia='{$id_colonia}'";
                     $GLOBALS['log']->fatal("QUERY SEPOMEX");
                     $GLOBALS['log']->fatal($query_sepomex);
                     $id_sepomex = '';
                     $result_sepomex = $db->query($query_sepomex);
                     while ($row = $GLOBALS['db']->fetchByAssoc($result_sepomex)) {
-                        $namePais=$row['pais'];
-                        $idPais=$row['id_pais'];
-                        $nameCP=$row['codigo_postal'];
-                        $nameEstado=$row['estado'];
-                        $idEstado=$row['id_estado'];
-                        $nameCiudad=$row['ciudad'];
-                        $idCiudad=$row['id_ciudad'];
-                        $nameColonia=$row['colonia'];
-                        $idColonia=$row['id_colonia'];
-                        $nameMunicipio=$row['municipio'];
-                        $idMunicipio=$row['id_municipio'];
+                        $namePais = $row['pais'];
+                        $idPais = $row['id_pais'];
+                        $nameCP = $row['codigo_postal'];
+                        $nameEstado = $row['estado'];
+                        $idEstado = $row['id_estado'];
+                        $nameCiudad = $row['ciudad'];
+                        $idCiudad = $row['id_ciudad'];
+                        $nameColonia = $row['colonia'];
+                        $idColonia = $row['id_colonia'];
+                        $nameMunicipio = $row['municipio'];
+                        $idMunicipio = $row['id_municipio'];
                         $id_sepomex = $row['id'];
                     }
 
-                    $direccion_completa = $direccion_row['calle'] . " " . $direccion_row['numext'] . " " . ($direccion_row['numint'] != "" ? "Int: " . $direccion_row['numint'] : "") . ", Colonia " . $nameColonia. ", Municipio " . $nameMunicipio;
-                    
+                    $direccion_completa = $direccion_row['calle'] . " " . $direccion_row['numext'] . " " . ($direccion_row['numint'] != "" ? "Int: " . $direccion_row['numint'] : "") . ", Colonia " . $nameColonia . ", Municipio " . $nameMunicipio;
+
                     $direccion->name = $direccion_completa;
 
                     //$direccion->pais_c=$namePais;
@@ -322,8 +322,8 @@ SQL;
                     //$direccion->municipio_c=$nameMunicipio;
                     //$direccion->colonia_c=$nameColonia;
                     //Se utiliza campo descripcion de la direccion para ya no crear campos nuevos solo para los id
-                    $direccion->description="{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
-                    
+                    $direccion->description = "{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
+
                     /*
                     if ($direccion->load_relationship('dire_direccion_dire_pais')) {
                         if ($direccion_row['pais'] !== $direccion->dire_direccion_dire_paisdire_pais_ida) {
@@ -370,7 +370,7 @@ SQL;
                     }
                     */
                     //Se genera relación entre la dirección y Sepomex
-                    $direccion->dir_sepomex_dire_direcciondir_sepomex_ida=$id_sepomex;
+                    $direccion->dir_sepomex_dire_direcciondir_sepomex_ida = $id_sepomex;
 
                     $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : DIRECCION NOMBRE: " . $direccion_completa);
                     $current_id_list[] = $direccion->id;
@@ -380,12 +380,12 @@ SQL;
                         $inactivo = $direccion->inactivo == 1 ? $direccion->inactivo : 0;
                         $principal = $direccion->principal == 1 ? $direccion->principal : 0;
 
-                        $direccion->inactivo=$inactivo;
-                        $direccion->principal=$principal;
+                        $direccion->inactivo = $inactivo;
+                        $direccion->principal = $principal;
 
-    //                      $query = <<<SQL
-    // update dire_direccion set  name = '{$direccion->name}', tipodedireccion = '{$direccion->tipodedireccion}',indicador = '{$direccion->indicador}',  calle = '{$direccion->calle}', numext = '{$direccion->numext}', numint= '{$direccion->numint}', principal=$principal, inactivo =$inactivo  where id = '{$direccion->id}';
-    // SQL;
+                        //                      $query = <<<SQL
+                        // update dire_direccion set  name = '{$direccion->name}', tipodedireccion = '{$direccion->tipodedireccion}',indicador = '{$direccion->indicador}',  calle = '{$direccion->calle}', numext = '{$direccion->numext}', numint= '{$direccion->numint}', principal=$principal, inactivo =$inactivo  where id = '{$direccion->id}';
+                        // SQL;
                         /*
                         $query=<<<SQL
                         UPDATE dire_direccion d
@@ -425,7 +425,7 @@ SQL;
 
                         try {
                             $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Update *784 ");
-                            
+
                             //$resultado = $db->query($query);
                             //$resultadoRelacion=$db->query($queryUpdateRelacion);
 
@@ -443,7 +443,7 @@ SQL;
                             */
                             //$GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : resultado " . $db->getAffectedRowCount($resultado));
                             //$GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : resultadoUpdateRelacion " . $db->getAffectedRowCount($resultadoRelacion));
-                            
+
                         } catch (Exception $e) {
                             $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
                         }
@@ -461,22 +461,24 @@ SQL;
         }
     }
 
-    public function esDireccionFiscal( $indicador ){
+    public function esDireccionFiscal($indicador)
+    {
 
-        $indicador_direcciones_fiscales = array(2,3,6,7,10,11,14,15,18,19,22,23,26,27,30,31,34,35,38,39,42,43,46,47,50,51,54,55,58,59,62,63);
+        $indicador_direcciones_fiscales = array(2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23, 26, 27, 30, 31, 34, 35, 38, 39, 42, 43, 46, 47, 50, 51, 54, 55, 58, 59, 62, 63);
 
-        if( in_array($indicador,$indicador_direcciones_fiscales) ){
+        if (in_array($indicador, $indicador_direcciones_fiscales)) {
             return true;
         }
         return false;
-
     }
 
     /* TODO: Add Definition and comment */
     public function listaNegraCall($bean = null, $event = null, $args = null)
     {
-        if ($bean->primernombre_c != $bean->fetched_row['primernombre_c'] || $bean->segundonombre_c != $bean->fetched_row['segundonombre_c']
-            || $bean->apellidopaterno_c != $bean->fetched_row['apellidopaterno_c'] || $bean->razonsocial_c != $bean->fetched_row['razonsocial_c']) {
+        if (
+            $bean->primernombre_c != $bean->fetched_row['primernombre_c'] || $bean->segundonombre_c != $bean->fetched_row['segundonombre_c']
+            || $bean->apellidopaterno_c != $bean->fetched_row['apellidopaterno_c'] || $bean->razonsocial_c != $bean->fetched_row['razonsocial_c']
+        ) {
 
             //login class located at custom/Levementum/UnifinAPI.php
             global $db;
@@ -542,7 +544,7 @@ SQL;
                 foreach ($bean->account_direccion_buro_credito as $direccion_row) {
                     $direccion = BeanFactory::getBean('dire_Direccion', $direccion_row['id']);
                     $GLOBALS['log']->fatal("direccion_row");
-                    $GLOBALS['log']->fatal(print_r($direccion_row,true));
+                    $GLOBALS['log']->fatal(print_r($direccion_row, true));
 
                     if (empty($direccion_row['id'])) {
                         //generar el guid
@@ -579,35 +581,35 @@ SQL;
                     //
                     // populate related account id
                     $direccion->accounts_dire_direccion_1accounts_ida = $bean->id;
-					// Related Sepomex
-					$id_postal = $direccion_row['valCodigoPostal'];
-					$id_colonia = $direccion_row['colonia'];
+                    // Related Sepomex
+                    $id_postal = $direccion_row['valCodigoPostal'];
+                    $id_colonia = $direccion_row['colonia'];
                     $id_ciudad = $direccion_row['ciudad'];
                     $id_municipio = $direccion_row['municipio'];
                     $id_estado = $direccion_row['estado'];
                     $id_pais = $direccion_row['pais'];
 
-                    $GLOBALS['log']->fatal("id_postal".$id_postal);
-                    $GLOBALS['log']->fatal("id_colonia".$id_colonia);
-                    $GLOBALS['log']->fatal("ciudad".$direccion_row['ciudad']);
-                    $GLOBALS['log']->fatal("municipio".$direccion_row['municipio']);
+                    $GLOBALS['log']->fatal("id_postal" . $id_postal);
+                    $GLOBALS['log']->fatal("id_colonia" . $id_colonia);
+                    $GLOBALS['log']->fatal("ciudad" . $direccion_row['ciudad']);
+                    $GLOBALS['log']->fatal("municipio" . $direccion_row['municipio']);
 
                     $id_sepomex = '';
-                    $query_sepomex="SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}' and id_colonia='{$id_colonia}'";
-                    
+                    $query_sepomex = "SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}' and id_colonia='{$id_colonia}'";
+
                     $result_sepomex = $db->query($query_sepomex);
                     while ($row = $GLOBALS['db']->fetchByAssoc($result_sepomex)) {
-                        $namePais=$row['pais'];
-                        $idPais=$row['id_pais'];
-                        $nameCP=$row['codigo_postal'];
-                        $nameEstado=$row['estado'];
-                        $idEstado=$row['id_estado'];
-                        $nameCiudad=$row['ciudad'];
-                        $idCiudad=$row['id_ciudad'];
-                        $nameColonia=$row['colonia'];
-                        $idColonia=$row['id_colonia'];
-                        $nameMunicipio=$row['municipio'];
-                        $idMunicipio=$row['id_municipio'];
+                        $namePais = $row['pais'];
+                        $idPais = $row['id_pais'];
+                        $nameCP = $row['codigo_postal'];
+                        $nameEstado = $row['estado'];
+                        $idEstado = $row['id_estado'];
+                        $nameCiudad = $row['ciudad'];
+                        $idCiudad = $row['id_ciudad'];
+                        $nameColonia = $row['colonia'];
+                        $idColonia = $row['id_colonia'];
+                        $nameMunicipio = $row['municipio'];
+                        $idMunicipio = $row['id_municipio'];
                         $id_sepomex = $row['id'];
                     }
 
@@ -617,35 +619,35 @@ SQL;
                     $idMunicipio = $id_municipio == "" ? $idMunicipio : $id_municipio;
                     $idColonia   = $id_colonia == "" ? $idColonia : $id_colonia;
 
-                    $query_sepomex_name="SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}';";
-                    
+                    $query_sepomex_name = "SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}';";
+
                     $result_sepomex_name = $db->query($query_sepomex_name);
                     while ($row = $GLOBALS['db']->fetchByAssoc($result_sepomex_name)) {
 
-                        if($row['id_estado'] == $id_estado){
-                            $nameEstado1=$row['estado'];
+                        if ($row['id_estado'] == $id_estado) {
+                            $nameEstado1 = $row['estado'];
                             $idEstado = $row['id_estado'];
                         }
 
-                        if($row['id_municipio'] == $id_municipio){
-                            $nameMunicipio1=$row['municipio'];
+                        if ($row['id_municipio'] == $id_municipio) {
+                            $nameMunicipio1 = $row['municipio'];
                             $idMunicipio = $row['id_municipio'];
                         }
 
-                        if($row['id_ciudad'] == $id_ciudad){
-                            $nameCiudad1=$row['ciudad'];
+                        if ($row['id_ciudad'] == $id_ciudad) {
+                            $nameCiudad1 = $row['ciudad'];
                             $idCiudad = $row['id_ciudad'];
                         }
 
-                        if($row['id_colonia'] == $id_colonia){
-                            $nameColonia1=$row['colonia'];
+                        if ($row['id_colonia'] == $id_colonia) {
+                            $nameColonia1 = $row['colonia'];
                             $idColonia = $row['id_colonia'];
                         }
                     }
 
                     $desc_aux = "{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
                     $direccion->description = $desc_aux;
-					$direccion->dir_sepomex_dire_direcciondir_sepomex_ida=$id_sepomex;
+                    $direccion->dir_sepomex_dire_direcciondir_sepomex_ida = $id_sepomex;
                     //$nombre_colonia_query = "Select name from dire_colonia where id ='" . $direccion_row['colonia'] . "'";
                     //$nombre_municipio_query = "Select name from dire_municipio where id ='" . $direccion_row['municipio'] . "'";
                     //$querycolonia = $db->query($nombre_colonia_query);
@@ -708,17 +710,17 @@ SQL;
                         $inactivo = $direccion->inactivo == 1 ? $direccion->inactivo : 0;
                         $principal = $direccion->principal == 1 ? $direccion->principal : 0;
                         /***************************************************************************/
-                        
+
 
                         $query = <<<SQL
     update dire_direccion set  name = '{$direccion_completa}', tipodedireccion = '{$direccion->tipodedireccion}',indicador = '{$direccion->indicador}',  calle = '{$direccion->calle}', numext = '{$direccion->numext}', numint= '{$direccion->numint}', principal=$principal, inactivo =$inactivo , description = '{$desc_aux}'  where id = '{$direccion->id}';
     SQL;
 
                         $updatecstm = "UPDATE dire_direccion_cstm set  estado_c = '{$nameEstado1}', municipio_c = '{$nameMunicipio1}', codigo_postal_c = '{$nameCP}',  ciudad_c = '{$nameCiudad1}', colonia_c = '{$nameColonia1}', pais_c = '{$namePais}' where id_c = '{$direccion->id}'";
-                      
+
                         $queryrelsepomex = "UPDATE dir_sepomex_dire_direccion_c SET dir_sepomex_dire_direcciondir_sepomex_ida = '{$id_sepomex}' where dir_sepomex_dire_direcciondire_direccion_idb = '{$direccion->id}' AND deleted = 0 ";
                         $GLOBALS['log']->fatal("ACTUALIZANDO DIRECCIÓN DE BURÓ");
-                        $GLOBALS['log']->fatal($query);                        
+                        $GLOBALS['log']->fatal($query);
                         $GLOBALS['log']->fatal($updatecstm);
                         $GLOBALS['log']->fatal($queryrelsepomex);
                         try {
@@ -728,6 +730,25 @@ SQL;
                         } catch (Exception $e) {
                             $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
                         }
+                    }
+
+                    $idCuenta = $bean->id;
+                    $GLOBALS['log']->fatal("--- HOOK[idCuenta] --- " . $idCuenta);
+                    //Actualiza bandera seguimiento_bc_c para habilitar sección de Buro de Crédito
+                    $query_flag_bc = "SELECT seguimiento_bc_c FROM tct02_resumen_cstm WHERE id_c = '{$idCuenta}'";
+
+                    $flagBuroCredito = $db->query($query_flag_bc);
+                    while ($row = $GLOBALS['db']->fetchByAssoc($flagBuroCredito)) {
+                        $seguimientoBC  = $row['seguimiento_bc_c'];
+                    }
+                    $GLOBALS['log']->fatal("--- HOOK[seguimiento_bc_c] --- " . $seguimientoBC);
+                    if ($seguimientoBC === '0') {
+                        $activaFlagBC = "UPDATE tct02_resumen_cstm SET seguimiento_bc_c = 1 WHERE id_c = '{$idCuenta}'";
+                        $resultBC = $db->query($activaFlagBC);
+
+                        $GLOBALS['log']->fatal("Bandera seguimiento_bc_c actualizada a 1-[true] para la cuenta: '{$idCuenta}'");
+                    } else {
+                        $GLOBALS['log']->fatal("Bandera seguimiento_bc_c ya estaba activa para la cuenta: '{$idCuenta}'");
                     }
                 }
             } else {
@@ -994,7 +1015,7 @@ SQL;
 
     public function textToUppperCase($bean = null, $event = null, $args = null)
     {
-        if( isset($_REQUEST['module']) ){
+        if (isset($_REQUEST['module'])) {
 
             if ($_REQUEST['module'] != 'Import') {
                 foreach ($bean as $field => $value) {
@@ -1406,10 +1427,10 @@ where rfc_c = '{$bean->rfc_c}' and
 
         //Consumir servicio de cleanName, declarado en custom api
         require_once("custom/clients/base/api/cleanName.php");
-        $apiCleanName= new cleanName();
-        $body=array('name'=>$bean->name);
-        $response=$apiCleanName->getCleanName(null,$body);
-        if ($response['status']=='200') {
+        $apiCleanName = new cleanName();
+        $body = array('name' => $bean->name);
+        $response = $apiCleanName->getCleanName(null, $body);
+        if ($response['status'] == '200') {
             $bean->clean_name = $response['cleanName'];
         }
     }
@@ -1491,7 +1512,7 @@ where rfc_c = '{$bean->rfc_c}' and
     public function RegistroAnalizate($bean = null, $event = null, $args = null)
     {
         //Crea nuevo bean Analizate (registro) y la relacion con acccounts (registro creado).
-        $url_portalFinanciera = '&UUID=' . base64_encode($bean->id) . '&RFC_CIEC=' . base64_encode($bean->rfc_c). '&MAIL=' . base64_encode($bean->email1);
+        $url_portalFinanciera = '&UUID=' . base64_encode($bean->id) . '&RFC_CIEC=' . base64_encode($bean->rfc_c) . '&MAIL=' . base64_encode($bean->email1);
         $relacion = BeanFactory::newBean('ANLZT_analizate');
         $relacion->anlzt_analizate_accountsaccounts_ida = $bean->id;
         $relacion->empresa = 1;
@@ -1515,12 +1536,12 @@ where rfc_c = '{$bean->rfc_c}' and
         //Sólo se ejecuta en la creación
         if (!$args['isUpdate']) {
             //Declara variables para generación de registros
-            global $current_user,$app_list_strings,$db;
+            global $current_user, $app_list_strings, $db;
             $beanprod = null;
             $idSinGestor = '569246c7-da62-4664-ef2a-5628f649537e';
             $module = 'uni_Productos';
-            $key_productos = array('1', '4', '3', '6', '8', '10','14', '2');
-            $name_productos = array('-LEASING', '-FACTORAJE', '-CRÉDITO AUTOMOTRIZ', '-FLEET', '-UNICLICK', '-SEGUROS','-TARJETA DE CRÉDITO','-CRÉDITO SIMPLRE');
+            $key_productos = array('1', '4', '3', '6', '8', '10', '14', '2');
+            $name_productos = array('-LEASING', '-FACTORAJE', '-CRÉDITO AUTOMOTRIZ', '-FLEET', '-UNICLICK', '-SEGUROS', '-TARJETA DE CRÉDITO', '-CRÉDITO SIMPLRE');
             $count = count($name_productos);
             $current_prod = null;
             $fechaAsignaAsesor = date("Y-m-d"); //Fecha de Hoy
@@ -1559,7 +1580,7 @@ where rfc_c = '{$bean->rfc_c}' and
                     $updateExecute = $db->query($update);
                 }
                 //Caso especial: Alta por sistema 3ro como tipo Lead, se convierte a Prospecto sin contactar
-                if ($bean->tipo_registro_cuenta_c == '1'  && $key_productos[$i]!='8' ) {
+                if ($bean->tipo_registro_cuenta_c == '1'  && $key_productos[$i] != '8') {
                     $beanprod->tipo_cuenta = "2"; //2-Prospecto
                     $beanprod->subtipo_cuenta = "1"; //Sin Contactar
                     $beanprod->tipo_subtipo_cuenta = "PROSPECTO SIN CONTACTAR";
@@ -1575,7 +1596,6 @@ where rfc_c = '{$bean->rfc_c}' and
                         $beanprod->tipo_cuenta = "4"; //4-Persona
                         $beanprod->subtipo_cuenta = ""; //Vacio
                         $beanprod->tipo_subtipo_cuenta = "PERSONA";
-
                     } else {
                         //SI ES PRODUCTO LEASING
                         $beanprod->tipo_cuenta = "3"; //3-Cliente
@@ -1633,7 +1653,7 @@ where rfc_c = '{$bean->rfc_c}' and
     {
         //Se escribe en archivo csv únicamente cuando se ha cambiado el Tipo y Subtipo de Cuenta a Cliente Con Linea Vigente
         //Esta función se dispara a través de Proccess Author "Cliente con Línea" ****** Tipo-Cuenta: 2-Prospecto, 3-Cliente **** SubTipo-Cuenta: 18-Con linea vigente, 8-Integracion de expediente
-        if(($bean->subtipo_registro_cuenta_c == '18' && $bean->tipo_registro_cuenta_c == '3' && $bean->fetched_row['subtipo_registro_cuenta_c'] != '18' && !$bean->conversion_gclid_c) || ($bean->subtipo_registro_cuenta_c == '10' && $bean->fetched_row['subtipo_registro_cuenta_c'] != '10' && !$bean->conversion_gclid_c)) {
+        if (($bean->subtipo_registro_cuenta_c == '18' && $bean->tipo_registro_cuenta_c == '3' && $bean->fetched_row['subtipo_registro_cuenta_c'] != '18' && !$bean->conversion_gclid_c) || ($bean->subtipo_registro_cuenta_c == '10' && $bean->fetched_row['subtipo_registro_cuenta_c'] != '10' && !$bean->conversion_gclid_c)) {
             $GLOBALS['log']->fatal('------------ENTRA CONDICIÓN CLIENTE CON LINEA VIGENTE O RECHAZADO DISPARA DESDE PROCCESS AUTHOR------------');
             $conversion_name = 'Conv CRM';
             $email = $bean->email1;
@@ -1653,7 +1673,7 @@ where rfc_c = '{$bean->rfc_c}' and
                 if (!empty($opps_relacionadas)) {
                     foreach ($opps_relacionadas as $opp) {
                         $conversion_value = $opp->monto_c;
-                        $conversion_time = date('H:i:s',strtotime($opp->date_modified));
+                        $conversion_time = date('H:i:s', strtotime($opp->date_modified));
                     }
                 }
             }
@@ -1678,8 +1698,10 @@ where rfc_c = '{$bean->rfc_c}' and
         global $sugar_config, $app_list_strings;
         $bank = $app_list_strings['banco_list'];
         //Cliente con Línea Vigente: 3,18
-        if ($bean->subtipo_registro_cuenta_c == '18' && $bean->tipo_registro_cuenta_c == '3' && /*$bean->fetched_row['subtipo_registro_cuenta_c']!='18' &&*/
-            $bean->encodedkey_mambu_c == "") {
+        if (
+            $bean->subtipo_registro_cuenta_c == '18' && $bean->tipo_registro_cuenta_c == '3' && /*$bean->fetched_row['subtipo_registro_cuenta_c']!='18' &&*/
+            $bean->encodedkey_mambu_c == ""
+        ) {
 
             //variables para consumo de servicio
             $url = $sugar_config['url_mambu_gral'] . 'groups';
@@ -1688,14 +1710,14 @@ where rfc_c = '{$bean->rfc_c}' and
             $auth_encode = base64_encode($user . ':' . $pwd);
 
             //Se agrega validación para conocer si el Cliente ya existe en Mambu
-            $url_check_client=$sugar_config['url_mambu_gral'] . 'groups:search?detailsLevel=FULL';
+            $url_check_client = $sugar_config['url_mambu_gral'] . 'groups:search?detailsLevel=FULL';
 
             $bodyCheckExists = array(
                 "filterCriteria" => array(
                     array(
-                        "field"=>"_referencias_crm._id_crm",
-                        "operator"=>"EQUALS",
-                        "value"=> $bean->id
+                        "field" => "_referencias_crm._id_crm",
+                        "operator" => "EQUALS",
+                        "value" => $bean->id
                     )
                 ),
             );
@@ -1710,8 +1732,7 @@ where rfc_c = '{$bean->rfc_c}' and
 
                 $GLOBALS['log']->fatal('--------------MAMBU CLIENTE YA EXISTE EN MAMBU-----------------');
                 $bean->encodedkey_mambu_c = $resultadoCheck[0]['encodedKey'];
-
-            }else {
+            } else {
                 $GLOBALS['log']->fatal('--------------MAMBU CLIENTE NO EXISTE EN MAMBU-----------------');
                 $GLOBALS['log']->fatal('--------------INICIA CREACIÓN DE CLIENTE EN MAMBU-----------------');
                 //variables para payload
@@ -1787,13 +1808,13 @@ where rfc_c = '{$bean->rfc_c}' and
                         if (!empty($relaciones)) {
                             foreach ($relaciones as $rel) {
                                 $beanCuentaEmail = BeanFactory::retrieveBean('Accounts', $rel->account_id1_c, array('disable_row_level_security' => true));
-                                $item_relacionado=array(
-                                    "_guid_relacionado_cl"=> $rel->account_id1_c,
+                                $item_relacionado = array(
+                                    "_guid_relacionado_cl" => $rel->account_id1_c,
                                     "_correo_relacionado_cl" => $beanCuentaEmail->email1,
-                                    "_nombre_relacionado_cl" =>$rel->name,
-                                    "_figura_relacionado_cl" => str_replace("^","",$rel->relaciones_activas)
+                                    "_nombre_relacionado_cl" => $rel->name,
+                                    "_figura_relacionado_cl" => str_replace("^", "", $rel->relaciones_activas)
                                 );
-                                array_push($body_relacionados,$item_relacionado);
+                                array_push($body_relacionados, $item_relacionado);
                             }
                         }
                     }
@@ -1806,19 +1827,19 @@ where rfc_c = '{$bean->rfc_c}' and
                 $GLOBALS['log']->fatal($resultado);
                 if (!empty($resultado['encodedKey'])) {
                     $bean->encodedkey_mambu_c = $resultado['encodedKey'];
-                }else{
+                } else {
                     //Mandar notificación a emails de la lista de studio
                     global $app_list_strings;
-                    $cuentas_email=array();
+                    $cuentas_email = array();
                     $lista_correos = $app_list_strings['emails_error_mambu_list'];
                     //Recorriendo lista de emails
                     foreach ($lista_correos as $key => $value) {
-                        array_push($cuentas_email,$lista_correos[$key]);
+                        array_push($cuentas_email, $lista_correos[$key]);
                     }
                     //$cuenta_email=$lista_correos['1'];
-                    $bodyEmail=$this->estableceCuerpoCorreoErrorMambu($body,$resultado);
+                    $bodyEmail = $this->estableceCuerpoCorreoErrorMambu($body, $resultado);
                     //Enviando correo
-                    $this->enviarNotificacionErrorMambu("Notificación: Petición hacia Mambú generada sin éxito",$bodyEmail,$cuentas_email,"Admin");
+                    $this->enviarNotificacionErrorMambu("Notificación: Petición hacia Mambú generada sin éxito", $bodyEmail, $cuentas_email, "Admin");
                 }
                 //Obtener solicitudes
                 if ($bean->load_relationship('opportunities')) {
@@ -1826,16 +1847,16 @@ where rfc_c = '{$bean->rfc_c}' and
                     $solicitudes = $bean->opportunities->getBeans();
                     if (!empty($solicitudes)) {
                         global $app_list_strings;
-                        $available_financiero=array();
+                        $available_financiero = array();
                         $lista_productos = $app_list_strings['productos_integra_mambu_list'];
                         //Recorriendo lista de de productos
                         foreach ($lista_productos as $key => $value) {
-                            array_push($available_financiero,$key);
+                            array_push($available_financiero, $key);
                         }
 
                         foreach ($solicitudes as $sol) {
                             //Disparar integración hacia mambú de solicitudes para estatus AUTORIZADA
-                            if (in_array($sol->producto_financiero_c,$available_financiero ) && $sol->tct_id_mambu_c == "" && $sol->estatus_c == 'N') {## cambiar por pPF
+                            if (in_array($sol->producto_financiero_c, $available_financiero) && $sol->tct_id_mambu_c == "" && $sol->estatus_c == 'N') { ## cambiar por pPF
                                 $sol->save();
                             }
                         }
@@ -1845,29 +1866,28 @@ where rfc_c = '{$bean->rfc_c}' and
         }
     }
 
-    public function enviarNotificacionErrorMambu($asunto,$cuerpoCorreo,$correos,$nombreUsuario){
+    public function enviarNotificacionErrorMambu($asunto, $cuerpoCorreo, $correos, $nombreUsuario)
+    {
         //Enviando correo a asesor origen
-        $GLOBALS['log']->fatal("ENVIANDO CORREO DE ERROR MAMBU A :".$correos);
+        $GLOBALS['log']->fatal("ENVIANDO CORREO DE ERROR MAMBU A :" . $correos);
         $insert = '';
         $hoy = date("Y-m-d H:i:s");
-        try{
+        try {
             $mailer = MailerFactory::getSystemDefaultMailer();
             $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
             $mailer->setSubject($asunto);
             $body = trim($cuerpoCorreo);
             $mailer->setHtmlBody($body);
             $mailer->clearRecipients();
-            for ($i=0; $i < count($correos); $i++) {
-                $GLOBALS['log']->fatal("AGREGANDO CORREOS DESTINATARIOS: ".$correos[$i]);
+            for ($i = 0; $i < count($correos); $i++) {
+                $GLOBALS['log']->fatal("AGREGANDO CORREOS DESTINATARIOS: " . $correos[$i]);
                 $mailer->addRecipientsTo(new EmailIdentity($correos[$i], $nombreUsuario));
             }
             //$mailer->addRecipientsTo(new EmailIdentity($correo, $nombreUsuario));
             $result = $mailer->send();
-
-        } catch (Exception $e){
-            $GLOBALS['log']->fatal("Exception: No se ha podido enviar correo al email ".$nombreUsuario);
-            $GLOBALS['log']->fatal("Exception ".$e);
-
+        } catch (Exception $e) {
+            $GLOBALS['log']->fatal("Exception: No se ha podido enviar correo al email " . $nombreUsuario);
+            $GLOBALS['log']->fatal("Exception " . $e);
         } catch (MailerException $me) {
             $message = $me->getMessage();
             switch ($me->getCode()) {
@@ -1879,14 +1899,14 @@ where rfc_c = '{$bean->rfc_c}' and
                     break;
             }
         }
-
     }
 
-    public function estableceCuerpoCorreoErrorMambu($contenidoPeticion,$contenidoError){
+    public function estableceCuerpoCorreoErrorMambu($contenidoPeticion, $contenidoError)
+    {
 
         $mailHTML = '<p align="justify"><font face="verdana" color="#635f5f"><b>Estimado usuario</b><br>
-            Se le informa que se ha producido un error en la petición hacia Mambú, el cual se detalla de la siguiente forma:<br><br>'.json_encode($contenidoError).'
-            <br><br>En donde la petición enviada fue la siguiente:<br><br>'.json_encode($contenidoPeticion).'
+            Se le informa que se ha producido un error en la petición hacia Mambú, el cual se detalla de la siguiente forma:<br><br>' . json_encode($contenidoError) . '
+            <br><br>En donde la petición enviada fue la siguiente:<br><br>' . json_encode($contenidoPeticion) . '
             <br><br>Atentamente Unifin</font></p>
             <br><br><img border="0" id="bannerUnifin" src="https://www.unifin.com.mx/ri/front/img/logo.png">
             <br><span style="font-size:8.5pt;color:#757b80">____________________________________________</span>
@@ -1900,7 +1920,6 @@ where rfc_c = '{$bean->rfc_c}' and
             </p>';
 
         return $mailHTML;
-
     }
 
     /******Funcion para guardar los valores del campo Puesto al campo de Puesto_Descriptivo*****/
@@ -2026,7 +2045,6 @@ where rfc_c = '{$bean->rfc_c}' and
             case 10:
                 $bean_account->origendelprospecto_c = "Whatsapp";
                 break;
-
         }
 
         //Switch para asignar los valores
@@ -2155,7 +2173,6 @@ where rfc_c = '{$bean->rfc_c}' and
 
                 break;
         }
-
     }
 
     public function ActualizaEmpleadosDDW($bean_account = null, $event = null, $args = null)
@@ -2163,7 +2180,7 @@ where rfc_c = '{$bean->rfc_c}' and
         $totalEmpleados = $bean_account->total_empleados_c;
         //ACTUALIZA LA LISTA DE NÚMERO DE EMPLEADOS CONTRA EL NÚMERO DE EMPLEADOS EXACTOS
         if ($totalEmpleados >= 0) {
-            $GLOBALS['log']->fatal("TOTAL EMPLEADOS EXACTOS ". $totalEmpleados);
+            $GLOBALS['log']->fatal("TOTAL EMPLEADOS EXACTOS " . $totalEmpleados);
             if ($totalEmpleados <= 10) {
                 $bean_account->empleados_c = '0a10';
             } elseif ($totalEmpleados <= 50) {
@@ -2179,7 +2196,7 @@ where rfc_c = '{$bean->rfc_c}' and
             } else {
                 $bean_account->empleados_c = '1001';
             }
-            $GLOBALS['log']->fatal("ACTUALIZA LISTA DE EMPLEADOS ". $bean_account->empleados_c);
+            $GLOBALS['log']->fatal("ACTUALIZA LISTA DE EMPLEADOS " . $bean_account->empleados_c);
         }
     }
 
@@ -2189,7 +2206,7 @@ where rfc_c = '{$bean->rfc_c}' and
         $idPadre = $bean->parent_id;
         $situacionGE = $bean->situacion_gpo_empresarial_c;
         $totalHijos = 0;
-        $nombrePadre ='';
+        $nombrePadre = '';
         $listaSituacionGE = [];
         $listaTextoSGE = [];
 
@@ -2198,53 +2215,54 @@ where rfc_c = '{$bean->rfc_c}' and
         $result = $db->query($sql);
         $totalHijos = $result->num_rows;
         //Validar relación padre
-        if( !empty($idPadre) ) {
+        if (!empty($idPadre)) {
             $listaSituacionGE[] = "^2^";
             //Recupera cuenta padre
             $cuentaPadre = BeanFactory::retrieveBean('Accounts', $bean->parent_id, array('disable_row_level_security' => true));
             $nombrePadre = $cuentaPadre->name;
         }
         //Validar relación hijos
-        if( $totalHijos>0 ) {
+        if ($totalHijos > 0) {
             $listaSituacionGE[] = "^1^";
         }
         //Validar Sin grupo empresaril
-        if( $totalHijos==0 && empty($idPadre) && strpos($situacionGE, "3") ) {
+        if ($totalHijos == 0 && empty($idPadre) && strpos($situacionGE, "3")) {
             $listaSituacionGE[] = "^3^";
         }
         //Establece valor default
-        if(count($listaSituacionGE)==0){
+        if (count($listaSituacionGE) == 0) {
             $listaSituacionGE[] = "^4^";
         }
 
         //Armar arreglo de texto SGE
-        if ( in_array("^1^", $listaSituacionGE ) ){
-            $listaTextoSGE[] = 'Cuenta primaria del grupo ' . $bean->name ;
+        if (in_array("^1^", $listaSituacionGE)) {
+            $listaTextoSGE[] = 'Cuenta primaria del grupo ' . $bean->name;
         }
-        if ( in_array("^2^" , $listaSituacionGE )){
+        if (in_array("^2^", $listaSituacionGE)) {
             $listaTextoSGE[] = 'Cuenta secundaria del grupo ' . $nombrePadre;
         }
-        if ( in_array( "^3^" , $listaSituacionGE )){
+        if (in_array("^3^", $listaSituacionGE)) {
             $listaTextoSGE[] = 'No pertenece a ningún grupo empresarial';
         }
-        if ( in_array( "^4^" ,$listaSituacionGE) ){
+        if (in_array("^4^", $listaSituacionGE)) {
             $listaTextoSGE[] = 'Sin Grupo Empresarial Verificado';
         }
 
         //Establece valores para situación de grupo empresarial
-        $bean->situacion_gpo_empresarial_c = (count($listaSituacionGE)>0) ? implode(",",$listaSituacionGE) : $bean->situacion_gpo_empresarial_c;
-        $bean->situacion_gpo_empresa_txt_c = (count($listaTextoSGE)>0) ? implode("\n",$listaTextoSGE) : $bean->situacion_gpo_empresa_txt_c;
+        $bean->situacion_gpo_empresarial_c = (count($listaSituacionGE) > 0) ? implode(",", $listaSituacionGE) : $bean->situacion_gpo_empresarial_c;
+        $bean->situacion_gpo_empresa_txt_c = (count($listaTextoSGE) > 0) ? implode("\n", $listaTextoSGE) : $bean->situacion_gpo_empresa_txt_c;
         // $GLOBALS['log']->fatal("LH Grupo Empresarial_Previo_ ".$bean->fetched_row['parent_id']);
         // $GLOBALS['log']->fatal("LH Grupo Empresarial_Previo ". $bean->parent_id);
         //Actualiza cuenta padre cuando se elimina relación
-        if(!empty($bean->fetched_row['parent_id']) && $bean->parent_id!=$bean->fetched_row['parent_id'] ) {
+        if (!empty($bean->fetched_row['parent_id']) && $bean->parent_id != $bean->fetched_row['parent_id']) {
             //Recupera cuenta padre (previa)
             $bean->parent_id_previo = $bean->fetched_row['parent_id'];
             //$GLOBALS['log']->fatal("Id Padre previo: ". $bean->parent_id_previo);
         }
     }
 
-    public function cambioRazonSocial($bean = null, $event = null, $args = null){
+    public function cambioRazonSocial($bean = null, $event = null, $args = null)
+    {
         //Entra funcionalidad solo en caso de que el rfc sea el mismo y se detecte algún cambio en los campos:
         // Razón social / Nombre, Apellidos
         // Dirección fiscal
@@ -2261,10 +2279,10 @@ where rfc_c = '{$bean->rfc_c}' and
         //$GLOBALS['log']->fatal( print_r( json_decode($bean->json_direccion_audit_c,true),true ) );
 
         $text_cambios = '';
-        if( $bean->valid_cambio_razon_social_c == 1 ){
+        if ($bean->valid_cambio_razon_social_c == 1) {
             //Se envía excepción en caso de que el registro se encuentre en proceso de validación
             //La validación solo aplica para Cliente:3 
-            if( ($bean->tipo_registro_cuenta_c == '3') && $bean->origen_cuenta_c !== '11' && $bean->subtipo_registro_cuenta_c != '11' ){
+            if (($bean->tipo_registro_cuenta_c == '3') && $bean->origen_cuenta_c !== '11' && $bean->subtipo_registro_cuenta_c != '11') {
                 // require_once 'include/api/SugarApiException.php';
                 // $GLOBALS['log']->fatal("No es posible generar cambios al registro ya que se encuentra en un proceso de revisión");
                 // throw new SugarApiExceptionInvalidParameter("No es posible generar cambios al registro ya que se encuentra en un proceso de revisión");
@@ -2272,51 +2290,48 @@ where rfc_c = '{$bean->rfc_c}' and
                 //Cuando se detecta cambio y razón social, permite guardado solo que los cambios en los campod:
                 //nombre, apellidos, razón social y denominación social no sr verán reflejados
                 $bean->name = $bean->fetched_row['name'];
-                if( $bean->tipodepersona_c !== "Persona Moral" ){ //PF y PFAE
+                if ($bean->tipodepersona_c !== "Persona Moral") { //PF y PFAE
 
                     $bean->primernombre_c = $bean->fetched_row['primernombre_c'];
                     $bean->apellidopaterno_c = $bean->fetched_row['apellidopaterno_c'];
                     $bean->apellidomaterno_c = $bean->fetched_row['apellidomaterno_c'];
                     $bean->nombre_comercial_c = $bean->fetched_row['nombre_comercial_c'];
-
-                }else{
+                } else {
                     $bean->denominacion_c = $bean->fetched_row['denominacion_c'];
                     $bean->razonsocial_c = $bean->fetched_row['razonsocial_c'];
                     $bean->nombre_comercial_c = $bean->fetched_row['nombre_comercial_c'];
                 }
-
             }
+        } else {
+            if (!empty($bean->rfc_c) && ($bean->tipo_registro_cuenta_c == '3') && $bean->origen_cuenta_c !== '11' && $bean->subtipo_registro_cuenta_c != '11') {
 
-        }else{
-            if( !empty($bean->rfc_c) && ($bean->tipo_registro_cuenta_c == '3') && $bean->origen_cuenta_c !== '11' && $bean->subtipo_registro_cuenta_c != '11' ){
-
-                if( $bean->fetched_row['rfc_c'] == $bean->rfc_c ){
+                if ($bean->fetched_row['rfc_c'] == $bean->rfc_c) {
                     $text_cambios .= '<ul>';
 
                     $source = $_REQUEST['__sugar_url'];
                     $endpoint = 'AprobarCambiosRazonSocialDireFiscal';
                     //$pos - controlar el origen desde donde se dispara el guardado del registro (desde api custom ó desde el guardado normal directo en el registro)
-                    $pos = strpos($source,$endpoint);
+                    $pos = strpos($source, $endpoint);
 
-                    if( $bean->fetched_row['name'] !== $bean->name && $pos==false ){
+                    if ($bean->fetched_row['name'] !== $bean->name && $pos == false) {
                         $GLOBALS['log']->fatal("El nombre cambió, se envía notificación");
                         $send_notification = true;
                         $cambio_nombre = true;
-                        $text_cambios .= '<li><b>Razón social / Nombre</b>: <b>tenía el valor</b> '. $bean->fetched_row['name'] .'<b> y cambió a </b>'.$bean->name.'</li>';
+                        $text_cambios .= '<li><b>Razón social / Nombre</b>: <b>tenía el valor</b> ' . $bean->fetched_row['name'] . '<b> y cambió a </b>' . $bean->name . '</li>';
                     }
 
-                    if( $bean->tipodepersona_c == 'Persona Moral' && $pos==false ){
+                    if ($bean->tipodepersona_c == 'Persona Moral' && $pos == false) {
                         $name_actual = $bean->fetched_row['name'];
                         $name_nuevo = $bean->name;
                         $regimen_capital = $bean->regimen_capital_c;
 
-                        $send_notification = $this->evaluaCambioRegimenCapital( $name_actual, $name_nuevo, $regimen_capital );
-                    } 
+                        $send_notification = $this->evaluaCambioRegimenCapital($name_actual, $name_nuevo, $regimen_capital);
+                    }
 
-                    
+
                     //Detectar cambio dirección fiscal
                     $direccion_anterior = $this->getDireccionFiscalBD($bean);
-                    if( !empty( $direccion_anterior ) ){
+                    if (!empty($direccion_anterior)) {
 
                         $id_direccion_buscar = $direccion_anterior[0];
                         $direccion_anterior_completa = $direccion_anterior[1];
@@ -2327,49 +2342,46 @@ where rfc_c = '{$bean->rfc_c}' and
                         $direccion_nueva_completa = $this->getDireccionFiscalActual($bean->account_direcciones);
                         //$GLOBALS['log']->fatal("********** Direccion nueva **********");
                         //$GLOBALS['log']->fatal(print_r($direccion_nueva_completa,true));
-                        if( !empty($direccion_nueva_completa[0]) ){
-                            $GLOBALS['log']->fatal("#####Direccion actual: ". strtoupper($direccion_anterior_completa));
-                            $GLOBALS['log']->fatal("#####Direccion por actualizar: ". strtoupper($direccion_nueva_completa[0]));
-                            if( strtoupper($direccion_anterior_completa) !== strtoupper($direccion_nueva_completa[0]) && $pos==false ){
+                        if (!empty($direccion_nueva_completa[0])) {
+                            $GLOBALS['log']->fatal("#####Direccion actual: " . strtoupper($direccion_anterior_completa));
+                            $GLOBALS['log']->fatal("#####Direccion por actualizar: " . strtoupper($direccion_nueva_completa[0]));
+                            if (strtoupper($direccion_anterior_completa) !== strtoupper($direccion_nueva_completa[0]) && $pos == false) {
                                 $GLOBALS['log']->fatal("La dirección cambió, se envía notificación");
                                 $elemento_por_actualizar_direccion = $direccion_nueva_completa[1];
                                 $send_notification = true;
                                 $cambio_dirFiscal = true;
-                                $text_cambios .= '<li><b>Dirección fiscal</b>: <b>tenía el valor </b>'. ucwords($direccion_anterior_completa) .'<b> y cambió a </b>'.ucwords($direccion_nueva_completa[0]).'</li>';
+                                $text_cambios .= '<li><b>Dirección fiscal</b>: <b>tenía el valor </b>' . ucwords($direccion_anterior_completa) . '<b> y cambió a </b>' . ucwords($direccion_nueva_completa[0]) . '</li>';
                                 //$this->insertCambiosDireFiscalAudit( $bean->id, strtoupper($direccion_anterior_completa), strtoupper($direccion_nueva_completa), $id_direccion_buscar );
                             }
-
                         }
-                        
                     }
-                    
+
                     $text_cambios .= '</ul>';
                 }
-
             }
         }
 
-        if( $send_notification ){
+        if ($send_notification) {
             global $app_list_strings;
 
-            $producto_envio = $this->getMultiproductoParaEnvioNotificacion( $bean );
-            if( $producto_envio == 'Uniclick' ){
+            $producto_envio = $this->getMultiproductoParaEnvioNotificacion($bean);
+            if ($producto_envio == 'Uniclick') {
                 $emails_responsables_cambios_list = $app_list_strings['emails_uniclick_list'];
             }
 
-            if( $producto_envio == 'Credito' ){
+            if ($producto_envio == 'Credito') {
                 $emails_responsables_cambios_list = $app_list_strings['emails_multiproducto_list'];
             }
 
-            if( $producto_envio == 'Credito-Uniclick' ){
-                $emails_responsables_cambios_list = array_merge( $app_list_strings['emails_uniclick_list'], $app_list_strings['emails_multiproducto_list'] );
+            if ($producto_envio == 'Credito-Uniclick') {
+                $emails_responsables_cambios_list = array_merge($app_list_strings['emails_uniclick_list'], $app_list_strings['emails_multiproducto_list']);
             }
 
-        
+
             //$emails_responsables_cambios_list = ( $producto_envio == 'Uniclick' ) ? $app_list_strings['emails_uniclick_list'] : $app_list_strings['emails_multiproducto_list'];
-            
-            $body_correo = $this->buildBodyCambioRazon( $bean->rfc_c, $text_cambios, $bean->id, $bean->fetched_row['name'] );
-            $this->sendEmailCambioRazonSocial( $emails_responsables_cambios_list, $body_correo );
+
+            $body_correo = $this->buildBodyCambioRazon($bean->rfc_c, $text_cambios, $bean->id, $bean->fetched_row['name']);
+            $this->sendEmailCambioRazonSocial($emails_responsables_cambios_list, $body_correo);
 
             //Habilita bandera para indicar que el registro se encuentra en proceso de validación
             //$bean->valid_cambio_razon_social_c = 1;
@@ -2378,21 +2390,21 @@ where rfc_c = '{$bean->rfc_c}' and
             $plataforma = $_SESSION['platform'];
             $fecha_cambio = TimeDate::getInstance()->nowDb();
 
-            if( $cambio_nombre ){
+            if ($cambio_nombre) {
                 $bean->cambio_nombre_c = 1;
                 $bean->valid_cambio_razon_social_c = 1;
                 //Establece json con cambios y revierte valores
-                if($bean->tipodepersona_c == 'Persona Moral'){
+                if ($bean->tipodepersona_c == 'Persona Moral') {
                     $razon_social_actual = $bean->fetched_row['razonsocial_c'];
                     $razon_social_por_actualizar = $bean->razonsocial_c;
                     $nombre_actual = $bean->fetched_row['name'];
                     $nombre_por_actualizar = $bean->name;
-                    $json_audit = '{"tipo":"'.$bean->tipodepersona_c.'","razon_social_actual":"'.$razon_social_actual.'","razon_social_por_actualizar":"'.$razon_social_por_actualizar.'","primer_nombre_actual":" ","primer_nombre_por_actualizar":" ","paterno_actual":" ","paterno_por_actualizar":" ","materno_actual":" ","materno_por_actualizar":" ","nombre_actual":"'.$nombre_actual.'","nombre_por_actualizar":"'.$nombre_por_actualizar.'","fecha_cambio":"'.$fecha_cambio.'","plataforma":"'.$plataforma.'"}';
+                    $json_audit = '{"tipo":"' . $bean->tipodepersona_c . '","razon_social_actual":"' . $razon_social_actual . '","razon_social_por_actualizar":"' . $razon_social_por_actualizar . '","primer_nombre_actual":" ","primer_nombre_por_actualizar":" ","paterno_actual":" ","paterno_por_actualizar":" ","materno_actual":" ","materno_por_actualizar":" ","nombre_actual":"' . $nombre_actual . '","nombre_por_actualizar":"' . $nombre_por_actualizar . '","fecha_cambio":"' . $fecha_cambio . '","plataforma":"' . $plataforma . '"}';
 
                     //Revierte cambios
                     $bean->razonsocial_c = $bean->fetched_row['razonsocial_c'];
                     $bean->nombre_comercial_c = $bean->fetched_row['nombre_comercial_c'];
-                }else{
+                } else {
 
                     $nombre_actual = $bean->fetched_row['name'];
                     $nombre_por_actualizar = $bean->name;
@@ -2406,7 +2418,7 @@ where rfc_c = '{$bean->rfc_c}' and
                     $materno_actual = $bean->fetched_row['apellidomaterno_c'];
                     $materno_por_actualizar = $bean->apellidomaterno_c;
 
-                    $json_audit = '{"tipo":"'.$bean->tipodepersona_c.'","razon_social_actual":" ","razon_social_por_actualizar":" ","primer_nombre_actual":"'.$primer_nombre_actual.'","primer_nombre_por_actualizar":"'.$primer_nombre_por_actualizar.'","paterno_actual":"'.$paterno_actual.'","paterno_por_actualizar":"'.$paterno_por_actualizar.'","materno_actual":"'.$materno_actual.'","materno_por_actualizar":"'.$materno_por_actualizar.'","nombre_actual":"'.$nombre_actual.'","nombre_por_actualizar":"'.$nombre_por_actualizar.'","fecha_cambio":"'.$fecha_cambio.'","plataforma":"'.$plataforma.'"}';
+                    $json_audit = '{"tipo":"' . $bean->tipodepersona_c . '","razon_social_actual":" ","razon_social_por_actualizar":" ","primer_nombre_actual":"' . $primer_nombre_actual . '","primer_nombre_por_actualizar":"' . $primer_nombre_por_actualizar . '","paterno_actual":"' . $paterno_actual . '","paterno_por_actualizar":"' . $paterno_por_actualizar . '","materno_actual":"' . $materno_actual . '","materno_por_actualizar":"' . $materno_por_actualizar . '","nombre_actual":"' . $nombre_actual . '","nombre_por_actualizar":"' . $nombre_por_actualizar . '","fecha_cambio":"' . $fecha_cambio . '","plataforma":"' . $plataforma . '"}';
 
                     //Revierte cambios
                     $bean->primernombre_c = $bean->fetched_row['primernombre_c'];
@@ -2420,11 +2432,11 @@ where rfc_c = '{$bean->rfc_c}' and
                 $bean->json_audit_c = $json_audit;
             }
 
-            if( $cambio_dirFiscal ){
+            if ($cambio_dirFiscal) {
                 //$bean->cambio_dirfiscal_c = 1;
                 //Se habilita bandera para evitar guarar las direcciones
                 //$bean->omitir_guardado_direcciones_c = 1;
-                $bean->omitir_caso= 1;
+                $bean->omitir_caso = 1;
 
                 //Valores actuales (names) para armar la dirección completa
                 $current_calle = $elemento_actual_direccion->calle;
@@ -2436,7 +2448,7 @@ where rfc_c = '{$bean->rfc_c}' and
                 $current_municipio = $elemento_actual_direccion->dire_direccion_dire_municipio_name;
                 $current_ciudad = $elemento_actual_direccion->dire_direccion_dire_ciudad_name;
                 $current_colonia = $elemento_actual_direccion->dire_direccion_dire_colonia_name;
-                $full_direccion_actual = "Calle: ". $current_calle .", CP: ". $current_cp .", País: ". $current_pais .", Estado: ". $current_estado .", Municipio: ". $current_municipio .", Ciudad: ". $current_ciudad .", Colonia: ". $current_colonia .", Número exterior: ". $current_numext .", Número interior: ".$current_numint;
+                $full_direccion_actual = "Calle: " . $current_calle . ", CP: " . $current_cp . ", País: " . $current_pais . ", Estado: " . $current_estado . ", Municipio: " . $current_municipio . ", Ciudad: " . $current_ciudad . ", Colonia: " . $current_colonia . ", Número exterior: " . $current_numext . ", Número interior: " . $current_numint;
 
 
                 //Valores por actualizar (names) para armar la dirección completa
@@ -2449,7 +2461,7 @@ where rfc_c = '{$bean->rfc_c}' and
                 $municipio_act = $elemento_por_actualizar_direccion['listMunicipio'][$elemento_por_actualizar_direccion['municipio']];
                 $ciudad_act = $elemento_por_actualizar_direccion['listCiudad'][$elemento_por_actualizar_direccion['ciudad']];
                 $colonia_act = $elemento_por_actualizar_direccion['listColonia'][$elemento_por_actualizar_direccion['colonia']];
-                $full_direccion_por_actualizar = "Calle: ". $calle_act .", CP: ". $cp_act .", País: ". $pais_act .", Estado: ". $estado_act .", Municipio: ". $municipio_act .", Ciudad: ". $ciudad_act .", Colonia: ". $colonia_act .", Número exterior: ". $numext_act .", Número interior: ".$numint_act;
+                $full_direccion_por_actualizar = "Calle: " . $calle_act . ", CP: " . $cp_act . ", País: " . $pais_act . ", Estado: " . $estado_act . ", Municipio: " . $municipio_act . ", Ciudad: " . $ciudad_act . ", Colonia: " . $colonia_act . ", Número exterior: " . $numext_act . ", Número interior: " . $numint_act;
 
 
                 $cp_actual = $elemento_actual_direccion->dire_direccion_dire_codigopostaldire_codigopostal_ida;
@@ -2480,31 +2492,31 @@ where rfc_c = '{$bean->rfc_c}' and
                 $numint_actual = $elemento_actual_direccion->numint;
                 $numint_por_actualizar = $elemento_por_actualizar_direccion['numint'];
 
-                $json_audit_direccion='{
-                    "id_direccion":"'. $elemento_actual_direccion->id . '",
-                    "indicador":"'. $elemento_por_actualizar_direccion['indicador'] . '",
-                    "cp_actual":"'. $cp_actual . '",
-                    "cp_por_actualizar":"'. $cp_por_actualizar . '",
-                    "pais_actual":"'. $pais_actual . '",
-                    "pais_por_actualizar":"'. $pais_por_actualizar . '",
-                    "estado_actual":"'. $estado_actual . '",
-                    "estado_por_actualizar":"'. $estado_por_actualizar . '",
-                    "municipio_actual":"'. $municipio_actual . '",
-                    "municipio_por_actualizar":"'. $municipio_por_actualizar . '",
-                    "ciudad_actual":"'. $ciudad_actual . '",
-                    "ciudad_por_actualizar":"'. $ciudad_por_actualizar . '",
-                    "colonia_actual":"'. $colonia_actual . '",
-                    "colonia_por_actualizar":"'. $colonia_por_actualizar . '",
-                    "calle_actual":"'. $calle_actual . '",
-                    "calle_por_actualizar":"'. $calle_por_actualizar . '",
-                    "numext_actual":"'. $numext_actual . '",
-                    "numext_por_actualizar":"'. $numext_por_actualizar . '",
-                    "numint_actual":"'. $numint_actual . '",
-                    "numint_por_actualizar":"'. $numint_por_actualizar . '",
-                    "direccion_completa_actual":"'. $full_direccion_actual . '",
-                    "direccion_completa_por_actualizar":"'. $full_direccion_por_actualizar . '",
-                    "fecha_cambio":"'. $fecha_cambio .'",
-                    "plataforma":"'. $plataforma .'"
+                $json_audit_direccion = '{
+                    "id_direccion":"' . $elemento_actual_direccion->id . '",
+                    "indicador":"' . $elemento_por_actualizar_direccion['indicador'] . '",
+                    "cp_actual":"' . $cp_actual . '",
+                    "cp_por_actualizar":"' . $cp_por_actualizar . '",
+                    "pais_actual":"' . $pais_actual . '",
+                    "pais_por_actualizar":"' . $pais_por_actualizar . '",
+                    "estado_actual":"' . $estado_actual . '",
+                    "estado_por_actualizar":"' . $estado_por_actualizar . '",
+                    "municipio_actual":"' . $municipio_actual . '",
+                    "municipio_por_actualizar":"' . $municipio_por_actualizar . '",
+                    "ciudad_actual":"' . $ciudad_actual . '",
+                    "ciudad_por_actualizar":"' . $ciudad_por_actualizar . '",
+                    "colonia_actual":"' . $colonia_actual . '",
+                    "colonia_por_actualizar":"' . $colonia_por_actualizar . '",
+                    "calle_actual":"' . $calle_actual . '",
+                    "calle_por_actualizar":"' . $calle_por_actualizar . '",
+                    "numext_actual":"' . $numext_actual . '",
+                    "numext_por_actualizar":"' . $numext_por_actualizar . '",
+                    "numint_actual":"' . $numint_actual . '",
+                    "numint_por_actualizar":"' . $numint_por_actualizar . '",
+                    "direccion_completa_actual":"' . $full_direccion_actual . '",
+                    "direccion_completa_por_actualizar":"' . $full_direccion_por_actualizar . '",
+                    "fecha_cambio":"' . $fecha_cambio . '",
+                    "plataforma":"' . $plataforma . '"
                 }';
 
                 $GLOBALS['log']->fatal("JSON DIRECCION");
@@ -2543,150 +2555,147 @@ where rfc_c = '{$bean->rfc_c}' and
             //$GLOBALS['log']->fatal("*******DIRECCIONES NUEVO ATRIBUTO*******");
             //$GLOBALS['log']->fatal(print_r($bean->account_direcciones,true));
             //$GLOBALS['log']->fatal($bean->omitir_caso);
-            if(!$bean->omitir_caso){
-              $this->creaCaso( $bean->id );
+            if (!$bean->omitir_caso) {
+                $this->creaCaso($bean->id);
             }
         }
-
     }
 
-    function evaluaCambioRegimenCapital( $name_actual, $name_nuevo, $regimen_capital ){
+    function evaluaCambioRegimenCapital($name_actual, $name_nuevo, $regimen_capital)
+    {
         $name_actual = trim($name_actual);
-        $name_nuevo = trim ($name_nuevo);
-        $name_nuevo = str_replace($regimen_capital,"",$name_nuevo);
-        $name_nuevo = trim ($name_nuevo);
+        $name_nuevo = trim($name_nuevo);
+        $name_nuevo = str_replace($regimen_capital, "", $name_nuevo);
+        $name_nuevo = trim($name_nuevo);
         $notificacion = false;
         //$GLOBALS['log']->fatal("name_actual-".$name_actual."-");
         //$GLOBALS['log']->fatal("name_nuevo-".$name_nuevo."-");
         //$GLOBALS['log']->fatal("regimen_capital-".$regimen_capital."-");
-        if( $this->startsWith( $name_actual, $name_nuevo ) ){
+        if ($this->startsWith($name_actual, $name_nuevo)) {
             $GLOBALS['log']->fatal("SE PROCEDE A VALIDAR REGIMEN CAPITAL");
-            $regimen_capital_actual = str_replace($name_nuevo,"",$name_actual );
+            $regimen_capital_actual = str_replace($name_nuevo, "", $name_actual);
 
-            $regimen_capital_actual_clean = preg_replace("/\s+/", "", str_replace(['.',','],"", $regimen_capital_actual));
-            $GLOBALS['log']->fatal("CLEAN REGIMEN CAPITAL ACTUAL CLEAN: ".$regimen_capital_actual_clean);
+            $regimen_capital_actual_clean = preg_replace("/\s+/", "", str_replace(['.', ','], "", $regimen_capital_actual));
+            $GLOBALS['log']->fatal("CLEAN REGIMEN CAPITAL ACTUAL CLEAN: " . $regimen_capital_actual_clean);
 
-            $regimen_capital_nuevo_clean = preg_replace("/\s+/", "",str_replace(['.',','],"", $regimen_capital));
-            $GLOBALS['log']->fatal("CLEAN REGIMEN CAPITAL NUEVO CLEAN: ".$regimen_capital_nuevo_clean);
+            $regimen_capital_nuevo_clean = preg_replace("/\s+/", "", str_replace(['.', ','], "", $regimen_capital));
+            $GLOBALS['log']->fatal("CLEAN REGIMEN CAPITAL NUEVO CLEAN: " . $regimen_capital_nuevo_clean);
 
-            if( $regimen_capital_actual_clean != $regimen_capital_nuevo_clean ){
+            if ($regimen_capital_actual_clean != $regimen_capital_nuevo_clean) {
                 $notificacion = true;
-            }else{
+            } else {
                 $notificacion = false;
             }
-
-        }else{
+        } else {
             $notificacion = true;
         }
 
         return $notificacion;
-
     }
 
     /*
     * Función para evaluar si una cadena empieza con otra cadena
     */
-    function startsWith($string, $startString) { 
-        $len = strlen($startString); 
-        return (substr($string, 0, $len) === $startString); 
+    function startsWith($string, $startString)
+    {
+        $len = strlen($startString);
+        return (substr($string, 0, $len) === $startString);
     }
     /*
     * Obtiene productos relacionados de la cuenta para saber a cual grupo de correos electrónicos de Email se envia
     * Si es Cliente en cualquier producto, se envía a un grupo
     * Si UNICAMENTE es Cliente en producto Uniclick, se envía a otro grupo diferente
     */
-    function getMultiproductoParaEnvioNotificacion ( $beanPersona ){
+    function getMultiproductoParaEnvioNotificacion($beanPersona)
+    {
 
         $area_interna = "";
 
         if ($beanPersona->load_relationship('accounts_uni_productos_1')) {
             //Recupera Productos para conocer el tipo de cuenta por cada uno
-            $relateProduct = $beanPersona->accounts_uni_productos_1->getBeans($beanPersona->id,array('disable_row_level_security' => true));
+            $relateProduct = $beanPersona->accounts_uni_productos_1->getBeans($beanPersona->id, array('disable_row_level_security' => true));
             $array_tipo_cuenta_producto = array();
             foreach ($relateProduct as $product) {
-                    //Recupera valores por producto
-                    $tipoCuenta = $product->tipo_cuenta;
-                    $tipoProducto = $product->tipo_producto;
-                    $subtipo = $product->subtipo_cuenta; // 11 - Venta Activo
-                    if( $subtipo != "11" ){
+                //Recupera valores por producto
+                $tipoCuenta = $product->tipo_cuenta;
+                $tipoProducto = $product->tipo_producto;
+                $subtipo = $product->subtipo_cuenta; // 11 - Venta Activo
+                if ($subtipo != "11") {
 
-                        switch ($tipoProducto) {
-                            case '1': //Leasing
-                                $array_tipo_cuenta_producto['leasing'] = $tipoCuenta;
-                                break;
-                            case '2': //Crédito Simple
-                                $array_tipo_cuenta_producto['cs'] = $tipoCuenta;
-                                break;
-                            case '3': //Credito-Automotriz
-                                $array_tipo_cuenta_producto['ca'] = $tipoCuenta;
-                                break;
-                            case '4': //Factoraje
-                                $array_tipo_cuenta_producto['factoraje'] = $tipoCuenta;
-                                break;
-                            case '6': //Fleet
-                                $array_tipo_cuenta_producto['fleet'] = $tipoCuenta;
-                                break;
-                            case '8': //Uniclick
-                                $array_tipo_cuenta_producto['uniclick'] = $tipoCuenta;
-                                break;
-                            case '14': //Tarjeta Crédito
-                                $array_tipo_cuenta_producto['tc'] = $tipoCuenta;
-                                break;
-                            
-                        }
+                    switch ($tipoProducto) {
+                        case '1': //Leasing
+                            $array_tipo_cuenta_producto['leasing'] = $tipoCuenta;
+                            break;
+                        case '2': //Crédito Simple
+                            $array_tipo_cuenta_producto['cs'] = $tipoCuenta;
+                            break;
+                        case '3': //Credito-Automotriz
+                            $array_tipo_cuenta_producto['ca'] = $tipoCuenta;
+                            break;
+                        case '4': //Factoraje
+                            $array_tipo_cuenta_producto['factoraje'] = $tipoCuenta;
+                            break;
+                        case '6': //Fleet
+                            $array_tipo_cuenta_producto['fleet'] = $tipoCuenta;
+                            break;
+                        case '8': //Uniclick
+                            $array_tipo_cuenta_producto['uniclick'] = $tipoCuenta;
+                            break;
+                        case '14': //Tarjeta Crédito
+                            $array_tipo_cuenta_producto['tc'] = $tipoCuenta;
+                            break;
                     }
+                }
             }
 
             //Recorre arreglo generado para conocer si es multiproducto y el caso se debe asignar a Area Interna Crédito o Uniclick
             $contador_cliente = 0;
             $contador_cliente_uniclick = 0;
-            foreach ( $array_tipo_cuenta_producto as $key => $value ){
-                if( $value == '3' ){
-                        if( $key == 'uniclick' ){
-                            $contador_cliente_uniclick += 1; 
-                        }else{
-                            $contador_cliente += 1;
-                        }
+            foreach ($array_tipo_cuenta_producto as $key => $value) {
+                if ($value == '3') {
+                    if ($key == 'uniclick') {
+                        $contador_cliente_uniclick += 1;
+                    } else {
+                        $contador_cliente += 1;
                     }
                 }
-                if( $contador_cliente_uniclick > 0 && $contador_cliente == 0 ){
-                    //ES CLIENTE UNICLICK, SE ESTABLECE ÁREA INTERNA UNICLICK
-                    $GLOBALS['log']->fatal("ES CLIENTE UNICLICK, SE ESTABLECE ÁREA INTERNA UNICLICK");
-                    $area_interna = 'Uniclick';
-                
-                }
-                if( $contador_cliente > 0 && $contador_cliente_uniclick > 0 ){
-                    //ES MULTIPRODUCTO, SE ESTABLECE ÁREA INTERNA CRÉDITO
-                    $GLOBALS['log']->fatal("ES MULTIPRODUCTO Y CLIENTE UNICLICK");
-                    $area_interna = 'Credito-Uniclick';
-                }
+            }
+            if ($contador_cliente_uniclick > 0 && $contador_cliente == 0) {
+                //ES CLIENTE UNICLICK, SE ESTABLECE ÁREA INTERNA UNICLICK
+                $GLOBALS['log']->fatal("ES CLIENTE UNICLICK, SE ESTABLECE ÁREA INTERNA UNICLICK");
+                $area_interna = 'Uniclick';
+            }
+            if ($contador_cliente > 0 && $contador_cliente_uniclick > 0) {
+                //ES MULTIPRODUCTO, SE ESTABLECE ÁREA INTERNA CRÉDITO
+                $GLOBALS['log']->fatal("ES MULTIPRODUCTO Y CLIENTE UNICLICK");
+                $area_interna = 'Credito-Uniclick';
+            }
 
-                if( $contador_cliente > 0 && $contador_cliente_uniclick == 0 ){
-                    //ES MULTIPRODUCTO, SE ESTABLECE ÁREA INTERNA CRÉDITO
-                    $GLOBALS['log']->fatal("ES MULTIPRODUCTO, SE ESTABLECE ÁREA INTERNA CRÉDITO");
-                    $area_interna = 'Credito';
-                }
-                
-                if( $contador_cliente == 0 && $contador_cliente_uniclick == 0){
-                    //NO ES CLIENTE EN NINGÚN PRODUCTO
-                    $GLOBALS['log']->fatal("NO ES CLIENTE EN NINGÚN PRODUCTO");
-                    $area_interna = 'Credito';
-                }
+            if ($contador_cliente > 0 && $contador_cliente_uniclick == 0) {
+                //ES MULTIPRODUCTO, SE ESTABLECE ÁREA INTERNA CRÉDITO
+                $GLOBALS['log']->fatal("ES MULTIPRODUCTO, SE ESTABLECE ÁREA INTERNA CRÉDITO");
+                $area_interna = 'Credito';
+            }
 
+            if ($contador_cliente == 0 && $contador_cliente_uniclick == 0) {
+                //NO ES CLIENTE EN NINGÚN PRODUCTO
+                $GLOBALS['log']->fatal("NO ES CLIENTE EN NINGÚN PRODUCTO");
+                $area_interna = 'Credito';
+            }
         }
-        
+
 
         return $area_interna;
-
     }
 
-    public function buscarFiscalParaModificar( $direcciones ){
-        $indice="";
-        $indicador_direcciones_fiscales = array(2,3,6,7,10,11,14,15,18,19,22,23,26,27,30,31,34,35,38,39,42,43,46,47,50,51,54,55,58,59,62,63);
-        if( count($direcciones) > 0 ){
-            for ($i=0; $i < count($direcciones); $i++) { 
+    public function buscarFiscalParaModificar($direcciones)
+    {
+        $indice = "";
+        $indicador_direcciones_fiscales = array(2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23, 26, 27, 30, 31, 34, 35, 38, 39, 42, 43, 46, 47, 50, 51, 54, 55, 58, 59, 62, 63);
+        if (count($direcciones) > 0) {
+            for ($i = 0; $i < count($direcciones); $i++) {
 
-                if( in_array($direcciones[$i]['indicador'],$indicador_direcciones_fiscales) ){
+                if (in_array($direcciones[$i]['indicador'], $indicador_direcciones_fiscales)) {
                     $indice = $i;
 
                     //$i se establece con el count para salir del ciclo for
@@ -2696,14 +2705,14 @@ where rfc_c = '{$bean->rfc_c}' and
         }
 
         return $indice;
-
     }
 
     /**
      * @param $direccion_anterior, string de la dirección anterior, antes de ser cambiada
      * @param $direccion_nueva, string de la dirección nueva, contiene el valor de la dirección actualizada
      */
-    public function insertCambiosDireFiscalAudit( $id_record, $direccion_anterior, $direccion_nueva, $id_direccion){
+    public function insertCambiosDireFiscalAudit($id_record, $direccion_anterior, $direccion_nueva, $id_direccion)
+    {
         global $current_user;
         $id_user = $current_user->id;
         $parent_id = $id_record;
@@ -2713,7 +2722,7 @@ where rfc_c = '{$bean->rfc_c}' and
         //$event_id - Guardará el id de la dirección fiscal a nivel de la tabla dire_Direccion
         $event_id = $id_direccion;
 
-        $insertQuery ="INSERT INTO `accounts_audit` (`id`,`parent_id`,`date_created`,`created_by`,`field_name`,`data_type`,`before_value_string`,`after_value_string`,`before_value_text`,`after_value_text`,`event_id`,`date_updated`) VALUES ('{$id_audit}','{$parent_id}','{$date}','{$id_user}','dire_Direccion','varchar','{$direccion_anterior}','{$direccion_nueva}',NULL,NULL,'{$event_id}',NULL)";
+        $insertQuery = "INSERT INTO `accounts_audit` (`id`,`parent_id`,`date_created`,`created_by`,`field_name`,`data_type`,`before_value_string`,`after_value_string`,`before_value_text`,`after_value_text`,`event_id`,`date_updated`) VALUES ('{$id_audit}','{$parent_id}','{$date}','{$id_user}','dire_Direccion','varchar','{$direccion_anterior}','{$direccion_nueva}',NULL,NULL,'{$event_id}',NULL)";
         $GLOBALS['log']->fatal("QUERY INSERT ACCOUNTS");
         $GLOBALS['log']->fatal($insertQuery);
         $GLOBALS['db']->query($insertQuery);
@@ -2723,10 +2732,11 @@ where rfc_c = '{$bean->rfc_c}' and
      * @param $bean - Bean de la cuenta
      * @return $return_array - Primera posicion: id de la dirección fiscal, segunda posición: string de la dirección completa
      */
-    public function getDireccionFiscalBD($bean){
+    public function getDireccionFiscalBD($bean)
+    {
         $direccion_completa = '';
         $return_array = array();
-        $indicador_direcciones_fiscales = array(2,3,6,7,10,11,14,15,18,19,22,23,26,27,30,31,34,35,38,39,42,43,46,47,50,51,54,55,58,59,62,63);
+        $indicador_direcciones_fiscales = array(2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23, 26, 27, 30, 31, 34, 35, 38, 39, 42, 43, 46, 47, 50, 51, 54, 55, 58, 59, 62, 63);
         if ($bean->load_relationship('accounts_dire_direccion_1')) {
             $relatedBeans = $bean->accounts_dire_direccion_1->getBeans();
 
@@ -2736,8 +2746,8 @@ where rfc_c = '{$bean->rfc_c}' and
 
                     //Valida si tiene dirección fiscal
                     $indicador = $direccion->indicador;
-                    if( in_array($indicador,$indicador_direcciones_fiscales) && $direccion->inactivo == 0 ){
-                        $GLOBALS['log']->fatal( "ES FISCAL");
+                    if (in_array($indicador, $indicador_direcciones_fiscales) && $direccion->inactivo == 0) {
+                        $GLOBALS['log']->fatal("ES FISCAL");
                         $id = $direccion->id;
                         // $cp = $direccion->dire_direccion_dire_codigopostal_name;
                         // $calle = $direccion->calle;
@@ -2746,11 +2756,11 @@ where rfc_c = '{$bean->rfc_c}' and
                         // $municipio = $direccion->dire_direccion_dire_municipio_name;
                         // $ciudad = $direccion->dire_direccion_dire_ciudad_name;
                         // $colonia = $direccion->dire_direccion_dire_colonia_name;
-                       
+
                         $cp = $direccion->codigo_postal_c;
                         $calle = $direccion->calle;
                         $pais = $direccion->pais_c;
-                        $estado = $direccion->estado_c; 
+                        $estado = $direccion->estado_c;
                         $municipio = $direccion->municipio_c;
                         $ciudad = $direccion->ciudad_c;
                         $colonia = $direccion->colonia_c;
@@ -2758,33 +2768,32 @@ where rfc_c = '{$bean->rfc_c}' and
                         $numext = $direccion->numext;
                         $numint = $direccion->numint;
 
-                        $direccion_completa = "Calle: ". $calle .", CP: ". $cp .", País: ". $pais .", Estado: ". $estado .", Municipio: ". $municipio .", Ciudad: ". $ciudad .", Colonia: ". $colonia .", Número exterior: ". $numext .", Número interior: ".$numint;
+                        $direccion_completa = "Calle: " . $calle . ", CP: " . $cp . ", País: " . $pais . ", Estado: " . $estado . ", Municipio: " . $municipio . ", Ciudad: " . $ciudad . ", Colonia: " . $colonia . ", Número exterior: " . $numext . ", Número interior: " . $numint;
 
-                        array_push( $return_array, $id, $direccion_completa, $direccion);
+                        array_push($return_array, $id, $direccion_completa, $direccion);
 
                         break;
                     }
-
                 }
             }
         }
 
         return $return_array;
-
     }
 
-    public function getDireccionFiscalActual($direcciones){
+    public function getDireccionFiscalActual($direcciones)
+    {
         $direccion_completa = "";
-        $elementoDirFiscalActual ="";
-        $indicador_direcciones_fiscales = array(2,3,6,7,10,11,14,15,18,19,22,23,26,27,30,31,34,35,38,39,42,43,46,47,50,51,54,55,58,59,62,63);
-        if(!empty($direcciones)){
+        $elementoDirFiscalActual = "";
+        $indicador_direcciones_fiscales = array(2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23, 26, 27, 30, 31, 34, 35, 38, 39, 42, 43, 46, 47, 50, 51, 54, 55, 58, 59, 62, 63);
+        if (!empty($direcciones)) {
 
-            if( count($direcciones) > 0 ){
+            if (count($direcciones) > 0) {
                 $posicion_direccion_fiscal = "";
-                for ($i=0; $i < count($direcciones); $i++) { 
+                for ($i = 0; $i < count($direcciones); $i++) {
                     //Se busca la fiscal sobre las direcciones por actualizar
-                    if( in_array($direcciones[$i]['indicador'],$indicador_direcciones_fiscales) && empty( $direcciones[$i]['inactivo'] )){
-                        
+                    if (in_array($direcciones[$i]['indicador'], $indicador_direcciones_fiscales) && empty($direcciones[$i]['inactivo'])) {
+
                         $posicion_direccion_fiscal = $i;
                         //El indice se establece con count para cortar el ciclo for y salir de el
                         $i = count($direcciones);
@@ -2797,32 +2806,32 @@ where rfc_c = '{$bean->rfc_c}' and
                 $cp = $elementoDirFiscalActual['valCodigoPostal'];
                 $calle = $elementoDirFiscalActual['calle'];
                 $pais = $elementoDirFiscalActual['listPais'][$elementoDirFiscalActual['pais']];
-                $estado = $elementoDirFiscalActual['listEstado'][$elementoDirFiscalActual['estado']]; 
-                $municipio = $elementoDirFiscalActual['listMunicipio'][$elementoDirFiscalActual['municipio']]; 
+                $estado = $elementoDirFiscalActual['listEstado'][$elementoDirFiscalActual['estado']];
+                $municipio = $elementoDirFiscalActual['listMunicipio'][$elementoDirFiscalActual['municipio']];
                 $ciudad = $elementoDirFiscalActual['listCiudad'][$elementoDirFiscalActual['ciudad']];
                 $colonia = $elementoDirFiscalActual['listColonia'][$elementoDirFiscalActual['colonia']];
                 $numext = $elementoDirFiscalActual['numext'];
                 $numint = $elementoDirFiscalActual['numint'];
 
-                $direccion_completa .= "Calle: ". $calle .", CP: ". $cp .", País: ". $pais .", Estado: ". $estado .", Municipio: ". $municipio .", Ciudad: ". $ciudad .", Colonia: ". $colonia .", Número exterior: ". $numext .", Número interior: ".$numint;
+                $direccion_completa .= "Calle: " . $calle . ", CP: " . $cp . ", País: " . $pais . ", Estado: " . $estado . ", Municipio: " . $municipio . ", Ciudad: " . $ciudad . ", Colonia: " . $colonia . ", Número exterior: " . $numext . ", Número interior: " . $numint;
             }
-
         }
-        
-        return array($direccion_completa,$elementoDirFiscalActual);
+
+        return array($direccion_completa, $elementoDirFiscalActual);
     }
 
-    public function buildBodyCambioRazon( $rfc, $text_cambios, $idCuenta, $nombreCuenta ){
+    public function buildBodyCambioRazon($rfc, $text_cambios, $idCuenta, $nombreCuenta)
+    {
         global $sugar_config;
         $url = $sugar_config['site_url'];
 
-        $linkCuenta = '<a href="'.$url.'/#Accounts/'. $idCuenta .'">'.$nombreCuenta.'</a>';
+        $linkCuenta = '<a href="' . $url . '/#Accounts/' . $idCuenta . '">' . $nombreCuenta . '</a>';
 
         $mailHTML = '<p align="justify"><font face="verdana" color="#635f5f">
-            Se han detectado cambios sobre la cuenta con RFC: <b>'.$rfc.'</b>.<br>
-            <br>A continuación se muestra las modificaciones generadas:<br>'.
-            $text_cambios.'<br>
-            Se solicita la revisión de esta cuenta ' .$linkCuenta. ' para autorizar o rechazar los cambios correspondientes.
+            Se han detectado cambios sobre la cuenta con RFC: <b>' . $rfc . '</b>.<br>
+            <br>A continuación se muestra las modificaciones generadas:<br>' .
+            $text_cambios . '<br>
+            Se solicita la revisión de esta cuenta ' . $linkCuenta . ' para autorizar o rechazar los cambios correspondientes.
             <br><br>Atentamente Unifin</font></p>
             <br><br><img border="0" id="bannerUnifin" src="https://www.unifin.com.mx/ri/front/img/logo.png">
             <br><span style="font-size:8.5pt;color:#757b80">____________________________________________</span>
@@ -2836,12 +2845,12 @@ where rfc_c = '{$bean->rfc_c}' and
             </p>';
 
         return $mailHTML;
-
     }
 
-    public function sendEmailCambioRazonSocial( $emails_address,$body_correo ){
+    public function sendEmailCambioRazonSocial($emails_address, $body_correo)
+    {
 
-        try{
+        try {
             global $app_list_strings;
             $mailer = MailerFactory::getSystemDefaultMailer();
             $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
@@ -2849,34 +2858,32 @@ where rfc_c = '{$bean->rfc_c}' and
             $body = trim($body_correo);
             $mailer->setHtmlBody($body);
             $mailer->clearRecipients();
-            for ($i=0; $i < count($emails_address); $i++) {
-                $GLOBALS['log']->fatal("AGREGANDO CORREOS DESTINATARIOS: ".$emails_address[$i]);
+            for ($i = 0; $i < count($emails_address); $i++) {
+                $GLOBALS['log']->fatal("AGREGANDO CORREOS DESTINATARIOS: " . $emails_address[$i]);
                 $mailer->addRecipientsTo(new EmailIdentity($emails_address[$i], $emails_address[$i]));
             }
             $result = $mailer->send();
-
-        } catch (Exception $e){
+        } catch (Exception $e) {
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar correo al email ");
-            $GLOBALS['log']->fatal(print_r($e,true));
-
+            $GLOBALS['log']->fatal(print_r($e, true));
         }
-
     }
 
-    public function creaCaso($idCuenta){
+    public function creaCaso($idCuenta)
+    {
         $GLOBALS['log']->fatal('GENERA CASO RELACIONADO');
         $plataforma = $_SESSION['platform'];
         $idKarla = 'd51dd49e-b1e6-572f-d6de-5654bfeb8b3e';
         $idSamuel = '92b04f7d-e547-9d4f-c96a-5a31da014bdd';
         $asunto = 'Cambio de información con mismo RFC';
         // 8 - Crédito Uniclick, 1 - Arrendamiento
-        $producto = ( $plataforma == 'cvimUniclick' || $plataforma == 'UNICLICK' ) ?  '8' : '1';
+        $producto = ($plataforma == 'cvimUniclick' || $plataforma == 'UNICLICK') ?  '8' : '1';
         $tipo = '8'; // Modificación de datos
         $subtipo = '48'; // Actualización de datos de contacto
         $prioridad = 'P4'; // Urgente
         $status = '1'; // No iniciado
-        $asignado = ( $plataforma == 'cvimUniclick' || $plataforma == 'UNICLICK' ) ? $idSamuel : $idKarla;
-        $area_interna = ( $plataforma == 'cvimUniclick' || $plataforma == 'UNICLICK' ) ?  'Uniclick': 'Credito'; // Agregar id de uniclick
+        $asignado = ($plataforma == 'cvimUniclick' || $plataforma == 'UNICLICK') ? $idSamuel : $idKarla;
+        $area_interna = ($plataforma == 'cvimUniclick' || $plataforma == 'UNICLICK') ?  'Uniclick' : 'Credito'; // Agregar id de uniclick
 
         $caso = BeanFactory::newBean('Cases');
         $caso->name = $asunto;
@@ -2895,40 +2902,40 @@ where rfc_c = '{$bean->rfc_c}' and
         $caso->save();
     }
 
-    public function estableceRegimenesFiscalesSAT($bean = null, $event = null, $args = null){
+    public function estableceRegimenesFiscalesSAT($bean = null, $event = null, $args = null)
+    {
 
         //Cuando se detecta cambio en el campo que guarda el json con la estructura de los diferentes regimenes fiscales,
         //automáticamente se actualizan los valores en el campo regimen_fiscal_sat_c para mantener sincronizados los valores con el campo custom (account_regimenes_fiscal)
-        if( $bean->fetched_row['regimenes_fiscal_sat_c'] !== $bean->regimenes_fiscal_sat_c &&  $bean->regimenes_fiscal_sat_c !== ""){
+        if ($bean->fetched_row['regimenes_fiscal_sat_c'] !== $bean->regimenes_fiscal_sat_c &&  $bean->regimenes_fiscal_sat_c !== "") {
             $GLOBALS['log']->fatal("Regimen Fiscal Cambia, Procede a establecer valor en regimen_fiscal_sat_c");
-            $regimenes = json_decode( $bean->regimenes_fiscal_sat_c , true );
+            $regimenes = json_decode($bean->regimenes_fiscal_sat_c, true);
             $string_regimenes = '';
-            if( count($regimenes) > 0 ){
-                for ($i=0; $i < count($regimenes); $i++) {
+            if (count($regimenes) > 0) {
+                for ($i = 0; $i < count($regimenes); $i++) {
 
-                    $string_regimenes .= "^" . $regimenes[$i]['code']."^,";
+                    $string_regimenes .= "^" . $regimenes[$i]['code'] . "^,";
                 }
 
                 //Elimina la última coma (,) de la cadena
                 $string_regimenes_clean = substr($string_regimenes, 0, -1);
 
                 $bean->regimen_fiscal_sat_c = $string_regimenes_clean;
-
             }
         }
-
     }
 
-    public function setEmailPrincipal( $bean = null, $event = null, $args = null ){
+    public function setEmailPrincipal($bean = null, $event = null, $args = null)
+    {
 
         $newPrimaryEmail = $bean->email1;
 
         $GLOBALS['log']->fatal("EVALUANDO EMAIL PRINCIPAL");
 
-        if ( $GLOBALS['service']->platform != 'base' ) {
-            if( $bean->fetched_row['email1'] != $bean->email1 ){
+        if ($GLOBALS['service']->platform != 'base') {
+            if ($bean->fetched_row['email1'] != $bean->email1) {
                 $GLOBALS['log']->fatal("El email cambió");
-                
+
                 // Recuperar todas las direcciones de email asociadas
                 $existingEmails = $bean->emailAddress->getAddressesByGUID($bean->id, 'Accounts');
                 //$GLOBALS['log']->fatal( print_r($existingEmails,true) );
@@ -2960,8 +2967,6 @@ where rfc_c = '{$bean->rfc_c}' and
                 // Asignar el nuevo conjunto de correos electrónicos a la cuenta
                 $bean->emailAddress->addresses = $emailAddresses;
                 $bean->emailAddress->save($bean->id, $bean->module_name);
-
-
             }
         }
 
@@ -2970,72 +2975,72 @@ where rfc_c = '{$bean->rfc_c}' and
           Detecta cambios en; Teléfono móvil, Correo, Apellidos, Nombre
           Sólo se ejecuta con Régimen fiscal; PF y PFAE
         */
-        
-        if($GLOBALS['service']->platform == 'base' && $bean->tipodepersona_c != 'Persona Moral'){
-          //Recupera datos actuales
-          //$GLOBALS['log']->fatal("Correo viejo: ".$bean->fetched_row['email1']);
-          //$GLOBALS['log']->fatal("Correo nuevo: ".$bean->email[0]['email_address']);
-          //$GLOBALS['log']->fatal(print_r($bean->email,true));
-          $email = $bean->email[0]['email_address'];
-          $phone = '';
-          $nombre = $bean->primernombre_c;
-          $aPaterno = $bean->apellidopaterno_c;
-          $aMaterno = $bean->apellidomaterno_c;
-          $cambiaTelefono = false;
-          
-          //Recupera teléfono celular
-          foreach ($bean->account_telefonos as $a_telefono) {
-              if($a_telefono['tipotelefono'] == '3'){
-                if (!empty($a_telefono['id'])) {
-                  $telefono = BeanFactory::getBean('Tel_Telefonos', $a_telefono['id']);
-                  $cambiaTelefono = ($telefono->telefono != $a_telefono['telefono']) ? true : $cambiaTelefono;
-                } else {
-                  $cambiaTelefono = true;
+
+        if ($GLOBALS['service']->platform == 'base' && $bean->tipodepersona_c != 'Persona Moral') {
+            //Recupera datos actuales
+            //$GLOBALS['log']->fatal("Correo viejo: ".$bean->fetched_row['email1']);
+            //$GLOBALS['log']->fatal("Correo nuevo: ".$bean->email[0]['email_address']);
+            //$GLOBALS['log']->fatal(print_r($bean->email,true));
+            $email = $bean->email[0]['email_address'];
+            $phone = '';
+            $nombre = $bean->primernombre_c;
+            $aPaterno = $bean->apellidopaterno_c;
+            $aMaterno = $bean->apellidomaterno_c;
+            $cambiaTelefono = false;
+
+            //Recupera teléfono celular
+            foreach ($bean->account_telefonos as $a_telefono) {
+                if ($a_telefono['tipotelefono'] == '3') {
+                    if (!empty($a_telefono['id'])) {
+                        $telefono = BeanFactory::getBean('Tel_Telefonos', $a_telefono['id']);
+                        $cambiaTelefono = ($telefono->telefono != $a_telefono['telefono']) ? true : $cambiaTelefono;
+                    } else {
+                        $cambiaTelefono = true;
+                    }
+                    $phone = $a_telefono['telefono'];
                 }
-                $phone = $a_telefono['telefono'];  
-              }
-          }
-          
-          //Valida cambio de información
-          if( $bean->fetched_row['email1'] != $email || $bean->fetched_row['primernombre_c'] != $nombre || $bean->fetched_row['apellidopaterno_c'] != $aPaterno || $bean->fetched_row['apellidomaterno_c'] != $aMaterno || $cambiaTelefono){
-            $GLOBALS['log']->fatal("Identifica cambios para enviar a Onboarding");
-            global $sugar_config, $db;
-            
-            //Recupera Lead & PO asociados
-            $idLead = '';
-            $idPO = '';
-            
-            //Recupera Lead
-            $queryL = "select id,account_id
+            }
+
+            //Valida cambio de información
+            if ($bean->fetched_row['email1'] != $email || $bean->fetched_row['primernombre_c'] != $nombre || $bean->fetched_row['apellidopaterno_c'] != $aPaterno || $bean->fetched_row['apellidomaterno_c'] != $aMaterno || $cambiaTelefono) {
+                $GLOBALS['log']->fatal("Identifica cambios para enviar a Onboarding");
+                global $sugar_config, $db;
+
+                //Recupera Lead & PO asociados
+                $idLead = '';
+                $idPO = '';
+
+                //Recupera Lead
+                $queryL = "select id,account_id
                   from leads
                   where deleted=0
                   and account_id='{$bean->id}'
                   order by date_modified desc
                   limit 1;";
-            $queryResultL = $db->query($queryL);
-            while ($row = $db->fetchByAssoc($queryResultL)) {
-                $idLead = $row['id_c'] ;
-            }
-            if(!empty($idLead)){
-              //Obtiene bean de Lead
-              $beanLead = BeanFactory::retrieveBean('Leads', $idLead, array('disable_row_level_security' => true));
-              if (!empty($beanLead)) {
-                  //Compara datos por actualizar
-                  if( $bean->email1 != $beanLead->email1 || $bean->primernombre_c != $beanLead->nombre_c  || $bean->apellidopaterno_c != $beanLead->apellido_paterno_c  || $bean->apellidomaterno_c != $beanLead->apellido_materno_c ){
-                    $GLOBALS['log']->fatal("Setea datos por actualizar en Lead");
-                    $beanLead->email1 = $email; 
-                    $beanLead->nombre_c = $bean->primernombre_c; 
-                    $beanLead->apellido_paterno_c = $bean->apellidopaterno_c;
-                    $beanLead->apellido_materno_c = $bean->apellidomaterno_c;
-                    $beanLead->phone_mobile = ($phone!='') ? $phone : $beanLead->phone_mobile;
-                    $beanLead->save();
-                    $GLOBALS['log']->fatal("Lead actualizado");
-                  }
-              }
-            }
-            
-            //Recupera PO
-            $queryPO = "select pc.id_c
+                $queryResultL = $db->query($queryL);
+                while ($row = $db->fetchByAssoc($queryResultL)) {
+                    $idLead = $row['id_c'];
+                }
+                if (!empty($idLead)) {
+                    //Obtiene bean de Lead
+                    $beanLead = BeanFactory::retrieveBean('Leads', $idLead, array('disable_row_level_security' => true));
+                    if (!empty($beanLead)) {
+                        //Compara datos por actualizar
+                        if ($bean->email1 != $beanLead->email1 || $bean->primernombre_c != $beanLead->nombre_c  || $bean->apellidopaterno_c != $beanLead->apellido_paterno_c  || $bean->apellidomaterno_c != $beanLead->apellido_materno_c) {
+                            $GLOBALS['log']->fatal("Setea datos por actualizar en Lead");
+                            $beanLead->email1 = $email;
+                            $beanLead->nombre_c = $bean->primernombre_c;
+                            $beanLead->apellido_paterno_c = $bean->apellidopaterno_c;
+                            $beanLead->apellido_materno_c = $bean->apellidomaterno_c;
+                            $beanLead->phone_mobile = ($phone != '') ? $phone : $beanLead->phone_mobile;
+                            $beanLead->save();
+                            $GLOBALS['log']->fatal("Lead actualizado");
+                        }
+                    }
+                }
+
+                //Recupera PO
+                $queryPO = "select pc.id_c
                   from prospects_cstm pc
                   inner join prospects p on p.id =pc.id_c
                   where ifnull(excluye_campana_c,0) = 0
@@ -3043,55 +3048,52 @@ where rfc_c = '{$bean->rfc_c}' and
                   and pc.account_id2_c='{$bean->id}'
                   order by p.date_modified desc
                   limit 1;";
-            $queryResultPO = $db->query($queryPO);
-            while ($row = $db->fetchByAssoc($queryResultPO)) {
-                $idPO = $row['id_c'] ;
+                $queryResultPO = $db->query($queryPO);
+                while ($row = $db->fetchByAssoc($queryResultPO)) {
+                    $idPO = $row['id_c'];
+                }
+                if (!empty($idPO)) {
+                    //Obtiene bean de PO
+                    $beanPO = BeanFactory::retrieveBean('Prospects', $idPO, array('disable_row_level_security' => true));
+                    if (!empty($beanPO)) {
+                        //Compara datos por actualizar
+                        if ($bean->email1 != $beanPO->email1 || $bean->primernombre_c != $beanPO->nombre_c  || $bean->apellidopaterno_c != $beanPO->apellido_paterno_c  || $bean->apellidomaterno_c != $beanPO->apellido_materno_c) {
+                            $GLOBALS['log']->fatal("Setea datos por actualizar en PO");
+                            $beanPO->email1 = $email;
+                            $beanPO->nombre_c = $bean->primernombre_c;
+                            $beanPO->apellido_paterno_c = $bean->apellidopaterno_c;
+                            $beanPO->apellido_materno_c = $bean->apellidomaterno_c;
+                            $beanPO->phone_mobile = ($phone != '') ? $phone : $beanPO->phone_mobile;
+                            $beanPO->save();
+                            $GLOBALS['log']->fatal("PO actualizado");
+
+                            //Genera petición para actualizar datos Onboarding
+                            $callApi = new UnifinAPI();
+                            $hostOnboarding = $sugar_config['urlOnboarding'];
+                            $tokenOnboarding = $sugar_config['tokenOnboarding'];
+
+                            $urlOnboarding = $hostOnboarding . '/api/crm/contact/' . $idPO;
+
+                            $body = array(
+                                "name" => $nombre,
+                                "last_name" => $aPaterno,
+                                "mother_last_name" => $aMaterno,
+                                "email" => $email,
+                                "phone" => ($phone != '') ? $phone : $beanPO->phone_mobile,
+                            );
+
+                            $GLOBALS['log']->fatal("Request PO Onboarding");
+                            $GLOBALS['log']->fatal($urlOnboarding);
+                            $GLOBALS['log']->fatal(print_r($body, true));
+
+                            $resp = $callApi->postOnboardingPO($urlOnboarding, $tokenOnboarding, $body);
+
+                            $GLOBALS['log']->fatal("Response PO Onboarding");
+                            $GLOBALS['log']->fatal(print_r($resp, true));
+                        }
+                    }
+                }
             }
-            if(!empty($idPO)){
-              //Obtiene bean de PO
-              $beanPO = BeanFactory::retrieveBean('Prospects', $idPO, array('disable_row_level_security' => true));
-              if (!empty($beanPO)) {
-                //Compara datos por actualizar
-                if( $bean->email1 != $beanPO->email1 || $bean->primernombre_c != $beanPO->nombre_c  || $bean->apellidopaterno_c != $beanPO->apellido_paterno_c  || $bean->apellidomaterno_c != $beanPO->apellido_materno_c ){
-                  $GLOBALS['log']->fatal("Setea datos por actualizar en PO");
-                  $beanPO->email1 = $email; 
-                  $beanPO->nombre_c = $bean->primernombre_c; 
-                  $beanPO->apellido_paterno_c = $bean->apellidopaterno_c;
-                  $beanPO->apellido_materno_c = $bean->apellidomaterno_c;
-                  $beanPO->phone_mobile = ($phone!='') ? $phone : $beanPO->phone_mobile;
-                  $beanPO->save();
-                  $GLOBALS['log']->fatal("PO actualizado");
-                  
-                  //Genera petición para actualizar datos Onboarding
-                  $callApi = new UnifinAPI();
-                  $hostOnboarding = $sugar_config['urlOnboarding'];
-                  $tokenOnboarding = $sugar_config['tokenOnboarding'];
-
-                  $urlOnboarding = $hostOnboarding.'/api/crm/contact/'.$idPO;
-
-                  $body = array(
-                      "name" => $nombre,
-                      "last_name" => $aPaterno,
-                      "mother_last_name" => $aMaterno,
-                      "email" => $email,
-                      "phone" => ($phone!='') ? $phone : $beanPO->phone_mobile,
-                  );
-                  
-                  $GLOBALS['log']->fatal("Request PO Onboarding");
-                  $GLOBALS['log']->fatal($urlOnboarding);
-                  $GLOBALS['log']->fatal(print_r( $body,true ));
-
-                  $resp = $callApi->postOnboardingPO($urlOnboarding, $tokenOnboarding ,$body);
-
-                  $GLOBALS['log']->fatal("Response PO Onboarding");
-                  $GLOBALS['log']->fatal(print_r($resp, true));
-                }    
-              }
-            }
-          }
-        }        
-
-
+        }
     }
-
 }

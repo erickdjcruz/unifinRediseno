@@ -943,7 +943,8 @@
 
         // Mapeo de permisos a valores
         var permisosMap = {
-            "^soc_creditaria^": ["12", "13"],
+            "^soc^": ["12"],
+            "^creditaria^": ["13"],
             "^utility_trailers^": ["114"],
             "^konnect^": ["115"],
             "^vendors^": ["116"],
@@ -1016,8 +1017,8 @@
         //Valida si es Origen Alianza
         if (this.model.get('origen_c') === '12') {
             console.log("ORIGEN ALIANZA");
-            if (permisosGestionTeamLeader.includes("^soc_creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || permisosGestionTeamLeader.includes("^konnect^") ||
-                permisosGestionTeamLeader.includes("^vendors^") || permisosGestionTeamLeader.includes("^reditus^")) {
+            if (permisosGestionTeamLeader.includes("^soc^") || permisosGestionTeamLeader.includes("^creditaria^") || permisosGestionTeamLeader.includes("^utility_trailers^") || 
+                permisosGestionTeamLeader.includes("^konnect^") || permisosGestionTeamLeader.includes("^vendors^") || permisosGestionTeamLeader.includes("^reditus^")) {
                 //ORIGEN
                 opciones_origen = filtrarOpciones(opciones_origen, ["12", "20"]); //12:Alianzas - 20:Leasing
                 this.model.fields['origen_c'].options = opciones_origen;
@@ -1619,8 +1620,8 @@
             return false;
         }
 
-        var permisosGestionTeamLeader = app.user.attributes.gestion_team_leaders_c || ""; //OBTIENE EL PERMISO SOC/CREDITARIA, KONNECT, VENDORS
-        if (!permisosGestionTeamLeader.includes("^soc_creditaria^") && !permisosGestionTeamLeader.includes("^konnect^") &&
+        var permisosGestionTeamLeader = app.user.attributes.gestion_team_leaders_c || ""; //OBTIENE EL PERMISO SOC/CREDITARIA, KONNECT, VENDORS, REDITUS
+        if (!permisosGestionTeamLeader.includes("^soc^") && !permisosGestionTeamLeader.includes("^creditaria^") && !permisosGestionTeamLeader.includes("^konnect^") &&
             !permisosGestionTeamLeader.includes("^vendors^") && !permisosGestionTeamLeader.includes("^reditus^")) {
             app.alert.show('not_access', {
                 level: 'error',
@@ -2549,7 +2550,8 @@
 
         // Mapeo de permisos a valores
         var permisosMap = {
-            "^soc_creditaria^": ["12", "13"],
+            "^soc^": ["12"],
+            "^creditaria^": ["13"],
             "^utility_trailers^": ["114"],
             "^konnect^": ["115"],
             "^reditus^": ["117"]

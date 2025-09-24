@@ -222,6 +222,7 @@
                                     contexto_dire_buro.prev_direccionBuro = app.utils.deepCopy(contexto_dire_buro.direccionBuro);
                                     prev_contexto_dire_buro.direccionBuro = app.utils.deepCopy(contexto_dire_buro.direccionBuro);                                        
                                     //this.prev_direccionBuro = app.utils.deepCopy(contexto_dire_buro.direccionBuro);
+                                  
                                     //Aplica render a campo custom
                                     contexto_dire_buro.render();
 
@@ -246,10 +247,6 @@
     },
 
     getInfoAboutCP: function (evt) {
-        //Recupera y almacena CP
-        var inputs = this.$('.postalInputTempExisting'),
-            input = this.$(evt.currentTarget),
-            index = inputs.index(input);
 
         //Recupera y almacena CP
         var cp = evt.currentTarget.value;
@@ -348,7 +345,6 @@
                             contexto_dire_buro.populateEdoByPais(contexto_dire_buro.direccionBuro[0].pais);
                             contexto_dire_buro.populateCiudadesByEstado(contexto_dire_buro.direccionBuro[0].estado);
                             contexto_dire_buro.populateColoniasByMunicipio(contexto_dire_buro.direccionBuro[0].municipio);
-
                             /***************************************/
                             contexto_dire_buro.direccionBuro[0].listColonia = listColonia;
                             contexto_dire_buro.direccionBuro[0].listEstado = listEstado;
@@ -439,6 +435,7 @@
         contexto_dire_buro.direccionBuro[0].colonia = idColonia;
         idCP = $(evt.currentTarget).find('option:selected').attr('data-cp');
         contexto_dire_buro.direccionBuro[0].postal = idCP;
+
     },
 
     updateValueCiudad: function (evt) {
