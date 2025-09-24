@@ -1,11 +1,19 @@
 <?php
- // created: 2019-10-10 13:58:59
+ // created: 2025-09-24 12:21:46
 $dictionary['Account']['fields']['subtipo_cuenta_c']['labelValue']='Subtipo de Cuenta';
+$dictionary['Account']['fields']['subtipo_cuenta_c']['enforced']='';
 $dictionary['Account']['fields']['subtipo_cuenta_c']['dependency']='';
+$dictionary['Account']['fields']['subtipo_cuenta_c']['required_formula']='';
+$dictionary['Account']['fields']['subtipo_cuenta_c']['readonly_formula']='';
 $dictionary['Account']['fields']['subtipo_cuenta_c']['visibility_grid']=array (
   'trigger' => 'tipo_registro_c',
   'values' => 
   array (
+    'Lead' => 
+    array (
+      0 => 'En Calificacion',
+      1 => 'No Viable',
+    ),
     'Prospecto' => 
     array (
       0 => 'Contactado',
@@ -27,11 +35,7 @@ $dictionary['Account']['fields']['subtipo_cuenta_c']['visibility_grid']=array (
       8 => 'Con Linea Vigente',
       9 => 'Con Linea Vencida',
       10 => 'Con mas de un ano sin Operar',
-    ),
-    'Lead' => 
-    array (
-      0 => 'En Calificacion',
-      1 => 'No Viable',
+      11 => 'Con Linea No Vigente',
     ),
     'Persona' => 
     array (
