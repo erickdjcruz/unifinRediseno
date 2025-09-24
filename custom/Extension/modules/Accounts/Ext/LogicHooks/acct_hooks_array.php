@@ -163,7 +163,7 @@ $hook_array['before_save'][] = Array(
 );
 
 $hook_array['after_save'][] = Array(
-    2,
+    10,
     'Genera Resumen vacío en la creacion de Cuenta',
     'custom/modules/Accounts/Account_Hooks.php',
     'Account_Hooks',
