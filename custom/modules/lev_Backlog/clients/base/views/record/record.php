@@ -590,6 +590,15 @@ array (
                 'name' => 'rango_bl_c',
                 'label' => 'LBL_RANGO_BL',
               ),
+              4 => 
+              array (
+                'readonly' => false,
+                'name' => 'origen_cuenta_c',
+                'label' => 'LBL_ORIGEN_CUENTA_C',
+              ),
+              5 => 
+              array (
+              ),
             ),
           ),
         ),

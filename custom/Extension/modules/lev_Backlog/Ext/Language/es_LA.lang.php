@@ -101,3 +101,4 @@ $mod_strings['LBL_RECORDVIEW_PANEL2'] = 'Datos compromiso';
 $mod_strings['LBL_MONTO'] = 'Monto';
 $mod_strings['LBL_APRUEBA_REACTIVACION'] = 'Estatus Reactivación';
 $mod_strings['LBL_APROBADOR_REACTIVACION'] = 'Aprobador Reactivación';
+$mod_strings['LBL_ORIGEN_CUENTA_C'] = 'Origen';
