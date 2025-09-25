@@ -714,3 +714,18 @@ $dependencies['lev_Backlog']['monto_devuelta_c_readonly'] = array(
         ),
     ),
 );
+
+$dependencies['lev_Backlog']['origen_cuenta_c'] = array(
+    'hooks' => array("all"),
+    'onload' => true,
+    'actions' => array(
+        array(
+            'name' => 'ReadOnly',
+            'params' => array(
+                'target' => 'origen_cuenta_c',
+                'label' => 'origen_cuenta_c_label',
+                'value' => 'true',
+            ),
+        ),
+    ),
+);
