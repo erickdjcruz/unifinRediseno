@@ -837,13 +837,14 @@
         //Bloquear el registro completo cuando Estatus Backlog es Declinada o Invalida
         if (estatus_backlog === '2' || estatus_backlog === '3') {
 
-            var estatusBL = estatus_backlog === '2' ? 'declinada' : 'inválida';
-
-            app.alert.show('msg_estatus_declinada', {
-                level: 'warning',
-                messages: 'Esta operación se encuentra ' + estatusBL + '. Solicita reactivación a tu director.',
-                autoClose: false
-            });
+            if (estatus_backlog === '2') {
+                //SOLO EL MENSAJE APARECE CUANDO EL ESTATUS ES DECLINADA
+                app.alert.show('msg_estatus_declinada', {
+                    level: 'warning',
+                    messages: 'Esta operación se encuentra declinada. Solicita reactivación a tu director.',
+                    autoClose: false
+                });
+            }
 
             $(".record-cell").attr("style", "pointer-events:none");
             $('[name="edit_button"].rowaction').hide();
