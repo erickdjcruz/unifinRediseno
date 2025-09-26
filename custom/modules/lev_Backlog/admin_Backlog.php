@@ -17,6 +17,16 @@ class class_Backlog_Admin
             }
         }
 
+        //$GLOBALS['log']->fatal("BACKLOG - account_id_c " . $bean->account_id_c );
+        global $app_list_strings;        
+
+        if ($bean->account_id_c != '') {
+          $rel_acc = BeanFactory::retrieveBean('Accounts', $bean->account_id_c);
+          $valorOrigen = $app_list_strings['origen_lead_list'][$rel_acc->origen_cuenta_c];
+          //$GLOBALS['log']->fatal("cuenta_origen: " . $rel_acc->origen_cuenta_c ."" . $valorOrigen );
+          $bean->origen_cuenta_c = $valorOrigen;
+        }
+
         //Actualiza rango Backlog
         global $app_list_strings;
         $valorMonto = $bean->monto_prospecto_c + $bean->monto_credito_c + $bean->monto_rechazado_c + $bean->monto_sin_solicitud_c + $bean->monto_con_solicitud_c; //$bean->monto_comprometido;
