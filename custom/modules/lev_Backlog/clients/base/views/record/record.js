@@ -834,8 +834,8 @@
 
     _readOnlyEstatusDeclinada: function () {
         var estatus_backlog = this.model.get('estatus_backlog_c');
-        //Bloquear el registro completo cuando Estatus Backlog es Declinada o Invalida
-        if (estatus_backlog === '2' || estatus_backlog === '3') {
+        //Bloquear el registro completo cuando Estatus Backlog es Declinada o Invalida o Bloqueada por expediente
+        if (estatus_backlog === '2' || estatus_backlog === '3' || estatus_backlog === '5') {
 
             if (estatus_backlog === '2') {
                 //SOLO EL MENSAJE APARECE CUANDO EL ESTATUS ES DECLINADA
