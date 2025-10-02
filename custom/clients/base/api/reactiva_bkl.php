@@ -79,13 +79,13 @@ class reactiva_bkl extends SugarApi
             $beanBL->motivo_reactivacion_c = '';
             $beanBL->motivo_declinacion_c = '';
             $beanBL->fecha_sol_reactivacion_c = '';
-            $beanBL->estatus_backlog_c = $estatus;
+            $beanBL->estatus_backlog_c = '1';
             //$query = "UPDATE lev_backlog_cstm set fecha_reactivacion_c = '{$fecha_actualizacion}' WHERE id_c = '{$beanBL->id}'";
             //$result = $db->query($query);
         }
         if ($aprueba == 'RECHAZAR') {
             $accion = 'Rechazada';
-
+            $beanBL->estatus_backlog_c = '2';
             $beanBL->fecha_reactivacion_neg_c = $dt1->format("Y-m-d H:i:s");;
 
             //$query = "UPDATE lev_backlog_cstm set fecha_reactivacion_neg_c = '{$fecha_actualizacion_neg}' WHERE id_c = '{$beanBL->id}'";
@@ -202,6 +202,7 @@ class reactiva_bkl extends SugarApi
         $beanBkl->aprueba_reactivacion_c = $aprueba;
         $beanBkl->fecha_sol_reactivacion_c = $fechasolicitud;
         $beanBkl->aprobador_reactivacion_c = $id_director_comercial;
+        $beanBkl->estatus_backlog_c = '6';
         $beanBkl->save();
 
         $bodyCorreo = $this->buildBodyEnviaPeticionAutorizacionDirector($name_comercial, $idRegistro, $motivo);

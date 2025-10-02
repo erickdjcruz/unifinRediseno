@@ -27,6 +27,10 @@ class class_Backlog_Admin
           $bean->origen_cuenta_c = $valorOrigen;
         }
 
+        if($bean->lev_backlog_opportunitiesopportunities_ida != null) {
+          $bean->progreso = '1';
+        }
+
         //Actualiza rango Backlog
         global $app_list_strings;
         $valorMonto = $bean->monto_prospecto_c + $bean->monto_credito_c + $bean->monto_rechazado_c + $bean->monto_sin_solicitud_c + $bean->monto_con_solicitud_c; //$bean->monto_comprometido;
