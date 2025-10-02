@@ -27,6 +27,7 @@ class cambiosRazonSocialExterno extends SugarApi
             ),
         );
     }
+
     /*
     * Obtiene dirección fiscal de cuenta que tiene valor en campo json_audit_c
     */
@@ -171,6 +172,7 @@ class cambiosRazonSocialExterno extends SugarApi
             
             $beanCuenta->save();
             $response['estado'] = 'aprobado';
+            $this->actualizarDatosEnSistemaExterno($beanCuenta, $datos_cambio);
             
         } elseif ($accion === 'rechazado') {
             // Lógica para rechazar cambios
@@ -212,6 +214,72 @@ class cambiosRazonSocialExterno extends SugarApi
         $response['usuario_procesamiento'] = $current_user->user_name;
         
         return $response;
+    }
+
+     /**
+     * Actualiza los datos en el sistema externo via API
+     */
+    private function actualizarDatosEnSistemaExterno($beanCuenta, $datos_cambio)
+    {
+        global $sugar_config;
+        
+        try {
+            $token = $sugar_config['onboarding_token'];
+            $rfc = $beanCuenta->rfc_c;
+            $url = $sugar_config['onboarding_url'] . 'update-client/' . $rfc . '/';
+            
+            // Preparar body según tipo de persona
+            if ($beanCuenta->tipodepersona_c == 'Persona Moral') {
+                $business_name = $beanCuenta->denominacion_c;
+                $business_entity = $beanCuenta->regimen_capital_c;
+                $body = json_encode([
+                    "business_name" => $business_name,
+                    "business_entity" => $business_entity
+                ]);
+            } else {
+                $name = $beanCuenta->primernombre_c;
+                $last_name = $beanCuenta->apellidopaterno_c;
+                $mother_last_name = $beanCuenta->apellidomaterno_c;
+                $body = json_encode([
+                    "name" => $name,
+                    "last_name" => $last_name,
+                    "mother_last_name" => $mother_last_name
+                ]);
+            }
+            
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'PUT',
+                CURLOPT_POSTFIELDS => $body,
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Token ' . $token,
+                    'Content-Type: application/json'
+                ),
+            ));
+            
+            $response = curl_exec($curl);
+            $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            curl_close($curl);
+            
+            $GLOBALS['log']->fatal("Actualización sistema externo - HTTP Code: " . $httpCode);
+            $GLOBALS['log']->fatal("Actualización sistema externo - Response: " . $response);
+            
+            if ($httpCode >= 200 && $httpCode < 300) {
+                $GLOBALS['log']->fatal("Datos actualizados exitosamente en sistema externo para RFC: " . $rfc);
+            } else {
+                $GLOBALS['log']->fatal("Error al actualizar datos en sistema externo para RFC: " . $rfc . " - Código: " . $httpCode);
+            }
+            
+        } catch (Exception $e) {
+            $GLOBALS['log']->fatal("Excepción al actualizar sistema externo: " . $e->getMessage());
+        }
     }
 
     /**
