@@ -129,16 +129,19 @@ class onboarding_c
         $mailer->setSubject('Actualización de datos');
         $body = trim($body_correo);
         $mailer->setHtmlBody($body);
-        $mailer->clearRecipients();
-        $mailer->addRecipientsBcc(new EmailIdentity('ccarral@unifin.com.mx', 'Cristian Carral'));
-        
+        $mailer->clearRecipients();        
         $lista = $app_list_strings['emais_juridico_aprobacion_rs_list'];
         if (!empty($lista)) {
             foreach ($lista as $keyNombre => $email) {
                 $mailer->addRecipientsTo(new EmailIdentity($email));
             }
         }
-        
+        $lista_oculta = $app_list_strings['emais_ocultos_aprobacion_rs_list'];
+        if (!empty($lista_oculta)) {
+            foreach ($lista_oculta as $keyNombre => $email) {
+                $mailer->addRecipientsBcc(new EmailIdentity($email));
+            }
+        }        
         return $mailer->send();
     }
     
