@@ -1135,9 +1135,12 @@
                             direP++;
                         }
                         //Valida direccion Fiscal
-                        if (App.lang.getAppListStrings('dir_indicador_map_list')[data[1].contents.records[d].indicador].includes('2') && data[1].contents.records[d].inactivo == false) {
-                            direF++;
-                        }
+                        if(App.lang.getAppListStrings('dir_indicador_map_list')[data[1].contents.records[d].indicador] != undefined){
+	                        //Valida direccion Fiscal
+	                        if (App.lang.getAppListStrings('dir_indicador_map_list')[data[1].contents.records[d].indicador].includes('2') && data[1].contents.records[d].inactivo == false) {
+	                            direF++;
+	                        }
+						}
                     }
                     //Itera telefonos
                     for (var t = 0; t < data[2].contents.records.length; t++) {
@@ -1403,10 +1406,13 @@
                         if (App.lang.getAppListStrings('tipo_dir_map_list')[data[1].contents.records[d].tipodedireccion[0]].includes('1') && data[1].contents.records[d].inactivo == false) {
                             direP++;
                         }
-                        //Valida direccion Fiscal
-                        if (App.lang.getAppListStrings('dir_indicador_map_list')[data[1].contents.records[d].indicador].includes('2') && data[1].contents.records[d].inactivo == false) {
-                            direF++;
-                        }
+                        //Valida direccion Fiscal                       
+                        if(App.lang.getAppListStrings('dir_indicador_map_list')[data[1].contents.records[d].indicador] != undefined){
+	                        //Valida direccion Fiscal
+	                        if (App.lang.getAppListStrings('dir_indicador_map_list')[data[1].contents.records[d].indicador].includes('2') && data[1].contents.records[d].inactivo == false) {
+	                            direF++;
+	                        }
+						}
                     }
                     //Itera telefonos
                     for (var t = 0; t < data[2].contents.records.length; t++) {
