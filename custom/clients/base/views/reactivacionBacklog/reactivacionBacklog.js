@@ -82,7 +82,7 @@
                                 //ACCION ACEPTAR
                                 if (this.acepta) {
                                     //Valida estatus actual y desbloque BL
-                                    if (estatus_backlog_c == '2') {
+                                    if (estatus_backlog_c == '6') {
                                         if (aprueba_reactivacion == 'RECHAZAR') {
 
                                             alert("La solicitud fue rechazada previamente");
@@ -104,7 +104,7 @@
                                             this.decisionCambioBL(actualizaBL);
                                         }
                                     } else {
-                                        alert("El Backlog no se encuentra bloqueado actualmente");
+                                        alert("El Backlog no se encuentra en proceso de reactivación actualmente");
                                         // Redirigir después de 2 segundos
                                         _.delay(function () {
                                             app.router.navigate("#lev_Backlog", { trigger: true });
@@ -114,7 +114,7 @@
 
                                 } else {
                                     //Valida estatus actual y rechaza BL
-                                    if(estatus_backlog_c == '2' && aprueba_reactivacion != 'RECHAZAR'){                                        
+                                    if(estatus_backlog_c == '6' && aprueba_reactivacion != 'RECHAZAR'){                                        
                                         // Actualizar el BL
                                         var updatePayload = {
                                             idRegistro : data.id,
