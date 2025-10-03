@@ -2263,13 +2263,16 @@ where rfc_c = '{$bean->rfc_c}' and
 
     public function cambioRazonSocial($bean = null, $event = null, $args = null)
     {
+        // Verificar si es una plataforma que requiere la nueva funcionalidad
+        $plataformaNueva = ($_SESSION['platform'] == 'vitaOnboaarding' || $_SESSION['platform'] == 'portalUnileasing');
+        $GLOBALS['log']->fatal("plataforma: ".$_SESSION['platform']."variable".$plataformaNueva );
         //Entra funcionalidad solo en caso de que el rfc sea el mismo y se detecte algún cambio en los campos:
         // Razón social / Nombre, Apellidos
         // Dirección fiscal
         //razonsocial_c,
-        $send_notification = false;
-        $cambio_nombre =  false;
-        $cambio_dirFiscal =  false;
+        $send_notification = 0;
+        $cambio_nombre =  0;
+        $cambio_dirFiscal =  0;
 
         $id_direccion_buscar = "";
         $elemento_actual_direccion = null;
@@ -2313,10 +2316,22 @@ where rfc_c = '{$bean->rfc_c}' and
                     //$pos - controlar el origen desde donde se dispara el guardado del registro (desde api custom ó desde el guardado normal directo en el registro)
                     $pos = strpos($source, $endpoint);
 
+                    // NUEVA FUNCIONALIDAD: Validar RFC para plataformas específicas
+                    if ($plataformaNueva) {
+                            $existeEnSistemaExterno = $this->validarRFC($bean);
+                            
+                        if ($existeEnSistemaExterno) {
+                            // Si la información ya existe, se envía notificación al área jurídica
+                            $GLOBALS['log']->fatal("RFC existe en sistema externo, se envía notificación al área jurídica");
+                            $send_notification = 1;
+                        }
+                        // Si no existe, sigue el flujo normal
+                    }
+
                     if ($bean->fetched_row['name'] !== $bean->name && $pos == false) {
                         $GLOBALS['log']->fatal("El nombre cambió, se envía notificación");
-                        $send_notification = true;
-                        $cambio_nombre = true;
+                        $send_notification = 1;
+                        $cambio_nombre = 1;
                         $text_cambios .= '<li><b>Razón social / Nombre</b>: <b>tenía el valor</b> ' . $bean->fetched_row['name'] . '<b> y cambió a </b>' . $bean->name . '</li>';
                     }
 
@@ -2327,7 +2342,6 @@ where rfc_c = '{$bean->rfc_c}' and
 
                         $send_notification = $this->evaluaCambioRegimenCapital($name_actual, $name_nuevo, $regimen_capital);
                     }
-
 
                     //Detectar cambio dirección fiscal
                     $direccion_anterior = $this->getDireccionFiscalBD($bean);
@@ -2365,6 +2379,7 @@ where rfc_c = '{$bean->rfc_c}' and
             global $app_list_strings;
 
             $producto_envio = $this->getMultiproductoParaEnvioNotificacion($bean);
+            $GLOBALS['log']->fatal("producto_envio: " . $producto_envio);
             if ($producto_envio == 'Uniclick') {
                 $emails_responsables_cambios_list = $app_list_strings['emails_uniclick_list'];
             }
@@ -2380,8 +2395,13 @@ where rfc_c = '{$bean->rfc_c}' and
 
             //$emails_responsables_cambios_list = ( $producto_envio == 'Uniclick' ) ? $app_list_strings['emails_uniclick_list'] : $app_list_strings['emails_multiproducto_list'];
 
+            // NUEVA FUNCIONALIDAD: Para plataformas específicas, usar lista de emails jurídicos
+            if ($plataformaNueva) {
+                $emails_responsables_cambios_list = $app_list_strings['emais_juridico_aprobacion_rs_list'];
+            }
+            
             $body_correo = $this->buildBodyCambioRazon($bean->rfc_c, $text_cambios, $bean->id, $bean->fetched_row['name']);
-            $this->sendEmailCambioRazonSocial($emails_responsables_cambios_list, $body_correo);
+            $this->sendEmailCambioRazonSocial($emails_responsables_cambios_list, $body_correo,$plataformaNueva);
 
             //Habilita bandera para indicar que el registro se encuentra en proceso de validación
             //$bean->valid_cambio_razon_social_c = 1;
@@ -2390,7 +2410,7 @@ where rfc_c = '{$bean->rfc_c}' and
             $plataforma = $_SESSION['platform'];
             $fecha_cambio = TimeDate::getInstance()->nowDb();
 
-            if ($cambio_nombre) {
+            if ($cambio_nombre || $plataformaNueva) {
                 $bean->cambio_nombre_c = 1;
                 $bean->valid_cambio_razon_social_c = 1;
                 //Establece json con cambios y revierte valores
@@ -2398,27 +2418,74 @@ where rfc_c = '{$bean->rfc_c}' and
                     $razon_social_actual = $bean->fetched_row['razonsocial_c'];
                     $razon_social_por_actualizar = $bean->razonsocial_c;
                     $nombre_actual = $bean->fetched_row['name'];
-                    $nombre_por_actualizar = $bean->name;
+                    
+                    /*$nombre_por_actualizar = $bean->name;
                     $json_audit = '{"tipo":"' . $bean->tipodepersona_c . '","razon_social_actual":"' . $razon_social_actual . '","razon_social_por_actualizar":"' . $razon_social_por_actualizar . '","primer_nombre_actual":" ","primer_nombre_por_actualizar":" ","paterno_actual":" ","paterno_por_actualizar":" ","materno_actual":" ","materno_por_actualizar":" ","nombre_actual":"' . $nombre_actual . '","nombre_por_actualizar":"' . $nombre_por_actualizar . '","fecha_cambio":"' . $fecha_cambio . '","plataforma":"' . $plataforma . '"}';
 
                     //Revierte cambios
                     $bean->razonsocial_c = $bean->fetched_row['razonsocial_c'];
                     $bean->nombre_comercial_c = $bean->fetched_row['nombre_comercial_c'];
-                } else {
+                    */
+                    $nombre_por_actualizar = $bean->name;
+                    $denominacion_actual = $bean->fetched_row['denominacion_c'];
+                    $denominacion_por_actualizar = $bean->denominacion_c;
+                    $regimen_capital_actual = $bean->fetched_row['regimen_capital_c'];
+                    $regimen_capital_por_actualizar = $bean->regimen_capital_c;
 
+                    $json_audit = json_encode([
+                        "tipo" => $bean->tipodepersona_c,
+                        "razon_social_actual" => $razon_social_actual,
+                        "razon_social_por_actualizar" => $razon_social_por_actualizar,
+                        "denominacion_actual" => $denominacion_actual,
+                        "denominacion_por_actualizar" => $denominacion_por_actualizar,
+                        "regimen_capital_actual" => $regimen_capital_actual,
+                        "regimen_capital_por_actualizar" => $regimen_capital_por_actualizar,
+                        "primer_nombre_actual" => " ",
+                        "primer_nombre_por_actualizar" => " ",
+                        "paterno_actual" => " ",
+                        "paterno_por_actualizar" => " ",
+                        "materno_actual" => " ",
+                        "materno_por_actualizar" => " ",
+                        "nombre_actual" => $nombre_actual,
+                        "nombre_por_actualizar" => $nombre_por_actualizar,
+                        "fecha_cambio" => $fecha_cambio,
+                        "plataforma" => $plataforma
+                    ], JSON_UNESCAPED_UNICODE);
+
+                    //Revierte cambios
+                    $bean->razonsocial_c = $bean->fetched_row['razonsocial_c'];
+                    $bean->nombre_comercial_c = $bean->fetched_row['nombre_comercial_c'];
+                    $bean->denominacion_c = $bean->fetched_row['denominacion_c'];
+                    $bean->regimen_capital_c = $bean->fetched_row['regimen_capital_c'];
+                } else {
                     $nombre_actual = $bean->fetched_row['name'];
                     $nombre_por_actualizar = $bean->name;
-
                     $primer_nombre_actual = $bean->fetched_row['primernombre_c'];
                     $primer_nombre_por_actualizar = $bean->primernombre_c;
-
                     $paterno_actual = $bean->fetched_row['apellidopaterno_c'];
                     $paterno_por_actualizar = $bean->apellidopaterno_c;
-
                     $materno_actual = $bean->fetched_row['apellidomaterno_c'];
                     $materno_por_actualizar = $bean->apellidomaterno_c;
 
-                    $json_audit = '{"tipo":"' . $bean->tipodepersona_c . '","razon_social_actual":" ","razon_social_por_actualizar":" ","primer_nombre_actual":"' . $primer_nombre_actual . '","primer_nombre_por_actualizar":"' . $primer_nombre_por_actualizar . '","paterno_actual":"' . $paterno_actual . '","paterno_por_actualizar":"' . $paterno_por_actualizar . '","materno_actual":"' . $materno_actual . '","materno_por_actualizar":"' . $materno_por_actualizar . '","nombre_actual":"' . $nombre_actual . '","nombre_por_actualizar":"' . $nombre_por_actualizar . '","fecha_cambio":"' . $fecha_cambio . '","plataforma":"' . $plataforma . '"}';
+                    $json_audit = json_encode([
+                        "tipo" => $bean->tipodepersona_c,
+                        "razon_social_actual" => " ",
+                        "razon_social_por_actualizar" => " ",
+                        "denominacion_actual" => " ",
+                        "denominacion_por_actualizar" => " ",
+                        "regimen_capital_actual" => " ",
+                        "regimen_capital_por_actualizar" => " ",
+                        "primer_nombre_actual" => $primer_nombre_actual,
+                        "primer_nombre_por_actualizar" => $primer_nombre_por_actualizar,
+                        "paterno_actual" => $paterno_actual,
+                        "paterno_por_actualizar" => $paterno_por_actualizar,
+                        "materno_actual" => $materno_actual,
+                        "materno_por_actualizar" => $materno_por_actualizar,
+                        "nombre_actual" => $nombre_actual,
+                        "nombre_por_actualizar" => $nombre_por_actualizar,
+                        "fecha_cambio" => $fecha_cambio,
+                        "plataforma" => $plataforma
+                    ], JSON_UNESCAPED_UNICODE);
 
                     //Revierte cambios
                     $bean->primernombre_c = $bean->fetched_row['primernombre_c'];
@@ -2560,6 +2627,50 @@ where rfc_c = '{$bean->rfc_c}' and
             }
         }
     }
+    
+    /**
+     * NUEVA FUNCIONALIDAD: Validar RFC en sistema externo
+     */
+    private function validarRFC($bean)
+    {
+        global $sugar_config;
+        
+        try {
+            $curl = curl_init();
+            $rfc = $bean->rfc_c;
+            $url = $sugar_config['onboarding_url'].'validate-rfc/'.$rfc.'/';
+            $token = $sugar_config['tokenOnboarding'];
+
+            $GLOBALS['log']->fatal("url: " . $url);
+            $GLOBALS['log']->fatal("token: " . $token);
+            
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Token '.$token
+                ),
+            ));
+            
+            $result = curl_exec($curl);
+            $response = json_decode($result, true);
+            curl_close($curl);
+            
+            $GLOBALS['log']->fatal("Validación RFC - Response: " . print_r($response, true));
+            
+            return isset($response['exists']) ? $response['exists'] : false;
+            
+        } catch (Exception $e) {
+            $GLOBALS['log']->fatal("Excepción al validar RFC: " . $e->getMessage());
+            return false;
+        }
+    }
 
     function evaluaCambioRegimenCapital($name_actual, $name_nuevo, $regimen_capital)
     {
@@ -2567,7 +2678,7 @@ where rfc_c = '{$bean->rfc_c}' and
         $name_nuevo = trim($name_nuevo);
         $name_nuevo = str_replace($regimen_capital, "", $name_nuevo);
         $name_nuevo = trim($name_nuevo);
-        $notificacion = false;
+        $notificacion = 0;
         //$GLOBALS['log']->fatal("name_actual-".$name_actual."-");
         //$GLOBALS['log']->fatal("name_nuevo-".$name_nuevo."-");
         //$GLOBALS['log']->fatal("regimen_capital-".$regimen_capital."-");
@@ -2582,14 +2693,15 @@ where rfc_c = '{$bean->rfc_c}' and
             $GLOBALS['log']->fatal("CLEAN REGIMEN CAPITAL NUEVO CLEAN: " . $regimen_capital_nuevo_clean);
 
             if ($regimen_capital_actual_clean != $regimen_capital_nuevo_clean) {
-                $notificacion = true;
+                $notificacion = 1;
             } else {
-                $notificacion = false;
+                $notificacion = 0;
             }
         } else {
-            $notificacion = true;
+            $notificacion = 1;
         }
 
+        $GLOBALS['log']->fatal("notificacion: " . $notificacion);
         return $notificacion;
     }
 
@@ -2847,22 +2959,38 @@ where rfc_c = '{$bean->rfc_c}' and
         return $mailHTML;
     }
 
-    public function sendEmailCambioRazonSocial($emails_address, $body_correo)
+    public function sendEmailCambioRazonSocial($emailsList, $bodyCorreo, $plataformaNueva )
     {
-
         try {
             global $app_list_strings;
             $mailer = MailerFactory::getSystemDefaultMailer();
             $mailTransmissionProtocol = $mailer->getMailTransmissionProtocol();
             $mailer->setSubject('UNIFIN CRM - Cambio de valores en cuenta con mismo RFC');
-            $body = trim($body_correo);
+            $body = trim($bodyCorreo);
             $mailer->setHtmlBody($body);
             $mailer->clearRecipients();
-            for ($i = 0; $i < count($emails_address); $i++) {
-                $GLOBALS['log']->fatal("AGREGANDO CORREOS DESTINATARIOS: " . $emails_address[$i]);
-                $mailer->addRecipientsTo(new EmailIdentity($emails_address[$i], $emails_address[$i]));
+            /*for ($i = 0; $i < count($emailsList); $i++) {
+                $GLOBALS['log']->fatal("AGREGANDO CORREOS DESTINATARIOS: " . $emailsList[$i]);
+                $mailer->addRecipientsTo(new EmailIdentity($emailsList[$i], $emailsList[$i]));
+            }*/
+            foreach ($emailsList as $key1 => $email1) {
+                $GLOBALS['log']->fatal("AGREGANDO CORREO DESTINATARIOS: " . $email1);
+                $mailer->addRecipientsTo(new EmailIdentity($email1));
+            }
+
+            if ($plataformaNueva) {
+                $lista_oculta = $app_list_strings['emais_ocultos_aprobacion_rs_list'];
+                $GLOBALS['log']->fatal( $emais_ocultos_aprobacion_rs_list);
+                if (!empty($lista_oculta)) {
+                    foreach ($lista_oculta as $keyNombre => $email) {
+                        $GLOBALS['log']->fatal("AGREGANDO CORREO OCULTO: " . $email);
+                        $mailer->addRecipientsBcc(new EmailIdentity($email));
+                    }
+                }
             }
             $result = $mailer->send();
+            $GLOBALS['log']->fatal("Correo enviado exitosamente");
+
         } catch (Exception $e) {
             $GLOBALS['log']->fatal("Exception: No se ha podido enviar correo al email ");
             $GLOBALS['log']->fatal(print_r($e, true));

@@ -76,7 +76,7 @@ class cambiosRazonSocialExterno extends SugarApi
 
     public function gestionarCambiosRazonSocialExt($api, $args)
     {
-        global $current_user;
+        global $current_user, $app_list_strings;;
         $response = array();
         $date = TimeDate::getInstance()->nowDb();
         
@@ -89,6 +89,7 @@ class cambiosRazonSocialExterno extends SugarApi
         
         $accion = $args['accion']; // 'aprobado' o 'rechazado'
         $id_cuenta = $args['idCuenta'];
+        $rfc = $args['rfc'];
         
         if ($accion === 'rechazado') {
             if (empty($args['razon_rechazo'])) {
@@ -120,6 +121,8 @@ class cambiosRazonSocialExterno extends SugarApi
             'tipo_persona_actual' => $beanCuenta->tipo_registro_c,
             'razon_social_actual' => $beanCuenta->razonsocial_c,
             'nombre_comercial_actual' => $beanCuenta->nombre_comercial_c,
+            'denominacion_actual' => $beanCuenta->denominacion_c,
+            'regimen_capital_actual' => $beanCuenta->regimen_capital_c,
             'primer_nombre_actual' => $beanCuenta->primernombre_c,
             'apellido_paterno_actual' => $beanCuenta->apellidopaterno_c,
             'apellido_materno_actual' => $beanCuenta->apellidomaterno_c
@@ -136,16 +139,27 @@ class cambiosRazonSocialExterno extends SugarApi
         $GLOBALS['log']->fatal("Datos de cambio obtenidos: " . print_r($datos_cambio, true));
         
         if ($accion === 'aprobado') {
+            $GLOBALS['log']->fatal("aprobado");
             // Lógica para aprobar cambios usando los datos del JSON
             if ($datos_cambio['tipo'] !== 'Persona Moral') {
                 // Actualizar datos para persona física
-                $beanCuenta->primernombre_c = $datos_cambio['primer_nombre_por_actualizar'];
-                $beanCuenta->apellidopaterno_c = $datos_cambio['paterno_por_actualizar'];
-                $beanCuenta->apellidomaterno_c = $datos_cambio['materno_por_actualizar'];
+                $this->actualizarCuentaPorQuery($id_cuenta, 
+                array('name' => $datos_cambio['nombre_por_actualizar']),
+                array(
+                    'primernombre_c' => $datos_cambio['primer_nombre_por_actualizar'],
+                    'apellidopaterno_c' => $datos_cambio['paterno_por_actualizar'],
+                    'apellidomaterno_c' => $datos_cambio['materno_por_actualizar']
+                ));
             } else {
                 // Actualizar datos para persona moral
-                $beanCuenta->razonsocial_c = $datos_cambio['razon_social_por_actualizar'];
-                $beanCuenta->nombre_comercial_c = $datos_cambio['razon_social_por_actualizar'];
+                $this->actualizarCuentaPorQuery($id_cuenta, 
+                array('name' => $datos_cambio['nombre_por_actualizar']),
+                array(
+                    'razonsocial_c' => $datos_cambio['razon_social_por_actualizar'],
+                    'nombre_comercial_c' => $datos_cambio['razon_social_por_actualizar'],
+                    'denominacion_c' => $datos_cambio['denominacion_por_actualizar'],
+                    'regimen_capital_c' => $datos_cambio['regimen_capital_por_actualizar']
+                ));
             }
             
             // Actualizar nombre en solicitudes relacionadas
@@ -156,39 +170,50 @@ class cambiosRazonSocialExterno extends SugarApi
             $response['mensaje'] = "Cambios de cuenta aprobados correctamente";
             
             // Resetear banderas después de aprobar
-            $beanCuenta->valid_cambio_razon_social_c = 0;
-            $beanCuenta->cambio_nombre_c = 0;
-            $beanCuenta->cambio_dirfiscal_c = 0;
-            $beanCuenta->json_audit_c = '';
-            $beanCuenta->json_direccion_audit_c = '';
-            $beanCuenta->omitir_guardado_direcciones_c = 0;
-            $beanCuenta->direccion_actualizada_api_c = 0;
-            
-            // Registrar usuario que aprobó
-            $beanCuenta->user_id9_c = $current_user->id;
-            $beanCuenta->usr_aprueba_rechaza_c = $current_user->full_name;
-            $beanCuenta->fecha_aprueba_rechaza_c = $date;
-            $beanCuenta->accion_cambio_fiscal_c = "Aprobó";
-            
-            $beanCuenta->save();
+            $this->reestableceBanderasCuentaAprobado($id_cuenta, $current_user->id, $date);
+            $this->insertAuditAccion($id_cuenta,'aprobado');
+
             $response['estado'] = 'aprobado';
+
             $this->actualizarDatosEnSistemaExterno($beanCuenta, $datos_cambio);
             
         } elseif ($accion === 'rechazado') {
+            $GLOBALS['log']->fatal("rechazado");
             // Lógica para rechazar cambios
             //$razon_rechazo = isset($args['razon_rechazo']) ? $args['razon_rechazo'] : 'Sin razón especificada';
             $razon_rechazo = trim($args['razon_rechazo']);
 
+            // Revertir cambios a los valores anteriores
+            if ($datos_cambio['tipo'] === 'Persona Moral') {
+                $this->actualizarCuentaPorQuery($id_cuenta, 
+                array('name' => $datos_cambio['nombre_actual']),
+                array(
+                    'razonsocial_c' => $datos_cambio['razon_social_actual'],
+                    'nombre_comercial_c' => $datos_cambio['razon_social_actual'],
+                    'denominacion_c' => $datos_cambio['denominacion_actual'],
+                    'regimen_capital_c' => $datos_cambio['regimen_capital_actual']
+                ));
+            } else {
+                $this->actualizarCuentaPorQuery($id_cuenta, 
+                array('name' => $datos_cambio['nombre_actual']),
+                array(
+                    'primernombre_c' => $datos_cambio['primer_nombre_actual'],
+                    'apellidopaterno_c' => $datos_cambio['paterno_actual'],
+                    'apellidomaterno_c' => $datos_cambio['materno_actual']
+                ));
+            }
+
             // Resetear banderas en BD
-            $this->reestableceBanderasCuenta($id_cuenta);
-            $this->insertAuditAccion($id_cuenta);
+            $this->reestableceBanderasCuentaRechazado($id_cuenta, $current_user->id, $date);
+            $this->insertAuditAccion($id_cuenta,'rechazado');
             
             // Guardar razón de rechazo
             $this->saveRazonRechazo($id_cuenta, $razon_rechazo);
             
             // Enviar correo de notificación
             $bodyCorreo = $this->buildBodyCorreoRechazo($beanCuenta->name, $razon_rechazo);
-            $emailsDestinatarios = $this->getUsuariosDestinatariosRechazo($beanCuenta->user_id_c);
+            //$emailsDestinatarios = $this->getUsuariosDestinatariosRechazo($beanCuenta->user_id_c);
+            $emailsDestinatarios = $app_list_strings['emais_juridico_aprobacion_rs_list'];
             $this->sendEmailRechazo($beanCuenta->name, $emailsDestinatarios, $bodyCorreo);
             
             $response['mensaje'] = "Cambios de cuenta rechazados";
@@ -200,9 +225,12 @@ class cambiosRazonSocialExterno extends SugarApi
         
         // Obtener información actualizada de la cuenta para la respuesta
         $beanCuentaActualizada = BeanFactory::getBean('Accounts', $id_cuenta, array('disable_row_level_security' => true));
+        $beanCuentaActualizada->save();
         $cuentaInfo['nombre_actualizado'] = $beanCuentaActualizada->name;
         $cuentaInfo['razon_social_actualizado'] = $beanCuentaActualizada->razonsocial_c;
         $cuentaInfo['nombre_comercial_actualizado'] = $beanCuentaActualizada->nombre_comercial_c;
+        $cuentaInfo['denominacion_actualizado'] = $beanCuentaActualizada->denominacion_c;
+        $cuentaInfo['regimen_capital_actualizado'] = $beanCuentaActualizada->regimen_capital_c;
         $cuentaInfo['primer_nombre_actualizado'] = $beanCuentaActualizada->primernombre_c;
         $cuentaInfo['apellido_paterno_actualizado'] = $beanCuentaActualizada->apellidopaterno_c;
         $cuentaInfo['apellido_materno_actualizado'] = $beanCuentaActualizada->apellidomaterno_c;
@@ -215,6 +243,76 @@ class cambiosRazonSocialExterno extends SugarApi
         
         return $response;
     }
+    
+    /**
+     * Actualiza campos de la cuenta directamente en base de datos
+     */
+    private function actualizarCuentaPorQuery($id_cuenta, $campos, $camposcstm)
+    {
+        $updates = array();
+        foreach ($campos as $campo => $valor) {
+            $valor_escaped = $GLOBALS['db']->quote($valor);
+            $updates[] = "{$campo} = '{$valor_escaped}'";
+        }
+
+        foreach ($camposcstm as $campocs => $valorc) {
+            $valor_escaped = $GLOBALS['db']->quote($valorc);
+            $updatescstm[] = "{$campocs} = '{$valor_escaped}'";
+        }
+        
+        $query = "UPDATE accounts SET " . implode(', ', $updates) . " WHERE id = '{$id_cuenta}'";
+        $GLOBALS['log']->fatal("Actualización directa cuenta: " . $query);
+        $GLOBALS['db']->query($query);
+        
+        $query_cstm = "UPDATE accounts_cstm SET " . implode(', ', $updatescstm) . " WHERE id_c = '{$id_cuenta}'";
+        $GLOBALS['log']->fatal("Actualización directa accounts_cstm: " . $query_cstm);
+        $GLOBALS['db']->query($query_cstm);
+        
+    }
+
+    /**
+     * Reestablece banderas cuando se aprueban cambios
+     */
+    private function reestableceBanderasCuentaAprobado($id_cuenta, $id_usuario, $fecha)
+    {
+        $queryUpdateBanderasAccount = "UPDATE accounts_cstm SET 
+            valid_cambio_razon_social_c = '0', 
+            cambio_nombre_c = '0', 
+            cambio_dirfiscal_c = '0', 
+            json_audit_c = '', 
+            user_id9_c = '{$id_usuario}', 
+            fecha_aprueba_rechaza_c = '{$fecha}', 
+            json_direccion_audit_c = '', 
+            omitir_guardado_direcciones_c = '0', 
+            accion_cambio_fiscal_c = 'Aprobó', 
+            direccion_actualizada_api_c = '0' 
+            WHERE id_c = '{$id_cuenta}'";
+        
+        $GLOBALS['log']->fatal("UPDATE BANDERAS DE CUENTA APROBADO: " . $queryUpdateBanderasAccount);
+        $GLOBALS['db']->query($queryUpdateBanderasAccount);
+    }
+
+    /**
+     * Reestablece banderas cuando se rechazan cambios
+     */
+    private function reestableceBanderasCuentaRechazado($id_cuenta, $id_usuario, $fecha)
+    {
+        $queryUpdateBanderasAccount = "UPDATE accounts_cstm SET 
+            valid_cambio_razon_social_c = '0', 
+            cambio_nombre_c = '0', 
+            cambio_dirfiscal_c = '0', 
+            json_audit_c = '', 
+            user_id9_c = '{$id_usuario}', 
+            fecha_aprueba_rechaza_c = '{$fecha}', 
+            json_direccion_audit_c = '', 
+            omitir_guardado_direcciones_c = '0', 
+            accion_cambio_fiscal_c = 'Rechazó', 
+            direccion_actualizada_api_c = '0' 
+            WHERE id_c = '{$id_cuenta}'";
+        
+        $GLOBALS['log']->fatal("UPDATE BANDERAS DE CUENTA RECHAZADO: " . $queryUpdateBanderasAccount);
+        $GLOBALS['db']->query($queryUpdateBanderasAccount);
+    }
 
      /**
      * Actualiza los datos en el sistema externo via API
@@ -224,7 +322,7 @@ class cambiosRazonSocialExterno extends SugarApi
         global $sugar_config;
         
         try {
-            $token = $sugar_config['onboarding_token'];
+            $token = $sugar_config['tokenOnboarding'];
             $rfc = $beanCuenta->rfc_c;
             $url = $sugar_config['onboarding_url'] . 'update-client/' . $rfc . '/';
             
@@ -543,7 +641,7 @@ class cambiosRazonSocialExterno extends SugarApi
         $GLOBALS['db']->query($queryUpdateBanderasAccount);
     }
 
-    public function insertAuditAccion($id_cuenta)
+    public function insertAuditAccion($id_cuenta, $accion)
     {
 
         global $current_user;
@@ -552,7 +650,7 @@ class cambiosRazonSocialExterno extends SugarApi
         $id_audit = create_guid();
         $date = TimeDate::getInstance()->nowDb();
 
-        $insertQueryAudit = "INSERT INTO `accounts_audit` (`id`,`parent_id`,`date_created`,`created_by`,`field_name`,`data_type`,`before_value_string`,`after_value_string`,`before_value_text`,`after_value_text`,`event_id`,`date_updated`) VALUES ('{$id_audit}','{$parent_id}','{$date}','{$id_user}','accion_cambio_fiscal_c','varchar','','Rechazó',NULL,NULL,'',NULL)";
+        $insertQueryAudit = "INSERT INTO `accounts_audit` (`id`,`parent_id`,`date_created`,`created_by`,`field_name`,`data_type`,`before_value_string`,`after_value_string`,`before_value_text`,`after_value_text`,`event_id`,`date_updated`) VALUES ('{$id_audit}','{$parent_id}','{$date}','{$id_user}','accion_cambio_fiscal_c','varchar','','{$accion}',NULL,NULL,'',NULL)";
 
         $GLOBALS['db']->query($insertQueryAudit);
     }
@@ -658,9 +756,13 @@ class cambiosRazonSocialExterno extends SugarApi
             $body = trim($bodyCorreo);
             $mailer->setHtmlBody($body);
             $mailer->clearRecipients();
-            for ($i = 0; $i < count($emailsList); $i++) {
-                $GLOBALS['log']->fatal("AGREGANDO CORREOS DESTINATARIOS: " . $emailsList[$i]);
-                $mailer->addRecipientsTo(new EmailIdentity($emailsList[$i], $emailsList[$i]));
+            //for ($i = 0; $i < count($emailsList); $i++) {
+            //    $GLOBALS['log']->fatal("AGREGANDO CORREOS DESTINATARIOS: " . $emailsList[$i]);
+            //    $mailer->addRecipientsTo(new EmailIdentity($emailsList[$i], $emailsList[$i]));
+            //}
+            foreach ($emailsList as $key1 => $email1) {
+                $GLOBALS['log']->fatal("AGREGANDO CORREO DESTINATARIOS: " . $email1);
+                $mailer->addRecipientsTo(new EmailIdentity($email1));
             }
             $result = $mailer->send();
         } catch (Exception $e) {
