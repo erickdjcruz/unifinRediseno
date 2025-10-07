@@ -5284,7 +5284,16 @@
 
         //Recupera información
         if (!_.isEmpty(idCuenta) && idCuenta != "") {
-            app.api.call('GET', app.api.buildURL('Accounts/' + idCuenta + '/link/accounts_dire_direccion_1?filter[0][indicador][$not_equals]=64'), null, {
+            var filterdir = {
+                'filter': [{
+                    'indicador': {
+                        '$not_in': ['0', '64']
+                    }
+                }]
+            };                            
+                             
+            //app.api.call('GET', app.api.buildURL('Accounts/' + idCuenta + '/link/accounts_dire_direccion_1?filter[0][indicador][$not_equals]=64'), null, {
+            app.api.call("read", app.api.buildURL('Accounts/' + idCuenta + '/link/accounts_dire_direccion_1', null, null, filterdir), null, {
                 success: _.bind(function (data) {
                     contexto_cuenta.length_direcciones = data.records.length;
                     //Itera y agrega direcciones
