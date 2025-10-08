@@ -117,3 +117,4 @@ $mod_strings['LBL_ID_DIRECTOR_REGION_APROBAR2'] = 'ID Director Región Aprobar 2
 $mod_strings['LBL_APROBACION_DIRECTORES'] = 'Aprobacion Directores';
 $mod_strings['LBL_ID_ACTIVIDAD_ECONOMICA_SAT_C'] = 'Id Actividad Económica SAT';
 $mod_strings['LBL_ACTIVIDAD_ECONOMICA_SAT_C'] = 'Actividad Económica SAT';
+$mod_strings['LBL_CREAR_DIRECCION_BURO'] = 'LBL_CREAR_DIRECCION_BURO';
