@@ -930,7 +930,6 @@ SQL;
         } else {
             //Tipo Cuenta = 4 - Persona  2 - Prospecto
             if (($bean->tipo_registro_cuenta_c != '4' || ($bean->tipo_registro_cuenta_c == '4' && $bean->tipo_relacion_c != "")) && $bean->sincronizado_unics_c == 0) {
-
                 if ($bean->estatus_c == 'Interesado' || ($bean->tipo_registro_cuenta_c != '2' && $_SESSION['estadoPersona'] == 'insertando')) {
                     $callApi = new UnifinAPI();
                     $cliente = $callApi->insertarClienteCompleto($bean);
@@ -943,7 +942,7 @@ SQL;
              *Conservar los campos que sean obligatorios de acuerdo a la opción
              *seleccionada
              */ // Tipo Cuenta 2-Prospecto, subTipo Cuenta 7-Interesado
-            if ((($bean->esproveedor_c || $bean->cedente_factor_c || $bean->deudor_factor_c) || ($bean->tipo_registro_cuenta_c == "2" && $bean->subtipo_registro_cuenta_c == "7")) && $bean->sincronizado_unics_c == 0 && !empty($bean->idcliente_c)) {
+            if ((($bean->esproveedor_c || $bean->cedente_factor_c || $bean->deudor_factor_c) || ($bean->tipo_registro_cuenta_c == "2" && $bean->subtipo_registro_cuenta_c == "7") || ($bean->tipo_registro_cuenta_c == "3" && $bean->subtipo_registro_cuenta_c == "11")) && $bean->sincronizado_unics_c == 0) {
                 $callApi = new UnifinAPI();
                 $cliente = $callApi->insertarClienteCompleto($bean);
             }

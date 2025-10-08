@@ -1421,7 +1421,7 @@
         this.$('.record-edit-link-wrapper[data-name="account_vista360"]').remove();
         this.$('div[data-name=account_vista360]').find('div.record-label').addClass('hide');
         //OCULTA ó MUESTRA BOTON DE SOLICITUD ASIGNACION
-        // this._hideBtnSolicitudAsignacion();        
+        // this._hideBtnSolicitudAsignacion();
     },
 
     editClicked: function () {
@@ -1608,7 +1608,7 @@
         var myField2 = this.getField("conviertelead");
         // var myField3 = this.getField("clienteuniclick");
         var myField4 = this.getField("portal_proveedores");
-
+		var myField5 = this.getField("conviertecliente");
         if (myField) {
             myField.listenTo(myField, "render", function () {
                 var leasingprod = Oproductos.productos.tct_tipo_cuenta_l_c;
@@ -1727,6 +1727,17 @@
             });
         }
 
+		//Ocuta botón Convertir a Cliente
+        if (myField5) {
+            myField5.listenTo(myField5, "render", function () {
+                myField5.hide();
+                if (app.user.attributes.tct_alta_clientes_chk_c == 1 && this.model.get('tipo_registro_cuenta_c') == 2 && this.model.get('subtipo_registro_cuenta_c') == 2) {
+                    myField5.show();
+                } else {
+                    myField5.hide();
+                }
+            });
+        }
     },
 
     hideButton_Conversion_change: function () {
@@ -1788,6 +1799,9 @@
             $('[name="prospectocontactado"]').hide();
             $('[name="conviertelead"]').show();
         }
+		//Oculta Botón Convertir a Cliente
+        $('[name="conviertecliente"]').hide();
+		if (app.user.attributes.tct_alta_clientes_chk_c == 1 && this.model.get('tipo_registro_cuenta_c') == 2 && this.model.get('subtipo_registro_cuenta_c') == 2) $('[name="conviertecliente"]').show();
 
         //Evaluación para mostrar botones
         /*
@@ -2212,9 +2226,8 @@
         //this.context.on('button:prospecto_contactado:click',this.validaContactado, this);  //se añade validación para validar campos al convertir prospecto contactado.
         this.context.on('button:convierte_lead:click', this.validalead, this);
         //this.context.on('button:dynamics_button:click', this.requestDynamics, this);
-
         this.context.on('button:verificar_cambios:click', this.verificarCambiosRazonSocial, this);
-
+		this.context.on('button:convierte_cliente:click', this.validaprospect, this);
     },
 
     /*
@@ -2972,6 +2985,141 @@
                 }
             }, 5000);
         }
+    },
+
+    //Proceso para convertir a Cliente Venta Activo, Eduardo Carrasco Beltrán 06/10/2025
+    validaprospect: function () {
+		App.alert.show('convierteProsp', {
+            level: 'process',
+            title: 'Convirtiendo cuenta, por favor espere',
+        });
+        var necesarios = "";
+		if (this.model.get('origen_cuenta_c') == "" || this.model.get('origen_cuenta_c') == null) {
+			necesarios = necesarios + '<b>Origen</b><br>';
+        }
+        if (this.model.get('rfc_c') == "" || this.model.get('rfc_c') == null) {
+			necesarios = necesarios + '<b>RFC</b><br>';
+        }
+        //Requerido Actividad Economica - antes macro sector
+        if (this.model.get('tct_ano_ventas_ddw_c') == "" || this.model.get('tct_ano_ventas_ddw_c') == null) {
+            necesarios = necesarios + '<b>Año de Ventas Anuales</b><br>';
+        }
+        if (this.model.get('ventas_anuales_c') == "" || this.model.get('ventas_anuales_c') == null) {
+            necesarios = necesarios + '<b>Ventas Anuales</b><br>';
+        }
+        if (this.model.get('activo_fijo_c') == "" || this.model.get('activo_fijo_c') == null) {
+            necesarios = necesarios + '<b>Activo Fijo</b><br>';
+        }
+        if (_.isEmpty(this.model.get('email')) && _.isEmpty(this.oTelefonos.telefono)) {
+            necesarios = necesarios + '<b>Al menos un correo electr\u00F3nico o un tel\u00E9fono</b><br>';
+        }
+        if (_.isEmpty(this.oDirecciones.direccion)) {
+			necesarios = necesarios + '<b>Dirección</b><br>';
+        } else {
+			var direcciones = 0;
+            var tipodireccion = this.oDirecciones.direccion;
+            if (tipodireccion.length > 0) {
+                for (var i = 0; i < tipodireccion.length; i++) {
+                    if (tipodireccion[i].inactivo == 1) {
+                        direcciones++;
+                    }
+                }
+            }
+            if (direcciones == tipodireccion.length) {
+                necesarios = necesarios + '<b>Dirección</b><br>';
+            }
+        }
+        if (this.model.get('tipodepersona_c') != "Persona Moral") {
+            if (this.model.get('primernombre_c') == "" || this.model.get('primernombre_c') == null) {
+                necesarios = necesarios + '<b>Primer Nombre</b><br>';
+            }
+            if (this.model.get('apellidopaterno_c') == "" || this.model.get('apellidopaterno_c') == null) {
+                necesarios = necesarios + '<b>Apellido Paterno</b><br>';
+            }
+            if (this.model.get('apellidomaterno_c') == "" || this.model.get('apellidomaterno_c') == null) {
+                necesarios = necesarios + '<b>Apellido Materno</b><br>';
+            }
+            if (this.model.get('fechadenacimiento_c') == "" || this.model.get('fechadenacimiento_c') == null) {
+                necesarios = necesarios + '<b>Fecha de Nacimiento</b><br>';
+            }
+            if (this.model.get('genero_c') == "" || this.model.get('genero_c') == null) {
+                necesarios = necesarios + '<b>G\u00E9nero</b><br>';
+            }
+            if (this.model.get('curp_c') == "" || this.model.get('curp_c') == null) {
+                necesarios = necesarios + '<b>CURP</b><br>';
+            }
+            if (this.model.get('estadocivil_c') == "" || this.model.get('estadocivil_c') == null) {
+                necesarios = necesarios + '<b>Estado Civil</b><br>';
+            }
+        } else {
+            if (this.model.get('razonsocial_c') == "" || this.model.get('razonsocial_c') == null) {
+                necesarios = necesarios + '<b>Razón Social</b><br>';
+            }
+            if (this.model.get('nombre_comercial_c') == "" || this.model.get('nombre_comercial_c') == null) {
+                necesarios = necesarios + '<b>Nombre Comercial</b><br>';
+            }
+            if (this.model.get('fechaconstitutiva_c') == "" || this.model.get('fechaconstitutiva_c') == null) {
+                necesarios = necesarios + '<b>Fecha Constitutiva</b><br>';
+            }
+        }
+        if (necesarios != "") {
+            app.alert.dismiss('convierteProsp');
+            app.alert.show("Campos Faltantes", {
+                level: "error",
+                messages: "Faltan los siguientes campos para poder convertir la cuenta a Cliente: <br><br>" + necesarios,
+                autoClose: false
+            });
+            return;
+        } else {
+			Oproductos.productos.tct_tipo_cuenta_l_c = '3';
+			Oproductos.productos.tct_subtipo_l_txf_c = '11';
+			vista360.ResumenCliente.leasing.tipo_cuenta = '3';
+			vista360.ResumenCliente.leasing.subtipo_cuenta = '11';
+			vista360.ResumenCliente.general_cliente.tipo = "CLIENTE VENTA ACTIVO";
+			this.model.set("tipo_registro_cuenta_c", "3");
+			this.model.set("subtipo_registro_cuenta_c", "11");
+			this.model.save();
+			var api_params = {};
+			api_params["tct_tipo_l_txf_c"] = "Cliente";
+			api_params["tct_subtipo_l_txf_c"] = "Venta Activo";
+			api_params["tct_tipo_cuenta_l_c"] = "CLIENTE VENTA ACTIVO";
+			// Actualiza Productos
+			_.each(Productos, function (value, key) {
+				var idprod = '';
+				if (Productos[key].tipo_producto == 1) idprod = Productos[key].id;
+				if (idprod) {
+					var params = {};
+					params["tipo_cuenta"] = "3";
+					params["subtipo_cuenta"] = "11";
+					params["tipo_subtipo_cuenta"] = "CLIENTE VENTA ACTIVO";
+					var uni = app.api.buildURL('uni_Productos/' + idprod, null, null);
+					app.api.call('update', uni, params, {
+						success: _.bind(function (data) {
+						})
+					});
+				}
+			}, this);
+			// Actualiza Resumen
+			var idC = this.model.get('id');
+			if (api_params != undefined) {
+				setTimeout(function () {
+					var url = app.api.buildURL('tct02_Resumen/' + idC, null, null);
+					app.api.call('update', url, api_params, {
+						success: _.bind(function (data) {
+							cont_uni_p.render();
+							Oproductos.render();
+							vista360.render();
+							app.alert.dismiss('convierteProsp');
+							app.alert.show('alert_change_success', {
+								level: 'success',
+								messages: 'Cambio realizado',
+							});
+					   }, this)
+					});
+				}, 5000);
+				this.render();
+			}
+		}
     },
 
     requestDynamics: function () {

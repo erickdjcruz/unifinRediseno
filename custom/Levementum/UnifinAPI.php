@@ -269,6 +269,13 @@ class UnifinAPI
     public function insertarClienteCompleto($objecto)
     {
         $GLOBALS['log']->fatal("llamada a API con el id cliente: " . $objecto->idcliente_c);
+		if ($objecto->idcliente_c == '' || $objecto->idcliente_c == '0') {
+            $numeroDeFolio = $this->generarFolios(1, $objecto);
+			$objecto->idcliente_c = $numeroDeFolio;
+            global $db;
+            $query = " UPDATE accounts_cstm SET idcliente_c = '{$objecto->idcliente_c}' WHERE id_c = '{$objecto->id}'";
+            $queryResult = $db->query($query);
+		}
         if (intval($objecto->idcliente_c) > 0) {
             try {
                 global $current_user;
