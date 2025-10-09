@@ -5,6 +5,7 @@ class class_dir_buro
 {
     function func_dir_buro_credito($bean, $event, $args)
     {
+        /*
         $GLOBALS['log']->fatal("*** Valida dirección de Buró si se agrega por api o dirección fiscal *** ");
         //Incializa variables
         global $app_list_strings;
@@ -41,8 +42,8 @@ class class_dir_buro
             $response = $apiDireccionBuroCredito->addClienteBuroCredito(null, $body);
             $GLOBALS['log']->fatal("Dirección de Buró creada exitosamente.");
 
-        //}else if( $_SESSION['platform'] !== 'base' &&  $indicador == '64' ){
         }
+        */
     }
 
     public function tieneDireBuroCredito( $idCliente ){
