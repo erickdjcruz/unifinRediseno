@@ -3007,9 +3007,6 @@
         if (this.model.get('ventas_anuales_c') == "" || this.model.get('ventas_anuales_c') == null) {
             necesarios = necesarios + '<b>Ventas Anuales</b><br>';
         }
-        if (this.model.get('activo_fijo_c') == "" || this.model.get('activo_fijo_c') == null) {
-            necesarios = necesarios + '<b>Activo Fijo</b><br>';
-        }
         if (_.isEmpty(this.model.get('email')) && _.isEmpty(this.oTelefonos.telefono)) {
             necesarios = necesarios + '<b>Al menos un correo electr\u00F3nico o un tel\u00E9fono</b><br>';
         }
@@ -4633,7 +4630,7 @@
                 errors['tct_ano_ventas_ddw_c'] = "Se debe seleccionar el año de ventas";
                 errors['tct_ano_ventas_ddw_c'].required = true;
             }
-            if (this.model.get('activo_fijo_c') == undefined || this.model.get('activo_fijo_c') == "" || (Number(this.model.get('activo_fijo_c')) <= 0)) {
+/*            if (this.model.get('activo_fijo_c') == undefined || this.model.get('activo_fijo_c') == "" || (Number(this.model.get('activo_fijo_c')) <= 0)) {
                 errors['activo_fijo_c'] = "Este campo debe tener un valor mayor a 0.";
                 errors['activo_fijo_c'].required = true;
                 app.alert.show('Error_activof', {
@@ -4641,7 +4638,7 @@
                     autoClose: false,
                     messages: 'El campo <b>activo fijo</b> debe tener un valor mayor a 0.'
                 });
-            }
+            }*/
         }
         callback(null, fields, errors);
     },

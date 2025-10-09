@@ -2464,10 +2464,10 @@
                 errors['tct_ano_ventas_ddw_c'] = "Se debe seleccionar el año de ventas";
                 errors['tct_ano_ventas_ddw_c'].required = true;
             }
-            if (this.model.get('activo_fijo_c') == undefined || this.model.get('activo_fijo_c') == "" || (Number(this.model.get('activo_fijo_c')) <= 0 )) {
+            /*if (this.model.get('activo_fijo_c') == undefined || this.model.get('activo_fijo_c') == "" || (Number(this.model.get('activo_fijo_c')) <= 0 )) {
                 errors['activo_fijo_c'] = "Este campo debe tener un valor mayor a 0.";
                 errors['activo_fijo_c'].required = true;
-            }
+            }*/
         }
         callback(null, fields, errors);
     },
