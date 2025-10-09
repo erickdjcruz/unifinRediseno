@@ -3106,18 +3106,15 @@
 					var url = app.api.buildURL('tct02_Resumen/' + idC, null, null);
 					app.api.call('update', url, api_params, {
 						success: _.bind(function (data) {
-							cont_uni_p.render();
-							Oproductos.render();
-							vista360.render();
 							app.alert.dismiss('convierteProsp');
 							app.alert.show('alert_change_success', {
 								level: 'success',
 								messages: 'Cambio realizado',
 							});
+							window.location.reload();
 					   }, this)
-					});
+					});				
 				}, 5000);
-				this.render();
 			}
 		}
     },
