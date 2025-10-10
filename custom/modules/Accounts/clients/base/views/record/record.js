@@ -1731,7 +1731,7 @@
         if (myField5) {
             myField5.listenTo(myField5, "render", function () {
                 myField5.hide();
-                if (app.user.attributes.tct_alta_clientes_chk_c == 1 && this.model.get('tipo_registro_cuenta_c') == 2 && this.model.get('subtipo_registro_cuenta_c') == 2) {
+                if (app.user.attributes.tct_alta_clientes_chk_c == 1 && this.model.get('tipo_registro_cuenta_c') == 2 && (this.model.get('subtipo_registro_cuenta_c') == 1 || this.model.get('subtipo_registro_cuenta_c') == 2)) {
                     myField5.show();
                 } else {
                     myField5.hide();
@@ -1801,7 +1801,7 @@
         }
 		//Oculta Botón Convertir a Cliente
         $('[name="conviertecliente"]').hide();
-		if (app.user.attributes.tct_alta_clientes_chk_c == 1 && this.model.get('tipo_registro_cuenta_c') == 2 && this.model.get('subtipo_registro_cuenta_c') == 2) $('[name="conviertecliente"]').show();
+		if (app.user.attributes.tct_alta_clientes_chk_c == 1 && this.model.get('tipo_registro_cuenta_c') == 2 && (this.model.get('subtipo_registro_cuenta_c') == 1 || this.model.get('subtipo_registro_cuenta_c') == 2)) $('[name="conviertecliente"]').show();
 
         //Evaluación para mostrar botones
         /*
