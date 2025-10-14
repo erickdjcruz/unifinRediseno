@@ -773,7 +773,7 @@ $dependencies['Accounts']['Ventas_anuales_required'] = array(
     ),
 );
 //Dependencia para Activo Fijo en Prospecto con Integracion de Expediente. modificacion de la formula para añadir excepciones solamente. 17/07/18
-$dependencies['Accounts']['activo_fijo_required'] = array(
+/*$dependencies['Accounts']['activo_fijo_required'] = array(
     'hooks' => array("all"),
     'trigger' => 'true',
     'triggerFields' => array('tipo_registro_cuenta_c', 'activo_fijo_c', 'subtipo_registro_cuenta_c'),
@@ -789,7 +789,7 @@ $dependencies['Accounts']['activo_fijo_required'] = array(
             ),
         ),
     ),
-);
+);*/
 //Dependencia para potencial de la cuenta en Cliente e integración de expediente. Actualizacion 17/07/18 para añadir excepciones.
 $dependencies['Accounts']['Potencial_cuenta_required'] = array(
     'hooks' => array("all"),

@@ -194,13 +194,22 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
         ),
         12 => 
         array (
+          'type' => 'rowaction',
+          'event' => 'button:convierte_cliente:click',
+          'name' => 'conviertecliente',
+          'label' => 'Convertir a Cliente',
+          'acl_action' => 'view',
+          'class' => 'jcmx1',
+        ),
+        13 => 
+        array (
           'name' => 'send_survey',
           'type' => 'rowaction',
           'label' => 'Send Survey',
           'acl_action' => 'send_survey',
           'event' => 'button:send_survey:click',
         ),
-        13 => 
+        14 => 
         array (
           'name' => 'send_poll',
           'type' => 'rowaction',
@@ -208,28 +217,28 @@ $viewdefs['Accounts']['base']['view']['record'] = array (
           'acl_action' => 'send_poll',
           'event' => 'button:send_poll:click',
         ),
-        14 => 
+        15 => 
         array (
           'name' => 'get_account_asesor',
           'type' => 'rowaction',
           'label' => 'Quiero esta Cuenta',
           'event' => 'button:get_account_asesor:click',
         ),
-        15 => 
+        16 => 
         array (
           'name' => 'send_account_asesor',
           'type' => 'rowaction',
           'label' => 'Enviar Cuenta a',
           'event' => 'button:send_account_asesor:click',
         ),
-        16 => 
+        17 => 
         array (
           'name' => 'negociador_quantico',
           'type' => 'rowaction',
           'label' => 'Negociador Quantico',
           'event' => 'button:open_negociador_quantico:click',
         ),
-        17 => 
+        18 => 
         array (
           'name' => 'portal_proveedores',
           'type' => 'rowaction',

@@ -45,3 +45,5 @@ $mod_strings['LBL_ORIGEN_PO'] = 'Originado por PO';
 $mod_strings['LBL_PO_ORIGEN_REL_PROSPECT_ID'] = 'PO Origen Relacionado (relacionado Público Objetivo ID)';
 $mod_strings['LBL_PO_ORIGEN_REL'] = 'PO Origen Relacionado';
 $mod_strings['LBL_CUENTA_ORIGEN_REL'] = 'Cuenta Origin Relacionado';
+$mod_strings['LBL_ORIGEN_PO_C'] = 'Originado por PO';
+$mod_strings['LBL_PO_ORIGEN_REL_C'] = 'PO Origen Relacionado';
