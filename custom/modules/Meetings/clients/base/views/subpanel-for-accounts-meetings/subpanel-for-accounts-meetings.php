@@ -60,13 +60,21 @@ $viewdefs['Meetings']['base']['view']['subpanel-for-accounts-meetings'] = array 
         ),
         5 => 
         array (
+          'name' => 'origen_po_c',
+          'label' => 'LBL_ORIGEN_PO',
+          'enabled' => true,
+          'readonly' => true,
+          'default' => true,
+        ),
+        6 => 
+        array (
           'name' => 'check_in_time_c',
           'label' => 'LBL_CHECK_IN_TIME',
           'enabled' => true,
           'readonly' => false,
           'default' => true,
         ),
-        6 => 
+        7 => 
         array (
           'name' => 'check_in_platform_c',
           'label' => 'LBL_CHECK_IN_PLATFORM_C',
@@ -74,7 +82,7 @@ $viewdefs['Meetings']['base']['view']['subpanel-for-accounts-meetings'] = array 
           'readonly' => false,
           'default' => true,
         ),
-        7 => 
+        8 => 
         array (
           'name' => 'check_in_latitude_c',
           'label' => 'LBL_CHECK_IN_LATITUDE',
@@ -82,7 +90,7 @@ $viewdefs['Meetings']['base']['view']['subpanel-for-accounts-meetings'] = array 
           'readonly' => false,
           'default' => true,
         ),
-        8 => 
+        9 => 
         array (
           'name' => 'check_in_longitude_c',
           'label' => 'LBL_CHECK_IN_LONGITUDE',
@@ -90,7 +98,7 @@ $viewdefs['Meetings']['base']['view']['subpanel-for-accounts-meetings'] = array 
           'readonly' => false,
           'default' => true,
         ),
-        9 => 
+        10 => 
         array (
           'name' => 'minuta_reunion_status_c',
           'label' => 'LBL_MINUTA_REUNION_STATUS',

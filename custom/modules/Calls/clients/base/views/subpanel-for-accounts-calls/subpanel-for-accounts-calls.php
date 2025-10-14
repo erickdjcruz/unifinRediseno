@@ -67,6 +67,14 @@ $viewdefs['Calls']['base']['view']['subpanel-for-accounts-calls'] = array (
         ),
         6 => 
         array (
+          'name' => 'origen_po_c',
+          'label' => 'LBL_ORIGEN_PO_C',
+          'enabled' => true,
+          'readonly' => true,
+          'default' => true,
+        ),
+        7 => 
+        array (
           'name' => 'parent_name',
           'label' => 'LBL_LIST_RELATED_TO',
           'enabled' => true,
@@ -75,7 +83,7 @@ $viewdefs['Calls']['base']['view']['subpanel-for-accounts-calls'] = array (
           'sortable' => false,
           'default' => true,
         ),
-        7 => 
+        8 => 
         array (
           'name' => 'assigned_user_name',
           'target_record_key' => 'assigned_user_id',
