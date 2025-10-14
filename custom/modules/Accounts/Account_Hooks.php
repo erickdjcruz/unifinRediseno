@@ -538,27 +538,217 @@ SQL;
     {
         global $current_user, $db;
         $GLOBALS['log']->fatal("******DIRECCION DE BURÓ*****");
-        $new = false;
         //Validación para evitar que entre proceso cuando no se ha establecido valor en dirección de buró
         if (is_countable($bean->account_direccion_buro_credito)) {
             if (count($bean->account_direccion_buro_credito) == 1) {
                 foreach ($bean->account_direccion_buro_credito as $direccion_row) {
-
+                    $direccion = BeanFactory::getBean('dire_Direccion', $direccion_row['id']);
                     $GLOBALS['log']->fatal("direccion_row");
                     $GLOBALS['log']->fatal(print_r($direccion_row, true));
 
                     if (empty($direccion_row['id'])) {
+                        //generar el guid
+                        $guid = create_guid();
+                        $direccion->id = $guid;
+                        $direccion->new_with_id = true;
                         $new = true;
                     } else {
                         $new = false;
                     }
 
+                    $direccion->name = $direccion_row['calle'];
+                    //parse array to string for multiselects
+                    $tipo_string = "";
+                    if (!empty($direccion_row['tipodedireccion'] != "")) {
+                        $tipo_string .= '^' . $direccion_row['tipodedireccion'][0] . '^';
+                        /*
+                        for ($i = 1; $i < count($direccion_row['tipodedireccion']); $i++) {
+                            $tipo_string .= ',^' . $direccion_row['tipodedireccion'][$i] . '^';
+                        }
+                        */
+                    }
+                    $direccion->tipodedireccion = $tipo_string;
+                    $direccion->calle = $direccion_row['calle'];
+                    $direccion->principal = ($direccion_row['principal'] == true); // ensure boolean conversion
+                    $direccion->inactivo = ($direccion_row['inactivo'] == true);
+                    $direccion->numint = $direccion_row['numint'];
+                    $direccion->numext = $direccion_row['numext'];
+                    $direccion->indicador = $direccion_row['indicador'];
+                    //teams
+                    $direccion->team_id = $bean->team_id;
+                    $direccion->team_set_id = $bean->team_set_id;
+                    $direccion->assigned_user_id = $bean->assigned_user_id;
+                    //
+                    // populate related account id
+                    $direccion->accounts_dire_direccion_1accounts_ida = $bean->id;
+                    // Related Sepomex
+                    $id_postal = $direccion_row['valCodigoPostal'];
+                    $id_colonia = $direccion_row['colonia'];
+                    $id_ciudad = $direccion_row['ciudad'];
+                    $id_municipio = $direccion_row['municipio'];
+                    $id_estado = $direccion_row['estado'];
+                    $id_pais = $direccion_row['pais'];
+
+                    $GLOBALS['log']->fatal("id_postal" . $id_postal);
+                    $GLOBALS['log']->fatal("id_colonia" . $id_colonia);
+                    $GLOBALS['log']->fatal("ciudad" . $direccion_row['ciudad']);
+                    $GLOBALS['log']->fatal("municipio" . $direccion_row['municipio']);
+
+                    $id_sepomex = '';
+                    $query_sepomex = "SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}' and id_colonia='{$id_colonia}'";
+
+                    $result_sepomex = $db->query($query_sepomex);
+                    while ($row = $GLOBALS['db']->fetchByAssoc($result_sepomex)) {
+                        $namePais = $row['pais'];
+                        $idPais = $row['id_pais'];
+                        $nameCP = $row['codigo_postal'];
+                        $nameEstado = $row['estado'];
+                        $idEstado = $row['id_estado'];
+                        $nameCiudad = $row['ciudad'];
+                        $idCiudad = $row['id_ciudad'];
+                        $nameColonia = $row['colonia'];
+                        $idColonia = $row['id_colonia'];
+                        $nameMunicipio = $row['municipio'];
+                        $idMunicipio = $row['id_municipio'];
+                        $id_sepomex = $row['id'];
+                    }
+
+                    $idPais      = $id_pais == "" ? $idPais : $id_pais;
+                    $idEstado    = $id_estado == "" ? $idEstado : $id_estado;
+                    $idCiudad    = $id_ciudad == "" ? $idCiudad : $id_ciudad;
+                    $idMunicipio = $id_municipio == "" ? $idMunicipio : $id_municipio;
+                    $idColonia   = $id_colonia == "" ? $idColonia : $id_colonia;
+
+                    $query_sepomex_name = "SELECT * FROM dir_sepomex WHERE codigo_postal='{$id_postal}';";
+
+                    $result_sepomex_name = $db->query($query_sepomex_name);
+                    while ($row = $GLOBALS['db']->fetchByAssoc($result_sepomex_name)) {
+
+                        if ($row['id_estado'] == $id_estado) {
+                            $nameEstado1 = $row['estado'];
+                            $idEstado = $row['id_estado'];
+                        }
+
+                        if ($row['id_municipio'] == $id_municipio) {
+                            $nameMunicipio1 = $row['municipio'];
+                            $idMunicipio = $row['id_municipio'];
+                        }
+
+                        if ($row['id_ciudad'] == $id_ciudad) {
+                            $nameCiudad1 = $row['ciudad'];
+                            $idCiudad = $row['id_ciudad'];
+                        }
+
+                        if ($row['id_colonia'] == $id_colonia) {
+                            $nameColonia1 = $row['colonia'];
+                            $idColonia = $row['id_colonia'];
+                        }
+                    }
+
+                    $desc_aux = "{$idPais}|{$idEstado}|{$idCiudad}|{$idMunicipio}|{$idColonia}";
+                    $direccion->description = $desc_aux;
+                    $direccion->dir_sepomex_dire_direcciondir_sepomex_ida = $id_sepomex;
+                    //$nombre_colonia_query = "Select name from dire_colonia where id ='" . $direccion_row['colonia'] . "'";
+                    //$nombre_municipio_query = "Select name from dire_municipio where id ='" . $direccion_row['municipio'] . "'";
+                    //$querycolonia = $db->query($nombre_colonia_query);
+                    //$coloniaName = $db->fetchByAssoc($querycolonia);
+                    //$querymunicipio = $db->query($nombre_municipio_query);
+                    //$municipioName = $db->fetchByAssoc($querymunicipio);
+                    $direccion_completa = $direccion_row['calle'] . " " . $direccion_row['numext'] . " " . ($direccion_row['numint'] != "" ? "Int: " . $direccion_row['numint'] : "") . ", Colonia " . $nameColonia1 . ", Municipio " . $nameMunicipio1;
+                    $direccion->name = $direccion_completa;
+                    /*
+                    if ($direccion->load_relationship('dire_direccion_dire_pais')) {
+                        if ($direccion_row['pais'] !== $direccion->dire_direccion_dire_paisdire_pais_ida) {
+                            $direccion->dire_direccion_dire_pais->delete($direccion->id);
+                            $direccion->dire_direccion_dire_pais->add($direccion_row['pais']);
+                        }
+                    }
+                    if ($direccion->load_relationship('dire_direccion_dire_estado')) {
+                        if ($direccion_row['estado'] !== $direccion->dire_direccion_dire_estadodire_estado_ida) {
+                            $direccion->dire_direccion_dire_estado->delete($direccion->id);
+                            $direccion->dire_direccion_dire_estado->add($direccion_row['estado']);
+                        }
+                    }
+                    if ($direccion->load_relationship('dire_direccion_dire_municipio')) {
+                        if ($direccion_row['municipio'] !== $direccion->dire_direccion_dire_municipiodire_municipio_ida) {
+                            $direccion->dire_direccion_dire_municipio->delete($direccion->id);
+                            $direccion->dire_direccion_dire_municipio->add($direccion_row['municipio']);
+                        }
+                    }
+                    if ($direccion->load_relationship('dire_direccion_dire_ciudad')) {
+                        if ($direccion_row['ciudad'] !== $direccion->dire_direccion_dire_ciudaddire_ciudad_ida) {
+                            $direccion->dire_direccion_dire_ciudad->delete($direccion->id);
+                            $direccion->dire_direccion_dire_ciudad->add($direccion_row['ciudad']);
+                        }
+                    }
+
+                    if ($direccion->load_relationship('dire_direccion_dire_codigopostal')) {
+                        try {
+                            //if (!empty($direccion_row['postal'])) {
+                            if ($direccion_row['postal'] !== $direccion->dire_direccion_dire_codigopostal) {
+                                $direccion->dire_direccion_dire_codigopostal->delete($direccion->id);
+                                $direccion->dire_direccion_dire_codigopostal->add($direccion_row['postal']);
+                            }
+                        } catch (Exception $e) {
+                            $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
+                        }
+                    }
+
+                    if ($direccion->load_relationship('dire_direccion_dire_colonia')) {
+                        if ($direccion_row['colonia'] !== $direccion->dire_direccion_dire_coloniadire_colonia_ida) {
+                            $direccion->dire_direccion_dire_colonia->delete($direccion->id);
+                            $direccion->dire_direccion_dire_colonia->add($direccion_row['colonia']);
+                        }
+                    }
+                    */
+
+                    $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : DIRECCION NOMBRE: " . $direccion_completa);
+                    $current_id_list[] = $direccion->id;
                     if ($new) {
                         $direccion->save();
-                        $GLOBALS['log']->fatal("*** Cuenta nueva detectada, sin Buró ***");
-                        
+                    } else {
+                        $inactivo = $direccion->inactivo == 1 ? $direccion->inactivo : 0;
+                        $principal = $direccion->principal == 1 ? $direccion->principal : 0;
+                        /***************************************************************************/
+
+
+                        $query = <<<SQL
+                        update dire_direccion set  name = '{$direccion_completa}', tipodedireccion = '{$direccion->tipodedireccion}',indicador = '{$direccion->indicador}',  calle = '{$direccion->calle}', numext = '{$direccion->numext}', numint= '{$direccion->numint}', principal=$principal, inactivo =$inactivo , description = '{$desc_aux}'  where id = '{$direccion->id}';
+                     SQL;
+
+                        $updatecstm = "UPDATE dire_direccion_cstm set  estado_c = '{$nameEstado1}', municipio_c = '{$nameMunicipio1}', codigo_postal_c = '{$nameCP}',  ciudad_c = '{$nameCiudad1}', colonia_c = '{$nameColonia1}', pais_c = '{$namePais}' where id_c = '{$direccion->id}'";
+
+                        $queryrelsepomex = "UPDATE dir_sepomex_dire_direccion_c SET dir_sepomex_dire_direcciondir_sepomex_ida = '{$id_sepomex}' where dir_sepomex_dire_direcciondire_direccion_idb = '{$direccion->id}' AND deleted = 0 ";
+                        $GLOBALS['log']->fatal("ACTUALIZANDO DIRECCIÓN DE BURÓ");
+                        $GLOBALS['log']->fatal($query);
+                        $GLOBALS['log']->fatal($updatecstm);
+                        $GLOBALS['log']->fatal($queryrelsepomex);
+                        try {
+                            $resultado = $db->query($query);
+                            $resultado = $db->query($updatecstm);
+                            $resultado = $db->query($queryrelsepomex);
+                        } catch (Exception $e) {
+                            $GLOBALS['log']->fatal(__FILE__ . " - " . __CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : Error " . $e->getMessage());
+                        }
+                    }
+
+                    $idCuenta = $bean->id;
+                    $GLOBALS['log']->fatal("--- HOOK[idCuenta] --- " . $idCuenta);
+                    //Actualiza bandera seguimiento_bc_c para habilitar sección de Buro de Crédito
+                    $query_flag_bc = "SELECT seguimiento_bc_c FROM tct02_resumen_cstm WHERE id_c = '{$idCuenta}'";
+
+                    $flagBuroCredito = $db->query($query_flag_bc);
+                    while ($row = $GLOBALS['db']->fetchByAssoc($flagBuroCredito)) {
+                        $seguimientoBC  = $row['seguimiento_bc_c'];
+                    }
+                    $GLOBALS['log']->fatal("--- HOOK[seguimiento_bc_c] --- " . $seguimientoBC);
+                    if ($seguimientoBC === '0') {
                         $activaFlagBC = "UPDATE tct02_resumen_cstm SET seguimiento_bc_c = 1 WHERE id_c = '{$idCuenta}'";
-                        $db->query($activaFlagBC);
+                        $resultBC = $db->query($activaFlagBC);
+
+                        $GLOBALS['log']->fatal("Bandera seguimiento_bc_c actualizada a 1-[true] para la cuenta: '{$idCuenta}'");
+                    } else {
+                        $GLOBALS['log']->fatal("Bandera seguimiento_bc_c ya estaba activa para la cuenta: '{$idCuenta}'");
                     }
                 }
             } else {
