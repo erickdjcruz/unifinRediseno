@@ -9,7 +9,7 @@ class AccountHooksBuro
         global $current_user, $db;
         
         //if ($_SESSION['platform'] != 'base' && !empty($bean->fetched_row['id'])) {
-        $GLOBALS['log']->fatal("fetchedrow_Id".empty($bean->fetched_row['id']);
+        $GLOBALS['log']->fatal("fetchedrow_Id".empty($bean->fetched_row['id']));
         if ($_SESSION['platform'] != 'base' && !$args['isUpdate']) {
             $GLOBALS['log']->fatal("*** Cuenta nueva detectada, estableciendo bandera para Buró ***");
             $idCuenta = $bean->id;

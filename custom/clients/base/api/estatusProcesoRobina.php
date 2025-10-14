@@ -44,7 +44,7 @@ class estatusProcesoRobina extends SugarApi
                     $resultado['estatus_procesado'] = $row['estatus_procesado'];
                 }
                 //$GLOBALS['log']->fatal(print_r($row,true));
-                $resultado['estatus_procesado'] = $row['estatus_procesado'];
+                //$resultado['estatus_procesado'] = $row['estatus_procesado'];
                 if (!empty($row)) {
                     $resultado['status'] = '200';
                 }
