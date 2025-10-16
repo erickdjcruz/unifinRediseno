@@ -22,7 +22,7 @@
         this.model.addValidationTask('camponovacio', _.bind(this.validacampoconversion, this));
         this.model.addValidationTask('valida_requeridos', _.bind(this.valida_requeridos, this));
         this.model.addValidationTask('Valida_edicionBacklog', _.bind(this.mesbacklog, this));
-
+		this.model.addValidationTask('fecha_compromiso',_.bind(this.fecha_compromiso, this));
         /************  CAmbiar valores tipo PRoducto LEasing   *****************/
         this.model.addValidationTask('num_tipo_producto', _.bind(this.num_tipo_leasing, this));
         this.model.addValidationTask('tipo_producto_requerido', _.bind(this.tipo_producto_requerido, this));
@@ -851,4 +851,18 @@
         }
     },
 
+    fecha_compromiso: function(fields, errors, callback) {
+		var h = new Date();
+		var f = new Date(this.model.get('fecha_compromiso_c'));
+        if(f < h || f > new Date(new Date(h).setMonth(h.getMonth() + 3))) {
+			errors['fecha_compromiso_c'] = errors['fecha_compromiso_c'] || {};
+			errors['fecha_compromiso_c'].required = true;
+            app.alert.show("fecha_compromiso", {
+                level: "error",
+                messages: "La Fecha compromiso no puede ser menor al día de hoy ni mayor a tres meses",
+                autoClose: false
+            });
+        }
+        callback(null, fields, errors);
+    },
 })
