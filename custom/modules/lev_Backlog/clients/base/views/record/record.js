@@ -853,7 +853,9 @@
 
     fecha_compromiso: function(fields, errors, callback) {
 		var h = new Date();
+		h.setHours(0, 0, 0, 0);
 		var f = new Date(this.model.get('fecha_compromiso_c'));
+		f.setDate(f.getDate() + 1);
         if(f < h || f > new Date(new Date(h).setMonth(h.getMonth() + 3))) {
 			errors['fecha_compromiso_c'] = errors['fecha_compromiso_c'] || {};
 			errors['fecha_compromiso_c'].required = true;
