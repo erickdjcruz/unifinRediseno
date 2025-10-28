@@ -527,7 +527,12 @@
                 }
             }, this);
         }, this);
-
+		//VALIDA EMAIL
+        if (this.model.get('email') == '' || this.model.get('email') == undefined) {
+			campos = campos + '<b>' + 'Correo Electrónico' + '</b><br>';
+            errors['email'] = errors['email'] || {};
+            errors['email'].required = true;
+        }
         //VALIDA DETALLE ORIGEN REQUERIDO EN ALIANZA
         if (this.model.get('origen_c') == '12' && (this.model.get('detalle_origen_c') == '' || this.model.get('detalle_origen_c') == null)) {
             campos = campos + '<b>' + 'Detalle Origen' + '</b><br>';
