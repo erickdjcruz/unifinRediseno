@@ -81,7 +81,8 @@
                             context_cp_po.municipiosList = data.municipios;
     
                             context_cp_po.estadoDetail = context_cp_po.findNameInArray( context_cp_po.estadosList, context_cp_po.idEstadoFromZonaGeografica, 'estado' );
-                            context_cp_po.municipioDetail = context_cp_po.findNameInArray( context_cp_po.municipiosList, context_cp_po.nameMunicipio, 'municipio' );
+							var municipiomin = context_cp_po.nameMunicipio;
+							context_cp_po.municipioDetail = context_cp_po.findNameInArray( context_cp_po.municipiosList, municipiomin.toLowerCase(), 'municipio' );
                             context_cp_po.render();
     
                             $("#estado_po").trigger('change');
