@@ -32,7 +32,7 @@ function job_crea_direccion_buro_credito()
         $cuentasConError = 0;
         $cuentasEncontradas = 0;
         $cuentasSinLocalidad = 0;
-                
+
         while ($row = $db->fetchByAssoc($result)) {
             $cuentasEncontradas++;
             $accountId = $row['account_id'];
@@ -104,7 +104,7 @@ function job_crea_direccion_buro_credito()
                     if (empty($auxDireccion)) {
                         //$GLOBALS['log']->fatal("No se encontró dirección fiscal para cuenta: " . $accountId);
                         $cuentasConError++;
-                    } if(in_array($auxDireccion->colonia_c, $sincolonia) && ($auxDireccion->localidad_c != '' && $auxDireccion->localidad_c != null ) ) {
+                    } elseif (in_array($auxDireccion->colonia_c, $sincolonia) && ($auxDireccion->localidad_c != '' && $auxDireccion->localidad_c != null ) ) {
                         //$GLOBALS['log']->fatal("No se encontró dirección fiscal para cuenta: " . $accountId);
                         $cuentasSinLocalidad++;
                     }else {
