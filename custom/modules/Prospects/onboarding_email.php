@@ -14,7 +14,10 @@ class onboarding_c
             $body = array(
                 "email" => $bean->email1
             );
+			$GLOBALS['log']->fatal("Email Onboarding: ".$urlOnboarding);
+			$GLOBALS['log']->fatal($body);
             $resp = $callApi->postOnboardingPO($urlOnboarding, $tokenOnboarding ,$body);
+			$GLOBALS['log']->fatal($resp);
         }
     }
 }
