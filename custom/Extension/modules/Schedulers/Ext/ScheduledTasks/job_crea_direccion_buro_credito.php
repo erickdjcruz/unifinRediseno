@@ -20,21 +20,23 @@ function job_crea_direccion_buro_credito()
         INNER JOIN tct02_resumen_cstm ac ON ac.id_c = a.id
         WHERE ac.crear_direccion_buro_c = 1 
         AND a.deleted = 0
-        AND ( TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) >= 5 OR TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) <= -5 )
+        AND ( TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) >= 5 
+           OR TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) <= -5 )
         ORDER BY a.date_entered ASC"; 
         
-        $GLOBALS['log']->fatal("consulta");
-        $GLOBALS['log']->fatal($query);
+        //$GLOBALS['log']->fatal("consulta");
+        //$GLOBALS['log']->fatal($query);
 
         $result = $db->query($query);
         $cuentasProcesadas = 0;
         $cuentasConError = 0;
         $cuentasEncontradas = 0;
-        
+        $cuentasSinLocalidad = 0;
+                
         while ($row = $db->fetchByAssoc($result)) {
             $cuentasEncontradas++;
             $accountId = $row['account_id'];
-            $GLOBALS['log']->fatal("Procesando cuenta con bandera Buró: " . $accountId);
+            //$GLOBALS['log']->fatal("Procesando cuenta con bandera Buró: " . $accountId);
 
             try {
                 $account = BeanFactory::getBean('Accounts', $accountId);
@@ -45,7 +47,7 @@ function job_crea_direccion_buro_credito()
                     continue;
                 }
                 
-                $GLOBALS['log']->fatal("Cuenta encontrada: " . $accountId);
+                //$GLOBALS['log']->fatal("Cuenta encontrada: " . $accountId);
                 $cuentasProcesadas++;
                 
                 // Verificar si ya tiene dirección Buró
@@ -58,7 +60,7 @@ function job_crea_direccion_buro_credito()
                     if (!empty($relatedDirecciones)) {
                         foreach ($relatedDirecciones as $direccion) {
                             if ($direccion->indicador == '64' && !$direccion->inactivo) {
-                                $GLOBALS['log']->fatal("La dirección Buró de Crédito encontrada es: " . $direccion->id);
+                                //$GLOBALS['log']->fatal("La dirección Buró de Crédito encontrada es: " . $direccion->id);
                                 $direccion_buro = true;
                                 $direccion_buro_id = $direccion->id;
                                 break;
@@ -68,15 +70,15 @@ function job_crea_direccion_buro_credito()
                 }
 
                 if ($direccion_buro) {
-                    $GLOBALS['log']->fatal("La cuenta {$accountId} ya tiene dirección Buró ({$direccion_buro_id}), desactivando bandera");
+                    //$GLOBALS['log']->fatal("La cuenta {$accountId} ya tiene dirección Buró ({$direccion_buro_id}), desactivando bandera");
                     
                     // Desactivar bandera de creación
                     $query = "UPDATE tct02_resumen_cstm SET crear_direccion_buro_c = 0 WHERE id_c = '{$accountId}'";
                     $resultUpdate = $db->query($query);
-                    $GLOBALS['log']->fatal("Bandera crear_direccion_buro_c desactivada para cuenta: '{$accountId}'");
+                    //$GLOBALS['log']->fatal("Bandera crear_direccion_buro_c desactivada para cuenta: '{$accountId}'");
                     
                 } else {
-                    $GLOBALS['log']->fatal("La cuenta {$accountId} NO tiene dirección Buró, procediendo a crear una");
+                    //$GLOBALS['log']->fatal("La cuenta {$accountId} NO tiene dirección Buró, procediendo a crear una");
                     
                     // Buscar dirección fiscal activa
                     $indicador_direcciones_fiscales = array(2,3,6,7,10,11,14,15,18,19,22,23,26,27,30,31,34,35,38,39,42,43,46,47,50,51,54,55,58,59,62,63);
@@ -85,21 +87,27 @@ function job_crea_direccion_buro_credito()
                     if ($account->load_relationship('accounts_dire_direccion_1')) {
                         $relatedDirecciones = $account->accounts_dire_direccion_1->getBeans();
                         
-                        if (!empty($relatedDirecciones)) {
+                        if (!empty($relatedDirecciones) && $relatedDirecciones != null) {
                             foreach ($relatedDirecciones as $direccion) {
                                 if (in_array($direccion->indicador, $indicador_direcciones_fiscales) && !$direccion->inactivo) {
                                     $auxDireccion = $direccion;
-                                    $GLOBALS['log']->fatal("Dirección fiscal encontrada: " . $direccion->id);
+                                    //$GLOBALS['log']->fatal("Dirección fiscal encontrada: " . $direccion->id);
                                     break;
                                 }
                             }
                         }
                     }
 
+                    $sincolonia = [" ","", ".", "-", "_", "Sin Colonia", "SIN COLONIA","OTRA NO ESPECIFICADA EN EL CATALOGO"];
+                    $sinciudad = [" ","", ".", "-", "_" , "Sin Ciudad", "SIN CIUDAD","OTRA NO ESPECIFICADA EN EL CATALOGO"];
+                       
                     if (empty($auxDireccion)) {
-                        $GLOBALS['log']->fatal("No se encontró dirección fiscal para cuenta: " . $accountId);
+                        //$GLOBALS['log']->fatal("No se encontró dirección fiscal para cuenta: " . $accountId);
                         $cuentasConError++;
-                    } else {
+                    } if(in_array($auxDireccion->colonia_c, $sincolonia) && ($auxDireccion->localidad_c != '' && $auxDireccion->localidad_c != null ) ) {
+                        //$GLOBALS['log']->fatal("No se encontró dirección fiscal para cuenta: " . $accountId);
+                        $cuentasSinLocalidad++;
+                    }else {
                         $direccion_completa = '';
                         $desc_aux = '';
                         // Crear dirección Buró como copia de la fiscal
@@ -128,17 +136,14 @@ function job_crea_direccion_buro_credito()
                         $resultSepomex = $db->query($sqlQuery);
                         
                         $idPais = $idEstado = $idCiudad = $idMunicipio = $idColonia = "";
-
-                        $sincolonia = [" ","", ".", "-", "_", "Sin Colonia", "SIN COLONIA","OTRA NO ESPECIFICADA EN EL CATALOGO"];
-                        $sinciudad = [" ","", ".", "-", "_" , "Sin Ciudad", "SIN CIUDAD","OTRA NO ESPECIFICADA EN EL CATALOGO"];
-                        
-                        $GLOBALS['log']->fatal("localidad envio: " . $localidad); 
+ 
+                        //$GLOBALS['log']->fatal("localidad envio: " . $localidad); 
                         $colonia = $ciudad = "";
                         $auxRow = null;
 
                         while($row = $db->fetchByAssoc($resultSepomex)) {
-                            $GLOBALS['log']->fatal("Datos Sepomex: " );
-                            $GLOBALS['log']->fatal( print_r($row,true) );
+                            //$GLOBALS['log']->fatal("Datos Sepomex: " );
+                            //$GLOBALS['log']->fatal( print_r($row,true) );
                             $colonia = $row['colonia'];
                             $ciudad = $row['ciudad'];  
                             if(in_array($row['ciudad'], $sinciudad) || in_array($row['colonia'], $sincolonia)) {
@@ -168,7 +173,7 @@ function job_crea_direccion_buro_credito()
                             $new_sepomex['ciudad_csf'] = $ciudad;
 
                             array_push($args_dir_sepomex, $new_sepomex);
-                            $GLOBALS['log']->fatal("args_dir_sepomex: " . print_r($args_dir_sepomex, true));
+                            //$GLOBALS['log']->fatal("args_dir_sepomex: " . print_r($args_dir_sepomex, true));
 
                             //DireccionesQR/' + CP + '/0/' + Colonia + '/' + Municipio + '/' + Estado + '/' + Ciudad;
                             $apigetSepomex = new getDireccionCPQR();
