@@ -11,28 +11,39 @@ function job_crea_direccion_buro_credito()
     
     try {
         // Consultar cuentas que tienen la bandera activa
-        $query = "SELECT 
-            ac.id_c as account_id,
-            ac.crear_direccion_buro_c,
-            a.date_entered,
-            TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) as minutos_desde_creacion
-        FROM tct02_resumen a
-        INNER JOIN tct02_resumen_cstm ac ON ac.id_c = a.id
-        WHERE ac.crear_direccion_buro_c = 1 
-        AND a.deleted = 0
-        AND ( TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) >= 5 
-           OR TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) <= -5 )
-        ORDER BY a.date_entered ASC"; 
+        $query = "SELECT addir.accounts_dire_direccion_1accounts_ida as account_id
+        from unifin.accounts acc
+        INNER JOIN unifin.accounts_cstm accCstm ON accCstm.id_c = acc.id
+        INNER JOIN accounts_dire_direccion_1_c as addir ON addir.accounts_dire_direccion_1accounts_ida = acc.id
+        left join dire_direccion dd on addir.accounts_dire_direccion_1dire_direccion_idb = dd.id
+        inner join dire_direccion_cstm ddc on dd.id = ddc.id_c
+        where addir.deleted = 0 
+        and dd.inactivo = 0 
+        AND CAST(acc.date_entered AS DATE) >= '2024-10-01'
+        AND dd.deleted = 0
+        AND dd.inactivo = 0
+        AND accCstm.tipo_registro_cuenta_c IN ('2', '3', '4')
+        AND (dd.indicador & 2 = 2)
+        and addir.accounts_dire_direccion_1accounts_ida in (
+            SELECT ac.id_c as account_id FROM tct02_resumen a
+            INNER JOIN tct02_resumen_cstm ac ON ac.id_c = a.id
+            WHERE ac.crear_direccion_buro_c = 1 
+            AND a.deleted = 0
+            AND ( TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) >= 5 
+            OR TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) <= -5 )
+            ORDER BY a.date_entered ASC 
+        ) "; 
         
         //$GLOBALS['log']->fatal("consulta");
-        //$GLOBALS['log']->fatal($query);
+        $GLOBALS['log']->fatal($query);
 
         $result = $db->query($query);
         $cuentasProcesadas = 0;
         $cuentasConError = 0;
         $cuentasEncontradas = 0;
         $cuentasSinLocalidad = 0;
-
+        $GLOBALS['log']->fatal("Registros encontrados en consulta: " . $result->num_rows);
+        
         while ($row = $db->fetchByAssoc($result)) {
             $cuentasEncontradas++;
             $accountId = $row['account_id'];
@@ -104,9 +115,6 @@ function job_crea_direccion_buro_credito()
                     if (empty($auxDireccion)) {
                         //$GLOBALS['log']->fatal("No se encontró dirección fiscal para cuenta: " . $accountId);
                         $cuentasConError++;
-                    } elseif (in_array($auxDireccion->colonia_c, $sincolonia) && ($auxDireccion->localidad_c != '' && $auxDireccion->localidad_c != null ) ) {
-                        //$GLOBALS['log']->fatal("No se encontró dirección fiscal para cuenta: " . $accountId);
-                        $cuentasSinLocalidad++;
                     }else {
                         $direccion_completa = '';
                         $desc_aux = '';
@@ -233,7 +241,7 @@ function job_crea_direccion_buro_credito()
                         $GLOBALS['log']->fatal("Dirección Buró creada exitosamente para cuenta: {$accountId}");
                     }                        
                 }
-                
+
             } catch (Exception $e) {
                 $cuentasConError++;
                 $GLOBALS['log']->fatal("Error procesando cuenta {$accountId}: " . $e->getMessage());
