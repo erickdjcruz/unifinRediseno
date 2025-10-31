@@ -17,13 +17,13 @@ require_once('config_override.php');
 
 //$GLOBALS['bpm_url'] = "192.168.20.222:8080";
 //$GLOBALS['esb_url'] = "192.168.20.222:8081";
-//$GLOBALS['unifin_url'] = "200.52.66.204";
+//$GLOBALS['unifin_url_v2'] = "200.52.66.204";
 global $sugar_config;
 
 $GLOBALS['bpm_url'] = $sugar_config['bpm_url'];
 $GLOBALS['esb_url'] = $sugar_config['esb_url'];
-$GLOBALS['unifin_url'] = $sugar_config['unifin_url'];
 $GLOBALS['unifin_url_v2'] = $sugar_config['unifin_url_v2'];
+$GLOBALS['unifin_uni2_utils'] = $sugar_config['unifin_uni2_utils'];
 
 // JSR Cambios para ip dinámica
 
@@ -36,6 +36,8 @@ class UnifinAPI
         try {
             // Login
             $url = $host;
+            $GLOBALS['log']->fatal("Request UNIFINAPI-GET");
+            $GLOBALS['log']->fatal($url);
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -46,6 +48,7 @@ class UnifinAPI
             curl_close($ch);
 
             $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> :  $host");
+            $GLOBALS['log']->fatal(print_r($result, true));
 
             if ($http_status != 200) {
                 $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> : $host unifinGetCall ERROR:  $http_status ");
@@ -67,9 +70,12 @@ class UnifinAPI
 
         try {
             // Login
+            $GLOBALS['log']->fatal("Request UNIFINAPI-POST");
+            $GLOBALS['log']->fatal($host);
             $url = $host;
             $fields_string = '';
             $fields_string = json_encode($fields);
+            $GLOBALS['log']->fatal(print_r($fields_string, true));
             //print the json encode to the sugarlog
             $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " <" . $current_user->user_name . "> :JSON ENCODED  $url - " . print_r($fields_string, true));
             $ch = curl_init();
@@ -87,6 +93,8 @@ class UnifinAPI
             $result = curl_exec($ch);
             $curl_info = curl_getinfo($ch);
             $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            $GLOBALS['log']->fatal(print_r($result, true));
 
             curl_close($ch);
             if ($http_status != 200) {
@@ -146,10 +154,10 @@ class UnifinAPI
         try {
             if ($esFisica != 'Persona Moral') {
                 $esFisica = 'true';
-                $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ValidaListaNegra?bEsFisica=$esFisica&sNombreUno=$nombre&sNombreDos=$segundoNombre&sApellidoP=$apellidoPaterno&sApellidoM=$apellidoMaterno";
+                $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ValidaListaNegra?bEsFisica=$esFisica&sNombreUno=$nombre&sNombreDos=$segundoNombre&sApellidoP=$apellidoPaterno&sApellidoM=$apellidoMaterno";
             } else {
                 $esFisica = 'false';
-                $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ValidaListaNegra?bEsFisica=$esFisica&sNombreUno=$razonsocial&sNombreDos=&sApellidoP=&sApellidoM=";
+                $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ValidaListaNegra?bEsFisica=$esFisica&sNombreUno=$razonsocial&sNombreDos=&sApellidoP=&sApellidoM=";
             }
 
             $time_start = microtime(true);
@@ -186,14 +194,14 @@ class UnifinAPI
             /*Este bloque de codigo es para cuando el ESB no responde*/
             switch ($tipoFolio) {
                 case 1:
-                    $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/consultaFolio?sTabla=ctCliente";
+                    $host = "http://" . $GLOBALS['unifin_uni2_utils'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/consultaFolio?sTabla=ctCliente";
                     $flagUpdateProspectoCliente = true;
                     break;
                 case 2:
-                    $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/consultaFolio?sTabla=crSolicitudes";
+                    $host = "http://" . $GLOBALS['unifin_uni2_utils'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/consultaFolio?sTabla=crSolicitudes";
                     break;
                 case 3:
-                    $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/consultaFolio?sTabla=ctProspecto";
+                    $host = "http://" . $GLOBALS['unifin_uni2_utils'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/consultaFolio?sTabla=ctProspecto";
                     break;
             }
             $folio = $this->unifingetCall($host);
@@ -292,7 +300,7 @@ class UnifinAPI
                 $TipoCliente = $IntValue->getTipoCliente($objecto->tipo_registro_cuenta_c, $objecto->estatus_c, $objecto->esproveedor_c, $objecto->tipo_relacion_c, $objecto->cedente_factor_c, $objecto->deudor_factor_c);
                 $_ClntFechaNacimiento = $RegimenFiscal == 3 ? $objecto->fechaconstitutiva_c : $objecto->fechadenacimiento_c;
                 /***CVV INICIO***/
-                // $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto';
+                // $host = 'http://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaClienteCompleto';
                 // /unics-dev/
                 // /unics-pre/
                 //NUEVO HOST
@@ -432,7 +440,7 @@ class UnifinAPI
             $RegimenConyugal = $IntValue->getEstadoCivilInt($objecto->estadocivil_c);
             $TipoCliente = $IntValue->getTipoCliente($objecto->tipo_registro_cuenta_c, $objecto->estatus_c, $objecto->esproveedor_c, $objecto->tipo_relacion_c, $objecto->cedente_factor_c, $objecto->deudor_factor_c);
             $_ClntFechaNacimiento = $RegimenFiscal == 3 ? $objecto->fechaconstitutiva_c : $objecto->fechadenacimiento_c;
-            $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaPersona";
+            $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaPersona";
 
             $cleanValues = array();
 
@@ -807,7 +815,7 @@ SQL;
             } else {
                 $esFisica = 'false';
             }
-            $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ValidaListaNegra?bEsFisica=$esFisica&sNombreUno=$nombre&sNombreDos=$segundoNombre&sApellidoP=$apellidoPaterno&sApellidoM=$apellidoMaterno";
+            $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/ValidaListaNegra?bEsFisica=$esFisica&sNombreUno=$nombre&sNombreDos=$segundoNombre&sApellidoP=$apellidoPaterno&sApellidoM=$apellidoMaterno";
 
             $time_start = microtime(true);
             $coincidencias = $this->unifingetCall($host);
@@ -825,7 +833,7 @@ SQL;
     {
         global $current_user;
         try {
-            $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/DetallePersonaPLD?IdPersona={$idPersona}";
+            $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/DetallePersonaPLD?IdPersona={$idPersona}";
 
             $time_start = microtime(true);
             $detalle = $this->unifingetCall($host);
@@ -845,8 +853,8 @@ SQL;
             /*** ALI INICIO ***/
             global $db;
             global $current_user;
-            $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/CreaRelacion";
-            $host1 = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/consultaFolio?sTabla=ctRelacionesCliente";
+            $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/CreaRelacion";
+            $host1 = "http://" . $GLOBALS['unifin_uni2_utils'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/consultaFolio?sTabla=ctRelacionesCliente";
 
             $listTipoRelacion = explode(",", $object->relaciones_activas);
             $GLOBALS['log']->fatal(__CLASS__ . "->" . __FUNCTION__ . " : Lista de relaciones " . $listTipoRelacion);
@@ -1001,7 +1009,7 @@ SQL;
     public function insertaDireccion($object)
     {
         global $db, $current_user;
-        $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaDireccion";
+        $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/InsertaDireccion";
         $fields = $this->getDirecciones($object->accounts_dire_direccion_1accounts_ida, $object->id);
         //getDireciones return an array of arrays but for this service we only need one array
         foreach ($fields as $key => $value) {
@@ -1277,7 +1285,7 @@ SQL;
     {
         global $current_user;
         try {
-            $host = 'http://' . $GLOBALS['unifin_url'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/VerificaClienteTieneContrato?IdCliente=' . $id;
+            $host = 'http://' . $GLOBALS['unifin_url_v2'] . '/Uni2WsClnt/WsRest/Uni2ClntService.svc/Uni2/VerificaClienteTieneContrato?IdCliente=' . $id;
             $contratosActivos = $this->unifingetCall($host);
             return $contratosActivos;
         } catch (Exception $e) {
@@ -1323,7 +1331,7 @@ SQL;
     {
         global $current_user;
         try {
-            $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/CreaCurpPersona";
+            $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/CreaCurpPersona";
             $fields = array(
                 "CurpRequest" => array(
                     "nombre" => $primernombre,
@@ -1347,7 +1355,7 @@ SQL;
     {
         global $current_user;
         try {
-            $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/CreaRfcPersonaFisica";
+            $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/CreaRfcPersonaFisica";
             $fields = array(
                 "RfcRequest" => array(
                     "nombre" => $primernombre,
@@ -1373,7 +1381,7 @@ SQL;
         global $current_user;
         try {
 
-            $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/CreaRfcPersonaMoral";
+            $host = "http://" . $GLOBALS['unifin_url_v2'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/CreaRfcPersonaMoral";
             $fields = array(
                 "RfcRequest" => array(
                     "razonSocial" => $razonsocial,
@@ -1874,7 +1882,7 @@ SQL;
     {
         global $current_user;
         try {
-            $host = "http://" . $GLOBALS['unifin_url'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/consultaFolio?sTabla=crmBacklog";
+            $host = "http://" . $GLOBALS['unifin_uni2_utils'] . "/Uni2WsUtilerias/WsRest/Uni2UtlServices.svc/Uni2/consultaFolio?sTabla=crmBacklog";
 
             $folio = $this->unifingetCall($host);
             $folio = intval($folio['UNI2_UTL_001_traeFolioResult']);

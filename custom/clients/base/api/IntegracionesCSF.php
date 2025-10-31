@@ -95,7 +95,7 @@ class IntegracionesCSF extends SugarApi
             if( !empty($responseCSF_base64) ){
                 //Envia petición hacia alfresco
                 $body_request_alfresco = $this->createBodyRequestAlfresco( $idCliente, $b64CSFVal, $rfc.'.pdf', $date_issued );
-                $GLOBALS['log']->fatal( print_r($body_request_alfresco,true) );
+                //$GLOBALS['log']->fatal( print_r($body_request_alfresco,true) );
                 $GLOBALS['log']->fatal( print_r($url_alfresco,true) );
                 $response_upload_alfresco = $this->callUploadDocument( $url_alfresco, $body_request_alfresco );
                 
@@ -204,7 +204,7 @@ class IntegracionesCSF extends SugarApi
                 $response_upload_alfresco = $this->callUploadDocument( $url_alfresco, $body_request_alfresco );
                 
                 $GLOBALS['log']->fatal( "Respuesta upload Alfresco:" );
-                $GLOBALS['log']->fatal( print_r($response_upload_alfresco,true) );
+                //$GLOBALS['log']->fatal( print_r($response_upload_alfresco,true) );
                 $response['alfresco'] = $response_upload_alfresco['resultDescription'];
 
                 if( !empty( $response_upload_alfresco['data']['folio'] ) ){
@@ -278,7 +278,7 @@ class IntegracionesCSF extends SugarApi
         $beanAnlzt->tipo = '2';//Documento
         $beanAnlzt->fecha_actualizacion = $fechaActual;
         $beanAnlzt->save();
-        $GLOBALS['log']->fatal('Registro Analizate generado: '.$beanAnlzt->id);
+        //$GLOBALS['log']->fatal('Registro Analizate generado: '.$beanAnlzt->id);
     }
 
     public function callDigitalVal( $url, $token ){
