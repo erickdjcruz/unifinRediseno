@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Elenco azioni Sugar Smart Guide',
+    'LBL_MODULE_TITLE' => 'Azione Sugar Smart Guide',
+    'LBL_HOMEPAGE_TITLE' => 'Le mie azioni Sugar Smart Guide',
+    'LNK_NEW_RECORD' => 'Nuova azione Sugar Smart Guide',
+    'LNK_VIEW_RECORDS' => 'Visualizza azione Sugar Smart Guide',
+    'LNK_CJ_FORM_LIST' => 'Visualizza azioni Sugar Smart Guide',
+    'LNK_LIST' => 'Azioni Sugar Smart Guide',
+    'LBL_SEARCH_FORM_TITLE' => 'Cerca azione Sugar Smart Guide',
+    'LBL_MODULE_NAME' => 'Azioni Sugar Smart Guide',
+    'LBL_MODULE_NAME_SINGULAR' => 'Azione Sugar Smart Guide',
+    'LBL_TRIGGER_EVENT' => 'Evento di attivazione',
+    'LBL_ACTION_TYPE' => 'Tipo di azione',
+    'LBL_PARENT_MODULE' => 'Modulo padre',
+    'LBL_RELATIONSHIP' => 'Relazione',
+    'LBL_ACTIVITY_TEMPLATE' => 'Modello di attività',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Guida Intelligente/Fase/Modello di attività',
+    'LBL_ACTIVE' => 'Attivo',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'Il modello di attività %s ha già un&#39;azione Sugar che utilizza l&#39;evento di attivazione %s. Esiste il limite di una azione Sugar attiva per tipo di evento di attivazione per ciascuna fase o attività in una Smart Guide.',
+    'LBL_RECORDVIEW_PANEL4' => 'Compilare i campi',
+    'LBL_POPULATE_FIELDS' => 'Compilare i campi',
+    'LBL_ADD_FIELD' => 'Aggiungi campo',
+    'LBL_REMOVE_FIELD' => 'Rimuovi campo',
+    'LBL_FIELD_NAME' => 'Nome del campo',
+    'LBL_FIELD_VALUE' => 'Valore del campo',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Questo campo non è disponibile per la visualizzazione elenco.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Tipo di attivatore dell&#39;azione',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Impossibile trovare il record correlato',
+    'LBL_IGNORE_ERRORS' => 'Ignora errori',
+    'LBL_NO_DISPLAY_FIELDS' => 'Nessun campo da visualizzare.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Campo di collegamento del modello di attività',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Campo di collegamento del modello di fase',
+    'LBL_EMAIL_TEMPLATES' => 'Modello di email',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Seleziona l&#39;indirizzo email "A"',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'Campi email',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Visualizza icona',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Guida Intelligente/Fase/Modello di attività',
+    'LBL_ACTIVITY_MODULE' => 'Modulo di attività',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Modello della Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Seleziona trigger modello della Smart Guide',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Tipo di trigger',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Seleziona tipo di trigger',
+    'LBL_MODULE_TRIGGER' => 'Modulo trigger',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Seleziona trigger modulo',
+    'LBL_FIELD_TRIGGER' => 'Campo del trigger',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Seleziona target Smart Guide',
+    'LBL_CJ_TARGET' => 'Obiettivo Smart Guide',
+    'LBL_CJ_ACTION' => 'Azione Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Seleziona azione Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'Trigger',
+    'LBL_TRIGGER_DESCRIPTION' => 'Usare i campi sotto per selezionare il tipo di trigger e le condizioni che lo attiveranno.',
+    'LBL_TARGET_ACTION_TITLE' => 'Target e azione',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Usare i campi sotto per selezionare dove e quali azioni si verificheranno all&#39;attivazione del trigger.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Seleziona stage della Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Seleziona attività Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Seleziona attività Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Seleziona azione attività stage',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Seleziona azione attività Smart Guide',
+];

@@ -1,0 +1,45 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="record" style="padding-top:50px;">
+    {{#each view.meta.panels}}
+        {{#unless header}}
+            {{#each grid}}
+                <div class="row-fluid {{../name}}{{#if ../hide}}{{#if ../../../../view.hidePanel}} hide{{/if}}{{/if}}">
+                    {{#each this}}
+                        {{#if name}}
+                            <div class="{{#if ../../../labelsOnTop}}span{{span}} {{else}}span{{cellSpan}} {{/if}}record-cell{{#if cell_css_class}} {{cell_css_class}}{{/if}}" data-type="{{type}}" data-name="{{name}}">
+                                {{decoratedField  ../../../../../view.decoratorField ../../../../../view model=../../../../../view.model template=../../../../../view.action}}
+                            </div>
+                        {{else}}
+                            <div class="span{{cellSpan}} record-cell">
+                                {{#unless ../../../labelsOnTop}}<div class="labels-on-side">{{/unless}}
+                                    <div class="record-cell span{{cellSpan}}"></div>
+                                {{#unless ../../../labelsOnTop}}</div>{{/unless}}
+                            </div>
+                        {{/if}}
+                    {{/each}}
+                </div>
+            {{/each}}
+        {{/unless}}
+    {{/each}}
+</div>
+<div class="row-fluid{{#unless view.hiddenPanelExists}} hide{{/unless}} show-hide-toggle">
+    <div class="record-cell">
+        <button class="btn btn-link btn-invisible more{{#if view.hideMoreButton}} hide{{/if}}"
+                data-moreless="more"
+                data-target=".panel_hidden">{{str "LBL_SHOW_MORE"}}...</button>
+        <button class="btn btn-link btn-invisible less{{#if view.hideLessButton}} hide{{/if}}"
+                data-moreless="less"
+                data-target=".panel_hidden">{{str "LBL_SHOW_LESS"}}</button>
+    </div>
+</div>

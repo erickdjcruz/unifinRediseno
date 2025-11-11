@@ -1,0 +1,392 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="sortable-journey" data-sortable-journey="true" data-id="{{model.id}}">
+    <div class="dri-workflow-info clearfix cursor-move pb-2.5 pt-6 px-6 rounded-t-lg">
+        {{#if loaded}}
+            <div class="dri-workflow-desc pull-left flex items-center max-w-[calc(100%-180px)] py-0.5 text-md w-min">
+                <span class="pull-left label label-module label-module-size-sm label-module-color-coral sicon sicon-customer-journey-lg" aria-hidden="true"></span>
+                <h4 class="pull-left mx-2 my-0 overflow-hidden text-base text-ellipsis whitespace-nowrap">
+                    {{fieldValue model "name"}}
+                </h4>
+                {{#if model.fields.state}}
+                    <span class="pull-left label {{this.stateClass}}">
+                        {{#eachOptions "dri_workflows_state_list"}}
+                            {{#eq this.key ../model.attributes.state}}
+                                {{value}}
+                            {{/eq}}
+                        {{/eachOptions}}
+                    </span>
+                {{/if}}
+                {{#if recordIsArchived}}
+                   <span class="pull-left label dri-workflow-archived flex ">
+                        {{str "LBL_CUSTOMER_JOURNEY_WIDGET_ARCHIVE"}}
+                    </span>
+                {{/if}}
+                {{#if rows.length}}
+                      <button class="btn-link btn-invisible more hide"
+                            data-moreless="more"
+                            data-target=".dri-workflow-details,.add-stage">
+                    </button>
+                    <button class="btn-link btn-invisible less hide"
+                            data-moreless="less"
+                            data-target=".dri-workflow-details,.add-stage">
+                    </button>
+                {{/if}}
+            </div>
+            <div class="pull-right">
+                {{#if model.attributes.assigned_user_id}}
+                    <div class="dri-workflow-assigned-user flex">
+                        <span class="dri-workflow-assigned-user-label">
+                            {{str "LBL_ASSIGNED_TO"}}:
+                        </span>
+                        <div class="dri-workflow-assigned-user-link">
+                            {{#if model.attributes.assigned_user_picture_url}}
+                                <img src="{{model.attributes.assigned_user_picture_url}}"
+                                    alt="{{model.attributes.assigned_user_name}}"
+                                    class="avatar avatar-btn assigned-user-icon cursor-pointer h-6 m-0.5 rounded-full w-6"
+                                    rel="tooltip"
+                                    data-bs-placement="top"
+                                    title="{{str "LBL_ASSIGNED_TO"}}: {{model.attributes.assigned_user_name}}">
+                            {{else}}
+                                <i class="sicon sicon-user assigned-user-icon cursor-pointer m-0.5 rounded-full"
+                                    rel="tooltip"
+                                    data-bs-placement="top"
+                                    title="{{str "LBL_ASSIGNED_TO"}}: {{model.attributes.assigned_user_name}}">
+                                </i>
+                            {{/if}}
+                            <a href="javascript:void(0)" class="dri-workflow-assigned-user-name">
+                                {{model.attributes.assigned_user_name}}
+                            </a>
+                        </div>
+                    </div>
+                {{/if}}
+                <div class="dri-workflow-action-buttons">
+                    {{#each ../meta.topButtons}}
+                        {{field ../this model=../model}}
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+    </div>
+    <div class="dri-workflow-card py-0 pt-0 px-6 pb-6 rounded-b-md min-h-[20px]">
+        {{#if loaded}}
+            {{#if model.fields.progress}}
+                {{#with model.fields.progress}}
+                    {{field ../this model=../model template="detail"}}
+                {{/with}}
+            {{/if}}
+            <div class="dri-workflow-details clearfix {{#if hideLessButton}}hide{{/if}} {{#if this.presentationModeClass}}{{this.presentationModeClass}}{{/if}}">
+                {{#each rows}}
+                    <div class="row-fluid">
+                        {{#each this}}
+                            <div class="{{../../subworkflowSpan}} dri-subworkflow group/subworkflow mt-2.5 relative" data-id="{{data.id}}">
+                                <div class="dri-subworkflow-arrow dri-subworkflow-arrow-{{data.state}} bg-gray-300 h-10 ml-5 mr-1.25 relative"
+                                    rel="tooltip"
+                                    data-bs-placement="top"
+                                    {{#eq model.module "DRI_SubWorkflows"}}
+                                    title="{{#eachOptions "dri_subworkflows_state_list"}}{{#eq key ../data.state}}{{value}}{{/eq}}{{/eachOptions}} - {{data.progress}}% ({{data.score}}/{{data.points}} {{str "LBL_WIDGET_POINTS" "DRI_Workflows"}})"
+                                    {{else}}
+                                    title="{{data.points}} {{str "LBL_WIDGET_POINTS" "DRI_Workflows"}}"
+                                    {{/eq}}>
+                                    <div class="ellipsis_inline dri-subworkflow-arrow-info pb-2.5 pl-1.5 pr-0 pt-3" data-bs-placement="bottom" data-original-title="{{data.label}}">
+                                        {{#if ../../stageLinks}}
+                                            <a href="#/{{model.module}}/{{data.id}}" class="ellipsis_inline" data-bs-placement="bottom" data-original-title="{{data.label}}">{{data.label}}</a>
+                                        {{else}}
+                                            {{data.label}}
+                                        {{/if}}
+                                    </div>
+                                </div>
+                                <div class="add-stage-button-wrapper absolute hidden h-7 group-hover/subworkflow:block group-hover/subworkflow:visible right-9 top-1.5 w-7 z-[1000]">
+                                    {{#each ../../meta.stageButtons}}
+                                        {{field ../../../this model=../model}}
+                                    {{/each}}
+                                </div>
+                                <div class="dri-stage-activities">
+                                    {{#each activities}}
+                                        <div class="dri-subworkflow-activity-wrapper" data-id="{{data.id}}">
+                                            <div class="dri-subworkflow-activity clearfix bg-[--activity-background-color] border-b-0 border-t-4 border-[--activity-border-top-color] leading-10 p-1.5 m-1.5 relative text-[--activity-color] {{statusClass}} {{typeClass}} {{#if blockedBy}}cj_blocked{{/if}} {{#if blockedByStages}}cj_blocked_by_stage{{/if}}" data-id="{{data.id}}">
+                                                <div class="pull-left dri-activity-info">
+                                                    <span>{{order}}.</span>
+
+                                                    {{#if isParent}}
+                                                        <i class="sicon sicon-chevron-down dri-activity-show-children {{#if showChildren}}hide{{/if}}"
+                                                        rel="tooltip"
+                                                        data-bs-placement="top"
+                                                        data-id="{{data.id}}"
+                                                        title="{{str "LBL_SHOW_CHILDREN" "DRI_Workflows"}}"
+                                                        aria-hidden="true"></i>
+                                                        <i class="sicon sicon-chevron-up dri-activity-hide-children {{#unless showChildren}}hide{{/unless}}"
+                                                        rel="tooltip"
+                                                        data-bs-placement="top"
+                                                        data-id="{{data.id}}"
+                                                        title="{{str "LBL_HIDE_CHILDREN" "DRI_Workflows"}}"
+                                                        aria-hidden="true"></i>
+                                                    {{/if}}
+
+                                                    {{#if data.assigned_user_id}}
+                                                        {{#if data.pictureUrl}}
+                                                            <span class="assigned-user-wrapper relative">
+                                                                <img src="{{data.pictureUrl}}"
+                                                                    alt="{{data.assigned_user_name}}"
+                                                                    rel="tooltip"
+                                                                    data-bs-placement="top"
+                                                                    title="{{str "LBL_ASSIGNEE" "DRI_Workflows"}}: {{data.assigned_user_name}}"
+                                                                    class="avatar avatar-btn assigned-user-icon cursor-pointer h-6 m-0.5 rounded-full w-6">
+
+                                                                <i rel="tooltip"
+                                                                data-bs-placement="top"
+                                                                title="{{iconTooltip}}"
+                                                                class="{{icon}} activity-type-icon assigned"></i>
+                                                            </span>
+                                                        {{else}}
+                                                            <i rel="tooltip"
+                                                            data-bs-placement="top"
+                                                            title="{{iconTooltip}}"
+                                                            class="{{icon}} activity-type-icon"></i>
+
+                                                            <i class="sicon sicon-user assigned-user-icon cursor-pointer m-0.5 rounded-full"
+                                                            rel="tooltip"
+                                                            data-bs-placement="top"
+                                                            title="{{str "LBL_ASSIGNEE" "DRI_Workflows"}}: {{data.assigned_user_name}}"></i>
+                                                        {{/if}}
+                                                    {{else}}
+                                                        <i rel="tooltip"
+                                                        data-bs-placement="top"
+                                                        title="{{iconTooltip}}"
+                                                        class="{{icon}} activity-type-icon"></i>
+                                                    {{/if}}
+
+                                                    {{#if blockedBy}}
+                                                        <i class="sicon sicon-ban cj_blocked"
+                                                        rel="tooltip"
+                                                        data-id="{{data.id}}"
+                                                        data-bs-placement="top"
+                                                        title="{{blockedBy.text}}" aria-hidden="true"></i>
+                                                    {{/if}}
+
+                                                    {{#if blockedByStages}}
+                                                        <i class="sicon sicon-ban cj_blocked_by_stage"
+                                                        rel="tooltip"
+                                                        data-id="{{data.id}}"
+                                                        data-bs-placement="top"
+                                                        title="{{blockedByStages.text}}" aria-hidden="true"></i>
+                                                    {{/if}}
+
+                                                    {{#if ../../../activityLinks}}
+                                                        <a href="#{{module}}/{{data.id}}"
+                                                        rel="tooltip"
+                                                        data-bs-placement="top"
+                                                        title="{{statusLabel}}">{{data.name}}</a>
+                                                    {{/if}}
+                                                </div>
+                                                <div class="pull-right dri-subworkflow-activity-actions">
+                                                    {{#if dueDate}}
+                                                        <span class="activity-due-date bg-teal-600 inline-block leading-6 py-0 px-[5px] rounded text-white whitespace-nowrap {{dueDate.className}}"
+                                                            rel="tooltip"
+                                                            data-bs-placement="top"
+                                                            title="{{dueDate.title}}">
+                                                            <i class="sicon sicon-clock" aria-hidden="true"></i>
+                                                            <span class="text">{{dueDate.text}}</span>
+                                                        </span>
+                                                    {{/if}}
+
+                                                    {{#each forms}}
+                                                        {{#eq display_activity_rsa_icon 'yes'}}
+                                                            {{#eq action_trigger_type 'manual_update'}}
+                                                                <span class="btn activity-form" data-id="{{../../../data.id}}"
+                                                                    data-trigger_event="{{../trigger_event}}">
+                                                                    <i class="sicon sicon-web-logic"
+                                                                    rel="tooltip"
+                                                                    data-bs-placement="top"
+                                                                    title="{{../name}}" aria-hidden="true"></i>
+                                                                </span>
+                                                            {{/eq}}
+                                                            {{#eq action_trigger_type 'manual_create'}}
+                                                                <span class="btn activity-form" data-id="{{../../../data.id}}"
+                                                                    data-trigger_event="{{../trigger_event}}">
+                                                                    <i class="sicon sicon-web-logic"
+                                                                    rel="tooltip"
+                                                                    data-bs-placement="top"
+                                                                    title="{{../name}}" aria-hidden="true"></i>
+                                                                </span>
+                                                            {{/eq}}
+                                                        {{/eq}}
+                                                        {{#eq action_type 'view_record'}}
+                                                            <span class="btn activity-form" data-id="{{../../data.id}}"
+                                                                data-trigger_event="{{../trigger_event}}">
+                                                                <i class="sicon sicon-web-logic"
+                                                                rel="tooltip"
+                                                                data-bs-placement="top"
+                                                                title="{{../name}}" aria-hidden="true"></i>
+                                                            </span>
+                                                        {{/eq}}
+                                                    {{/each}}
+
+                                                    {{#if url}}
+                                                        {{#sanitize}}
+                                                            <a href="{{url}}" class="btn activity-url" target="_blank">
+                                                                <i class="sicon sicon-link"
+                                                                rel="tooltip"
+                                                                data-bs-placement="top"
+                                                                title="{{url}}" aria-hidden="true"></i>
+                                                            </a>
+                                                        {{/sanitize}}
+                                                    {{/if}}
+
+                                                    <span class="dri-subworkflow-activity-buttons inline-block w-[3.4375rem]">
+                                                        {{#each ../../../../meta.activityButtons}}
+                                                            {{field ../../../../../this model=../model}}
+                                                        {{/each}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="dri-activity-children pl-2.5 {{#unless showChildren}}hide{{/unless}}" data-id="{{data.id}}">
+                                                {{#each children}}
+                                                    <div class="dri-subworkflow-activity dri-activity-child clearfix bg-[--activity-background-color] border-b-0 border-t-4 border-[--activity-border-top-color] leading-10 p-1.5 m-1.5 relative text-[--activity-color] {{statusClass}} {{typeClass}} {{#if blockedBy}}cj_blocked{{/if}} {{#if blockedByStages}}cj_blocked_by_stage{{/if}}" data-id="{{data.id}}">
+                                                        <div class="pull-left dri-activity-info">
+                                                            <span>{{order}}.</span>
+
+                                                            {{#if data.assigned_user_id}}
+                                                                {{#if data.pictureUrl}}
+                                                                    <span class="assigned-user-wrapper relative">
+                                                                        <img src="{{data.pictureUrl}}"
+                                                                            alt="{{data.assigned_user_name}}"
+                                                                            rel="tooltip"
+                                                                            data-bs-placement="top"
+                                                                            title="{{str "LBL_ASSIGNEE" "DRI_Workflows"}}: {{data.assigned_user_name}}"
+                                                                            class="avatar avatar-btn assigned-user-icon cursor-pointer h-6 m-0.5 rounded-full w-6">
+
+                                                                        <i rel="tooltip"
+                                                                        data-bs-placement="top"
+                                                                        title="{{iconTooltip}}"
+                                                                        class="{{icon}} activity-type-icon assigned"></i>
+                                                                    </span>
+                                                                {{else}}
+                                                                    <i rel="tooltip"
+                                                                    data-bs-placement="top"
+                                                                    title="{{iconTooltip}}"
+                                                                    class="{{icon}} activity-type-icon"></i>
+
+                                                                    <i class="sicon sicon-user assigned-user-icon cursor-pointer m-0.5 rounded-full"
+                                                                    rel="tooltip"
+                                                                    data-bs-placement="top"
+                                                                    title="{{str "LBL_ASSIGNEE" "DRI_Workflows"}}: {{data.assigned_user_name}}"></i>
+                                                                {{/if}}
+                                                            {{else}}
+                                                                <i rel="tooltip"
+                                                                data-bs-placement="top"
+                                                                title="{{iconTooltip}}"
+                                                                class="{{icon}} activity-type-icon"></i>
+                                                            {{/if}}
+
+                                                            {{#if blockedBy}}
+                                                                <i class="sicon sicon-ban cj_blocked"
+                                                                rel="tooltip"
+                                                                data-id="{{data.id}}"
+                                                                data-bs-placement="top"
+                                                                title="{{blockedBy.text}}" aria-hidden="true"></i>
+                                                            {{/if}}
+
+                                                            {{#if blockedByStages}}
+                                                                <i class="sicon sicon-ban cj_blocked_by_stage"
+                                                                rel="tooltip"
+                                                                data-id="{{data.id}}"
+                                                                data-bs-placement="top"
+                                                                title="{{blockedByStages.text}}" aria-hidden="true"></i>
+                                                            {{/if}}
+
+                                                            {{#if ../../../../activityLinks}}
+                                                                <a href="#{{module}}/{{data.id}}"
+                                                                rel="tooltip"
+                                                                data-bs-placement="top"
+                                                                title="{{statusLabel}}">{{data.name}}</a>
+                                                            {{/if}}
+                                                        </div>
+                                                        <div class="pull-right dri-subworkflow-activity-actions">
+                                                            {{#if dueDate}}
+                                                                <span class="activity-due-date bg-teal-600 inline-block leading-6 py-0 px-[5px] rounded text-white whitespace-nowrap {{dueDate.className}}"
+                                                                    rel="tooltip"
+                                                                    data-bs-placement="top"
+                                                                    title="{{dueDate.title}}">
+                                                                    <i class="sicon sicon-clock" aria-hidden="true"></i>
+                                                                    <span class="text">{{dueDate.text}}</span>
+                                                                </span>
+                                                            {{/if}}
+
+                                                            {{#each forms}}
+                                                                {{#eq display_activity_rsa_icon 'yes'}}
+                                                                    {{#eq action_trigger_type 'manual_update'}}
+                                                                        <span class="btn activity-form" data-id="{{../../../data.id}}"
+                                                                            data-trigger_event="{{../trigger_event}}">
+                                                                            <i class="sicon sicon-web-logic"
+                                                                            rel="tooltip"
+                                                                            data-bs-placement="top"
+                                                                            title="{{../name}}" aria-hidden="true"></i>
+                                                                        </span>
+                                                                    {{/eq}}
+                                                                    {{#eq action_trigger_type 'manual_create'}}
+                                                                        <span class="btn activity-form" data-id="{{../../../data.id}}"
+                                                                            data-trigger_event="{{../trigger_event}}">
+                                                                            <i class="sicon sicon-web-logic"
+                                                                            rel="tooltip"
+                                                                            data-bs-placement="top"
+                                                                            title="{{../name}}" aria-hidden="true"></i>
+                                                                        </span>
+                                                                    {{/eq}}
+                                                                {{/eq}}
+                                                                {{#eq action_type 'view_record'}}
+                                                                    <span class="btn activity-form" data-id="{{../../data.id}}"
+                                                                        data-trigger_event="{{../trigger_event}}">
+                                                                        <i class="sicon sicon-web-logic"
+                                                                        rel="tooltip"
+                                                                        data-bs-placement="top"
+                                                                        title="{{../name}}" aria-hidden="true"></i>
+                                                                    </span>
+                                                                {{/eq}}
+                                                            {{/each}}
+
+                                                            {{#if url}}
+                                                                {{#sanitize}}
+                                                                    <a href="{{url}}" class="btn activity-url" target="_blank">
+                                                                        <i class="sicon sicon-link"
+                                                                        rel="tooltip"
+                                                                        data-bs-placement="top"
+                                                                        title="{{url}}" aria-hidden="true"></i>
+                                                                    </a>
+                                                                {{/sanitize}}
+                                                            {{/if}}
+
+                                                            <span class="dri-subworkflow-activity-buttons inline-block w-[3.4375rem]">
+                                                                {{#each ../../../../meta.activityChildButtons}}
+                                                                    {{field ../../../../../this model=../model}}
+                                                                {{/each}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                {{/each}}
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                {{/each}}
+            </div>
+        {{else}}
+            <div class="h-15">
+                <div class="data-skeleton-loader h-20 w-full"></div>
+            </div>
+        {{/if}}
+    </div>
+</div>

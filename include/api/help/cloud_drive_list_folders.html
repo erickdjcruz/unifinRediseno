@@ -1,0 +1,91 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+
+<h2>Overview</h2>
+<span class="lead">
+    List folders from a cloud provider.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>type</td>
+        <td>String</td>
+        <td>The cloud provider type(Google/OneDrive)</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>folderId</td>
+        <td>String</td>
+        <td>The ID of the cloud folder</td>
+        <td>No (default is root)</td>
+    </tr>
+    <tr>
+        <td>nextPageToken</td>
+        <td>String</td>
+        <td>Used for pagination</td>
+        <td>No (default is null)</td>
+    </tr>
+    <tr>
+        <td>orderBy</td>
+        <td>String</td>
+        <td>used for ordering files/folders</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>sharedWithMe</td>
+        <td>bool</td>
+        <td>Indicating if you want to list files from the shared drive or not</td>
+        <td>No</td>
+    </tr>
+    </tbody>
+</table>
+
+</pre>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+[
+    [
+        name: 'My folder',
+        id: '1234',
+        ...
+    ]
+    ...
+]
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_16
+        </td>
+        <td>
+            Added <code>/CloudDrive/list/folders</code> POST endpoint.
+        </td>
+    </tr>
+</table>

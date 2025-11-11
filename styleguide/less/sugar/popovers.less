@@ -1,0 +1,174 @@
+/* POPOVERS
+  ----------------*/
+
+/* twitter-bootstrap import START */
+
+.popover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: @zindexPopover;
+  display: none;
+  text-align: left; // Reset given new insertion method
+  background-clip: padding-box;
+  border-radius: 6px;
+  box-shadow: @borderWidget;
+
+  // Overrides for proper insertion
+  white-space: normal;
+
+  // Offset the popover to account for the popover arrow
+  &[data-popper-placement="top"] { margin-top: -10px; }
+  &[data-popper-placement="right"] { margin-left: 10px; }
+  &[data-popper-placement="bottom"] { margin-top: 10px; }
+  &[data-popper-placement="left"] { margin-left: -10px; }
+  &.show { display: block; }
+}
+
+.popover-title {
+  margin: 0; // reset heading margin
+  padding: 8px 14px;
+  font-weight: normal;
+  line-height: 18px;
+}
+
+.popover-content {
+  padding: 9px 14px;
+}
+
+// Arrows
+//
+// .arrow is outer, .arrow:after is inner
+
+.popover .arrow,
+.popover .arrow::after {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-color: @transparent;
+  border-style: solid;
+}
+
+.popover .arrow {
+  border-width: @popoverArrowOuterWidth;
+}
+
+.popover .arrow::after {
+  border-width: @popoverArrowWidth;
+  content: "";
+}
+
+.popover {
+  &[data-popper-placement="top"] .arrow {
+    left: 50%;
+    margin-left: -@popoverArrowOuterWidth;
+    border-bottom-width: 0;
+    border-top-color: @popoverArrowColor;
+    bottom: -@popoverArrowOuterWidth;
+
+    &::after {
+      bottom: 1px;
+      margin-left: -@popoverArrowWidth;
+      border-bottom-width: 0;
+      border-top-color: @popoverArrowColor;
+    }
+  }
+
+  &[data-popper-placement="right"] .arrow {
+    top: 50%;
+    left: -@popoverArrowOuterWidth;
+
+    &::after {
+      left: 1px;
+      bottom: -@popoverArrowWidth;
+      border-left-width: 0;
+      border-right-color: @popoverArrowColor;
+    }
+  }
+
+  &[data-popper-placement="bottom"] .arrow {
+    left: 50%;
+    margin-left: -@popoverArrowOuterWidth;
+    border-top-width: 0;
+    border-bottom-color: @popoverArrowOuterColor;
+    top: -@popoverArrowOuterWidth;
+
+    &::after {
+      top: 1px;
+      margin-left: -@popoverArrowWidth;
+      border-top-width: 0;
+      border-bottom-color: @popoverArrowColor;
+    }
+  }
+
+  &[data-popper-placement="left"] .arrow {
+    top: 50%;
+    right: -@popoverArrowOuterWidth;
+
+    &::after {
+      right: 1px;
+      border-right-width: 0;
+      border-left-color: @popoverArrowColor;
+      bottom: -@popoverArrowWidth;
+    }
+  }
+}
+
+/* twitter-bootstrap import END */
+
+.popover {
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+
+  &[data-popper-placement="right"] .arrow {
+    margin-top: -8px;
+    border-width: 8px 0 8px 5px;
+    border-right: 8px solid @black;
+
+    &::after {
+      margin-left: 2px;
+    }
+  }
+
+  &[data-popper-placement="left"] .arrow {
+    margin-top: -8px;
+    border-width: 8px 5px 8px 0;
+    border-left: 8px solid @black;
+
+    &::after {
+      margin-right: 2px;
+    }
+  }
+}
+
+.popover-inner {
+  overflow: hidden;
+  background: @white; // has to be full background declaration for IE fallback
+  border-radius: 2px;
+}
+
+.popover-title {
+  background-color: @primaryContentBackground;
+  border-bottom: @borderWidget;
+  border-radius: 2px 2px 0 0;
+  font-size: 13px;
+  color: @textColor;
+}
+
+.popover-content {
+  padding: 16px;
+  border-radius: 0 0 2px 2px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 600px;
+  background-color: @primaryContentBackground;
+
+  .no-padding {
+    padding: 0;
+    background-color: @primaryContentBackground;
+  }
+}

@@ -1,0 +1,62 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="record tab-layout record-create">
+    <div class="content-tabs">
+        <ul class="nav nav-tabs ml-5 mb-0 report-dashlet-config-tabs" id="recordTab">
+            {{#each meta.panels}}
+                <li class="flex tab tab-badgeable {{name}} {{#eq @index 0}} active{{/eq}}"
+                    data-bs-toggle="tab" data-bs-target="#{{name}}{{cid}}" data-tabname="{{name}}">
+                    <a class="report-dashlet-config-tab">
+                        {{#notEq @index 0}}<i class="sicon sicon-info-lg mr-1 tab-disabled-info" data-fieldname="info-{{name}}"></i>{{/notEq}}
+                        <span class="tab-title report-dashlet-tab-title font-semibold">{{str label ../../../view.module}}</span>
+                    </a>
+                </li>
+            {{/each}}
+        </ul>
+        <div id="tabContent" class="tab-content record">
+            {{#each meta.panels}}
+                <div class="tab-pane fade {{#eq @index 0}} active show{{/eq}}" id="{{name}}{{cid}}">
+                    {{#if custom_view}}
+                        <div {{#if span}}class="span{{span}}" {{/if}}data-container="{{custom_view}}"></div>
+                    {{/if}}
+                    {{#each grid}}
+                        <div class="row-fluid mb-2 {{../name}}{{#if ../hide}} hide{{/if}}">
+                            {{#each this}}
+                                <div class="{{#if useSpan}}span{{span}}{{/if}} record-cell{{#if cell_css_class}} {{cell_css_class}}{{/if}}" data-type="{{type}}" data-name="{{name}}" data-category="{{category}}">
+                                    {{#if ../../labels}}
+                                        {{#unless dismiss_label}}
+                                            <div class="{{#if simulate_label}}mb-4{{else}}record-label{{/if}}" data-name="{{name}}">{{#if label}}{{str label ../../../../../../module}}{{/if}}</div>
+                                        {{/unless}}
+                                    {{/if}}
+                                    {{#if name}}
+                                        {{#notEq hidden true}}
+                                            <span class="normal{{#if css}} {{css}}{{/if}} index{{index}}"{{#if name}} data-fieldname="{{name}}"{{/if}} data-index="{{index}}">
+                                                {{field ../../../../../this model=../../../../../settings template='edit'}}
+                                            </span>
+                                        {{/notEq}}
+                                    {{/if}}
+                                    {{#eq type 'divider'}}
+                                        <div class="nav-tabs"></div>
+                                    {{/eq}}
+                                    {{#eq type 'category-title'}}
+                                        <h4 class="ml-2 mt-0 mb-0">{{str value}}</h4>
+                                    {{/eq}}
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{/each}}
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>

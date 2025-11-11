@@ -1,0 +1,20 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div data-toggle="buttons-radio" class="btn-group dashlet-group">
+    <button class="btn toggle-control{{#eq value "asc"}} active{{/eq}}" value="asc" data-action="order-switcher" rel="tooltip" data-bs-placement="bottom" title="{{str "LBL_ALT_SORT_ASC"}}" aria-label="{{str "LBL_ALT_SORT_ASC"}}" aria-pressed="{{#eq value "asc"}}true{{else}}false{{/eq}}">
+        <i class="sicon sicon-arrow-up"></i>
+    </button>
+    <button class="btn toggle-control{{#eq value "desc"}} active{{/eq}}" value="desc" data-action="order-switcher" rel="tooltip" data-bs-placement="bottom" title="{{str "LBL_ALT_SORT_DESC"}}" aria-label="{{str "LBL_ALT_SORT_DESC"}}" aria-pressed="{{#eq value "desc"}}true{{else}}false{{/eq}}">
+        <i class="sicon sicon-arrow-down"></i>
+    </button>
+</div>

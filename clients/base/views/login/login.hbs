@@ -1,0 +1,68 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="welcome">
+    <div class="thumbnail login">
+        <div class="text-center">
+            <h2 class="brand"><img src="{{logoUrl}}" alt="SugarCRM"></h2>
+        </div>
+        <form name='{{name}}' class="text-center" autocomplete="off">
+        {{#if externalLoginForm}}
+            <p>&nbsp;</p>
+            <p class="wide">
+                <a class="btn btn-block btn-primary {{#unless externalLoginUrl}}disabled{{/unless}}" name="external_login_button" title="{{str "LBL_LOGIN_BUTTON_LABEL"}}">{{str "LBL_LOGIN_BUTTON_LABEL"}}</a>
+            </p>
+            <p class="wide">
+                <a class="btn btn-link btn-invisible" name="login_form_button" title="{{str "LBL_LOGIN_FORM_LABEL"}}">{{str "LBL_LOGIN_FORM_LABEL"}}</a>
+            </p>
+        {{else}}
+            {{#each meta.panels}}
+                {{#each fields}}
+                    <div class="control-group">{{field ../../this model=../../model}}</div>
+                {{/each}}
+                <div class="help-block">
+                    {{#if ../showPasswordReset}}
+                        <a href="#forgotpassword" class="btn btn-link btn-invisible">{{str "LBL_LOGIN_FORGOT_PASSWORD"}}</a>
+                    {{/if}}
+                </div>
+            {{/each}}
+            <div class="login-footer">
+                {{#each meta.buttons}}
+                    {{field ../this model=../model}}
+                {{/each}}
+            </div>
+        {{/if}}
+        </form>
+    </div>
+</div>
+<div class="login-selection absolute flex justify-center">
+    <button data-action="mobile" class="btn btn-invisible pr-6" aria-label="{{str 'LNK_MOBILE'}}" role="link" type="button">
+        <i class="sicon sicon-lg sicon-mobile-lg"></i>
+        <span class="action-label pl-1.5"> {{str 'LNK_MOBILE'}}</span>
+    </button>
+    <span class="dropdown w-55" data-action="languageList" id="languageList">
+        <button title="{{str 'LBL_LANGUAGE'}}" aria-label="{{str 'LBL_LANGUAGE'}}"
+                class="btn border border-[--btn-secondary-border] dropdown-toggle bg-[--btn-secondary-background] w-full ml-0 font-normal text-xs rounded-sm"
+                data-bs-toggle="dropdown" role="button" type="button" data-bs-display="static"
+        >
+            <span class="action-label">{{str 'LBL_LANGUAGE'}}</span>
+            <i class="sicon sicon-chevron-down pl-3"></i>
+        </button>
+        <div class="dropdown-menu border-0 dark:border border-[--dropdown-border-widget] rounded-md shadow-xl bottom-up w-full">
+            <ul role="menu">
+                {{#each languageList}}
+                    <li><a data-lang-key="{{key}}" href="javascript:void(0)" tabindex="-1">{{#eq ../currentLang key}}<b>{{value}}</b>{{else}}{{value}}{{/eq}}</a></li>
+                {{/each}}
+            </ul>
+        </div>
+    </span>
+</div>

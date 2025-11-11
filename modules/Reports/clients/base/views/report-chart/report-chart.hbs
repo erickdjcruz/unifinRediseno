@@ -1,0 +1,26 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="report-loading-screen-overlay" data-widget="report-loading" data-type="chart">
+    <div class="chart-skeleton-loader h-full ml-2.5 w-[calc(100%-20px)]"></div>
+</div>
+<div class="h-full" data-container="chart-container">
+    {{#with this._chartDef}}
+        {{field ../this model=../this._reportData template=detail}}
+    {{/with}}
+</div>
+<div class="report-no-data-available hidden h-full mr-5 text-center" data-widget="report-no-chart">
+    {{str "LBL_NO_CHART_REPORT_AVAILABLE"}}
+</div>
+<div class="report-no-data-available hidden h-full mr-5 text-center" data-widget="report-no-data">
+    {{str "LBL_NO_DATA_AVAILABLE"}}
+</div>

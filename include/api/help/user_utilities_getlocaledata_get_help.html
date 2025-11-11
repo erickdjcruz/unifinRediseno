@@ -1,0 +1,110 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+
+<h2>Overview</h2>
+<span class="lead">
+    Retrieves user locale settings.
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint will return a set of locale settings, formatted as options, for the requested user.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>user_id</td>
+            <td>String</td>
+            <td>The ID of the user</td>
+            <td>Yes</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+    <code>
+        {
+            "appearance": [
+                0: {name: "system_default", label: "Use system setting", selected: false}
+                1: {name: "light", label: "Light", selected: true}
+                2: {name: "dark", label: "Dark", selected: false}
+            ],
+            "currency": "-99",
+            "currencyOptions": [
+                0: {id: -99, label: "$ - US Dollars", selected: true}
+                1: {id: "2545ecc8-330a-11ec-8e87-0242ac140008", label: "€ - Euro", selected: false}
+            ],
+            "dateOptions": [
+                0: {name: "Y-m-d", label: "2010-12-23", selected: false}
+                1: {name: "m-d-Y", label: "12-23-2010", selected: false}
+            ],
+            "datef": "m.d.Y",
+            "decSep": ".",
+            "defaultCurrencySignificantDigits": "3",
+            "defaultLocaleNameFormat": "s l",
+            "nameOptions": [
+                0: {name: "s f l", label: "Dr. David Livingstone", selected: false}
+                1: {name: "f l", label: "David Livingstone", selected: false}
+                2: {name: "s l", label: "Dr. Livingstone", selected: true}
+            ],
+            "numGrpSep": ",",
+            "sigDigitsOptions": [
+                0: {name: 0, selected: false}
+                1: {name: 1, selected: false}
+                2: {name: 2, selected: false}
+                3: {name: 3, selected: true}
+            ],
+            "timeOptions": [
+                0: {name: "H:i", label: "23:00", selected: false}
+                1: {name: "h:ia", label: "11:00pm", selected: false}
+                2: {name: "h:iA", label: "11:00PM", selected: false}
+            ],
+            "timef": "h.i A",
+            "timezone": "Europe/Bucharest",
+            "timezoneOptions": [
+                0: {name: "Pacific/Midway", label: "Pacific/Midway (GMT-11:00)", selected: false}
+                1: {name: "Pacific/Niue", label: "Pacific/Niue (GMT-11:00)", selected: false}
+                2: {name: "Pacific/Pago_Pago", label: "Pacific/Pago Pago (GMT-11:00)", selected: false}
+            ],
+            "ut": true,
+            "wizardPrompt": false,
+        }
+    </code>
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_15
+        </td>
+        <td>
+            Added <code>/userUtilities/getLocalesData/:user_id</code> GET endpoint.
+        </td>
+    </tr>
+</table>

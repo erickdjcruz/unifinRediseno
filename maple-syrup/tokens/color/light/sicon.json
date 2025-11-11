@@ -1,0 +1,11 @@
+{
+  "color": {
+    "light": {
+      "sicon": {
+        "base": { "value": "{color.gray.700.value}" },
+        "hover": { "value": "{color.blue.400.value}" },
+        "active": { "value": "{color.blue.600.value}" }
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Lista czynności Sugar pow. ze Smart Guide',
+    'LBL_MODULE_TITLE' => 'Czynność Sugar pow. ze Smart Guide',
+    'LBL_HOMEPAGE_TITLE' => 'Moje czynności Sugar pow. ze Smart Guide',
+    'LNK_NEW_RECORD' => 'Nowa czynność Sugar pow. ze Smart Guide',
+    'LNK_VIEW_RECORDS' => 'Wyświetl czynności Sugar pow. ze Smart Guide',
+    'LNK_CJ_FORM_LIST' => 'Wyświetl czynności Sugar pow. ze Smart Guide',
+    'LNK_LIST' => 'Czynności Sugar pow. ze Smart Guide',
+    'LBL_SEARCH_FORM_TITLE' => 'Wyszukaj czynność Sugar pow. ze Smart Guide',
+    'LBL_MODULE_NAME' => 'Czynności Sugar pow. ze Smart Guide',
+    'LBL_MODULE_NAME_SINGULAR' => 'Czynność Sugar pow. ze Smart Guide',
+    'LBL_TRIGGER_EVENT' => 'Zdarzenie wyzwalania',
+    'LBL_ACTION_TYPE' => 'Typ czynności',
+    'LBL_PARENT_MODULE' => 'Moduł nadrzędny',
+    'LBL_RELATIONSHIP' => 'Powiązanie',
+    'LBL_ACTIVITY_TEMPLATE' => 'Szablon działania',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Szablon Smart Guide/etapu/działania',
+    'LBL_ACTIVE' => 'Aktywne',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'Szablon działania %s ma już czynność Sugar wykorzystującą zdarzenie wyzwalania %s. Każdy etap lub każde działanie w Smart Guide może mieć tylko jedną aktywną czynność Sugar na typ zdarzenia wyzwalania.',
+    'LBL_RECORDVIEW_PANEL4' => 'Wypełnij pola',
+    'LBL_POPULATE_FIELDS' => 'Wypełnij pola',
+    'LBL_ADD_FIELD' => 'Dodaj pole',
+    'LBL_REMOVE_FIELD' => 'Usuń pole',
+    'LBL_FIELD_NAME' => 'Nazwa pola',
+    'LBL_FIELD_VALUE' => 'Wartość pola',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Tego pola nie można wyświetlić w widoku listy.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Typ wyzwalania czynności',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Nie można znaleźć powiązanego rekordu',
+    'LBL_IGNORE_ERRORS' => 'Ignoruj błędy',
+    'LBL_NO_DISPLAY_FIELDS' => 'Brak pól do wyświetlenia.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Pole łącza szablonu działania',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Pole łącza szablonu etapu',
+    'LBL_EMAIL_TEMPLATES' => 'Szablon wiadomości e-mail',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Wybierz adres e-mail „Do”',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'Pola e-mail',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Wyświetl ikonę',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Szablon Smart Guide / etapu / działania',
+    'LBL_ACTIVITY_MODULE' => 'Moduł działania',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Szablon Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Wybierz wyzwalanie szablonu Smart Guide',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Typ warunku',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Wybierz typ wyzwalania',
+    'LBL_MODULE_TRIGGER' => 'Warunek modułu',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Wybierz wyzwalanie modułu',
+    'LBL_FIELD_TRIGGER' => 'Warunek pola',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Wybierz cel Smart Guide',
+    'LBL_CJ_TARGET' => 'Cel Smart Guide',
+    'LBL_CJ_ACTION' => 'Czynność pow. ze Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Wybierz czynność pow. ze Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'Wyzwalanie',
+    'LBL_TRIGGER_DESCRIPTION' => 'Użyj poniższych pól, aby wybrać typ wyzwalania i warunki, które będą powodować wyzwalanie.',
+    'LBL_TARGET_ACTION_TITLE' => 'Cel i czynność',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Użyj poniższych pól, aby wybrać miejsce i rodzaj czynności do wykonania po wyzwoleniu.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Wybierz etap Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Wybierz działania pow. z Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Wybierz działanie pow. ze Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Wybierz czynność działań etapu',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Wybierz czynność działań pow. z Smart Guide',
+];

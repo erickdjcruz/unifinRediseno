@@ -1,0 +1,47 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    [ADMIN] PackageManager uninstall a package
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    Uninstalls the specified package. Package id hash must be provided.
+    Package id could be found <a onclick="openLongHelp('9217cf77059fe7a537d599ea43943a64');">in installed package list</a>.
+</span>
+<h3>Response</h3>
+Returns http status 200 OK if request is successful.
+Otherwise returns http status 4xx with errors.
+<pre class="pre-scrollable">
+{
+    "error": "not_found",
+    "error_message": "Could not find package by ID."
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11.8
+        </td>
+        <td>
+            Added <code>/Administration/packages/:id/uninstall/</code> GET endpoint.
+        </td>
+    </tr>
+</table>

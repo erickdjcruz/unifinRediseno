@@ -1,0 +1,76 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class='config-cj-module'>
+    <div class='record-panel top'>
+        {{partial 'user-limit-warning' this}}
+
+        <div class='record-panel-header'>
+            <h4>{{str 'LBL_CONFIGURE_MODULES_CONTENT_SUB_TITLE' module}}</h4>
+        </div>
+    </div>
+
+    <div class='record'>
+        <div class='config_container ml-7 mr-7'>
+            <div class='clearfix'>
+                <div class='pull-left'>
+                    <div>{{str 'LBL_CONFIGURE_MODULES_CONTENT_DESCRIPTION' module}}.</div>
+                </div>
+            </div>
+
+            <div class='config_values'>
+                {{#each meta.fields}}
+                    {{field ../this model=../configModel template='edit'}}
+                {{/each}}
+            </div>
+        </div>
+    </div>
+
+    <div class='record-panel bottom'>
+        <div class='record-panel-header'>
+            <h4>{{str this.headerLaber this.model.module}}</h4>
+        </div>
+    </div>
+
+    <div class='record bottom'>
+        <div class='clearfix'>
+            <div class='pull-left'>
+                <div>{{configDisplaySettingDesc}}</div>
+            </div>
+        </div>
+    </div>
+    {{#each this.fieldsMeta}}
+        {{#if name}}
+        <div class='row-fluid panel_body'>
+            <div class='span6 record-cell' data-type='{{type}}' data-name='{{name}}'>
+                <span class='detail'>
+                    <div class='labels-on-side'>
+                        <div class='record-label-wrapper span2'>
+                        <div class='record-label ellipsis_inline' data-bs-placement='bottom' data-original-title='{{name}}' title='' data-name='{{name}}' tabindex='-1'>
+                            {{str 'LBL_MODULE_NAME' baseModule}}
+                        </div>
+                        </div>
+                        <div class='record-link-wrapper span4'>
+                            <span class='normal index' data-fieldname='{{name}}' data-index=''>
+                                {{field ../../this model=../../this.model template='edit'}}
+                            </span>
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+        {{/if}}
+    {{/each}}
+    {{#unless this.fieldsMeta.length}}
+        {{partial 'nodata' this}}
+    {{/unless}}
+</div>

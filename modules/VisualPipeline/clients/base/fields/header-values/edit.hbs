@@ -1,0 +1,38 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="header-values-wrapper" data-moduleName="{{this.model.attributes.enabled_module}}">
+    <div class="span6">
+        <span class="header-values-columns">{{str 'LBL_PIPELINE_HEADER_AVAILABLE_VALUES' this.module}}</span>
+        <ul id="pipeline-sortable-1" class="connectedSortable"
+            data-columnName="white_list">
+            {{#each this.model.attributes.white_listed_header_vals}}
+                <li class="ui-state-item"
+                    data-headerValue="{{this.key}}">
+                    <span class="ellipsis_inline value-label">{{this.translatedLabel}}</span>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+
+    <div class="span6">
+        <span class="header-values-columns">{{str 'LBL_PIPELINE_HEADER_HIDDEN_VALUES' this.module}}</span>
+        <ul id="pipeline-sortable-2" class="connectedSortable"
+            data-columnName="black_list">
+            {{#each this.model.attributes.black_listed_header_vals}}
+                <li class="ui-state-item"
+                    data-headerValue="{{this.key}}">{{this.translatedLabel}}
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,153 @@
+.portal-chat-button {
+  right: 20px;
+  bottom: 7px;
+  position: fixed;
+  z-index: 1;
+
+  .btn-primary {
+    border-radius: 50px;
+    border: 0 none;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+
+    .start,
+    .continue {
+      display: none;
+      flex: auto;
+      line-height: 14px;
+      margin-left: 18px;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    .sicon {
+      width: 50px;
+      font-size: 16px;
+
+      &::before {
+        color: @white;
+      }
+    }
+
+    &.chat-collapsed {
+      .sicon {
+        &.sicon-message {
+          display: inline-block;
+        }
+
+        &.sicon-chevron-down {
+          display: none;
+        }
+      }
+    }
+
+    &:not(.chat-collapsed) {
+      .sicon {
+        &.sicon-message {
+          display: none;
+        }
+      }
+    }
+
+    &:hover:not(.disabled) {
+      border: none;
+
+      &.chat-collapsed {
+        background-color: #0679c8;
+        min-width: 178px;
+
+        .start {
+          display: block;
+        }
+
+        .continue {
+          display: none;
+        }
+
+        &.chat-connected {
+          .start {
+            display: none;
+          }
+
+          .continue {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+
+.portal-chat-interface {
+  position: fixed;
+  right: 20px;
+  bottom: 75px;
+  overflow: hidden;
+  border-radius: 3px 3px 0 0;
+  background-color: @gray20;
+  transition: height 0.6s, opacity 0.4s;
+  width: @amazonCcpWidth;
+
+  &.expanded {
+    opacity: 1;
+    height: 650px;
+    box-shadow: -1px -1px 2px @gray40, 1px 1px 2px @gray40;
+    z-index: 1;
+  }
+
+  &:not(.expanded) {
+    opacity: 0;
+    height: 0;
+  }
+
+  div[role="textbox"] {
+    padding: 10px 0 0 10px;
+  }
+
+  .xoggs {
+    margin: 0;
+    height: 650px;
+  }
+}
+
+.chat-component-mixin() {
+  display: flex;
+  flex-flow: column;
+  padding: 15px 10px;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+
+  & :not(:last-child) {
+    margin: 0 0 10px;
+  }
+}
+
+.portal-chat-header {
+  .chat-component-mixin();
+
+  .chat-logo {
+    max-width: 80%;
+  }
+
+  h4 {
+    font-size: @fontSizeHeader;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+}
+
+.portal-chat-footer {
+  .chat-component-mixin();
+
+  #end-portal-chat {
+    font-size: @fontSizeHeaderSubTitle;
+    font-weight: 600;
+    border-radius: @borderRadiusSmall;
+    border: none;
+  }
+}

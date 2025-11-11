@@ -1,0 +1,106 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+
+<h2>Overview</h2>
+<span class="lead">
+    Create a sugar document from a cloud file.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>fileId</td>
+        <td>String</td>
+        <td>The ID of the cloud file</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>recordModule</td>
+        <td>String</td>
+        <td>The module of the current record</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>recordId</td>
+        <td>String</td>
+        <td>The ID of the current record</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>fileName</td>
+        <td>String</td>
+        <td>The name of the cloud file</td>
+        <td>Yes</td>
+    </tr>
+    </tbody>
+</table>
+
+</pre>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>success</td>
+            <td>Boolean</td>
+            <td>Download result</td>
+        </tr>
+        <tr>
+            <td>documentId</td>
+            <td>String</td>
+            <td>The id of the document created</td>
+        </tr>
+        </tbody>
+    </table>
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_16
+        </td>
+        <td>
+            Added <code>/CloudDrive/createSugarDocument</code> POST endpoint.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            v11_18
+        </td>
+        <td>
+            Added documentId on response
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,33 @@
+{
+  "color": {
+    "dark": {
+      "data-display": {
+        "alert": {
+          "base": { "value": "{color.gray.950.value}" }
+        },
+        "badge": {
+          "base": { "value": "{color.gray.700.value}" }
+        },
+        "label": {
+          "base": { "value": "{color.gray.700.value}" }
+        },
+        "pill": {
+          /*"base": { "value": "TODO" },*/
+          "config": { "value": "{color.gray.900.value}" },
+          "record": {
+            "hover": { "value": "{color.gray.900.value}" }
+          }
+        },
+        "progress": {
+          "base": { "value": "{color.gray.800.value}" }
+        },
+        "tab": {
+          "hover": { "value": "{color.blue.800.value}" },
+          "selected": {
+            "hover": { "value": "{color.blue.900.value}" }
+          }
+        }
+      }
+    }
+  }
+}

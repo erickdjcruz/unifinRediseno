@@ -1,0 +1,98 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2 xmlns="http://www.w3.org/1999/html">Overview</h2>
+<span class="lead">
+    Checks import of a Smart Guide Template from a .json file
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This request will checks import of a Smart Guide Template from a .json file
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                module
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Record module name
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "module": "DRI_Workflow_Templates",
+}
+</pre>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the following fields:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                Anonymous
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                DRI_Workflow_Templates record id and name with duplicate and update information
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">{
+    [
+        "duplicate" => true,
+        "update" => false,
+        "record": [
+            "id" => "467fb2a6-fcc9-11e6-b7a6-5254009e5526",
+            "name" => "Opportunity quick deal",
+        ],
+    ]
+
+}</pre>

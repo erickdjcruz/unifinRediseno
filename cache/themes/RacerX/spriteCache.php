@@ -1,0 +1,1 @@
+a:3:{s:18:"Administration.gif";a:3:{s:5:"class";s:32:"0cd6f1d28f54e1d9bf7f0f58229786cb";s:5:"width";s:2:"16";s:6:"height";s:2:"16";}s:9:"Leads.gif";a:3:{s:5:"class";s:32:"8de2a4e2cf235854e91b7040fccd204c";s:5:"width";s:2:"16";s:6:"height";s:2:"16";}s:11:"sqsWait.gif";a:3:{s:5:"class";s:32:"75364810eca218d392b4712e88e21f9f";s:5:"width";s:2:"16";s:6:"height";s:2:"16";}}

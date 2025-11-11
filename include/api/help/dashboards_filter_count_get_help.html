@@ -1,0 +1,330 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Retrieves the count of filtered/unfiltered dashboards.
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint returns the number of dashboards based on the provided filter criteria.
+    The filter can be applied to multiple fields and have multiple and/or conditions in it. Alternatively, you may use an existing filter by specifying its id.
+    If both a filter definition and a filter id are passed, the two filters will be joined with an <code>AND</code>.
+    Care will need to be taken to make sure that any filters used have appropriate indexes on the server side otherwise
+    the runtime of the endpoint will be very long.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            filter
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            The filter expression to apply while counting the dashboards.
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            filter_id
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            Identifier for a preexisting filter. If filter is also set, the two
+            filters are joined with an <code>AND</code>.
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Filter Expressions</h3>
+<span class="lead">
+There are four types of filters:
+</span>
+
+<h4>Basic</h4>
+<div class="well well-small">
+    This will filter the results by checking the field "name" for value "Nelson Inc". This will only find exact matches.
+
+<h5>Example</h5>
+<pre class="pre-scrollable">
+{
+   "filter":[
+      {
+         "name":"Nelson Inc"
+      }
+   ]
+}
+</pre>
+</div>
+
+<h4>Full</h4>
+
+<div class="well well-small">
+    This expression allows you to specify what operation you want to use for filtering on the field. In the example you
+    would match any record where the field "name" starts with the value "Nelson".
+
+    <h5>Example</h5>
+<pre class="pre-scrollable">
+{
+   "filter":[
+      {
+         "name":{
+            "$starts":"Nelson"
+         }
+      }
+   ]
+}
+</pre>
+
+
+    <span class="lead">
+        Below is a list of operation types:
+    </span>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Operation</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                $equals
+            </td>
+            <td>
+                Performs an exact match on that field.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $not_equals
+            </td>
+            <td>
+                Performs an exact match on that field.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $not_equals
+            </td>
+            <td>
+                Matches on non-matching values.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $starts
+            </td>
+            <td>
+                Matches on anything that starts with the value.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $ends
+            </td>
+            <td>
+                Matches anything that ends with the value.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $contains
+            </td>
+            <td>
+                Matches anything that contains the value
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $in
+            </td>
+            <td>
+                Finds anything where field matches one of the values as specified as an array.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $not_in
+            </td>
+            <td>
+                Finds anything where field does not matches any of the values as specified as an array.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $is_null
+            </td>
+            <td>
+                Checks if the field is null. This operation does not need a value specified.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $not_null
+            </td>
+            <td>
+                Checks if the field is not null. This operation does not need a value specified.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $lt
+            </td>
+            <td>
+                Matches when the field is less than the value.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $lte
+            </td>
+            <td>
+                Matches when the field is less than or equal to the value.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $gt
+            </td>
+            <td>
+                Matches when the field is greater than the value.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $gte
+            </td>
+            <td>
+                Matches when the field is greater than or equal to the value.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<h4>Sub-expressions</h4>
+
+<div class="well well-small">
+    This allows you to group filter expressions into or/and groupings. By default all expressions are and'ed together.
+    The example expression would match if the field "name" was either "Nelson Inc" or "Nelson LLC". The only currently
+    accepted sub-expression types are "$and" and "$or".
+
+    <h5>Example</h5>
+<pre class="pre-scrollable">
+{
+   "filter":[
+      {
+         "$or":[
+            {
+               "name":"Nelson Inc"
+            },
+            {
+               "name":"Nelson LLC"
+            }
+         ]
+      }
+   ]
+}
+</pre>
+</div>
+
+<h4>Modules</h4>
+<div class="well well-small">
+    There are two module expressions, they operate on modules instead of fields. The current module can be specified by
+    either using the module name "_this" or by leaving the module name as a blank string. The example expression would
+    filter the records in the current module to only your favorites. The only currently accepted module expressions are
+    "$favorite" and "$owner".
+
+<h5>Example</h5>
+<pre class="pre-scrollable">
+{
+   "filter":[
+      {
+         "$favorite":"_this"
+      }
+   ]
+}
+</pre>
+</div>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            record_count
+        </td>
+        <td>
+            Integer
+        </td>
+        <td>
+            The total count of dashboards that match the provided filter criteria.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+{
+   "record_count":87
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11.24
+        </td>
+        <td>
+            Added <code>/&lt;Dashboards&gt;/count</code> GET endpoint for counting filtered dashboards.
+        </td>
+    </tr>
+</table>

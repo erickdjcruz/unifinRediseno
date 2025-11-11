@@ -1,0 +1,32 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="map-infobox-container bg-gray-900 border border-solid border-gray-900 p-1 opacity-80 rounded text-white w-[240px]">
+    <span class="pull-right m-1">
+            <a data-action="street-view">
+                <img src="styleguide/assets/img/maps/street-view.png">
+            </a>
+    </span>
+    <div class="map-infobox-details-container w-10/12">
+        <div>
+            <a href="{{recordRoute}}" class="map-infobox-title font-bold text-pacific-400">
+                {{title}}
+            </a>
+            <div class="mt-3">
+                {{str 'LBL_MAPS_ADDRESS'}}: {{address}}
+            </div>
+            <div>
+                {{str 'LBL_MAPS_ASSIGNED_USER_NAME'}}: {{username}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,125 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Send an envelope
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint will open a DocuSign tab to send an envelope. If the envelope needs to be created, it will create
+    it, if the envelope was already created, it will only open it.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            documents
+        </td>
+        <td>
+            Array
+        </td>
+        <td>
+            The list of documents that will be added to the envelope
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            draftEnvelopeId
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            Envelope id already created in DocuSign
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            returnUrlParams
+        </td>
+        <td>
+            Object
+        </td>
+        <td>
+            Parameters we need when action is finished in the new Docusign tab (eg. parentId, parentRecord, token)
+        </td>
+        <td>
+            true
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            url
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            The url to DocuSign that needs to be accessed for the envelope to be configured and send/saved/discarded 
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+{
+    url: "https://appdemo.docusign.com/auth-from-console?code=..."
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_16
+        </td>
+        <td>
+            Added <code>/DocuSign/send</code> POST endpoint.
+        </td>
+    </tr>
+</table>

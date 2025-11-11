@@ -1,0 +1,38 @@
+/* ERROR PAGE
+  ----------------*/
+
+// TODO optimize using Tailwind
+
+div.error-page {
+  .error-bg {
+    background: url('@{baseUrl}/img/flat_stack_404.svg') top right no-repeat;
+    background-size: contain;
+    flex-grow: 2;
+    max-height: 650px;
+  }
+
+  .error-message {
+    z-index: 1;
+
+    p {
+      font-size: @fontSizeLarge;
+    }
+  }
+}
+
+body.sugar-dark-theme {
+  .error-bg {
+    opacity: 0.1;
+  }
+}
+
+@media (max-width: 768px) {
+  .error-bg {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    opacity: 0.4;
+    right: 0;
+    top: 0;
+  }
+}

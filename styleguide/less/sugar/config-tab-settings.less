@@ -1,0 +1,169 @@
+.config-tab-settings {
+  display: flex;
+  overflow-x: scroll;
+}
+
+/* Create two equal columns that sits next to each other */
+.config-tab-settings .column {
+  padding: 10px;
+}
+
+.config-tab-settings .border-right {
+  border-right: @borderWidget;
+}
+
+.config-tab-settings nav ul.field-list {
+  width: auto;
+  overflow: hidden;
+  overflow-y: scroll;
+  border: @borderWidget;
+  list-style-type: none;
+  padding-inline-start: 5px;
+  margin: 0;
+  padding-top: 8px;
+  background-color: @primaryContentBackground;
+}
+
+.config-tab-settings .columns nav ul.multi-field {
+  height: 70px;
+  width: auto;
+  list-style-type: none;
+  padding-inline-start: 3px;
+  margin-left: 0;
+  background-color: @configMultifieldBackground;
+  cursor: move;
+  padding: 0;
+}
+
+.config-tab-settings .fields nav ul.field-list {
+  width: auto;
+  border: @borderWidget;
+  list-style-type: none;
+  padding-inline-start: 3px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: @primaryContentBackground;
+}
+
+.config-tab-settings .columns nav ul.field-list {
+  height: 500px;
+  width: 250px;
+}
+
+.config-tab-settings .fields nav ul.field-list {
+  height: 500px;
+  width: 250px;
+}
+
+.config-tab-settings .columns nav li {
+  padding-left: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.config-tab-settings .fields nav li {
+  cursor: grab;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.ui-sortable-helper {
+    cursor: grabbing;
+  }
+
+  &:hover {
+    color: @textColorHover;
+  }
+
+  &.multi-line-field-cursor-over {
+    cursor: no-drop;
+  }
+}
+
+.config-tab-settings .columns nav .pill {
+  border-radius: 3px;
+  background-color: @configPillBackground;
+  color: @configPillText;
+  margin: 3px 8px;
+  margin-bottom: 5px;
+  cursor: move;
+
+  &:not(.multi-field-block) {
+    padding-right: 18px;
+  }
+
+  &.multi-field-block {
+    background-color: @configMultifieldBackground;
+    border: @borderWidget;
+    box-sizing: border-box;
+    box-shadow: @shadowWidget;
+    border-radius: 3px;
+  }
+
+  &.multi-field-block-placeholder-none {
+    display: none;
+  }
+
+  &.multi-field-block-highlight {
+    border: 1px solid @borderColorFocus;
+  }
+}
+
+.config-tab-settings .columns nav .pill .list-header {
+  color: @textColor;
+  position: relative;
+  font-weight: bold;
+}
+
+.config-tab-settings .columns nav .outer {
+  margin-left: 6px;
+  margin-right: 11px;
+}
+
+.config-tab-settings .columns {
+  .console-field-remove {
+    right: 3px;
+  }
+
+  .multi-field-column-remove {
+    right: 6px;
+    color: @sicon-color;
+  }
+
+  .console-field-remove,
+  .multi-field-column-remove {
+    top: 2px;
+    z-index: 1;
+    cursor: pointer;
+    position: absolute;
+  }
+
+  .multi-field-hint {
+    position: relative;
+    left: 8px;
+    top: 10px;
+    color: @gray70;
+  }
+
+  .list-header {
+    padding: 4px 28px 0 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .multi-field-block {
+    height: 75px;
+    padding-left: 0;
+    margin-bottom: 5px;
+  }
+
+  .pill {
+    &:not(.multi-field-block) {
+      padding-right: 20px;
+    }
+  }
+}

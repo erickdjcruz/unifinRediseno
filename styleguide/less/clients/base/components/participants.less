@@ -1,0 +1,289 @@
+
+/* Invitees/Participants Field Styling */
+.participants-schedule {
+  display: table;
+  width: 100%;
+  margin-left: -1px;
+
+  &.new {
+    width: 100%;
+  }
+
+  .row {
+    display: table-row;
+    width: 100%;
+    margin-left: 0;
+
+    .cell {
+      display: table-cell;
+      vertical-align: middle;
+
+      .container {
+        display: table;
+        width: 100%;
+
+        &::before,
+        &::after {
+          display: none;
+        }
+      }
+
+      &.times {
+        .timeblock {
+          display: table-cell;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    &.header {
+      border: none;
+
+      * {
+        font-size: 11px;
+        font-weight: normal;
+        color: @gray70;
+      }
+
+      .cell {
+        &.times {
+          border-right: 1px transparent;
+
+          .timeblock {
+            width: 11.111%;
+            text-align: center;
+            line-height: 16px;
+            border-radius: 2px;
+
+            &.alt {
+              background-color: @gray20;
+            }
+          }
+        }
+      }
+    }
+
+    &.spacer {
+      .cell {
+        height: 5px;
+      }
+    }
+  }
+
+  .participant {
+    .cell {
+      border: @borderWidget;
+    }
+
+    .profile {
+      width: 170px;
+      border-width: 1px 0 1px 1px;
+      border-radius: 3px 0 0 3px;
+      padding: 0 5px;
+      background-color: @primaryContentBackground;
+
+      .avatar {
+        min-width: 20px;
+        display: table-cell;
+        vertical-align: middle;
+        padding-right: 5px;
+
+        img {
+          border: none;
+        }
+      }
+
+      .name {
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 11px;
+        font-weight: bold;
+        white-space: nowrap;
+
+        .ellipsis_inline {
+          width: 95px;
+          display: inline-block !important;
+          vertical-align: middle;
+        }
+      }
+
+      .status {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 5px;
+
+        .label {
+          float: right;
+        }
+      }
+    }
+
+    .times {
+      border-width: 1px 1px 1px 0;
+      border-radius: 0 3px 3px 0;
+      position: relative;
+      background-color: @contentBackground;
+      width: 100%;
+
+      &.unavailable,
+      &.loading {
+        .overlay {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-color: fade(@black, 10%);
+          font-size: 11px;
+          font-weight: bold;
+          text-align: center;
+          line-height: 33px;
+          text-shadow: 0 1px 0 fade(@white, 2.5%);
+        }
+
+        .container {
+          .timeblock {
+            border-color: @borderColor;
+          }
+        }
+      }
+
+      .container {
+        border-radius: 0 3px 3px 0;
+
+        .timeblock {
+          width: 11.111%;
+          height: 32px;
+          border-left: @borderWidget;
+
+          &:last-child {
+            border-radius: 0 3px 3px 0;
+          }
+
+          span {
+            width: 25%;
+            height: inherit;
+            display: inline-block;
+            float: left;
+            border-left: @borderWidget;
+            box-sizing: border-box;
+
+            &:first-child {
+              border: none;
+            }
+
+            &.busy {
+              background-color: fade(@black, 20%);
+              border-left: 1px solid @gray60;
+            }
+          }
+        }
+      }
+
+      .start_end_overlay {
+        position: absolute;
+        top: 4px;
+        height: 24px;
+        background-color: fade(@blue, 65%);
+        box-shadow: inset 1px 0 0 0 fade(@white, 50%), inset -1px 0 0 0 fade(@white, 50%);
+        border-left: 3px solid @darkGreen;
+
+        &.right_border {
+          border-right: 3px solid @red;
+        }
+      }
+    }
+
+    .buttons {
+      border: none;
+      width: 72px;
+
+      .btn-toolbar {
+        margin: 0 -2px 0 0;
+        padding-left: 0;
+        white-space: nowrap;
+        width: 72px;
+
+        .btn {
+          line-height: 12px;
+          padding: 7px;
+
+          & + .btn {
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.participants-form {
+  .cell {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .profile {
+    min-width: 199px;
+  }
+
+  .select {
+    width: 100%;
+
+    .field {
+      margin-left: -199px;
+    }
+  }
+
+  .buttons {
+    width: 72px;
+
+    .btn-toolbar {
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+      width: 70px;
+
+      .btn-group + .btn-group {
+        margin-left: 8px;
+      }
+
+      .btn {
+        padding: 7px;
+      }
+    }
+  }
+}
+// for preview pane
+.participants {
+  display: table;
+
+  .row {
+    display: table-row;
+
+    .cell {
+      display: table-cell;
+      vertical-align: middle;
+      height: 34px;
+      padding: 0 5px;
+    }
+
+    &.spacer {
+      .cell {
+        height: 5px;
+      }
+    }
+  }
+
+  .participant {
+    border: 1px solid @gray60;
+    border-radius: 3px;
+  }
+
+  .name {
+    font-size: 11px;
+    font-weight: bold;
+    width: 95px;
+    max-width: 95px;
+  }
+}

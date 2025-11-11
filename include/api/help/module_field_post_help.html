@@ -1,0 +1,202 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Create a new custom field for a specified module.
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint is used to create a new custom field for a specified module.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            data
+        </td>
+        <td>
+            array
+        </td>
+        <td>
+            The field metadata.
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Request Examples</h3>
+<pre class="pre-scrollable">
+{
+    "localizations": {
+      "en_us": {
+          "LBL_AI_SCORE": "Ai Score"
+      },
+      ...
+    },
+    "data":{
+      "name":"ai_score",
+      "label":"LBL_AI_SCORE",
+      "type":"decimal",
+      "len":"18",
+      "precision":8,
+      "required":false,
+      "reportable":false,
+      "audited":false,
+      "importable":false,
+      "duplicate_merge":false
+    }
+}
+</pre>
+
+Above example will create a decimal type custom field.
+
+<h4>More Request Payload Examples:<h4>
+
+Creates a textField type custom field:
+
+<pre class="pre-scrollable">
+{
+    "localizations": {
+      "en_us": {
+          "LBL_AI_SCORE_DESC": "Ai Score Description"
+      },
+      ...
+    },
+    "data":{
+      "name":"ai_score_desc",
+      "label":"LBL_AI_SCORE_DESC",
+      "type":"varchar",
+      "help":"Text Field Help Text",
+      "comments":"Text Field Comment Text",
+      "default_value":"",
+      "len":255,
+      "required":false,
+      "reportable":true,
+      "audited":false,
+      "importable":"true",
+      "duplicate_merge":false
+    }
+}
+</pre>
+
+Creates an enum type custom field with a new dropdown list:
+
+<pre class="pre-scrollable">
+{
+    "localizations": {
+      "en_us": {
+          "LBL_DROPDOWN_FIELD": "New Dropdown Field",
+          "LBL_DD_ITEM_ONE": "First Text",
+          "LBL_DD_ITEM_TWO": "Second Text",
+          "LBL_DD_ITEM_THREE": "Third Text"
+      },
+      ...
+    },
+    "data": {
+      "name":"new_dropdown_field",
+      "label":"LBL_DROPDOWN_FIELD",
+      "type":"enum",
+      "options": {
+        "dropdownName": "a_new_dropdown",
+        "dropdownList": [
+          {"value":"First", "label":"LBL_DD_ITEM_ONE"},
+          {"value":"Second", "label":"LBL_DD_ITEM_TWO"},
+          {"value":"Third", "label":"LBL_DD_ITEM_THREE"}
+        ]
+      },
+      "default_value":"First"
+    }
+}
+</pre>
+
+Creates an enum type custom field using an existing dropdown list:
+
+<pre class="pre-scrollable">
+{
+    "localizations": {
+      "en_us": {
+          "LBL_DROPDOWN_FIELD": "New Dropdown Field"
+      },
+      ...
+    },
+    "data": {
+      "name":"new_dropdown_field",
+      "label":"LBL_DROPDOWN_FIELD",
+      "type":"enum",
+      "options": "account_type_dom",
+      "default_value":"Analyst"
+    }
+}
+</pre>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+{
+    "duplicate_merge_dom_value": 0,
+    "required": false,
+    "source": "custom_fields",
+    "name": "ai_score_c",
+    "vname": "LBL_AI_SCORE",
+    "type": "decimal",
+    "massupdate": false,
+    "hidemassupdate": false,
+    "no_default": false,
+    "comments": "",
+    "help": "",
+    "importable": "",
+    "duplicate_merge": "disabled",
+    "audited": false,
+    "reportable": false,
+    "unified_search": false,
+    "merge_filter": "disabled",
+    "pii": false,
+    "calculated": false,
+    "len": 18,
+    "size": "20",
+    "enable_range_search": false,
+    "precision": "8",
+    "id": "ca9653de-0976-11eb-a558-6c400895ea84",
+    "custom_module": "Opportunities"
+}
+</pre>
+
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11.11
+        </td>
+        <td>
+            Added <code>/&lt;module&gt;/customfield/</code> POST endpoint.
+        </td>
+    </tr>
+</table>

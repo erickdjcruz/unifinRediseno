@@ -1,0 +1,241 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Forecast Metrics
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    Returns metrics data for Forecasts-related modules
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            module
+        </td>
+        <td>
+           string
+        </td>
+        <td>
+            The name of the Forecast-related module to gather metrics from
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    <tr>
+        <td>
+            filter
+        </td>
+        <td>
+            array
+        </td>
+        <td>
+            A base module filter definition that will apply to all metrics passed in
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            user_id
+        </td>
+        <td>
+            string
+        </td>
+        <td>
+            The ID of the Forecasts user to gather metrics for
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    <tr>
+        <td>
+            type
+        </td>
+        <td>
+            string
+        </td>
+        <td>
+            The type of the Forecast user to gather metrics for ("Rollup" for managers, "Direct" for individual salespeople)
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    <tr>
+        <td>
+            time_period
+        </td>
+        <td>
+            string
+        </td>
+        <td>
+            The ID of the time period to gather metrics for. If not provided, will default to the current time period
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            metrics
+        </td>
+        <td>
+            array
+        </td>
+        <td>
+            An array of metrics definitions to gather metrics for. Each metric definition is an object consisting of:
+            <ul>
+                <li>
+                    name (string): A unique name used to identify the metric
+                </li>
+                <li>
+                    sum_fields (array): The fields of the module to sum up in the metric. All fields in the array
+                    will be summed together. Must consist only of valid numeric DB fields
+                </li>
+                <li>
+                    filter (array): Any additional module filtering specific to the metric. This filter will be applied
+                    in addition to the one passed in through the base filter argument
+                </li>
+            </ul>
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <tr>
+        <td>
+            metrics
+        </td>
+        <td>
+            array
+        </td>
+        <td>
+            The list of metric results. Each metric result is an object consisting of:
+            <li>
+                count: the metric unique name
+            </li>
+            <li>
+                sum: the sum of the metric's sum_fields
+            </li>
+            <li>
+                count: the count of records included in the metric
+            </li>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "module":"Opportunities",
+    "filter":[
+        {
+            "name": {
+                "$starts":"example"
+            }
+        }
+    ],
+    "user_id":"67aa9afe-ba92-11ec-b8e3-acde48001122",
+    "type":"Direct",
+    "time_period":"0dfae418-ba93-11ec-9b49-acde48001122",
+    "metrics":[
+        {
+            "name":"example_metric",
+            "sum_fields":["amount"],
+            "filter":[
+                {
+                    "description": {
+                        "$equals":"example"
+                    }
+                }
+            ]
+        },
+        {
+            "name":"example_metric_2",
+            "sum_fields":["best_case"],
+            "filter":[
+                {
+                    "description": {
+                        "$equals":"example_2"
+                    }
+                }
+            ]
+        }
+    ]
+}
+</pre>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+{
+   "metrics":[
+        {
+            "name":"example_metric",
+            "sum":1234.00,
+            "count":3
+        }
+        {
+            "name":"example_metric_2",
+            "sum":5634.00,
+            "count":5
+        }
+    ]
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_17
+        </td>
+        <td>
+            Added <code>/Forecasts/metrics</code> POST endpoint.
+        </td>
+    </tr>
+</table>

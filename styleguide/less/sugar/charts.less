@@ -1,0 +1,314 @@
+/* CHARTS
+  ----------------*/
+
+//HOMEPAGE
+.dashboard {
+  .dashlet:not(.collapsed) {
+    // 100% of parent container's size
+    .dashlet-content > div {
+      height: 100%;
+    }
+
+    // parent - 16px (chart margins)
+    .sc-chart,
+    .nv-chart {
+      height: ~'calc(100% - 16px)';
+    }
+
+    // parent - space for words to appear above/below chart as needed
+    .sales-pipeline-wrapper {
+      height: ~'calc(100% - 48px)';
+
+      .sales-pipeline-chart {
+        height: ~'calc(100% - 16px)';
+      }
+    }
+    // parent - 55px (dashlet toolbar)
+    .dashlet-options + .sc-chart,
+    .dashlet-options + .nv-chart,
+    .process-users-chart .sc-chart,
+    .process-users-chart .nv-chart,
+    .sales-pipeline-wrapper,
+    .opportunity-pipeline-wrapper .nv-chart,
+    .forecast-pareto-chart,
+    .forecasts-chart-wrapper .nv-chart {
+      height: ~'calc(100% - 55px)';
+    }
+    // parent - 39px (block footer)
+    .twitter-widget.scroll {
+      max-height: ~'calc(100% - 39px)';
+    }
+
+    // override D3 default to fill allotted space
+    svg {
+      max-height: 100%;
+    }
+  }
+}
+
+//SIDEBAR
+.sidebar-content {
+  .thumbnail.dashlet:not(.collapsed) {
+    // parent - 16px (margins)
+    .sc-chart,
+    .nv-chart {
+      height: ~'calc(100% - 16px)';
+    }
+    // parent - 55px (dashlet options + margins)
+    .dashlet-options + .sc-chart,
+    .dashlet-options + .nv-chart,
+    .process-users-chart .sc-chart,
+    .process-users-chart .nv-chart,
+    .sales-pipeline-chart,
+    .opportunity-pipeline-wrapper .nv-chart,
+    .forecast-pareto-chart,
+    .forecasts-chart-wrapper .nv-chart {
+      height: ~'calc(100% - 55px)';
+    }
+
+    .opportunity-metrics-wrapper {
+      // parent - 8px (top margin)
+      [data-content='chart'] {
+        height: ~'calc(100% - 8px)';
+      }
+
+      // parent - 67px (tabs) - 22px (chart margins)
+      .opportunity-metrics-chart {
+        margin-bottom: 14px;
+        height: ~'calc(100% - 89px)';
+      }
+    }
+
+    .cases-summary-wrapper {
+      // parent - 8px (top margin)
+      [data-content='chart'] {
+        height: ~'calc(100% - 8px)';
+      }
+
+      .nav-tabs li {
+        margin-top: 0;
+      }
+
+      .tab-content {
+        // parent - 52px (tabs)
+        height: ~'calc(100% - 52px)';
+
+        .tab-pane {
+          // parent - 8px (top margin)
+          height: ~'calc(100% - 8px)';
+
+          .cases-summary-chart,
+          .nv-chart-cases {
+            // parent - 16px (chart margins)
+            height: ~'calc(100% - 8px)';
+          }
+        }
+      }
+    }
+  }
+}
+
+.drillthrough-pane .sc-chart {
+  min-height: 348px;
+}
+
+//interactions
+//opportunity-metrics
+//casessummary
+span.count {
+  font-size: 16px;
+  display: block;
+
+  &.label {
+    font-size: 14px;
+    display: inline-block;
+    width: @countBadgeWidth;
+    height: @countBadgeHeight;
+    line-height: 22px;
+    padding: 3px;
+  }
+}
+
+.rotatedLabel {
+  transform: rotate(-90deg);
+}
+
+.rotatedLabelReverse {
+  transform: rotate(90deg);
+}
+
+// org tree chart
+
+@-webkit-keyframes animaopacity {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-moz-keyframes animaopacity {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-o-keyframes animaopacity {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes animaopacity {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.organization-chart,
+.nv-chart-org {
+  .sc-org-bkgd,
+  .nv-org-bkgd {
+    stroke: @gray40;
+    stroke-width: 2px;
+  }
+
+  .sc-org-node,
+  .nv-org-node {
+    text {
+      font: normal normal 300 10px/normal "Helvetica Neue", Arial, sans-serif;
+      font-stretch: normal;
+
+      &.sc-org-name,
+      &.nv-org-name {
+        font-size: 10px;
+        fill: @linkColor;
+
+        &.hover {
+          text-decoration: underline;
+        }
+      }
+
+      &.sc-org-title,
+      &.nv-org-title {
+        font-size: 8px;
+      }
+    }
+  }
+}
+
+// org chart zoom control
+.btn-slider {
+  display: inline-block;
+  padding: 5px;
+
+  .noUiSlider {
+    width: 50px;
+    height: 4px;
+    display: inline-block;
+    margin: 0;
+    position: relative;
+    top: -1px;
+  }
+
+  .noUiSliderEnds {
+    width: 50px;
+    margin: 0 30px 0 0;
+
+    .zoom-control {
+      position: absolute;
+      top: 3px;
+      cursor: pointer;
+
+      &.disabled {
+        color: @gray60 !important;
+      }
+    }
+
+    i[data-control="zoom-out"] {
+      left: -26px;
+    }
+
+    i[data-control="zoom-in"] {
+      right: -26px;
+    }
+
+    &::before,
+    &::after {
+      top: 6px;
+      height: 4px;
+    }
+
+    &::before {
+      border-radius: 2px 0 0 2px;
+      left: -6px;
+    }
+
+    &::after {
+      border-radius: 0 2px 2px 0;
+      right: -6px;
+    }
+  }
+}
+
+.chart-icon svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  display: block;
+  padding: 3px;
+}
+
+//Opportunities Treemap
+.stage_closedwon {
+  fill: @army;
+}
+
+.stage_prospecting {
+  fill: darken(@darkOrange, 35%);
+}
+
+.stage_closedlost {
+  fill: @red;
+}
+
+.stage_qualification {
+  fill: @orange;
+}
+
+.stage_thisopp {
+  fill: @darkTeal;
+}
+
+.stage_negotiationreview {
+  fill: darken(@green, 40%);
+}
+
+.stage_perceptionanalysis {
+  fill: darken(@green, 30%);
+}
+
+.stage_proposalpricequote {
+  fill: darken(@green, 45%);
+}
+
+.stage_valueproposition {
+  fill: @orange;
+}
+
+.stage_iddecisionmakers {
+  fill: @purple;
+}
+
+.stage_needsanalysis {
+  fill: darken(@yellow, 10%);
+}
+
+// needed so that the report chart print to image canvas is off-screen
+.sc-print {
+  visibility: hidden;
+  position: absolute !important;
+  left: -10000px;
+  width: 720px;
+  height: 480px;
+}
+
+.sc-print-chart {
+  width: 1000px;
+  height: 800px;
+  top: 0;
+}

@@ -1,0 +1,4 @@
+(function register(app){app.events.on('app:init',function init(){function RunReport(def){this.def=def;}
+RunReport.prototype.run=function(opts,currentExecution){const def=this.def;const properties=def.properties;const reportId=properties.id;const url=this.createUrl(reportId);this.open(url);currentExecution.nextAction();};RunReport.prototype.open=function(url){window.open(url,'_blank');};RunReport.prototype.createUrl=function(reportId){const url=window.location.origin+
+window.location.pathname+'#Reports/'+
+reportId;return url;};app.actions=app.actions||{};app.actions=_.extend(app.actions,{RunReport:RunReport});});})(SUGAR.App);

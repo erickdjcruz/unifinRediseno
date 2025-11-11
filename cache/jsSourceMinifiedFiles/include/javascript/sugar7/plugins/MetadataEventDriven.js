@@ -1,0 +1,2 @@
+(function(app){app.events.on('app:init',function(){app.plugins.register('MetadataEventDriven',['field'],{triggerMetadataEvent:function(domEvent,metadataEvent){if(this.view.context){this.view.context.trigger(metadataEvent,this.model);}
+if(this.view.layout){this.view.layout.trigger(metadataEvent,this.model);}}});});})(SUGAR.App);

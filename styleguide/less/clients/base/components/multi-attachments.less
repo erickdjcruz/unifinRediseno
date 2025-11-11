@@ -1,0 +1,185 @@
+.record-cell {
+  &.edit {
+    span[data-fieldname="attachment_list"],
+    div[data-name="attachment_list"] {
+      > span.edit {
+        margin-left: -6px;
+
+        .select2-search-choice a {
+          margin-top: 3px;
+          margin-right: 2px;
+          padding-left: 4px;
+        }
+
+        .select2-container {
+          &.with-padding {
+            margin-left: 5px !important;
+            width: 99.6%;
+
+            .select2-choices {
+              padding-left: 66px !important;
+              padding-top: 2px;
+              padding-bottom: 2px;
+
+              .select2-search-choice {
+                padding: 1px 2px 1px 6px;
+
+                div {
+                  float: left;
+
+                  span.select2-choice-type {
+                    line-height: 6px;
+                  }
+                }
+
+                a.multi-attachment-link {
+                  float: left;
+                  padding-left: 5px;
+                  margin-right: -3px;
+                  margin-top: 1px;
+                }
+
+                a.multi-attachment-link-type {
+                  float: right;
+                  margin-top: 1px;
+                  margin-left: 3px;
+                }
+              }
+            }
+          }
+        }
+
+        label.multi-attach-btn {
+          line-height: 12px;
+          margin-top: -7px;
+          padding: 4px 7px;
+        }
+      }
+    }
+  }
+
+  .normal {
+    &[data-fieldname="attachment_list"] {
+      .detail {
+        padding-top: 0;
+        padding-left: 0;
+
+        .select2-container {
+          .select2-choices {
+            border: none;
+
+            button.multi-attach-download-all-btn {
+              margin-top: 2px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+[data-fieldname="attachment_list"] {
+  .select2-container {
+    margin-left: -1px !important;
+  }
+}
+
+div.multi-attachments-detail-view {
+  ul.select2-choices {
+    li.select2-search-choice {
+      span.select2-choice-type {
+        margin: 0 !important;
+
+        a,
+        span {
+          &.multi-attachment-link {
+            max-width: 100px;
+          }
+        }
+      }
+
+      a.select2-search-choice-close {
+        float: right;
+        margin-top: 0;
+      }
+    }
+  }
+
+  .multi-attach-download-all-btn {
+    padding: 0 5px;
+    margin: 0 0 2px;
+
+    i.sicon-download {
+      padding: 0 5px;
+    }
+  }
+}
+
+.multi-attachment-link {
+  color: @white;
+
+  &:hover {
+    color: @white;
+  }
+}
+
+label.multi-attach-btn {
+  position: absolute;
+  z-index: 10;
+  top: 10px;
+  left: 16px;
+  width: 50px;
+  margin: -5px 0 0 -7px;
+}
+
+.preview-pane {
+  [data-type="multi-attachments"] {
+    padding-top: 0;
+    padding-left: 0;
+    overflow: auto;
+
+    .detail {
+      .select2-choices {
+        border: none;
+        background-color: transparent;
+      }
+    }
+  }
+
+  ul.select2-choices {
+    li.select2-search-choice {
+      span.select2-choice-type {
+        a.multi-attachment-link,
+        a.multi-attachment-link-type {
+          margin-top: 1px !important;
+          float: left;
+          display: inline-block !important;
+          line-height: 6px;
+          top: 0;
+        }
+      }
+    }
+  }
+}
+
+html.rtl {
+  .record .record-cell {
+    &.edit {
+      span[data-fieldname="attachment_list"] {
+        > span.edit {
+          .select2-container {
+            &.with-padding {
+              .select2-choices {
+                margin-left: 3px;
+              }
+            }
+          }
+
+          label.multi-attach-btn {
+            margin-left: -3px;
+          }
+        }
+      }
+    }
+  }
+}

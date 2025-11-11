@@ -1,0 +1,8 @@
+(function(app){app.events.on("app:init",function(){var hashKey=null;var pinged=false;app.plugins.register('Connector',['view'],{checkConnector:function(name,successCall,errorCall,connectorCriteria){var connectors,connector=null;var self=this;var successCallWrapper=_.bind(function(){this.checkConnector(name,successCall,errorCall,connectorCriteria);},this);if(hashKey===null){pinged=true;this.getConnectors(name,successCallWrapper);}
+else{connectors=app.cache.get(hashKey);if(connectors&&connectors[name]){connector=connectors[name];}
+if((connector)&&(this.checkCriteria(connector,connectorCriteria))){connector.connectorHash=hashKey;successCall(connector);}
+else{if(pinged===false){pinged=true;_.defer(function(){self.getConnectors(name,successCallWrapper);});}
+else{pinged=false;errorCall(connector);}}}},checkCriteria:function(connector,criteria){var check=true;_.each(criteria,function(criterion){if(criterion==='test_passed'){if(connector.testing_enabled){check=check&&connector.test_passed;}}
+else{check=check&&connector[criterion];}
+if(!check){return check;}});return check;},getConnectorModuleFieldMapping:function(connector,module){var connectors=app.cache.get(hashKey);var mappings={};if(connectors[connector]&&connectors[connector].field_mapping&&connectors[connector].field_mapping.beans&&connectors[connector].field_mapping.beans[module]){mappings=connectors[connector].field_mapping.beans[module];}
+return mappings;},getConnectors:function(name,successCall){var connectorURL=app.api.buildURL('connectors');app.api.call('GET',connectorURL,{},{success:function(data){hashKey=data['_hash'];app.cache.set(hashKey,data['connectors']);successCall();}});}});});})(SUGAR.App);

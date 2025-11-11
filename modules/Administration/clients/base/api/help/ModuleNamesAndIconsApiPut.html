@@ -1,0 +1,149 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Module Name and Icons
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    Set module names(singular and plural), icon and color for modules
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            language
+        </td>
+        <td>
+           string
+        </td>
+        <td>
+            The selected language for which the user is renaming (eg. en_us).
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    <tr>
+        <td>
+            changedModules
+        </td>
+        <td>
+            array
+        </td>
+        <td>
+            List of module objects that are being modified
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            modules
+        </td>
+        <td>
+            array
+        </td>
+        <td>
+            List of module objects that are being modified. Each array object consists of:
+            <li>
+                module_key: the module key
+            </li>
+            <li>
+                module_singular: the module singular name
+            </li>
+            <li>
+                module_plural: the module plural name
+            </li>
+            <li>
+                module_icon: the module icon (eg: sicon-account-lg)
+            </li>
+            <li>
+                module_color: the module color
+            </li>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "language":"en_us",
+    "changedModules":[
+        {
+            "module_color": "coral",
+            "module_icon": "sicon-opportunity-lg",
+            "module_key": "Opportunities",
+            "module_name": "Opportunities",
+            "module_plural": "Deals",
+            "module_singular": "Deal",
+        },
+    ],
+}
+</pre>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+[
+  {
+    "module_key": "Opportunities",
+    "module_name": "Opportunities",
+    "module_singular": "Deal",
+    "module_plural": "Deals",
+    "module_color": "coral",
+    "module_icon": "sicon-opportunity-lg"
+  }
+]
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_19
+        </td>
+        <td>
+            Added <code>/Administration/module-names-and-icons/:language</code> PUT endpoint.
+        </td>
+    </tr>
+</table>

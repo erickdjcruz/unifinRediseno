@@ -1,0 +1,330 @@
+// Color coded tile view background colors
+// -------------------------------------------------------------
+
+.kanban-col {
+  position: relative;
+
+  .column-fade {
+    &-top {
+      z-index: 2000;
+
+      &.fade-alpha-0 {
+        background-image: var(--fade-alpha-t-pink);
+      }
+
+      &.fade-alpha-1 {
+        background-image: var(--fade-alpha-t-ocean);
+      }
+
+      &.fade-alpha-2 {
+        background-image: var(--fade-alpha-t-green);
+      }
+
+      &.fade-alpha-3 {
+        background-image: var(--fade-alpha-t-orange);
+      }
+
+      &.fade-alpha-4 {
+        background-image: var(--fade-alpha-t-red);
+      }
+
+      &.fade-alpha-5 {
+        background-image: var(--fade-alpha-t-pacific);
+      }
+
+      &.fade-alpha-6 {
+        background-image: var(--fade-alpha-t-coral);
+      }
+
+      &.fade-alpha-7 {
+        background-image: var(--fade-alpha-t-purple);
+      }
+
+      &.fade-alpha-8 {
+        background-image: var(--fade-alpha-t-teal);
+      }
+
+      &.fade-alpha-9 {
+        background-image: var(--fade-alpha-t-army);
+      }
+
+      &.fade-alpha-10 {
+        background-image: var(--fade-alpha-t-yellow);
+      }
+
+      &.fade-alpha-11 {
+        background-image: var(--fade-alpha-t-gray);
+      }
+    }
+
+    &-bottom {
+      bottom: 0;
+
+      &.fade-alpha-0 {
+        background-image: var(--fade-alpha-b-pink);
+      }
+
+      &.fade-alpha-1 {
+        background-image: var(--fade-alpha-b-ocean);
+      }
+
+      &.fade-alpha-2 {
+        background-image: var(--fade-alpha-b-green);
+      }
+
+      &.fade-alpha-3 {
+        background-image: var(--fade-alpha-b-orange);
+      }
+
+      &.fade-alpha-4 {
+        background-image: var(--fade-alpha-b-red);
+      }
+
+      &.fade-alpha-5 {
+        background-image: var(--fade-alpha-b-pacific);
+      }
+
+      &.fade-alpha-6 {
+        background-image: var(--fade-alpha-b-coral);
+      }
+
+      &.fade-alpha-7 {
+        background-image: var(--fade-alpha-b-purple);
+      }
+
+      &.fade-alpha-8 {
+        background-image: var(--fade-alpha-b-teal);
+      }
+
+      &.fade-alpha-9 {
+        background-image: var(--fade-alpha-b-army);
+      }
+
+      &.fade-alpha-10 {
+        background-image: var(--fade-alpha-b-yellow);
+      }
+
+      &.fade-alpha-11 {
+        background-image: var(--fade-alpha-b-gray);
+      }
+    }
+  }
+
+  hr {
+    border: 3px solid;
+  }
+
+  &.target-column {
+    outline: 2px dashed;
+  }
+
+  &.kanban-col-0 {
+    background-color: var(--pipeline-pink-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-pink-opposite);
+    }
+  }
+
+  .color-kanban-col-header-0 {
+    color: var(--pipeline-pink-opposite);
+  }
+
+  .badge-kanban-col-0 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-pink-opposite);
+  }
+
+  &.kanban-col-1 {
+    background-color: var(--pipeline-ocean-base-ac);
+
+    &.target-column {
+      outline-color: var(--pipeline-ocean-opposite);
+    }
+  }
+
+  .color-kanban-col-header-1 {
+    color: var(--pipeline-ocean-opposite);
+  }
+
+  .badge-kanban-col-1 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-ocean-opposite);
+  }
+
+  &.kanban-col-2 {
+    background-color: var(--pipeline-green-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-green-opposite);
+    }
+  }
+
+  .color-kanban-col-header-2 {
+    color: var(--pipeline-green-opposite);
+  }
+
+  .badge-kanban-col-2 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-green-opposite);
+  }
+
+  &.kanban-col-3 {
+    background-color: var(--pipeline-orange-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-orange-opposite);
+    }
+  }
+
+  .color-kanban-col-header-3 {
+    color: var(--pipeline-orange-opposite);
+  }
+
+  .badge-kanban-col-3 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-orange-opposite);
+  }
+
+  &.kanban-col-4 {
+    background-color: var(--pipeline-red-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-red-opposite);
+    }
+  }
+
+  .color-kanban-col-header-4 {
+    color: var(--pipeline-red-opposite);
+  }
+
+  .badge-kanban-col-4 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-red-opposite);
+  }
+
+  &.kanban-col-5 {
+    background-color: var(--pipeline-pacific-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-pacific-opposite);
+    }
+  }
+
+  .color-kanban-col-header-5 {
+    color: var(--pipeline-pacific-opposite);
+  }
+
+  .badge-kanban-col-5 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-pacific-opposite);
+  }
+
+  &.kanban-col-6 {
+    background-color: var(--pipeline-coral-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-coral-opposite);
+    }
+  }
+
+  .color-kanban-col-header-6 {
+    color: var(--pipeline-coral-opposite);
+  }
+
+  .badge-kanban-col-6 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-coral-opposite);
+  }
+
+  &.kanban-col-7 {
+    background-color: var(--pipeline-purple-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-purple-opposite);
+    }
+  }
+
+  .color-kanban-col-header-7 {
+    color: var(--pipeline-purple-opposite);
+  }
+
+  .badge-kanban-col-7 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-purple-opposite);
+  }
+
+  &.kanban-col-8 {
+    background-color: var(--pipeline-teal-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-teal-opposite);
+    }
+  }
+
+  .color-kanban-col-header-8 {
+    color: var(--pipeline-teal-opposite);
+  }
+
+  .badge-kanban-col-8 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-teal-opposite);
+  }
+
+  &.kanban-col-9 {
+    background-color: var(--pipeline-army-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-army-opposite);
+    }
+  }
+
+  .color-kanban-col-header-9 {
+    color: var(--pipeline-army-opposite);
+  }
+
+  .badge-kanban-col-9 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-army-opposite);
+  }
+
+  &.kanban-col-10 {
+    background-color: var(--pipeline-yellow-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-yellow-opposite);
+    }
+  }
+
+  .color-kanban-col-header-10 {
+    color: var(--pipeline-yellow-opposite);
+  }
+
+  .badge-kanban-col-10 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-yellow-opposite);
+  }
+
+  &.kanban-col-11 {
+    background-color: var(--pipeline-gray-base-a35);
+
+    &.target-column {
+      outline-color: var(--pipeline-gray-opposite);
+    }
+  }
+
+  .color-kanban-col-header-11 {
+    color: var(--pipeline-gray-opposite);
+  }
+
+  .badge-kanban-col-11 {
+    color: var(--contrast-color);
+    background-color: var(--pipeline-gray-opposite);
+  }
+}
+
+.current-column {
+  .kanban-col {
+    max-width: 15rem;
+  }
+}

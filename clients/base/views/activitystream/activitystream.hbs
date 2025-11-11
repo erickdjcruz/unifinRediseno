@@ -1,0 +1,91 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#eq model.attributes.activity_type "post"}}
+    <a href="#{{buildRoute module="Employees" id=model.attributes.created_by}}" id="avatar-post-{{model.attributes.id}}" class="pull-left avatar avatar-md" rel="tooltip" data-title="{{model.attributes.created_by_name}}" data-bs-placement="right">
+        {{#if model.attributes.picture_url}}
+            <img src="{{model.attributes.picture_url}}" alt="{{model.attributes.created_by_name}}">
+        {{else}}
+            <i class="sicon sicon-lg sicon-user" alt="{{model.attributes.created_by_name}}"></i>
+        {{/if}}
+    </a>
+{{else}}
+    {{#with model.attributes}}
+        {{moduleLabel display_parent_type 'lg' class='pull-left' rel="tooltip" data-bs-placement="right" title=(moduleIconToolTip display_parent_type)}}
+    {{/with}}
+{{/eq}}
+<p>
+    {{#if tpl}}
+        <div><span class="tagged">{{{str tpl "Activities" model.attributes.data}}}</span></div>
+    {{/if}}
+    {{#if embeds}}
+        <div class="embed">
+            {{#each embeds}}
+                <div>{{{this}}}</div>
+            {{/each}}
+        </div>
+    {{/if}}
+</p>
+<span class="details">
+    <a href="#{{buildRoute module="Employees" id=model.attributes.created_by}}">{{model.attributes.created_by_name}}</a>
+    <date class="date">
+        <span class="relativetime">
+            {{#if useRelativeTime}}
+                {{relativeTime model.attributes.date_entered class='date' rel='tooltip'}}
+            {{else}}
+                {{str "LBL_ACTIVITYSTREAM_RELATIVETIME_ON"}}{{formatDate model.attributes.date_entered}}
+            {{/if}}
+        </span>
+    </date>
+</span>
+{{#unless readonly}}
+    <div class="actions btn-group">
+        <button class="btn comment-btn" rel="tooltip" title="{{str 'LBL_COMMENT'}}" tabindex="0"
+                aria-label="{{str 'LBL_COMMENT'}}" aria-pressed="false"
+        >
+            <i class="sicon sicon-message"></i>
+        </button>
+    {{#unless nopreview}}
+        <button class="btn preview-btn {{#unless preview.enabled}}disabled{{/unless}}" rel="tooltip"
+                title="{{str preview.label}}" data-module="{{model.attributes.display_parent_type}}"
+                data-id="{{model.attributes.display_parent_id}}" tabindex="{{#if preview.enabled}}0{{else}}-1{{/if}}"
+                aria-label="{{str preview.label}}" aria-pressed="false"
+        >
+            <i class="sicon sicon-preview"></i>
+        </button>
+    {{/unless}}
+    </div>
+{{/unless}}
+<ul class="comments">
+    {{#if model.attributes.comment_count}}
+        {{#each model.attributes.comments.models}}
+            {{#with attributes}}
+                {{{subViewTemplate "activitystream.comment" this useRelativeTime=../../useRelativeTime}}}
+            {{/with}}
+        {{/each}}
+        {{#if remaining_comments}}
+            <li class="comment more-comments">
+                <a class="more">
+                    {{str more_tpl "Activities" remaining_comments}}
+                </a>
+            </li>
+        {{/if}}
+    {{/if}}
+    {{#unless readonly}}
+        <li class="comment reply-area hide">
+            <div class="reply-input">
+                <div data-placeholder="{{str "LBL_ACTIVITYSTREAM_COMMENT_PLACEHOLDER"}}" class="reply taggable" contenteditable="true" tabindex="0"></div>
+                <button class="btn btn-primary reply-btn disabled" tabindex="-1" aria-disabled="true">{{str "LBL_EMAIL_REPLY"}}</button>
+            </div>
+        </li>
+    {{/unless}}
+</ul>

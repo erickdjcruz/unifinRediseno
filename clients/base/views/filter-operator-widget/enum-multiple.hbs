@@ -1,0 +1,37 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="flex flex-row items-center m-2 ml-2.5 mr-2.5">
+    <input class="w-full" type="text" value="{{data._searchTerm}}" placeholder="{{str 'LBL_SEARCH'}}" data-fieldname="search-multiple">
+</div>
+<div class="dashboard-filters-multiselect-wrapper reports-runtime-widget">
+    <div class="flex flex-row items-center py-1.5 pl-2.5 pr-2.5 select-all">
+        <label class="text-[--text-color] h-full inline-flex my-0.5 w-full" for="selectAllCheckbox"><input class="mr-2.5" id="selectAllCheckbox" type="checkbox" name="select-all">{{str 'LBL_SELECT_ALL' 'Reports'}}</label>
+    </div>
+    <div class="report-multiselect-options overflow-y-auto">
+        {{#each data._optionsList}}
+            {{#if ../data._searchTerm}}
+                {{#includes this ../../data._searchTerm}}
+                    <div class="flex flex-row items-center p-1.5 pl-2.5 pr-2.5">
+                        <label class="flex w-full"><input class="mr-2.5" type="checkbox" value="{{@key}}" data-fieldname="enum-multiple" {{#includes ../../../data._inputValue @key}}checked{{/includes}}>
+                        {{this}}</label>
+                    </div>
+                {{/includes}}
+            {{else}}
+                <div class="flex flex-row items-center p-1.5 pl-2.5 pr-2.5">
+                    <label class="flex w-full"><input class="mr-2.5" type="checkbox" value="{{@key}}" data-fieldname="enum-multiple" {{#includes ../../data._inputValue @key}}checked{{/includes}}>
+                    {{this}}</label>
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
+</div>

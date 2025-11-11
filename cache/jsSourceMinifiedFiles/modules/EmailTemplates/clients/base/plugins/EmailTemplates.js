@@ -1,0 +1,7 @@
+(function(app){app.events.on('app:init',function(){app.plugins.register('EmailTemplates',['view'],{onAttach:function(component,plugin){this.on('init',function(){this.model.on('change:attachments_collection',this._toggleAttachmentsVisibility,this);this.on('insertClicked',this._insertVariable,this);});},_toggleAttachmentsVisibility:function(){var attachmentsField=this.getField('attachments_collection');if(!attachmentsField){return;}
+var $el=attachmentsField.getFieldElement();$el.closest('.record-cell').toggle(!attachmentsField.isEmpty());},_insertVariable:function(text){if(this.model.get('text_only')){this._insertVariableText(text);}else{this._insertVariableHtml(text);}},_insertVariableText:function(text){var field=this.getField('body');if(_.isEmpty(field)){return;}
+var textarea=_.first(field.$el.find('textarea'));if(_.isEmpty(textarea)){return;}
+if(document.selection){textarea.focus();var sel=document.selection.createRange();sel.text=text;}
+else if(textarea.selectionStart||textarea.selectionStart==='0'){var startPos=textarea.selectionStart;var endPos=textarea.selectionEnd;textarea.value=textarea.value.substring(0,startPos)+text+
+textarea.value.substring(endPos,textarea.value.length);}else{textarea.value+=text;}},_insertVariableHtml:function(text){var bodyField=this.getField('body_html');var editor=bodyField._htmleditor;editor.insertContent(text,{format:'raw'});},onDetach:function(){if(this.model){this.model.off('change:attachments_collection',this._toggleAttachmentsVisibility);}
+this.off('insertClicked',this._insertVariable);}});});})(SUGAR.App);

@@ -1,0 +1,54 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if loading}}
+    {{str 'LBL_LOADING'}}
+{{else}}
+    <table class="dataTable table-fixed">
+        <thead class="bg-[--primary-content-background] sticky sticky-border-b top-0">
+            <tr class="!border-b-0">
+    	        <td class="!max-w-[4rem]"></td>
+                {{#each names}}
+    	            <td class="!max-w-[1rem] overflow-hidden text-ellipsis text-xs whitespace-nowrap"
+                        data-placement="bottom" title="{{this.value}}">
+                        {{this.value}}
+                    </td>
+                {{/each}}
+            </tr>
+        </thead>
+        <tbody class="[&>tr:first-child]:border-t-0">
+            {{#each categories}}
+                <tr>
+                    <td class="!max-w-[4rem] overflow-hidden text-ellipsis text-right text-xs whitespace-nowrap"
+                        data-placement="bottom" title="{{getModuleName @key plural=true}}">
+                        {{getModuleName @key plural=true}}
+                    </td>
+                    {{#each this}}
+                        <td
+                            {{#eq accessLabel "none"}}
+                                class="!max-w-[1rem] overflow-hidden text-ellipsis text-[--activity-base-cancellation-color] whitespace-nowrap"
+                            {{else}}
+                                {{#eq accessLabel "admin_dev"}}
+                                    class="!max-w-[1rem] overflow-hidden text-ellipsis text-[--text-color] whitespace-nowrap"
+                                {{else}}
+                                    class="!max-w-[1rem] overflow-hidden text-ellipsis text-[--activity-base-color] whitespace-nowrap"
+                                {{/eq}}
+                            {{/eq}}
+                            data-placement="bottom" title="{{accessName}}">
+                            {{accessName}}
+                        </td>
+                    {{/each}}
+                </tr>
+            {{/each}}
+    	</tbody>
+    </table>
+{{/if}}

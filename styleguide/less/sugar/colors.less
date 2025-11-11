@@ -1,0 +1,172 @@
+/* COLORS
+  ----------------*/
+
+// Legacy colours - NOT TO BE USED ANYMORE
+// TODO: These should be removed
+// -------------------------
+.gray-darker { background-color: @grayDarker; }
+.gray-dark { background-color: @grayDark; }
+.gray-darkish { background-color: @grayDarkish; }
+.gray { background-color: @gray; }
+.gray-light { background-color: @grayLight; }
+.gray-lightish { background-color: @grayLightish; }
+.gray-mid { background-color: @grayMid; }
+.gray-lighter { background-color: @grayLighter; }
+.slate { background-color: @slate; }
+.steel { background-color: @steel; }
+
+.gray-darker-text { color: @grayDarker; }
+.gray-dark-text { color: @grayDark; }
+.gray-darkish-text { color: @grayDarkish; }
+.gray-text { color: @gray; }
+.gray-light-text { color: @grayLight; }
+.gray-lightish-text { color: @grayLightish; }
+.gray-mid-text { color: @grayMid; }
+.gray-lighter-text { color: @grayLighter; }
+.slate-text { color: @slate; }
+.steel-text { color: @steel; }
+
+.dark-green { background-color: @darkGreen; }
+.dark-red { background-color: @darkRed; }
+.dark-teal { background-color: @darkTeal; }
+.dark-blue { background-color: @darkBlue; }
+.dark-coral { background-color: @darkCoral; }
+.dark-orange { background-color: @darkOrange; }
+
+// Create classes for every colour in our palette
+.buildColorClasses(@color, @className) {
+  .@{className} {
+    background-color: @color;
+  }
+
+  .@{className}-text {
+    color: @color;
+  }
+}
+
+// Sugar's monochrome, primary and secondary color palettes
+.buildColorClasses(@black, ~"black");
+.buildColorClasses(@gray90, ~"gray90");
+.buildColorClasses(@gray80, ~"gray80");
+.buildColorClasses(@gray70, ~"gray70");
+.buildColorClasses(@gray60, ~"gray60");
+.buildColorClasses(@gray50, ~"gray50");
+.buildColorClasses(@gray40, ~"gray40");
+.buildColorClasses(@gray30, ~"gray30");
+.buildColorClasses(@gray20, ~"gray20");
+.buildColorClasses(@gray10, ~"gray10");
+.buildColorClasses(@white, ~"white");
+.buildColorClasses(@darkBlue, ~"darkBlue");
+.buildColorClasses(@blue, ~"blue");
+.buildColorClasses(@lightBlue, ~"lightBlue");
+.buildColorClasses(@darkArmy, ~"darkArmy");
+.buildColorClasses(@army, ~"army");
+.buildColorClasses(@lightArmy, ~"lightArmy");
+.buildColorClasses(@darkCoral, ~"darkCoral");
+.buildColorClasses(@coral, ~"coral");
+.buildColorClasses(@lightCoral, ~"lightCoral");
+.buildColorClasses(@darkGreen, ~"darkGreen");
+.buildColorClasses(@green, ~"green");
+.buildColorClasses(@lightGreen, ~"lightGreen");
+.buildColorClasses(@darkOcean, ~"darkOcean");
+.buildColorClasses(@ocean, ~"ocean");
+.buildColorClasses(@lightOcean, ~"lightOcean");
+.buildColorClasses(@darkOrange, ~"darkOrange");
+.buildColorClasses(@orange, ~"orange");
+.buildColorClasses(@lightOrange, ~"lightOrange");
+.buildColorClasses(@darkPacific, ~"darkPacific");
+.buildColorClasses(@pacific, ~"pacific");
+.buildColorClasses(@lightPacific, ~"lightPacific");
+.buildColorClasses(@darkPink, ~"darkPink");
+.buildColorClasses(@pink, ~"pink");
+.buildColorClasses(@lightPink, ~"lightPink");
+.buildColorClasses(@darkPurple, ~"darkPurple");
+.buildColorClasses(@purple, ~"purple");
+.buildColorClasses(@lightPurple, ~"lightPurple");
+.buildColorClasses(@darkRed, ~"darkRed");
+.buildColorClasses(@red, ~"red");
+.buildColorClasses(@lightRed, ~"lightRed");
+.buildColorClasses(@darkTeal, ~"darkTeal");
+.buildColorClasses(@teal, ~"teal");
+.buildColorClasses(@lightTeal, ~"lightTeal");
+.buildColorClasses(@darkYellow, ~"darkYellow");
+.buildColorClasses(@yellow, ~"yellow");
+.buildColorClasses(@lightYellow, ~"lightYellow");
+
+/* color coded enum colors */
+.enum-color-loop (@i) when (@i > 0) {
+  .enum-color@{i} {
+    color: ~"@{enum-fg@{i}}";
+    background-color: ~"@{enum-bg@{i}}";
+  }
+  .enum-color-loop(@i - 1);
+}
+.enum-color-loop (12);
+
+/* alert state colors */
+.info > .sicon { color: @inform; }
+
+.info-text,
+.info-text > .sicon { color: @infoText; }
+.info-background { background-color: @infoBackground; }
+.info-border { border-color: @infoBorder; }
+
+.success,
+.success > .sicon { color: @success; }
+
+.success-text,
+.success-text > .sicon { color: @successText; }
+.success-background { background-color: @successBackground; }
+.success-border { border-color: @successBorder; }
+
+.warning,
+.warning > .sicon { color: @warning; }
+
+.warning-text,
+.warning-text > .sicon { color: @warningText; }
+.warning-background { background-color: @warningBackground; }
+.warning-border { border-color: @warningBorder; }
+
+.error,
+.error > .sicon { color: @error; }
+
+.error-text,
+.error-text > .sicon { color: @errorText; }
+.error-background { background-color: @errorBackground; }
+.error-border { border-color: @errorBorder; }
+
+/* colors for D3 charts are in nv.d3.less */
+
+// Swatch colours for alert text + borders
+
+.warning-text-swatch {
+  background-color: @warningText;
+}
+
+.warning-border-swatch {
+  background-color: @warningBorder;
+}
+
+.error-text-swatch {
+  background-color: @errorText;
+}
+
+.error-border-swatch {
+  background-color: @errorBorder;
+}
+
+.success-text-swatch {
+  background-color: @successText;
+}
+
+.success-border-swatch {
+  background-color: @successBorder;
+}
+
+.info-text-swatch {
+  background-color: @infoText;
+}
+
+.info-border-swatch {
+  background-color: @infoBorder;
+}

@@ -1,0 +1,122 @@
+.dashlet-container-mixin() {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.dashboard-grid {
+  box-sizing: border-box;
+
+  .dashlet-container {
+    .dashlet-container-mixin();
+
+    .thumbnail.dashlet {
+      box-sizing: border-box;
+
+      .dashlet-title {
+        text-align: initial;
+        text-overflow: ellipsis;
+      }
+
+      .dashlet-content {
+        height: ~'calc(100% - 34px)';
+        overflow: auto;
+
+        .service_start_date_should_cascade,
+        .pagination .previous-fav,
+        .pagination .next-fav {
+          position: relative;
+          z-index: 91;
+        }
+      }
+
+      .list-pagination-wrapper {
+        overflow: hidden;
+      }
+    }
+
+    .dashboard.edit & {
+      .dashlet-container-mixin();
+    }
+
+    .console_dashboard .side-drawer & {
+      .dashlet-container-mixin();
+    }
+
+    .console_dashboard .side-drawer .dashboard.edit & {
+      .dashlet-container-mixin();
+    }
+
+    .agent_workbench_dashboard .side-drawer & {
+      .dashlet-container-mixin();
+    }
+
+    .agent_workbench_dashboard .side-drawer .dashboard.edit & {
+      .dashlet-container-mixin();
+    }
+  }
+
+  .ui-draggable-dragging {
+    .dashlet-container {
+      margin: 0;
+      opacity: 0.75;
+    }
+  }
+
+  .ui-resizable-resizing {
+    .dashlet-container {
+      opacity: 0.75;
+    }
+  }
+
+  .ui-draggable:not([data-gs-no-move='true']):not(.ui-draggable-disabled) .dashlet-header {
+    cursor: move;
+  }
+
+  .dashlet-header {
+    white-space: nowrap;
+  }
+
+  .grid-stack-item:focus {
+    outline: none;
+  }
+
+  .grid-stack-placeholder > .placeholder-content {
+    border-color: @pacific;
+    background-color: @lightPacific;
+    border-radius: @baseBorderRadius;
+  }
+
+  .empty-grid {
+    display: none;
+
+    &:only-child {
+      display: block;
+    }
+
+    .dashboard.edit & {
+      display: none;
+    }
+  }
+
+  .collapsed {
+    .dashlet-container {
+      overflow: visible;
+
+      .block-footer {
+        display: none;
+      }
+    }
+  }
+}
+
+.grid-stack-item {
+  &.ui-resizable-resizing {
+    iframe {
+      pointer-events: none;
+    }
+  }
+}
+
+.dashboard-grid .dashlet-container .dashlet.collapsed .list-pagination-wrapper {
+  overflow: hidden;
+}

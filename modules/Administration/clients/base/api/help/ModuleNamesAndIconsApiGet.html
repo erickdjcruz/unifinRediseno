@@ -1,0 +1,453 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Module Name and Icons
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    Get module names(singular and plural), icon and color for all renamable modules
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            language
+        </td>
+        <td>
+           string
+        </td>
+        <td>
+            The selected language for which the user is renaming (eg. en_us).
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            modules
+        </td>
+        <td>
+            array
+        </td>
+        <td>
+            The list of all modules that can be renamed. Each result is an object consisting of:
+            <li>
+                module_key: the module key
+            </li>
+            <li>
+                module_singular: the module singular name
+            </li>
+            <li>
+                module_plural: the module plural name
+            </li>
+            <li>
+                module_icon: the module icon (eg: sicon-account-lg)
+            </li>
+            <li>
+                module_color: the module color
+            </li>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "language":"en_us",
+}
+</pre>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+[
+    {
+    "module_key": "Home",
+    "module_name": "Home",
+    "module_singular": "Home",
+    "module_plural": "Home",
+    "module_color": "army",
+    "module_icon": "sicon-dashboard-default"
+    },
+    {
+    "module_key": "Contacts",
+    "module_name": "Contacts",
+    "module_singular": "Contact",
+    "module_plural": "Contacts",
+    "module_color": "pink",
+    "module_icon": "sicon-contact-lg"
+    },
+    {
+    "module_key": "Accounts",
+    "module_name": "Accounts",
+    "module_singular": "Account",
+    "module_plural": "Accounts",
+    "module_color": "green",
+    "module_icon": "sicon-account-lg"
+    },
+    {
+    "module_key": "Opportunities",
+    "module_name": "Opportunities",
+    "module_singular": "Opportunity",
+    "module_plural": "Opportunities",
+    "module_color": "coral",
+    "module_icon": "sicon-opportunity-lg"
+    },
+    {
+    "module_key": "Cases",
+    "module_name": "Cases",
+    "module_singular": "Case",
+    "module_plural": "Cases",
+    "module_color": "red",
+    "module_icon": "sicon-case-lg"
+    },
+    {
+    "module_key": "Notes",
+    "module_name": "Notes",
+    "module_singular": "Note",
+    "module_plural": "Notes",
+    "module_color": "green",
+    "module_icon": "sicon-note-lg"
+    },
+    {
+    "module_key": "Calls",
+    "module_name": "Calls",
+    "module_singular": "Call",
+    "module_plural": "Calls",
+    "module_color": "pacific",
+    "module_icon": "sicon-phone-lg"
+    },
+    {
+    "module_key": "Emails",
+    "module_name": "Emails",
+    "module_singular": "Email",
+    "module_plural": "Emails",
+    "module_color": "ocean",
+    "module_icon": "sicon-email-lg"
+    },
+    {
+    "module_key": "Meetings",
+    "module_name": "Meetings",
+    "module_singular": "Meeting",
+    "module_plural": "Meetings",
+    "module_color": "teal",
+    "module_icon": "sicon-meetings-lg"
+    },
+    {
+    "module_key": "Tasks",
+    "module_name": "Tasks",
+    "module_singular": "Task",
+    "module_plural": "Tasks",
+    "module_color": "purple",
+    "module_icon": "sicon-task-lg"
+    },
+    {
+    "module_key": "Calendar",
+    "module_name": "Calendar",
+    "module_singular": "Calendar",
+    "module_plural": "Calendar",
+    "module_color": "teal",
+    "module_icon": "sicon-calendar-lg"
+    },
+    {
+    "module_key": "Leads",
+    "module_name": "Leads",
+    "module_singular": "Lead",
+    "module_plural": "Leads",
+    "module_color": "purple",
+    "module_icon": "sicon-lead-lg"
+    },
+    {
+    "module_key": "Contracts",
+    "module_name": "Contracts",
+    "module_singular": "Contract",
+    "module_plural": "Contracts",
+    "module_color": "ocean",
+    "module_icon": "sicon-contracts-lg"
+    },
+    {
+    "module_key": "Quotes",
+    "module_name": "Quotes",
+    "module_singular": "Quote",
+    "module_plural": "Quotes",
+    "module_color": "pacific",
+    "module_icon": "sicon-quote-lg"
+    },
+    {
+    "module_key": "Products",
+    "module_name": "Quoted Line Items",
+    "module_singular": "Quoted Line Item",
+    "module_plural": "Quoted Line Items",
+    "module_color": "purple",
+    "module_icon": "sicon-quoted-line-items-lg"
+    },
+    {
+    "module_key": "ProductTemplates",
+    "module_name": "Product Catalog",
+    "module_singular": "Product",
+    "module_plural": "Product Catalog",
+    "module_color": "pink",
+    "module_icon": "sicon-catalog"
+    },
+    {
+    "module_key": "Reports",
+    "module_name": "Reports",
+    "module_singular": "Report",
+    "module_plural": "Reports",
+    "module_color": "orange",
+    "module_icon": "sicon-add-dashlet-lg"
+    },
+    {
+    "module_key": "Forecasts",
+    "module_name": "Forecasts",
+    "module_singular": "Forecast",
+    "module_plural": "Forecasts",
+    "module_color": "army",
+    "module_icon": "sicon-forecasts-lg"
+    },
+    {
+    "module_key": "Bugs",
+    "module_name": "Bugs",
+    "module_singular": "Bug",
+    "module_plural": "Bugs",
+    "module_color": "red",
+    "module_icon": "sicon-bug"
+    },
+    {
+    "module_key": "Project",
+    "module_name": "Projects",
+    "module_singular": "Project",
+    "module_plural": "Projects",
+    "module_color": "army",
+    "module_icon": "sicon-projects-lg"
+    },
+    {
+    "module_key": "Campaigns",
+    "module_name": "Campaigns",
+    "module_singular": "Campaign",
+    "module_plural": "Campaigns",
+    "module_color": "yellow",
+    "module_icon": "sicon-campaigns-lg"
+    },
+    {
+    "module_key": "Documents",
+    "module_name": "Documents",
+    "module_singular": "Document",
+    "module_plural": "Documents",
+    "module_color": "coral",
+    "module_icon": "sicon-document-lg"
+    },
+    {
+    "module_key": "pmse_Inbox",
+    "module_name": "Processes",
+    "module_singular": "Process",
+    "module_plural": "Processes",
+    "module_color": "orange",
+    "module_icon": "sicon-processes-lg"
+    },
+    {
+    "module_key": "pmse_Project",
+    "module_name": "Process Definitions",
+    "module_singular": "Process Definition",
+    "module_plural": "Process Definitions",
+    "module_color": "orange",
+    "module_icon": "sicon-process-definitions-lg"
+    },
+    {
+    "module_key": "pmse_Business_Rules",
+    "module_name": "Process Business Rules",
+    "module_singular": "Process Business Rule",
+    "module_plural": "Process Business Rules",
+    "module_color": "orange",
+    "module_icon": "sicon-process-business-rules-lg"
+    },
+    {
+    "module_key": "pmse_Emails_Templates",
+    "module_name": "Process Email Templates",
+    "module_singular": "Process Email Template",
+    "module_plural": "Process Email Templates",
+    "module_color": "orange",
+    "module_icon": "sicon-process-email-templates-lg"
+    },
+    {
+    "module_key": "BusinessCenters",
+    "module_name": "Business Centers",
+    "module_singular": "Business Center",
+    "module_plural": "Business Centers",
+    "module_color": "ocean",
+    "module_icon": "sicon-business-centers-lg"
+    },
+    {
+    "module_key": "Shifts",
+    "module_name": "Shifts",
+    "module_singular": "Shift",
+    "module_plural": "Shifts",
+    "module_color": "green",
+    "module_icon": "sicon-scheduler"
+    },
+    {
+    "module_key": "Purchases",
+    "module_name": "Purchases",
+    "module_singular": "Purchase",
+    "module_plural": "Purchases",
+    "module_color": "pacific",
+    "module_icon": "sicon-purchase-lg"
+    },
+    {
+    "module_key": "PurchasedLineItems",
+    "module_name": "Purchased Line Items",
+    "module_singular": "Purchased Line Item",
+    "module_plural": "Purchased Line Items",
+    "module_color": "army",
+    "module_icon": "sicon-purchased-line-items-lg"
+    },
+    {
+    "module_key": "Escalations",
+    "module_name": "Escalations",
+    "module_singular": "Escalation",
+    "module_plural": "Escalations",
+    "module_color": "red",
+    "module_icon": "sicon-escalation-lg"
+    },
+    {
+    "module_key": "DocumentTemplates",
+    "module_name": "Document Templates",
+    "module_singular": "Document Template",
+    "module_plural": "Document Templates",
+    "module_color": "coral",
+    "module_icon": "sicon-document-lg"
+    },
+    {
+    "module_key": "CloudDrivePaths",
+    "module_name": "Cloud Drive Paths",
+    "module_singular": "Cloud Drive Path",
+    "module_plural": "Cloud Drive Paths",
+    "module_color": "pacific",
+    "module_icon": "sicon-cloud"
+    },
+    {
+    "module_key": "Prospects",
+    "module_name": "Targets",
+    "module_singular": "Target",
+    "module_plural": "Targets",
+    "module_color": "yellow",
+    "module_icon": "sicon-target-lg"
+    },
+    {
+    "module_key": "ProspectLists",
+    "module_name": "Target Lists",
+    "module_singular": "Target List",
+    "module_plural": "Target Lists",
+    "module_color": "army",
+    "module_icon": "sicon-target-lists-lg"
+    },
+    {
+    "module_key": "Tags",
+    "module_name": "Tags",
+    "module_singular": "Tag",
+    "module_plural": "Tags",
+    "module_color": "pink",
+    "module_icon": "sicon-tag-lg"
+    },
+    {
+    "module_key": "OutboundEmail",
+    "module_name": "Email Settings",
+    "module_singular": "Email Setting",
+    "module_plural": "Email Settings",
+    "module_color": "ocean",
+    "module_icon": "sicon-email-lg"
+    },
+    {
+    "module_key": "DataPrivacy",
+    "module_name": "Data Privacy",
+    "module_singular": "Data Privacy",
+    "module_plural": "Data Privacy",
+    "module_color": "teal",
+    "module_icon": "sicon-data-privacy-lg"
+    },
+    {
+    "module_key": "Messages",
+    "module_name": "Messages",
+    "module_singular": "Message",
+    "module_plural": "Messages",
+    "module_color": "army",
+    "module_icon": "sicon-message-lg"
+    },
+    {
+    "module_key": "RevenueLineItems",
+    "module_name": "Revenue Line Items",
+    "module_singular": "Revenue Line Item",
+    "module_plural": "Revenue Line Items",
+    "module_color": "ocean",
+    "module_icon": "sicon-revenue-line-items-lg"
+    },
+    {
+    "module_key": "DocuSignEnvelopes",
+    "module_name": "DocuSign Envelopes",
+    "module_singular": "DocuSignEnvelope",
+    "module_plural": "DocuSign Envelopes",
+    "module_color": "ocean",
+    "module_icon": "sicon-contracts"
+    },
+    {
+    "module_key": "KBContents",
+    "module_name": "Knowledge Base",
+    "module_singular": "Knowledge Base Article",
+    "module_plural": "Knowledge Base",
+    "module_color": "coral",
+    "module_icon": "sicon-knowledgebase-xl"
+    }
+]
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_19
+        </td>
+        <td>
+            Added <code>/Administration/module-names-and-icons/:language</code> GET endpoint.
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,204 @@
+/* LEADS
+  ----------------*/
+
+//Converted Results View
+.dataTable.converted-results {
+  .associated {
+    font-weight: bold;
+  }
+
+  .preview-list-item {
+    line-height: 12px;
+    padding: 7px;
+  }
+}
+
+// ACCORDION
+// ---------
+#convert-accordion {
+  // Header
+  .accordion-heading {
+    background-color: @primaryContentBackground;
+    border-bottom: 0;
+    position: relative;
+    padding: 8px 13px;
+    min-height: 44px;
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+    }
+
+    .active-indicator {
+      line-height: 28px;
+      width: 10px;
+      margin-right: 6px;
+
+      i {
+        font-size: 10px;
+      }
+    }
+
+    .title {
+      line-height: 28px;
+    }
+
+    &.active {
+      background-color: @primaryContentActive;
+    }
+
+    &.enabled {
+      cursor: pointer;
+
+      .module-number {
+        font-weight: bold;
+      }
+
+      .title {
+        font-weight: bold;
+      }
+
+      &:hover {
+        background-color: @primaryContentHoverBackground;
+      }
+    }
+
+    &.enabled.active {
+      &:hover {
+        background-color: @primaryContentHoverBackground;
+      }
+    }
+
+    &:not(.enabled) {
+      color: @gray70;
+    }
+
+    .subview-toggle {
+      line-height: 26px;
+
+      .toggle-link {
+        padding: 15px 0;
+      }
+    }
+
+    .subview-toggle-indicator {
+      float: right;
+      margin-left: 12px;
+
+      i {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .convert-options {
+    border-bottom: @borderWidget;
+    padding-top: 14px;
+    padding-left: 24px;
+
+    .transfer-activities-label {
+      margin-left: 5px;
+    }
+  }
+
+  .accordion-body {
+    clear: both;
+
+    &.collapse.in {
+      overflow: visible;
+    }
+  }
+  // Inner needs the styles because you can't animate properly with any styles on the element
+  .accordion-inner {
+    padding: 1px 0;
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .accordion-group {
+    margin-bottom: 0;
+    border: none;
+    border-bottom: @borderWidget;
+    // for record edit view in duplist
+    .headerpane {
+      background: none;
+      border: none;
+      margin-top: 8px;
+      position: relative;
+      top: 0;
+      width: 100%;
+      height: 55px;
+      min-height: 55px;
+
+      span[data-type="fullname"].edit {
+        width: 100%;
+
+        .table-cell-wrapper {
+          width: 100%;
+        }
+      }
+
+      .record-cell[data-type="avatar"] {
+        padding: 4px 0 0 13px;
+
+        &.edit {
+          padding: 4px 0 0 17px;
+        }
+      }
+
+      .record-cell[data-type="follow"],
+      .record-cell[data-type="favorite"] {
+        display: none;
+      }
+
+      h1 {
+        margin-top: 26px;
+      }
+
+      .btn-toolbar.pull-right.dropdown {
+        display: none;
+      }
+
+      .label-module {
+        top: -7px;
+      }
+    }
+
+    .content-tabs .nav.nav-tabs .tab.active {
+      margin-top: 0;
+
+      a {
+        margin-top: 0;
+      }
+    }
+  }
+
+  .record.tab-layout {
+    margin-top: 6px;
+  }
+}
+
+#convert-accordion {
+  .want_filter {
+    display: none;
+  }
+}
+
+// Want Filter for Duplist
+div.want_filter {
+  line-height: 20px;
+
+  &.highlight {
+    padding: 10px;
+    text-align: center;
+    background-color: @duplicateTableRowBackground;
+    font-size: @fontSizeLarge;
+    color: @duplicateTableRowColor;
+  }
+}
+
+.accordion-heading .dupecheck-results {
+  color: @duplicateTableRowColor;
+}

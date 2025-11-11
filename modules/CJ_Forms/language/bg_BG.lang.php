@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Списък на действия в Sugar, свързани със Smart Guide',
+    'LBL_MODULE_TITLE' => 'Действие в Sugar, свързано със Smart Guide',
+    'LBL_HOMEPAGE_TITLE' => 'Моите действия в Sugar, свързани със Smart Guide',
+    'LNK_NEW_RECORD' => 'Ново действие в Sugar, свързано със Smart Guide',
+    'LNK_VIEW_RECORDS' => 'Преглед на действията в Sugar, свързани със Smart Guide',
+    'LNK_CJ_FORM_LIST' => 'Преглед на действията в Sugar, свързани със Smart Guide',
+    'LNK_LIST' => 'Действия в Sugar, свързани със Smart Guide',
+    'LBL_SEARCH_FORM_TITLE' => 'Търсене на действие в Sugar, свързано със Smart Guide',
+    'LBL_MODULE_NAME' => 'Действия в Sugar, свързани със Smart Guide',
+    'LBL_MODULE_NAME_SINGULAR' => 'Действие на Sugar, свързано със Smart Guide',
+    'LBL_TRIGGER_EVENT' => 'Стартирай събитие',
+    'LBL_ACTION_TYPE' => 'Тип на действието',
+    'LBL_PARENT_MODULE' => 'Модул на родител',
+    'LBL_RELATIONSHIP' => 'Връзка',
+    'LBL_ACTIVITY_TEMPLATE' => 'Шаблони на действия',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Интелигентно ръководство/Етап/Шаблон за активност',
+    'LBL_ACTIVE' => 'Активен',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'Шаблонът за активност %s вече има действие в Sugar, използващо Активиране на събитие %s. Има ограничение от едно активно действие в Sugar за всеки тип активиране на събитие за всеки етап или дейност в Smart Guide.',
+    'LBL_RECORDVIEW_PANEL4' => 'Попълване на полета',
+    'LBL_POPULATE_FIELDS' => 'Попълване на полета',
+    'LBL_ADD_FIELD' => 'Добави поле',
+    'LBL_REMOVE_FIELD' => 'Изтрий поле',
+    'LBL_FIELD_NAME' => 'Име на поле',
+    'LBL_FIELD_VALUE' => 'Стойност на поле',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Това поле не е налично за изглед като списък.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Тип стартиране на действие',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Не беше намерен свързан запис',
+    'LBL_IGNORE_ERRORS' => 'Игнориране на грешки',
+    'LBL_NO_DISPLAY_FIELDS' => 'Няма полета за показване.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Поле за връзка с шаблон за активност',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Поле за връзка с шаблон за етап',
+    'LBL_EMAIL_TEMPLATES' => 'Шаблон на електронно писмо',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Изберете имейл адрес "До"',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'Полета на електронно писмо',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Покажи икона',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Интелигентно ръководство/Етап/Шаблон за активност',
+    'LBL_ACTIVITY_MODULE' => 'Модул за активност',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Шаблон на Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Избор на тригер за шаблон на Smart Guide',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Тип на тригер',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Избор на типа на тригера',
+    'LBL_MODULE_TRIGGER' => 'Тригер на модул',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Избор на тригер на модул',
+    'LBL_FIELD_TRIGGER' => 'Тригер на поле',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Избор на цел на Smart Guide',
+    'LBL_CJ_TARGET' => 'Цел на Smart Guide',
+    'LBL_CJ_ACTION' => 'Действие в Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Избор на действие на Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'Тригер',
+    'LBL_TRIGGER_DESCRIPTION' => 'Използвайте полетата по-долу, за да изберете типа на тригера и условията, които ще активират тригера.',
+    'LBL_TARGET_ACTION_TITLE' => 'Цел и действие',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Използвайте полетата по-долу, за да изберете къде и кои действия ще възникнат, когато тригерът бъде активиран.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Избор на етап на Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Избор на действия на Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Избор на действие на Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Избор на действие на активности на етап',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Избор на действие на активности на Smart Guide',
+];

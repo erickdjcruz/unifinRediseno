@@ -1,0 +1,80 @@
+/* Administration */
+
+.administration {
+  min-height: 100%;
+
+  .headerpane {
+    position: static;
+    border-bottom: none;
+
+    h1 {
+      background: var(--secondary-content-background);
+    }
+  }
+
+  .content-grid {
+    max-width: 1440px;
+
+    .content-container {
+      .action-items {
+        img {
+          width: 12px;
+          height: 12px;
+        }
+      }
+    }
+  }
+}
+
+.drive-path {
+  h3 {
+    font-size: 20px;
+    line-height: 28px;
+    margin: 10px 0;
+  }
+
+  h5 {
+    font-size: 14px;
+    line-height: 20px;
+    max-width: 680px;
+    margin: 10px 0;
+  }
+
+  .row-fluid:nth-child(1) {
+    margin-top: 64px;
+  }
+
+  .recordPath {
+    height: 24px;
+  }
+
+  .span3,
+  .span6,
+  .span9 {
+    margin-left: 8px;
+  }
+}
+
+.table {
+  tr {
+    td {
+      vertical-align: middle;
+
+      a {
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.btn[name="shared_button"].disabled {
+  color: @grayLightish;
+  border-color: @grayLightish;
+
+  &:hover {
+    background-color: var(--btn-background);
+    color: @grayLightish;
+    border-color: @grayLightish;
+    cursor: not-allowed;
+  }
+}

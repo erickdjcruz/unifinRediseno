@@ -1,0 +1,89 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#each value}}
+    {{#if id}}
+        {{setIndex @index}}
+
+        {{#eq ../../view.tplName "preview"}}
+            {{#notEq @index 0}}
+                <div class="field-label ellipsis_inline" data-original-title="" title="">{{str "LBL_CJ_TARGET" "CJ_Forms"}}</div>
+            {{/notEq}}
+        {{else}}
+            <div class="record-label-wrapper span2 mr-4 target-action-label">
+                <div class="ellipsis_inline record-label" data-bs-placement="bottom" data-original-title="{{str "LBL_CJ_TARGET" "CJ_Forms"}}" title="" {{#if def.tabindex}} tabindex="{{def.tabindex}}"{{/if}}>
+                    <i class="sicon sicon-plus-sm label-plus"></i>
+                    <span class="text-overflow">{{str "LBL_CJ_TARGET" "CJ_Forms"}}</span>
+                </div>
+            </div>
+        {{/eq}}
+
+        <table class='table-bordered mb-1'>
+            <tr>
+                {{#each ../../optionsList}}
+                    {{#eq @key ../id}}
+                        <td class="p-2 min-w-[10rem]">{{this}}</td>
+                    {{/eq}}
+                {{/each}}
+                {{#each ../../populateFieldsMetaData}}
+                    {{#checkFieldName @key ../../../targetFieldName ../index}}
+                        {{#notEq ../../id 'Smart Guide'}}
+                            <td class="p-2 w-80">
+                                <div id="{{name}}" data-index="{{../../../index}}">
+                                    {{field ../../../../../this.view model=../../../../../this.view.model template='detail'}}
+                                </div>
+                            </td>
+                        {{/notEq}}
+                    {{/checkFieldName}}
+                {{/each}}
+            </tr>
+        </table>
+
+        {{#eq ../../view.tplName "preview"}}
+            <div class="field-label ellipsis_inline" data-original-title="" title="">{{str "LBL_CJ_ACTION" "CJ_Forms"}}</div>
+        {{else}}
+            <div class="record-label-wrapper span2 mr-4 target-action-label">
+                <div class="ellipsis_inline record-label" data-bs-placement="bottom" data-original-title="{{str "LBL_CJ_ACTION" "CJ_Forms"}}" title="" {{#if def.tabindex}} tabindex="{{def.tabindex}}"{{/if}}>
+                    <i class="sicon sicon-plus-sm label-plus"></i>
+                    <span class="text-overflow">{{str "LBL_CJ_ACTION" "CJ_Forms"}}</span>
+                </div>
+            </div>
+        {{/eq}}
+
+        <table class='table-bordered mb-5'>
+            <tr>
+                {{#each ../../actionsList}}
+                    {{#eq @key ../../id}}
+                        {{#each this}}
+                            {{#eq @key ../../../action_id}}
+                                <td class="p-2 min-w-[10rem]">{{this}}</td>
+                            {{/eq}}
+                        {{/each}}
+                    {{/eq}}
+                {{/each}}
+                {{#each ../../actionFieldsMetaData}}
+                    {{#checkFieldName @key ../../../actionFieldName ../index}}
+                        {{#notEq ../../id 'Smart Guide Activities'}}
+                            {{#if ../../../action_value}}
+                                <td class="p-2 w-80">
+                                    <div id="{{name}}" data-index="{{../../../../index}}">
+                                        {{field ../../../../../../this.view model=../../../../../../this.view.model template='detail'}}
+                                    </div>
+                                </td>
+                            {{/if}}
+                        {{/notEq}}
+                    {{/checkFieldName}}
+                {{/each}}
+            </tr>
+        </table>
+    {{/if}}
+{{/each}}

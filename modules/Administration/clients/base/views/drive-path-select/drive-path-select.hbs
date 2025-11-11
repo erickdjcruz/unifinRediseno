@@ -1,0 +1,66 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="row-fluid">
+    <div class="ml-5">
+        <table class="table w-full">
+            <tr>
+                <td class="p-2">
+                    {{str 'LBL_NAME'}}
+                </td>
+                <td class="p-2">
+                    {{str 'LBL_SET_PATH' module}}
+                </td>
+            </tr>
+            {{#notEq currentFolderId "root"}}
+                <tr>
+                    <td class="p-2">
+                        <span class="sicon sicon-folder-open"></span>
+                        <a data-id="{{parentId}}" data-driveId="{{#notEq parentId 'root'}}{{driveId}}{{/notEq}}" class="folder back">...</a>
+                    </td>
+                    <td class="p-2"></td>
+                </tr>
+            {{/notEq}}
+            {{#each folders}}
+                <tr>
+                    <td class="p-2">
+                        {{#eq ../driveType "google"}}
+                            <a class="folder" data-id="{{id}}" data-name="{{name}}">{{name}}</a>
+                        {{else}}
+                            {{#if isFolder}}
+                                {{#if ../../../displayingSites}}
+                                    <span class="sicon sicon-web-lg"></span>
+                                {{else}}
+                                    <span class="sicon sicon-folder"></span>
+                                {{/if}}
+                                <a class="folder" data-id="{{id}}" {{#if ../../../displayingSites}}data-site=true{{/if}} {{#if ../../../displayingDocumentDrives}}data-documentlibrary=true{{/if}} data-name="{{name}}" {{#if driveId}}data-driveid="{{driveId}}"{{/if}}>{{name}}</a>
+                            {{else}}
+                                {{name}}
+                            {{/if}}
+                        {{/eq}}
+                    </td>
+                    <td class="p-2">
+                        {{#eq ../driveType "google"}}
+                            <button class="btn setFolder" data-name="{{name}}"
+                                data-id="{{id}}">{{str 'LBL_SET_PATH' ../../module}}</button>
+                        {{else}}
+                            {{#if isFolder}}
+                                <button class="btn setFolder" data-name="{{name}}"
+                                    data-id="{{id}}" {{#if ../../../displayingSites}}data-site=true{{/if}} {{#if ../../../displayingDocumentDrives}}data-documentlibrary=true{{/if}} {{#if driveId}}data-driveid="{{driveId}}"{{/if}}>{{str 'LBL_SET_PATH' ../../../module}}</button>
+                            {{/if}}
+                        {{/eq}}
+                    </td>
+                </tr>
+            {{/each}}
+        </table>
+    </div>
+</div>

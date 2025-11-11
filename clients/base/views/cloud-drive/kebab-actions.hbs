@@ -1,0 +1,54 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="btn-group kebab-actions">
+    <button type="button" data-bs-toggle="dropdown" class="btn btn-invisible dropdown-toggle"
+            aria-label="Configure" aria-haspopup="true" aria-expanded="true" data-original-title="{{str 'LBL_MORE'}}">
+        <i data-action="loading" class="sicon sicon-kebab"></i>
+        {{tooltipTemplate (str 'LBL_MORE') 'bottom'}}
+    </button>
+    <ul class="dropdown-menu border-0 dark:border border-[--dropdown-border-widget] rounded-md shadow-xl left nav nav-list" role="menu">
+        <li role="menuitem">
+            <span class="dashlet-toolbar">
+                <a href="javascript:void(0);" rel="tooltip" data-dashletaction="newSignedDocument" role="button" name="new_signed_document_button">
+                    {{str 'LBL_SEND_TO_DOCUSIGN'}}
+                </a>
+            </span>
+        </li>
+        {{#if showMergeButtonsOnThisView}}
+            <li role="menuitem nav-header" class="docMergeToHeader">
+                {{str 'LBL_DOC_MERGE_TO'}}
+            </li>
+            <li role="menuitem" class="docMergeToWEP">
+                <span class="dashlet-toolbar">
+                    <a href="javascript:void(0);" rel="tooltip" data-dashletaction="mergeWEP" role="button" name="merge_word_excel_powerpoint_button">
+                        {{str 'LBL_DOC_MERGE_WORD_EXCEL_POWERPOINT'}}
+                    </a>
+                </span>
+            </li>
+            <li role="menuitem" class="docMergeToDocuSign">
+                <span class="dashlet-toolbar">
+                    <a href="javascript:void(0);" rel="tooltip" data-dashletaction="mergeDocuSign" role="button" name="merge_docusign_button">
+                        {{str 'LBL_DOC_MERGE_TO_DOCUSIGN'}}
+                    </a>
+                </span>
+            </li>
+            <li role="menuitem" class="docMergeToPDF">
+                <span class="dashlet-toolbar">
+                    <a href="javascript:void(0);" rel="tooltip" data-dashletaction="mergePdf" role="button" name="merge_pdf_button">
+                        {{str 'LBL_DOC_MERGE_TO_PDF'}}
+                    </a>
+                </span>
+            </li>
+        {{/if}}
+    </ul>
+</div>

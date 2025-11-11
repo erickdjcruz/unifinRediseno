@@ -1,0 +1,51 @@
+/* FOOTER
+  ----------------*/
+
+footer {
+  bottom: 0;
+  border: none;
+  border-top: @borderWidget;
+
+  .footer-item-container {
+    .footer-buttons {
+      button:not(.btn-primary):hover {
+        .action-label {
+          color: @textColorHover;
+        }
+
+        .sicon {
+          color: @sicon-hover-color;
+        }
+      }
+
+      .action-label {
+        color: @textColor;
+      }
+
+      .sicon {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .dropdown-menu.help {
+    right: 72px;
+
+    li {
+      .control-group {
+        padding: 10px 20px;
+
+        label.control-label {
+          font-weight: bold;
+          position: relative;
+          top: 2px;
+          color: @gray80;
+        }
+      }
+
+      .controls {
+        display: inline-block;
+      }
+    }
+  }
+}

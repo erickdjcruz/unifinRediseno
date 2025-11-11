@@ -1,0 +1,165 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Get Users And Teams which can be used to create calendars with
+</span>
+
+<h2>Request</h2>
+<code class="codesample">
+    GET /Calendar/usersAndTeams
+</code>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            module_list
+        </td>
+        <td>
+            Array
+        </td>
+        <td>
+            List of modules to retrieve. It can be Users or Teams or both
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            q
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            Query string to filter the result
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            offset
+        </td>
+        <td>
+            Integer
+        </td>
+        <td>
+            The offset to start from
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the following:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                next_offset
+            </td>
+            <td>
+                Integer
+            </td>
+            <td>
+                Displays the next offset for retrieval of additional results. -1 will be returned when there are no more
+            records.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                records
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                An array of results containing matched records.
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+{
+    "next_offset": -1,
+    "records": [
+        {
+            "id": "seed_will_id",
+            "name": "Will Westin",
+            "_module": "Users"
+        },
+        {
+            "id": "West",
+            "name": "West",
+            "_module": "Teams"
+        },
+        {
+            "id": "aa574f1a-fb83-11eb-a5a9-0242ac140008",
+            "name": "Will",
+            "_module": "Teams"
+        }
+    ],
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/Calendar/usersAndTeams</code> GET endpoint.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            v11_15
+        </td>
+        <td>
+            Unified return parameters for Users and Teams records and removed teams_offset from response.
+        </td>
+    </tr>
+</table>

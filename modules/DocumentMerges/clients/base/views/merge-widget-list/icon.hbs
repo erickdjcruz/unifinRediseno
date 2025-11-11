@@ -1,0 +1,22 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="span1 dm-icon-top" rel="tooltip" data-toggle="tooltip" title="{{str 'LBL_DOWNLOAD_ONE'}}">
+    <div class="row-fluid">
+        <div class="span12">
+            <span class="{{#if model.generated_document_id}}dm-cursor{{/if}} filetype-thumbnail
+                download dm-icon dm-filetype-thumbnail"
+                document-id="{{model.generated_document_id}}"
+                data-filetype="{{model.file_type}}"></span>
+        </div>
+    </div>
+</div>

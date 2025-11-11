@@ -1,0 +1,170 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Retrieves the users role access defined by the admin in Roles.
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint is used to Retrieve the users role access defined by the admin in Roles. User id must be provided.
+</span>
+<h3>Response</h3>
+Returns http status 200 OK and both users role access ("caregories") and access operations ("names") if request is successful.
+<pre class="pre-scrollable">
+{
+    "categories": {
+        "Accounts": {
+            "access": {
+                "accessName": "Enabled",
+                "accessLabel": "enabled"
+            },
+            "admin": {
+                "accessName": "Normal",
+                "accessLabel": "normal"
+            },
+            "delete": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "edit": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "export": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "import": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "list": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "massupdate": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "view": {
+                "accessName": "All",
+                "accessLabel": "all"
+            }
+        },
+        "Bugs": {
+            "access": {
+                "accessName": "Enabled",
+                "accessLabel": "enabled"
+            },
+            "admin": {
+                "accessName": "Normal",
+                "accessLabel": "normal"
+            },
+            "delete": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "edit": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "export": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "import": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "list": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "massupdate": {
+                "accessName": "All",
+                "accessLabel": "all"
+            },
+            "view": {
+                "accessName": "All",
+                "accessLabel": "all"
+            }
+        },
+    },
+    "names": {
+        "access": {
+            "key": "access",
+            "value": "Access"
+        },
+        "admin": {
+            "key": "admin",
+            "value": "Access Type"
+        },
+        "delete": {
+            "key": "delete",
+            "value": "Delete"
+        },
+        "edit": {
+            "key": "edit",
+            "value": "Edit"
+        },
+        "export": {
+            "key": "export",
+            "value": "Export"
+        },
+        "import": {
+            "key": "import",
+            "value": "Import"
+        },
+        "list": {
+            "key": "list",
+            "value": "List"
+        },
+        "massupdate": {
+            "key": "massupdate",
+            "value": "Mass Update"
+        },
+        "view": {
+            "key": "view",
+            "value": "Record View"
+        }
+    }
+}
+</pre>
+Otherwise returns http status 4xx with errors.
+<pre class="pre-scrollable">
+{
+    "error": "need_login",
+    "error_message": "No valid authentication for user."
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            v11_23
+        </td>
+        <td>
+            Added <code>/Users/:id/userAccess</code> GET endpoint.
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,70 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    [ADMIN] PackageManager upload package
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    Uploads a module loadable package via a multi-part form request. The only parameter is 'upgrade_zip' which must contain a valid module loadable zip file.
+</span>
+<h3>Sample Request</h3>
+<pre class="pre-scrollable">
+POST /rest/v11_1/Administration/packages HTTP/1.1
+Host: null
+Content-Type: multipart/form-data
+Accept: application/json
+OAuth-Token: 3bbd6227-cfd0-45c7-8a6e-3c737e3c73ff
+Content-Type: multipart/form-data; boundary=---------------------------9051914041544843365972754266
+Content-Length: 554
+
+-----------------------------9051914041544843365972754266
+Content-Disposition: form-data; name="upgrade_zip"; filename="module.zip"
+Content-Type: application/zip
+
+
+{content-data}
+-----------------------------9051914041544843365972754266--
+</pre>
+<h3>Response</h3>
+Returns status 200 OK and file hashes for install and delete package if request is successful.
+<pre class="pre-scrollable">
+{
+    "file_install": "5d4b4614421586fd2111714abf622392",
+    "unFile": "5d4b4614421586fd2111714abf622392"
+}
+</pre>
+Otherwise returns status 4xx with errors.
+<pre class="pre-scrollable">
+{
+"error": "upload_package_error",
+"error_message": "Issue with the manifest",
+"error_description": "The uploaded file is not compatible with this version of Sugar: 9.3.0"
+}
+</pre>
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11.8
+        </td>
+        <td>
+            Added <code>/Administration/packages</code> POST endpoint.
+        </td>
+    </tr>
+</table>

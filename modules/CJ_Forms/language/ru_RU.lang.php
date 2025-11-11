@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Вывести список действий Sugar, относящихся к Smart Guide',
+    'LBL_MODULE_TITLE' => 'Действие Sugar, относящееся к Smart Guide',
+    'LBL_HOMEPAGE_TITLE' => 'Мои действия Sugar, относящиеся к Smart Guide',
+    'LNK_NEW_RECORD' => 'Новые действия Sugar, относящиеся к Smart Guide',
+    'LNK_VIEW_RECORDS' => 'Просмотреть действия Sugar, относящиеся к Smart Guide',
+    'LNK_CJ_FORM_LIST' => 'Просмотреть действия Sugar, относящиеся к Smart Guide',
+    'LNK_LIST' => 'Действия Sugar, относящиеся к Smart Guide',
+    'LBL_SEARCH_FORM_TITLE' => 'Найти действие Sugar, относящееся к Smart Guide',
+    'LBL_MODULE_NAME' => 'Действия Sugar, относящиеся к Smart Guide',
+    'LBL_MODULE_NAME_SINGULAR' => 'Действие Sugar, относящееся к Smart Guide',
+    'LBL_TRIGGER_EVENT' => 'Инициировать Событие',
+    'LBL_ACTION_TYPE' => 'Тип действия',
+    'LBL_PARENT_MODULE' => 'Родительский модуль',
+    'LBL_RELATIONSHIP' => 'Связь',
+    'LBL_ACTIVITY_TEMPLATE' => 'Шаблон мероприятия',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Шаблон Умного руководства/Стадии/Мероприятия',
+    'LBL_ACTIVE' => 'Активно',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'В шаблоне мероприятия %s уже есть действие Sugar с использованием события-триггера %s. Существует ограничение до одного активного действия Sugar на каждый тип события-триггера для каждой стадии или мероприятия в Smart Guide.',
+    'LBL_RECORDVIEW_PANEL4' => 'Заполнить поля',
+    'LBL_POPULATE_FIELDS' => 'Заполнить поля',
+    'LBL_ADD_FIELD' => 'Добавить поле',
+    'LBL_REMOVE_FIELD' => 'Удалить поле',
+    'LBL_FIELD_NAME' => 'Имя поля',
+    'LBL_FIELD_VALUE' => 'Значение поля',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Это поле недоступно для просмотра в виде списка.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Тип триггера действия',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Не удалось найти связанную запись',
+    'LBL_IGNORE_ERRORS' => 'Игнорировать ошибки',
+    'LBL_NO_DISPLAY_FIELDS' => 'Нет полей для отображения.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Поле ссылки на шаблон мероприятия',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Поле ссылки на шаблон стадии',
+    'LBL_EMAIL_TEMPLATES' => 'Шаблон электронного письма',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Выберите адрес электронной почты получателя',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'Поля электронной почты',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Отобразить значок',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Шаблон Умного руководства/Стадии/Мероприятия',
+    'LBL_ACTIVITY_MODULE' => 'Модуль мероприятия',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Шаблон Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Выберите условие запуска шаблона Smart Guide',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Тип триггера',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Выберите тип условия запуска',
+    'LBL_MODULE_TRIGGER' => 'Триггер модуля',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Выберите условие запуска модуля',
+    'LBL_FIELD_TRIGGER' => 'Триггер поля',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Выберите цель Smart Guide',
+    'LBL_CJ_TARGET' => 'Цель Smart Guide',
+    'LBL_CJ_ACTION' => 'Действие Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Выберите действие Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'Условие запуска',
+    'LBL_TRIGGER_DESCRIPTION' => 'Используйте поля ниже, чтобы выбрать тип условия запуска и предпосылки для его активации.',
+    'LBL_TARGET_ACTION_TITLE' => 'Цель и действие',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Используйте поля ниже, чтобы выбрать, где и какие действия будут происходить при активации условия запуска.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Выберите стадию Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Выберите мероприятия Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Выберите мероприятие Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Выберите действие мероприятия стадии',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Выберите действие мероприятия Smart Guide',
+];

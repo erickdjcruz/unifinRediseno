@@ -1,0 +1,170 @@
+/* SIDEBAR NAV
+  ----------------*/
+.banner-shifted {
+  .sidebar-nav {
+    top: @bannerHeight;
+    height: calc(100% ~"-" @bannerHeight);
+  }
+}
+
+.sidebar-nav-overlay {
+  z-index: (@zindexSidebarNav - 1);
+}
+
+.sidebar-nav {
+  .sidebar-nav-item {
+    a {
+      text-decoration: none;
+    }
+
+    .sidebar-nav-item-kebab-disabled {
+      .hide();
+    }
+
+    .sidebar-nav-item-sugarcrm-logo {
+      height: 1.17rem;
+      margin-left: -0.16rem;
+      margin-top: -0.04rem;
+    }
+
+    .sicon.omnichannel-logged-in {
+      left: 2rem;
+      height: 0.625rem;
+      width: 0.625rem;
+
+      &::before {
+        top: -1px;
+        position: absolute;
+      }
+    }
+  }
+
+  .sidebar-nav-item-group-modules {
+    .sidebar-nav-item {
+      &:not(.active):not(.default) {
+        .hide();
+      }
+    }
+  }
+
+  // When fully collapsed
+  &:not(.expanded):not(.expanding):not(.collapsing) {
+    transform: translateX(-11.25rem);
+
+    .sidebar-nav-item {
+      transform: translateX(11.25rem);
+      width: 3.75rem;
+    }
+
+    .expanded {
+      .hide();
+    }
+
+    .sidebar-nav-item-group-modules {
+      .sidebar-nav-item {
+        &:not(.active):not(.pinned) {
+          .hide();
+        }
+      }
+    }
+  }
+
+  // When fully expanded
+  &.expanded:not(.collapsing):not(.expanding) {
+    .collapsed {
+      .hide();
+    }
+  }
+
+  // While expanding
+  &.expanding {
+    .collapsed {
+      .hide();
+    }
+
+    .sidebar-nav-item-group-modules {
+      .sidebar-nav-item {
+        &:not(.active):not(.pinned) {
+          .hide();
+        }
+      }
+    }
+  }
+
+  // While collapsing
+  &.collapsing {
+    transform: translateX(-11.25rem);
+
+    .sidebar-nav-item {
+      transform: translateX(11.25rem);
+    }
+
+    .collapsed {
+      .hide();
+    }
+
+    .sidebar-nav-item-group-modules {
+      .sidebar-nav-item {
+        &:not(.active):not(.pinned) {
+          .hide();
+        }
+      }
+    }
+  }
+}
+
+.sidebar-nav-flyout {
+  // this z-index should be higher then z-index of .sidebar-nav-overlay
+  z-index: 1060;
+  box-shadow: 0 0.25rem 0.25rem var(--shadow-color);
+
+  &.popover[data-popper-placement="right"] {
+    .flyout-close {
+      right: 4px;
+      top: 4px;
+      z-index: 2000;
+
+      &:hover {
+        .sicon {
+          color: @sicon-hover-color;
+        }
+      }
+    }
+  }
+
+  .sidebar-nav-flyout-actions {
+    ul {
+      list-style: none;
+
+      li {
+        a {
+          text-decoration: none;
+
+          &:hover {
+            .sicon {
+              color: @sicon-hover-color;
+            }
+          }
+
+          &.active {
+            .sicon {
+              color: @sicon-active-color;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .helplet {
+    a:hover {
+      color: @linkColorHover;
+    }
+  }
+}
+
+.expanded {
+  .sidebar-nav-flyout {
+    box-shadow: 0 0.25rem 0.25rem var(--sidebar-nav-flyout-shadow-color);
+  }
+}

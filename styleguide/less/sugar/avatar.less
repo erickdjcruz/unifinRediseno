@@ -1,0 +1,51 @@
+/* AVATAR
+  ----------------*/
+
+.avatar,
+.avatar img {
+  height: @sizeDefault;
+  width: @sizeDefault;
+  border-radius: 100px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar img {
+  border: 2px solid @borderColor;
+}
+
+img.avatar:-moz-broken,
+.avatar img:-moz-broken {
+  visibility: hidden;
+}
+
+.avatar-lg,
+.avatar-lg img {
+  height: @sizeLarge;
+  width: @sizeLarge;
+}
+
+.avatar-md,
+.avatar-md img {
+  height: @sizeMedium;
+  width: @sizeMedium;
+}
+
+.avatar-btn,
+.avatar-btn img {
+  height: @sizeButton;
+  width: @sizeButton;
+}
+
+.avatar-sm,
+.avatar-sm img {
+  height: @sizeSmall;
+  width: @sizeSmall;
+}
+
+.avatar-mini,
+.avatar-mini img {
+  height: @sizeMini;
+  width: @sizeMini;
+}

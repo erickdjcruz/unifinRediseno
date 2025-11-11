@@ -1,0 +1,1 @@
+(function(app){app.events.on('app:init',function(){var components=[];app.plugins.register('KBNotify',['view','field'],{onAttach:function(component,plugin){components.push(component);},notifyAll:function(name,options){_.each(components,function(component){component.trigger(name,options);});},onDetach:function(){components=_.without(components,this);}});});})(SUGAR.App);

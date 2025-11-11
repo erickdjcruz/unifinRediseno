@@ -1,0 +1,196 @@
+// Fix when completing overhaul for BPM
+@br-table-row-hover: @primaryContentHoverBackground;
+@br-table-row-selected-hover: @primaryContentActive;
+@br-table-cell: @primaryContentBackground;
+@br-table-btn: @gray50;
+@br-table-btn-hover: @gray70;
+@br-table-container: @borderColor;
+@br-table-active-cell-border: @br-table-container;
+@br-table-dummy-highlight: @gray50;
+
+#content {
+  overflow: auto;
+}
+
+.main-pane {
+  overflow-x: visible;
+}
+
+#businessrulecontainer {
+  padding: 0;
+}
+
+#businessruledesigner {
+  background: @contentBackground;
+  padding-bottom: 28px;
+  display: inline-block;
+
+  .decision-table .table-split {
+    border-right: 14px solid @borderColor;
+  }
+}
+
+.businessrules {
+  .decision-table {
+    td {
+      border-color: @br-table-active-cell-border;
+
+      &.decision-table-conclusion-column {
+        min-width: 126px;
+      }
+
+      &.row-index {
+        border-color: @transparent;
+      }
+
+      table {
+        .decision-table-operator,
+        .decision-table-conclusion-column {
+          border: none;
+        }
+      }
+    }
+
+    th {
+      border-color: @transparent;
+      background: @transparent;
+      font-weight: normal;
+      text-shadow: none;
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    tfoot {
+      tr td {
+        background: @br-table-cell;
+        border-bottom: @transparent;
+
+        &:first-child {
+          border-color: @transparent;
+          background: @transparent;
+        }
+
+        &:nth-child(2) .btn {
+          color: @white;
+          padding: 0;
+          line-height: 26px;
+        }
+      }
+    }
+
+    tbody.ui-sortable tr:hover:not(#decision-row-header) {
+      td:not(:first-child),
+      .decision-table-conclusion-column {
+        background-color: @br-table-row-hover;
+      }
+    }
+
+    tbody.ui-sortable tr.selected {
+      &:not(#decision-row-header) td:not(:first-child),
+      &:not(#decision-row-header) .decision-table-conclusion-column {
+        background-color: @br-table-row-hover;
+      }
+
+      &:hover {
+        &:not(#decision-row-header) td:not(:first-child),
+        &:not(#decision-row-header) .decision-table-conclusion-column {
+          background-color: @br-table-row-selected-hover;
+        }
+      }
+    }
+
+    .btn {
+      &.decision-table-add-button,
+      &.decision-table-close-element,
+      &.decision-table-add-row {
+        margin: 0;
+        border-radius: 0;
+        border: 1px solid transparent;
+        padding: 7px;
+        line-height: 12px;
+
+        &:not(.btn-primary) {
+          background: @br-table-btn;
+        }
+
+        &:hover {
+          background: @br-table-btn-hover;
+
+          > .sicon {
+            color: @sicon-hover-color;
+          }
+        }
+
+        .sicon {
+          color: @sicon-hover-color;
+        }
+
+        .sicon {
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .decision-table-row {
+      .table-split,
+      td:last-child:not(.decision-table-conclusion-column) {
+        background: @br-table-cell;
+      }
+
+      &:hover .table-split,
+      &:hover td:last-child:not(.decision-table-conclusion-column),
+      &.selected .table-split,
+      &.selected td:last-child:not(.decision-table-conclusion-column) {
+        background: @br-table-dummy-highlight !important;
+      }
+    }
+
+    .decision-table-row:not(:hover) .decision-table-condition-column,
+    .decision-table-conclusion-column,
+    .decision-table-row:not(:hover) .checkbox-td {
+      background: @primaryContentBackground;
+    }
+
+    .decision-table-conditions-header,
+    .decision-table-conclusions-header {
+      background: @primaryContentBackground;
+      width: calc(~"100% - 28px");
+    }
+
+    div.decision-table-conditions-header select,
+    div.decision-table-conclusions-header select {
+      background: none;
+    }
+
+    tr#decision-row-header {
+      .table-split + td {
+        background: @br-table-cell;
+      }
+
+      td:first-child {
+        border-color: transparent;
+      }
+
+      #trash-button {
+        margin-left: 0;
+        vertical-align: middle;
+
+        .sicon {
+          color: @white;
+        }
+
+        &:hover {
+          .sicon {
+            color: @white;
+          }
+        }
+      }
+    }
+
+    :not(.select2-dropdown-open) .select2-container:not(.select2-dropdown-open) .select2-choice {
+      border-radius: 0;
+      border-color: transparent;
+      background: none;
+    }
+  }
+}

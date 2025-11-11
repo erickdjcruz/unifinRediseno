@@ -1,0 +1,43 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="span12 formula-builder">
+    <div>
+        <div class="main-action-bar">
+            <a class="inherit-width select-functions" data-select="functions"></a>
+            <a class="inherit-width select-fields" data-select="fields"></a>
+            <a data-action="related" class="btn btn-default">
+                {{str 'LBL_ACTIONBUTTON_RELATED'}}
+            </a>
+            <a data-action="rollup" class="btn btn-default">
+                {{str 'LBL_ACTIONBUTTON_ROLLUP'}}
+            </a>
+        </div>
+        <div class="related-action-bar hidden">
+            <a class="inherit-width select-related-module" data-select="related-module"></a>
+            <a class="inherit-width select-related-fields" data-select="related-fields"></a>
+            <a data-action="add-related" class="btn btn-primary">
+                {{str 'LBL_ACTIONBUTTON_ADD'}}
+            </a>
+        </div>
+        <div class="rollup-action-bar hidden">
+            <a class="inherit-width select-rollup-module" data-select="rollup-module"></a>
+            <a class="inherit-width select-rollup-fields" data-select="rollup-fields"></a>
+            <a class="inherit-width select-rollup-function" data-select="rollup-function"></a>
+            <a data-action="add-rollup" class="btn btn-primary">
+                {{str 'LBL_ACTIONBUTTON_ADD'}}
+            </a>
+        </div>
+    </div>
+    <textarea class="span12 formula-editor" type="text" data-toggle="tooltip"
+        data-bs-placement="top">{{_formula}}</textarea>
+</div>

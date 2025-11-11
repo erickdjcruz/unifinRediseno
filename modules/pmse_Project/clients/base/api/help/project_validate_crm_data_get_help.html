@@ -1,0 +1,103 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Validates information about Fields, Modules, Users, Roles, etc.
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint will validate the existence of various data related
+    to the Process Definition.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>data</td>
+        <td>String</td>
+        <td>The type of data to be retrieved</td>
+        <td>True</td>
+    </tr>
+    <tr>
+        <td>filter</td>
+        <td>String</td>
+        <td>Filtering criteria to be applied to data retrieved</td>
+        <td>False</td>
+    </tr>
+    <tr>
+        <td>key</td>
+        <td>String</td>
+        <td>Key of the entry to search for within the given data and filter</td>
+        <td>True</td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Request</h3>
+<strong>Note:</strong> "key" should be provided in the form
+of a URL query string.
+<pre class="pre-scrollable">
+    /rest/v11_10/pmse_Project/validateCrmData/field/Accounts?key=data_entered
+</pre>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>result</td>
+        <td>Boolean</td>
+        <td>The result of the validation. True if the key exists in the specified
+        data set; false otherwise</td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+    {
+        result: true
+    }
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_10
+        </td>
+        <td>
+            Added <code>/pmse_Project/validateCrmData</code> GET endpoint.
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,885 @@
+/* SELECT2
+  ----------------*/
+
+.select2-search {
+  display: flex;
+  align-items: center;
+  padding: 4px;
+
+  &::after {
+    font-family: 'SugarIcons';
+    content: @sicon-search;
+    position: absolute;
+    right: 12px;
+  }
+
+  input[type="text"] {
+    border: @inputBorder !important;
+    position: relative;
+
+    &:focus {
+      box-shadow: none;
+      border: 1px solid @linkColor !important;
+    }
+
+    &.select2-active {
+      z-index: 2;
+    }
+  }
+}
+
+.select2-container {
+  .select2-single-with-drop div b {
+    background: none;
+    background-position: 0 0;
+  }
+
+  &.select2-dropdown-open {
+    z-index: @zindexDropdown;
+    filter: none;
+
+    .select2-choice,
+    .select2-choices {
+      border-radius: @baseBorderRadius @baseBorderRadius 0 0;
+      filter: none;
+    }
+  }
+
+  &.inherit-width {
+    width: 100%;
+  }
+
+  &.select2-dropdown-open.select2-drop-above {
+    .select2-choices {
+      border-radius: 0 0 @baseBorderRadius @baseBorderRadius;
+    }
+
+    .select2-choice,
+    .select2-choices {
+      filter: none;
+    }
+  }
+
+  .select2-choices {
+    padding: 2px 4px 2px 2px;
+    min-height: 22px;
+    border: @inputBorder;
+    background-image: none;
+    border-radius: @baseBorderRadius;
+
+    &:focus {
+      border: 1px solid @linkColor !important;
+    }
+  }
+
+  .select2-search-field {
+    height: 20px;
+
+    input {
+      padding: 0 6px;
+    }
+  }
+
+  .select2-choice-type {
+    margin: 0 2px 0 0;
+    color: @textColor;
+  }
+
+  &.select2-choices-pills .select2-search-choice,
+  &.select2-container-multi.select2-choices-pills-close .select2-search-choice {
+    margin: 1px 0 1px 4px;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    box-shadow: none;
+    line-height: 12px;
+    border-radius: 11px;
+    background: @gray80;
+    color: @white;
+    padding: 2px 4px 2px 6px;
+    white-space: nowrap;
+
+    &.select2-search-choice-focus {
+      outline: 0;
+      background: @gray90;
+    }
+
+    &.drag-drop-selected {
+      outline: 0;
+      background: @blue;
+    }
+
+    &.select2-choice-danger {
+      background-color: @btnDangerBackground;
+
+      span::before {
+        content: @sicon-warning-circle;
+        font-family: 'SugarIcons';
+        color: @white;
+        padding-right: 3px;
+      }
+    }
+  }
+
+  &.select2-choices-pills .select2-search-choice {
+    div {
+      padding: 2px 0;
+    }
+
+    span {
+      border-radius: 10px 0 0 10px;
+      background: @gray30;
+      color: @gray80;
+      padding: 2px 4px 2px 6px;
+      margin-right: 2px;
+    }
+
+    a,
+    span:last-child {
+      border-radius: 0 10px 10px 0;
+      padding: 2px 6px 2px 4px;
+    }
+
+    span:last-child {
+      background: @gray20;
+    }
+
+    a {
+      background: @gray20;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    a.select2-search-choice-close {
+      display: none;
+    }
+  }
+
+  &.select2-container-multi.select2-choices-pills-close {
+    .select2-search-choice {
+      div {
+        font-size: 11px;
+        line-height: 13px;
+        display: inline;
+
+        &.ellipsis_inline {
+          display: block;
+        }
+      }
+
+      a.select2-search-choice-close {
+        font-family: 'SugarIcons';
+        font-size: 12px;
+        line-height: 12px;
+        height: 12px;
+        width: 12px;
+        font-weight: normal;
+        text-decoration: none;
+        color: @sicon-color-light;
+        background: none;
+        position: static;
+        display: inline;
+        vertical-align: middle;
+      }
+
+      a,
+      a.select2-search-choice-close:hover {
+        color: @sicon-light-hover-color;
+      }
+
+      a.select2-search-choice-close::before {
+        content: @sicon-remove;
+      }
+
+      &.select2-locked {
+        padding: 1px 4px !important; //overide bootstrap
+        background: @gray80;
+        border: 1px solid @gray80;
+
+        div {
+          color: @white;
+        }
+      }
+
+      &.more {
+        background-color: @blue;
+        cursor: pointer;
+      }
+    }
+
+    &.attachments {
+      &:not(.select2-container-active) {
+        .select2-choices {
+          border: 1px solid transparent;
+        }
+      }
+
+      .select2-search-choice {
+        border-radius: 3px;
+        padding: 4px 24px 4px 6px;
+        color: @gray80;
+        background-color: @gray30;
+        font-weight: normal;
+        margin: 1px 4px 1px 0;
+        position: relative;
+        line-height: 1px;
+
+        &.select2-search-choice-focus {
+          background-color: @gray40;
+        }
+
+        div {
+          max-width: 200px;
+          font-size: 13px;
+          line-height: 20px;
+
+          .ellipsis-value {
+            display: inline-block !important;
+            float: left;
+            max-width: 136px;
+          }
+
+          .ellipsis-extra {
+            padding-left: 3px;
+          }
+        }
+
+        a.select2-search-choice-close {
+          font-family: 'SugarIcons';
+          position: absolute;
+          top: 8px;
+          right: 6px;
+          left: auto;
+          color: inherit;
+
+          &::before {
+            content: @sicon-remove;
+          }
+
+          &:hover {
+            color: @black;
+          }
+        }
+
+        .select2-search-field input {
+          margin: 0;
+          min-height: 19px;
+        }
+      }
+    }
+    //forecasts
+    &.search-filter .select2-search-choice {
+      height: 24px;
+      margin: 0 0 4px;
+      background: none;
+      padding: 0;
+      position: relative;
+
+      a.select2-search-choice-close {
+        position: absolute;
+        top: 1px;
+        right: 4px;
+        left: auto;
+
+        &::before {
+          line-height: 12px;
+          height: 12px;
+          vertical-align: top;
+          display: inline-block;
+          margin-top: 3px;
+          font-size: 12px;
+        }
+      }
+
+      div {
+        background: none;
+        padding: 2px 0;
+      }
+    }
+
+    &.select2-container-disabled .select2-choices {
+      .select2-search-choice {
+        div {
+          padding-right: 6px;
+        }
+
+        &.select2-locked div {
+          padding-right: 0;
+        }
+      }
+    }
+
+    &.select2field {
+      .select2-search-field {
+        input.select2-active {
+          background: transparent !important;
+        }
+      }
+    }
+  }
+
+  .select2-choice {
+    filter: none;
+    line-height: 26px;
+    height: 26px;
+    border-radius: 3px;
+    //TODO: added by UIUX-1795
+    padding-left: 6px;
+    box-shadow: none;
+
+    &:focus {
+      border-color: @linkColor;
+    }
+
+    .select2-arrow {
+      border: none;
+      background: none;
+      filter: none;
+      font-size: 12px;
+      border-radius: 0;
+      margin-left: 4px;
+      box-sizing: border-box;
+      right: 6px;
+      width: unset;
+
+      b {
+        display: flex;
+        align-items: center;
+        font-family: 'SugarIcons';
+        font-size: 12px;
+        line-height: 12px;
+
+        &::before {
+          content: @sicon-chevron-down;
+        }
+      }
+    }
+
+    abbr {
+      position: absolute;
+      top: 7px;
+      right: 18px;
+      margin-right: 6px;
+      font-size: 12px;
+      line-height: 12px;
+      font-family: 'SugarIcons';
+      display: none;
+
+      &::before {
+        content: @sicon-close;
+      }
+    }
+  }
+
+  &.select2-container-active {
+    &.required .select2-choice {
+      border-color: @linkColor;
+    }
+
+    .select2-choice {
+      border-color: @linkColor;
+      outline: 0;
+    }
+  }
+
+  &.required .select2-choice {
+    border-color: @select2RequiredBorderColor;
+
+    &:hover {
+      border-color: @select2RequiredBorderColor;
+    }
+
+    &:focus {
+      border-color: @linkColor;
+    }
+  }
+}
+
+.selected_recipients .select2-container.select2-container-multi.select2-choices-pills-close.select2-container-disabled .select2-choices {
+  // needed for address book recipients
+  background-color: @white;
+}
+
+.select2-drop-mask {
+  z-index: @zindexSelect2mask;
+}
+
+.select2-drop {
+  color: @textColor;
+  border-color: @inputBorderColor;
+  z-index: @zindexSelect2menu;
+  border-radius: 0 0 @baseBorderRadius @baseBorderRadius;
+  background-color: @contentBackground;
+
+  &.select2-drop-active {
+    min-width: 50px;
+    border-color: @linkColor;
+    outline: 0;
+
+    &.select2-narrow {
+      border-top: 1px solid @linkColor;
+      width: auto !important;
+      max-width: 200px;
+
+      &.select2-parent {
+        margin-left: -84px;
+      }
+    }
+  }
+
+  .select2-results:last-child {
+    border-radius: 0 0 @baseBorderRadius @baseBorderRadius;
+  }
+
+  &.select2-drop-above .select2-search input {
+    margin-top: 0;
+  }
+}
+
+.select2-menu-only.select2-drop {
+  border-radius: @baseBorderRadius;
+  border-top: 1px solid @linkColor;
+
+  .select2-search-hidden + .select2-results {
+    border-radius: @baseBorderRadius;
+  }
+}
+
+.select2-drop-error {
+  border-color: @errorText;
+}
+
+.select2-container-multi .select2-choices {
+  .select2-search-field input {
+    padding: 0 6px;
+    box-sizing: border-box;
+    position: absolute;
+    height: 19px;
+    margin: 2px 0;
+  }
+
+  .select2-search-choice {
+    filter: none;
+    min-height: 15px;
+  }
+}
+
+.select2-drop-bootstrap {
+  border: none;
+
+  .select2-results {
+    margin-top: 8px;
+    border: @inputBorder;
+
+    .result-selected {
+      display: block;
+      font-weight: bold;
+    }
+  }
+}
+
+.select2-results {
+  margin: 0;
+  padding: 0;
+  max-height: 235px;
+
+  .select2-result-label {
+    padding: 8px 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    .label-module-mini {
+      margin: 1px 4px 0 0;
+      float: left;
+    }
+
+    .select2-result-status {
+      float: right;
+      max-width: 40%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  li div {
+    line-height: 18px;
+  }
+
+  li:last-child {
+    border-bottom: none;
+    border-radius: 0 0 @baseBorderRadius @baseBorderRadius;
+  }
+}
+
+.select2-results > .select2-no-results,
+.select2-no-results,
+.select2-searching {
+  padding: 0 0 0 8px;
+  color: @placeholderText;
+  background-color: @contentBackground;
+  border-radius: 0;
+}
+
+.select2-drop-above {
+  .select2-results {
+    li:first-child {
+      border-top: none;
+      border-radius: @baseBorderRadius @baseBorderRadius 0 0;
+    }
+
+    li:last-child {
+      border-bottom: none;
+      border-radius: 0;
+    }
+  }
+}
+
+//for chart icon drop dropdown
+.select2-container svg,
+.select2-results svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.chart-results .select2-results {
+  max-height: 290px;
+}
+
+.select2-results svg {
+  display: inline;
+  vertical-align: middle;
+}
+
+.select2-container svg {
+  display: block;
+  padding: 3px;
+}
+
+//for module label in select2
+.select2-container .label-module-mini {
+  display: block;
+  margin-top: 5px;
+}
+
+.select2-offscreen {
+  position: absolute;
+  left: -10000px;
+  top: -1px;
+}
+
+//caret, clear and error addons
+.select2-container .select2-choice {
+  .select2-chosen {
+    margin-right: 20px;
+  }
+}
+
+.select2-container.select2-allowclear .select2-choice {
+  .select2-chosen {
+    margin-right: 42px;
+  }
+}
+
+.currency .select2-container .select2-choice {
+  .select2-chosen {
+    min-width: 8px;
+  }
+}
+
+.error {
+  .select2-container {
+    .select2-choice > .select2-chosen {
+      margin-right: 38px;
+    }
+
+    &.select2-allowclear .select2-choice {
+      .select2-chosen {
+        margin-right: 55px;
+      }
+
+      abbr {
+        right: 36px;
+      }
+    }
+  }
+
+  .currency .select2-container {
+    .select2-choice .select2-chosen {
+      margin-right: 20px;
+      min-width: 8px;
+    }
+  }
+
+  .select2-container + .input-append {
+    position: static;
+    font-size: inherit;
+  }
+
+  .select2-container + .input-append .add-on.error-tooltip,
+  input.select2 + .add-on.error-tooltip {
+    position: absolute;
+    top: 3px;
+    right: 17px;
+    left: auto;
+    background: transparent;
+  }
+
+  .input-append .add-on.select2 {
+    left: -38px;
+  }
+}
+
+// Added for currency field, or any field that has
+// a select2 field at end of input
+.select2-addon {
+  min-height: 28px;
+
+  .input-append {
+    width: calc(~"100% - 6rem");
+    float: left;
+
+    input[type="text"] {
+      width: 100%;
+      border-radius: 0 @baseBorderRadius @baseBorderRadius 0;
+    }
+  }
+
+  > input[type="text"] {
+    border-radius: 0 2px 2px 0;
+    float: right;
+    box-sizing: border-box;
+    height: 28px;
+
+    .record-cell .edit & {
+      width: calc(~"100% - 6rem");
+    }
+
+    .dataTable .edit & {
+      width: calc(~"100% - 6rem");
+    }
+  }
+
+  .edit {
+    float: left;
+
+    &.currency.list {
+      width: auto;
+    }
+  }
+
+  .select2-container .select2-choice {
+    border-radius: @baseBorderRadius 0 0 @baseBorderRadius;
+    border-right: none;
+  }
+}
+
+.error .select2-addon .select2-choice > div {
+  margin-right: 0;
+}
+
+.tags {
+  margin: 0;
+  .clearfix();
+
+  .tag-wrapper {
+    float: left;
+    max-width: 100%;
+    padding: 3px 6px 4px;
+    margin: 0 4px 4px 0;
+    background: @select2TagBackgroundColor;
+    box-sizing: border-box;
+    border-radius: 9px;
+
+    .tag-name {
+      font-size: @fontSizeSmall;
+      line-height: 12px;
+      color: @white;
+      font-weight: 600;
+    }
+  }
+}
+
+.square-pill {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  margin: 0 0 3px;
+  padding: 3px 6px;
+  box-sizing: border-box;
+  color: @textColor;
+  font-size: 12px;
+  line-height: 1px;
+  white-space: nowrap;
+  background-color: @contentBackground;
+  border: @borderWidget;
+  border-radius: 3px;
+  cursor: default;
+
+  div,
+  a {
+    max-width: 100%;
+    color: inherit;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 20px;
+  }
+
+  a:hover {
+    color: @textColor;
+    text-decoration: none;
+  }
+
+  span.sicon {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    color: inherit;
+
+    &:hover {
+      color: @black;
+    }
+  }
+
+  .ellipsis-value {
+    display: inline-block !important;
+    float: left;
+    max-width: 136px;
+  }
+
+  .ellipsis-extra {
+    padding-left: 3px;
+  }
+}
+
+// Added for relate field and pills inside relate field
+.select2-choices-pills-close.same-size-pills.select2-container.select2-container-multi {
+  .select2-choices {
+    max-height: 60px;
+    overflow-y: auto;
+
+    .select2-search-choice {
+      padding-right: 15px;
+      width: 70px;
+
+      .select2-search-choice-close {
+        position: absolute;
+        right: 2px;
+        left: auto;
+      }
+    }
+  }
+}
+
+// Drag-and-drop between recipient fields
+.drag-drop-select2-helper {
+  background: transparent;
+  border-radius: 11px;
+  z-index: 2;
+
+  span {
+    font-size: 11px;
+    font-weight: bold;
+    box-shadow: none;
+    line-height: 12px;
+    border-radius: 11px;
+    background: @blue;
+    color: @white;
+    padding: 2px 4px 2px 6px;
+    white-space: nowrap;
+    outline: 0;
+    display: none;
+
+    &:nth-child(1) {
+      display: block;
+      position: relative;
+      z-index: 3;
+    }
+
+    &:nth-child(2) {
+      top: 2px;
+      background: @gray60;
+      left: 2px;
+      right: -2px;
+      z-index: 2;
+    }
+
+    &:nth-child(3) {
+      top: 4px;
+      background: @gray20;
+      left: 4px;
+      right: -4px;
+      z-index: 1;
+    }
+
+    &:nth-child(2),
+    &:nth-child(3) {
+      display: block;
+      position: absolute;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px @gray40;
+      color: transparent;
+    }
+  }
+}
+
+.select2-loading {
+  padding: 5px 7px;
+}
+
+/* NEW SKIN START */
+
+.select2-container {
+  /* override */
+  .select2-choice.select2-default {
+    color: @placeholderText;
+  }
+
+  .select2-choice {
+    /* override */
+    color: @textColor;
+
+    /* override with variables */
+    background: @select2Background;
+    border-color: @select2Border;
+
+    abbr,
+    b {
+      color: @sicon-color;
+    }
+
+    /* additive */
+    &:hover {
+      background-color: @select2BackgroundHover;
+      border-color: @select2BorderHover;
+
+      abbr,
+      b {
+        color: @sicon-hover-color;
+      }
+    }
+  }
+}
+
+.select2-results {
+  li div:hover,
+  .select2-highlighted {
+    /* override with variables */
+    background: @dropdownLinkBackgroundHover;
+    color: @dropdownLinkColor;
+
+    .sicon {
+      color: @linkColorHover;
+    }
+  }
+
+  li div:active {
+    background: @select2LinkBackgroundActive;
+    color: @select2LinkColorHover;
+  }
+}
+
+/* NEW SKIN END */

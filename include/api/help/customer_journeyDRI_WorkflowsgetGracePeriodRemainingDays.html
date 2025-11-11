@@ -1,0 +1,58 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2 xmlns="http://www.w3.org/1999/html">Overview</h2>
+<span class="lead">
+    Provide grace period remaining days
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This request will provide grace period remaining days after calculating it tgrace period start date and current date
+</span>
+
+<h2>This Endpoint does not require any request argument</h2>
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an array containing remaining_days if grace period had started
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                response
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                Grace period remaining days if grace period had started else empty array
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">{
+    [
+        'remaining_days' : 11
+    ]
+}</pre>

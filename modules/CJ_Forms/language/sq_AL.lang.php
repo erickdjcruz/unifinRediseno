@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Listo veprimet e Smart Guide në Sugar',
+    'LBL_MODULE_TITLE' => 'Veprim i Smart Guide në Sugar',
+    'LBL_HOMEPAGE_TITLE' => 'Veprimet e mia të Smart Guide në Sugar',
+    'LNK_NEW_RECORD' => 'Veprim i ri i Smart Guide në Sugar',
+    'LNK_VIEW_RECORDS' => 'Shiko veprimet e Smart Guide në Sugar',
+    'LNK_CJ_FORM_LIST' => 'Shiko veprimet e Smart Guide në Sugar',
+    'LNK_LIST' => 'Veprimet e Smart Guide në Sugar',
+    'LBL_SEARCH_FORM_TITLE' => 'Kërko një veprim Smart Guide në Sugar',
+    'LBL_MODULE_NAME' => 'Veprimet e Smart Guide në Sugar',
+    'LBL_MODULE_NAME_SINGULAR' => 'Veprim i Smart Guide në Sugar',
+    'LBL_TRIGGER_EVENT' => 'Eventi shënues',
+    'LBL_ACTION_TYPE' => 'Lloji i veprimit',
+    'LBL_PARENT_MODULE' => 'Moduli i prindit',
+    'LBL_RELATIONSHIP' => 'Lidhja',
+    'LBL_ACTIVITY_TEMPLATE' => 'Shablloni i aktivitetit',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Shablloni i aktivitetit/fazës së udhëzuesi inteligjent',
+    'LBL_ACTIVE' => 'Aktive',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'Shablloni i aktivitetit %s e ka tashmë një veprim Sugar duke përdorur ngjarjen e aktivizimit %s. Ekziston një kufi prej një Veprimi aktiv Sugar për llojin e ngjarjes së aktivizimit, për çdo fazë ose aktivitet në një Smart Guide.',
+    'LBL_RECORDVIEW_PANEL4' => 'Popullo fushat',
+    'LBL_POPULATE_FIELDS' => 'Popullo fushat',
+    'LBL_ADD_FIELD' => 'Shto fushë',
+    'LBL_REMOVE_FIELD' => 'Hiq fushën',
+    'LBL_FIELD_NAME' => 'Emri i fushës',
+    'LBL_FIELD_VALUE' => 'Vlera e fushës',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Kjo fushë nuk është në dispozicion për pamjen listë.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Lloji i nxitësit të veprimit',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Nuk mund të gjendej regjistrimi përkatës',
+    'LBL_IGNORE_ERRORS' => 'Shpërfill gabimet',
+    'LBL_NO_DISPLAY_FIELDS' => 'Nuk ka fusha për t&#39;u shfaqur.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Fusha e lidhjes së shabllonit të aktivitetit',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Fusha e lidhjes së shabllonit të fazës',
+    'LBL_EMAIL_TEMPLATES' => 'Shablloni i emailit',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Zgjidh "marrësin" tek adresa e emailit',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'Fushat e emailit',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Shfaq ikonën',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Shablloni i aktivitetit/fazës së udhëzuesi inteligjent',
+    'LBL_ACTIVITY_MODULE' => 'Moduli i aktivitetit',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Shabllon i Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Zgjidh aktivizuesin e shabllonit të Smart Guide',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Lloji i stimulit',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Zgjidh llojin e aktivizuesit',
+    'LBL_MODULE_TRIGGER' => 'Stimuli i modulit',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Zgjidh aktivizuesin e modulit',
+    'LBL_FIELD_TRIGGER' => 'Stimuli i fushës',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Zgjidh objektivin e Smart Guide',
+    'LBL_CJ_TARGET' => 'Objektivi i Smart Guide',
+    'LBL_CJ_ACTION' => 'Veprim i Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Zgjidh veprimin e Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'Aktivizues',
+    'LBL_TRIGGER_DESCRIPTION' => 'Përdor fushat e mëposhtme për të zgjedhur llojin e aktivizuesit dhe kushtet e aktivizimit të tij.',
+    'LBL_TARGET_ACTION_TITLE' => 'Objektivi dhe veprimi',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Përdor fushat e mëposhtme për të zgjedhur vendndodhjen dhe llojin e veprimeve që do të ndodhin kur të aktivizohet aktivizuesi.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Zgjidh fazën e Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Zgjidh aktivitetet e Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Zgjidh aktivitetin e Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Zgjidh veprimin e aktiviteteve të fazës',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Zgjidh veprimin e aktiviteteve të Smart Guide',
+];

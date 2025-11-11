@@ -1,0 +1,1695 @@
+/* DASHLET
+  ----------------*/
+.dashlet-container {
+  .empty {
+    padding: 16px 0;
+    border: 3px dashed @gray60;
+    background-color: @white;
+    cursor: pointer;
+
+    p {
+      font-size: @fontSizeMedium;
+      font-weight: 500;
+      text-align: center;
+      color: @gray60;
+
+      &.header {
+        line-height: 40px;
+      }
+    }
+
+    .add-dashlet {
+      color: @gray70;
+      text-align: center;
+
+      small {
+        font-size: @baseFontSize;
+      }
+
+      strong {
+        font-size: 60px;
+        font-weight: 900;
+
+        i {
+          color: @gray70;
+          display: inline-block;
+          width: auto;
+        }
+      }
+    }
+  }
+
+  &.active {
+    .dashlet.empty {
+      background: @gray70;
+      border-color: @white;
+
+      p,
+      strong i {
+        color: @white;
+      }
+    }
+
+    .dashlet:not(.empty) {
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background-color: @white;
+        opacity: 0.5;
+        z-index: 0;
+      }
+
+      .swappable-dashlet {
+        display: block;
+        position: absolute;
+        width: 100%;
+        font-size: 60px;
+        font-weight: 900;
+        text-align: center;
+        top: 30%;
+        color: @white !important;
+        text-shadow: 0 0 2px @black;
+        z-index: 1;
+      }
+    }
+  }
+}
+
+.dashlet-content {
+  font-size: @baseFontSize;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 0 0 @baseBorderRadius @baseBorderRadius;
+
+  & > div {
+    overflow: auto;
+  }
+
+  .search-container {
+    padding: 3px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 5px;
+    height: auto;
+
+    .add-on.sicon-close {
+      position: absolute;
+      padding: 10px;
+      right: 0;
+      z-index: 1000;
+    }
+  }
+
+  .rss-feed {
+    ul {
+      list-style-type: none;
+      margin: 0 0 9px;
+    }
+
+    h4 {
+      font-size: 12px;
+    }
+  }
+
+  .block-footer {
+    border-top: none;
+  }
+}
+
+.cspmessage {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: @fontSizeHeaderSubTitle;
+  line-height: 18px;
+  border: 1px solid @red;
+  padding: 6px;
+}
+
+.dashlet {
+  transition: 0;
+
+  &:not(.collapsed):not(.empty) {
+    min-height: 132px;
+
+    .dashlet-console-list {
+      .console-list-view-table {
+        overflow: auto;
+        height: calc(~'100% - 39px');
+      }
+    }
+
+    .block-footer {
+      min-height: 37px;
+    }
+  }
+
+  .dashlet-options {
+    font-size: @baseFontSize;
+    line-height: @baseLineHeight;
+    color: @textColor;
+    border-bottom: @borderWidget;
+    margin: 0;
+
+    .btn {
+      .sicon {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  h4 {
+    font-size: @fontSizeLarge;
+    border-radius: @baseBorderRadius 0 0 0;
+  }
+
+  .dashlet-options {
+    padding: 5px 8px;
+
+    &.control-group {
+      .row-fluid {
+        [class*="span"] {
+          max-width: 280px;
+        }
+      }
+
+      [class*="span"]:first-of-type:last-of-type {
+        min-width: 108px;
+      }
+
+      .span6.hide + .span6 {
+        min-width: 108px;
+      }
+
+      .controls.controls-two.btn-group-fit {
+        width: 100%;
+      }
+    }
+  }
+
+  &.out {
+    padding: 0;
+
+    h4 {
+      border-radius: @baseBorderRadius;
+      border-bottom: 0 !important;
+    }
+
+    .dashlet-content,
+    .dashlet-options {
+      display: none;
+    }
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .details {
+    font-size: @fontSizeSmall;
+
+    .name {
+      margin-bottom: 4px;
+      font-size: 14px;
+      height: 16px;
+      line-height: 16px;
+    }
+
+    .assigned-user-name {
+      span.list {
+        display: inline-block;
+        vertical-align: middle;
+
+        .relate-field-container {
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  .btn.loading {
+    .center-block();
+    .clearfix();
+
+    width: 200px;
+    float: none;
+    margin-bottom: 20px;
+  }
+
+  .scroll {
+    overflow: auto;
+    min-height: 280px;
+  }
+
+  .btn-toolbar.pull-right {
+    margin: 3px;
+  }
+
+  .btn-toolbar .btn {
+    margin-left: 0;
+
+    span {
+      display: inline-block;
+    }
+  }
+
+  .unstyled {
+    margin: 5px;
+
+    li {
+      margin: 10px;
+
+      .label,
+      .filetype-thumbnail {
+        margin: 3px 12px 12px 0;
+      }
+
+      .label.pull-right {
+        margin-right: 0;
+      }
+
+      .progress,
+      .progress .bar {
+        height: 12px;
+      }
+    }
+
+    li:last-child {
+      border-bottom: none;
+    }
+  }
+
+  //bootstrap override
+  ul.unstyled,
+  ol.unstyled {
+    margin: 0;
+  }
+
+  .listed {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      position: relative;
+      border-bottom: @borderWidget;
+      margin: 0;
+      //from .unstyled
+      //margin: 10px;
+      padding: 14px;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .planned-activities {
+        .label {
+          margin-bottom: 0;
+        }
+
+        .btn {
+          margin-left: 0;
+        }
+      }
+
+      .planned-activities,
+      .invitation-actions {
+        .btn-mini {
+          border: 1px solid @gray40;
+          background-image: none;
+          line-height: 12px;
+          padding: 5px;
+
+          & > .sicon {
+            color: @gray60;
+          }
+        }
+
+        .active {
+          &.btn-mini {
+            border: 1px solid @gray60;
+            background-color: @gray40;
+
+            & > .sicon {
+              color: @gray80;
+            }
+          }
+        }
+
+        .rowaction .btn-mini:hover {
+          background-color: @lightRed;
+          border: 1px solid @darkRed;
+
+          & > .sicon {
+            color: @darkRed;
+          }
+        }
+
+        :not(.active).action {
+          &-accept:hover {
+            background-color: @lightGreen;
+            border: 1px solid @darkGreen;
+
+            & > .sicon {
+              color: @darkGreen;
+            }
+          }
+
+          &-tentative:hover {
+            background-color: @lightOrange;
+            border: 1px solid @darkOrange;
+
+            & > .sicon {
+              color: @darkOrange;
+            }
+          }
+
+          &-decline:hover {
+            background-color: @lightRed;
+            border: 1px solid @darkRed;
+
+            & > .sicon {
+              color: @darkRed;
+            }
+          }
+        }
+      }
+
+      img {
+        text-align: center;
+      }
+
+      .pull-left.avatar {
+        font-size: 0;
+        line-height: 0;
+        margin-left: -44px;
+      }
+
+      p > .pull-left.label-module {
+        margin-left: -44px;
+      }
+
+      .pull-left {
+        margin-left: -40px;
+
+        > i {
+          left: 5px;
+        }
+      }
+
+      .label,
+      .filetype-thumbnail {
+        margin: 3px 12px 12px 0;
+      }
+
+      p {
+        padding-left: 44px;
+        margin-bottom: 4px;
+        font-size: @baseFontSize + 2px;
+        line-height: 16px;
+      }
+
+      .details {
+        padding-left: 44px;
+        line-height: 14px;
+      }
+
+      .progress,
+      .progress .bar {
+        height: 12px;
+      }
+    }
+
+    .dropdown-menu li {
+      padding: 0;
+
+      a:hover {
+        color: @dropdownLinkColorHover;
+      }
+    }
+  }
+
+  //DNB dashlet
+  .jstree-sugar ul.list {
+    border-top: none;
+    border-bottom: @borderWidgetLight;
+
+    li {
+      padding: 0;
+
+      & > a {
+        padding: 12px 0;
+        height: auto;
+      }
+    }
+
+    li.jstree-leaf {
+      & > a {
+        padding-left: 12px;
+      }
+    }
+  }
+
+  //DNB dashlet
+  .accordion-group {
+    margin-bottom: 0;
+    border: none;
+    border-bottom: @borderWidgetLight;
+  }
+
+  .accordion-inner {
+    div.dnb-subtitle {
+      margin: 10px 0;
+      line-height: 15px;
+      overflow: hidden;
+      padding: 0;
+      font-weight: bold;
+      color: @gray80;
+    }
+
+    h4 {
+      font-weight: bold;
+      margin: 0 0 0 -10px;
+      color: @ocean;
+    }
+
+    .dnb-inner-nav {
+      padding: 0;
+    }
+  }
+
+  aside { /* Empty widget*/
+    padding: 10px;
+  }
+
+  .webpage {
+    display: block;
+    line-height: 0;
+    height: 100%;
+    overflow: hidden;
+
+    iframe {
+      border: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0 0 @baseBorderRadius @baseBorderRadius;
+    }
+
+    .cspmessage {
+      margin: 10px 10px 0;
+      border: none;
+    }
+  }
+
+  .dataTable tr:last-child {
+    border-bottom-width: 0;
+
+    td:first-child {
+      border-bottom-left-radius: @baseBorderRadius;
+    }
+
+    td:last-child {
+      border-bottom-right-radius: @baseBorderRadius;
+    }
+  }
+
+  .actions {
+    position: relative;
+
+    &.btn-group.dashlet-toolbar:not(.fieldset) {
+      top: 0;
+
+      &.btn-group + .btn-group {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &.expanded {
+    position: fixed;
+    top: 48px;
+    left: 0;
+    right: 0;
+    bottom: 45px;
+    z-index: 1000;
+    margin: 0 !important;
+
+    .dashlet-content {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 20px;
+    }
+
+    svg {
+      max-height: none;
+    }
+
+    svg text {
+      font-size: 14px;
+    }
+
+    .sucrose .sc-x.sc-axis text {
+      font-size: 12px;
+    }
+
+    a[data-toggle="dashlet"] {
+      display: none;
+    }
+
+    h4.headerpane {
+      font-size: 24px;
+      padding: 20px 0 0 20px;
+      box-sizing: border-box;
+    }
+
+    .btn-toolbar {
+      margin: 16px 20px 0 8px;
+    }
+
+    &.with-options .dashlet-content {
+      top: 108px;
+    }
+
+    .dashlet-options {
+      padding: 10px 20px;
+    }
+  }
+}
+
+.news-article {
+  padding: 10px;
+  border-bottom: @borderWidget;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  h5 {
+    padding: 0;
+    margin: 0;
+  }
+
+  .avatar {
+    float: left;
+    width: auto;
+    margin-right: 8px;
+  }
+}
+
+/* twitter widget */
+.twitter-widget {
+  .news-article {
+    .header {
+      h5 {
+        font-weight: normal;
+        font-size: @fontSizeSmall;
+
+        & > a:first-child {
+          float: left;
+          padding: 0 6px 0 0;
+        }
+      }
+
+      .follow-button {
+        padding-top: 8px;
+      }
+
+      a {
+        color: @gray80;
+        font-weight: 200;
+      }
+    }
+
+    .body {
+      margin: 0 0 6px;
+    }
+
+    .details {
+      a {
+        color: @gray80;
+        margin-right: 4px;
+
+        &:hover i {
+          text-decoration: none;
+        }
+      }
+    }
+
+    .footer {
+      display: none;
+
+      a {
+        color: @gray80;
+
+        &:hover,
+        &:active {
+          color: @gray90;
+          text-decoration: none;
+        }
+      }
+
+      .btn-mini {
+        margin-left: 0;
+        padding-right: 0;
+        margin-top: -3px;
+      }
+    }
+  }
+
+  & + .block-footer {
+    border-radius: 0 0 4px 4px;
+    background-color: @white;
+    border-top: @borderWidget;
+  }
+
+  aside {
+    margin: 0;
+    padding-top: 6px;
+    height: 30px;
+
+    input {
+      width: auto;
+      margin-left: 10px;
+    }
+
+    iframe {
+      padding: 2px 0 0 2px;
+    }
+  }
+}
+
+.side.sidebar-content {
+  .thumbnail.dashlet.ui-draggable-dragging:not(.collapsed) {
+    max-height: 440px !important;
+
+    .block-footer {
+      font-weight: 500;
+      text-align: left;
+    }
+  }
+}
+
+//navbar.less
+.side .block .listed {
+  margin: -10px 0 0;
+}
+
+/* NEW SKIN START */
+
+.dashlet {
+  /* override */
+  box-shadow: none;
+
+  h4,
+  .dashlet-options {
+    /* override */
+    color: @textColor;
+  }
+
+  h4 {
+    /* override */
+    font-weight: 600;
+  }
+
+  /* restructure */
+  .btn-toolbar {
+    &.pull-right {
+      margin: 3px;
+    }
+
+    .btn {
+      margin-left: 0;
+      padding: 3px;
+
+      &.dashlet-toggle {
+        line-height: 12px;
+        padding: 7px;
+      }
+
+      span {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+/* Product Catalog Quick Picks Dashlet */
+
+.product-catalog-quick-picks {
+  .recent-used-product {
+    .dashlet-tabs {
+      .dashlet-tab {
+        font-size: 14px;
+        padding: 5px;
+        height: 30px;
+      }
+    }
+
+    .listed {
+      li {
+        padding: 2px 0 0;
+      }
+    }
+
+    .tab-content {
+      overflow-y: hidden;
+
+      .active {
+        height: 100%;
+      }
+
+      .no-data {
+        text-align: center;
+        padding: 10px;
+      }
+
+      .loading-data {
+        text-align: center;
+        padding-top: 20px;
+      }
+
+      //Dashlet footer having pagination
+      .block-footer {
+        text-align: center;
+        padding: 0;
+        border-top: @borderWidget;
+
+        ul {
+          box-shadow: none;
+        }
+
+        nav {
+          padding: 5px;
+          margin: 0;
+        }
+
+        //List items containing pagination elements
+        .favorite-pagination {
+          display: inline-block;
+
+          //Anchor tag containing chevron spans
+          .paginate-aria-button {
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 12px;
+            width: 40%;
+            background-color: @btnBackgroundHighlight;
+            color: @sicon-color;
+            text-decoration: none;
+            transition: 400ms ease;
+
+            &:hover {
+              background-color: @btnSecondaryBackgroundHover;
+            }
+
+            &:active {
+              background-color: @btnSecondaryBackgroundActive;
+            }
+
+            &.disabled {
+              background-color: @btnSecondaryBackgroundDisabled;
+            }
+
+            //Chevron spans
+            .previous-fav,
+            .next-fav {
+              color: @sicon-color;
+              width: 8px;
+              font-size: smaller;
+
+              &:hover {
+                background-color: @btnSecondaryBackgroundHover;
+                color: @sicon-hover-color;
+              }
+
+              &:active {
+                background-color: @btnSecondaryBackgroundActive;
+                color: @sicon-active-color;
+              }
+
+              &.disabled {
+                color: @textColorLight;
+                background-color: @btnSecondaryBackgroundDisabled;
+              }
+            }
+          }
+
+          //Previous button
+          .nav-previous {
+            padding: 3px 6px;
+            border: @borderWidget;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+          }
+
+          //Next button
+          .nav-next {
+            padding: 3px 6px;
+            border: @borderWidget;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+          }
+
+          //override the default .btn class properties
+          .btn.active {
+            background-color: @btnPrimaryBackgroundHighlight;
+            color: @white;
+            border-radius: 5px;
+          }
+
+          //Numbered buttons to paginate
+          .paginate-num-button {
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 12px;
+            border: none;
+            width: 40%;
+            color: @textColor;
+            background-color: @btnSecondaryBackground;
+            padding: 6px 8px;
+            text-decoration: none;
+            transition: 400ms ease;
+
+            &:hover {
+              color: @textColorHover;
+              background-color: @btnSecondaryBackgroundHover;
+              border-radius: 5px;
+            }
+
+            &.disabled {
+              background-color: @textColorLight;
+              color: @btnSecondaryBackgroundDisabled;
+              border-radius: 5px;
+            }
+          }
+        }
+      }
+
+      //Record list being displayed in the tabs
+      .recent-records-list {
+        padding: 6px;
+        font-size: 12px;
+        height: 80%;
+        overflow: auto;
+
+        .recent-records {
+          display: flex;
+          align-items: center;
+
+          .recent-link {
+            margin-left: 8px;
+            margin-right: 8px;
+            text-align: center;
+          }
+
+          border-bottom: none;
+          white-space: nowrap;
+
+          .quick-picks-list {
+            cursor: pointer;
+          }
+
+          .quick-picks-preview {
+            display: none;
+            color: @sicon-color;
+            text-decoration: none;
+
+            &:hover {
+              cursor: pointer;
+              color: @sicon-hover-color;
+            }
+          }
+
+          &:hover {
+            .quick-picks-preview {
+              display: inline-block;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// record view dashlet
+.dashlet-title.record-toolbar {
+  .record-cell {
+    padding-left: 0.625rem;
+  }
+
+  .record-cell[data-type="name"],
+  .record-cell[data-type="fullname"] {
+    margin-right: 50px;
+  }
+
+  .record-cell[data-type="avatar"],
+  .record-cell[data-type="hint-contacts-photo"],
+  .record-cell[data-type="image"] {
+    padding: 2px 0 0;
+    margin-right: 20px;
+
+    .image_rounded img {
+      border: 2px solid @borderColor;
+      border-radius: 23px;
+    }
+
+    .label-module-btn {
+      height: @sizeXSmall;
+      width: @sizeXSmall;
+      font-size: 9px;
+      vertical-align: middle;
+    }
+  }
+
+  .table-cell-wrapper {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 19px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    .ellipsis_inline {
+      padding: 0;
+    }
+  }
+
+  .record-cell.edit[data-type="avatar"],
+  .record-cell.edit[data-type="image"] {
+    margin-right: 30px;
+  }
+
+  .record-cell.edit[data-type="fullname"] {
+    span[data-fieldname="salutation"] {
+      display: inline-block;
+      width: 20%;
+    }
+
+    span[data-fieldname="first_name"],
+    span[data-fieldname="last_name"] {
+      display: inline-block;
+      width: 40%;
+    }
+  }
+}
+
+.dashablerecord .dashlet-tabs .dashlet-tabs-row .dashlet-tab {
+  height: 30px;
+}
+
+// record view dashlet embedded in record view dashlet configuration drawer ("pseudo dashlet")
+.dashablerecord.dashablerecord-config .dashlet-tabs-row .dashlet-tab {
+  height: 35px;
+
+  a {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 19px;
+  }
+}
+
+.dashablerecord.dashablerecord-config {
+  float: left;
+  border: 1px solid @inputBorderColor;
+  margin: 10px;
+  width: 75%;
+}
+
+.dashablerecord-studio-text {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.dashablerecord {
+  .record {
+    padding: 13px;
+
+    .sicon-sugar-predict {
+      margin-right: 3px;
+      margin-bottom: 2px;
+      color: @purple;
+    }
+  }
+
+  .dataTable {
+    tr {
+      td.edit-td {
+        padding-left: 0;
+        padding-right: 0;
+        z-index: 10;
+      }
+
+      &:not(.tr-inline-edit) {
+        td.edit-td .btn-group.edit {
+          display: none;
+        }
+
+        &:not(:hover) {
+          td.edit-td .btn-group.detail {
+            display: none;
+          }
+        }
+      }
+
+      &.tr-inline-edit {
+        td {
+          background-color: var(--dropdown-link-background-hover);
+
+          &.edit-td .btn-group.detail {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Record view dashlet */
+.dashablerecord {
+  div[data-name="follow_up_datetime"].record-cell {
+    span.record-edit-link-wrapper {
+      width: 18vw;
+      display: none;
+    }
+  }
+
+  div[data-type="follow-up-datetime-colorcoded"] {
+    vertical-align: middle;
+    padding: 0 0 0 8px;
+
+    .label {
+      border: none;
+      line-height: 16px;
+      font-size: 13px;
+
+      &.expired {
+        color: @darkRed;
+        background-color: @lightRed;
+      }
+
+      &.soon-expired {
+        color: @darkOrange;
+        background-color: @lightOrange;
+      }
+    }
+  }
+
+  div[data-type="case-status"] {
+    span.detail.label.pill {
+      border: none;
+      line-height: 16px;
+      font-size: 13px;
+      width: fit-content;
+      min-height: 20px;
+      height: 20px;
+      padding: 2px 4px;
+      margin: 0 0 0 8px;
+    }
+  }
+}
+
+/* Active Subscriptions Dashlet */
+
+.active-subscriptions {
+  .subscription-entry {
+    padding: 11px;
+    border-bottom: @borderWidget;
+
+    .content-row {
+      width: 100%;
+
+      .row-left {
+        display: flex;
+      }
+
+      .row-cell {
+        white-space: nowrap;
+        vertical-align: middle;
+
+        .timeline-active-subscription {
+          border-top: 13pt solid #8f1988;
+          margin-top: -13pt;
+        }
+
+        .timeline-active-subscription > div {
+          background: #d0d3d4;
+          height: 13pt;
+          margin-top: -13pt;
+        }
+      }
+
+      .secondary {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .pull-right {
+        padding-left: 10px;
+      }
+
+      .currency-field {
+        margin-left: 5px;
+
+        .original {
+          padding: 0;
+        }
+
+        .converted {
+          width: unset;
+        }
+      }
+    }
+  }
+}
+
+/* Purchase History Dashlet */
+.purchase-history {
+  .purchase-entry {
+    border-bottom: @borderWidget;
+
+    .content-row {
+      margin: 10px;
+      display: flex;
+
+      .totals-label {
+        color: @labelColor;
+        margin-right: 5px;
+        display: inline;
+      }
+
+      .purchase-details {
+        text-align: right;
+      }
+
+      .purchase-details-total {
+        width: 30%;
+        padding-left: 20px;
+      }
+
+      .purchase-details-quantity {
+        width: 20%;
+      }
+
+      .purchase-details-date {
+        width: 40%;
+        min-width: 130px;
+
+        .relate-field-container {
+          margin-left: auto;
+        }
+
+        .purchase-dates {
+          padding-right: 32px;
+        }
+      }
+
+      .row-cell {
+        white-space: nowrap;
+        vertical-align: middle;
+
+        .currency-field {
+          display: inline;
+        }
+
+        &.purchase-name {
+          width: 100%;
+        }
+      }
+
+      .pli-count {
+        align-self: flex-end;
+        margin-left: auto;
+        padding-left: 10px;
+
+        .pli-count-label {
+          color: @linkColor;
+        }
+      }
+
+      .toggle-pli-list {
+        cursor: pointer;
+      }
+    }
+
+    .pli-entries {
+      background-color: @contentBackground;
+      padding: 10px;
+
+      .pli-entry {
+        margin: 0;
+
+        .loading {
+          margin: 0 auto;
+        }
+
+        .show-more-plis {
+          border: 0;
+          padding: 0;
+        }
+      }
+
+      .pli-entry:not(:first-of-type) {
+        margin-top: 10px;
+      }
+
+      .pli-entry:not(:last-of-type) {
+        margin-bottom: 10px;
+      }
+
+      .pli-entry.pli-entry-centered {
+        display: block;
+        text-align: center;
+      }
+    }
+
+    span > .ellipsis_inline {
+      display: inline;
+    }
+  }
+
+  .listed > li {
+    padding: 0;
+  }
+}
+
+/* Dashlet search and sort controls */
+.dashlet-controls-header {
+  padding: 10px;
+  border-bottom: @borderWidget;
+  height: 30px;
+  display: flex;
+  align-items: center;
+
+  .dashlet-controls-search {
+    width: 50vw;
+  }
+
+  .dashlet-controls-sort {
+    display: flex;
+    align-items: center;
+    width: 50vw;
+    margin-left: 10px;
+
+    .dashlet-controls-label {
+      margin-right: 10px;
+    }
+
+    .select2-container {
+      width: 100%;
+    }
+  }
+}
+
+/* Console List View Dashlet */
+
+.dashlet-console-list {
+  .filter.controls.btn-group-fit.controls-two {
+    padding-right: 36px;
+  }
+
+  .dashlet-console-list-row {
+    &:hover {
+      color: @darkPacific;
+    }
+
+    &:active {
+      color: @darkIndigo;
+    }
+  }
+}
+
+/* Activity Timeline Dashlet */
+
+.activity-timeline {
+  &:hover {
+    .timeline-filter-panel {
+      background-color: @dashletBackground;
+    }
+  }
+
+  .timeline-filter-panel {
+    justify-content: left;
+  }
+
+  .timeline-entry {
+    .static-contents {
+      height: 35px;
+      padding: 11px;
+      border-bottom: @borderWidget;
+
+      &.expanded {
+        background-color: @gray20;
+      }
+
+      .content-col {
+        &.record-icon {
+          width: 20px;
+          height: 20px;
+          padding: 6px;
+          margin: 2px;
+          background-color: @blue;
+          border-radius: 50%;
+          text-align: center;
+
+          .sicon {
+            color: @white;
+          }
+        }
+
+        &.record-text {
+          width: calc(~"100% - 42px");
+          font-size: 12px;
+          line-height: 17px;
+          margin-left: 42px;
+
+          .content-cell {
+            &.primary {
+              color: @black;
+            }
+
+            &.secondary {
+              color: @gray60;
+            }
+
+            .row-cell {
+              display: inline-block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+      }
+    }
+
+    .expanded-contents {
+      border-bottom: @borderWidget;
+      padding: 6px;
+    }
+  }
+
+  .empty-activity {
+    color: @gray80;
+  }
+
+  .dashlet-footer {
+    display: none;
+  }
+
+  .timeline-skeleton {
+    background: @timelineSkeletonLoader space @primaryContentBackground;
+    background-repeat: repeat-y;
+    background-position: 8px 8px;
+    height: inherit;
+  }
+
+  &.hidden-overflow {
+    overflow: hidden;
+  }
+}
+
+.external-app-dashlet {
+  &.config {
+    .panel_body {
+      margin-bottom: 15px;
+    }
+  }
+
+  .error-msg {
+    padding: 10px;
+  }
+}
+
+// Modifications to GridStack so that we can use our custom SugarIcons font
+.grid-stack > .grid-stack-item > .ui-resizable-handle {
+  background: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+
+  &[class*=' ui-resizable-']::before {
+    font-family: 'SugarIcons';
+    color: @gray70;
+    font-size: 12px;
+  }
+
+  &.ui-resizable {
+    &-se {
+      right: 4px;
+
+      &::before {
+        content: @sicon-expand-left;
+      }
+    }
+
+    &-sw {
+      right: 4px;
+
+      &::before {
+        content: @sicon-expand-right;
+      }
+    }
+  }
+}
+
+// Styling for preview when adding a dashlet
+.dashlet-preview {
+  .dashlet-container {
+    height: 350px;
+    overflow: hidden;
+
+    .dashlet-content {
+      overflow: scroll;
+    }
+  }
+}
+
+.runtime-filter-toolbar.dashlet-runtime-filter {
+  height: fit-content;
+  min-height: 40px;
+
+  .sicon.sicon-check-circle-line-lg {
+    color: @green;
+  }
+}
+
+.dashlet-group-filter-widget {
+  width: calc(~'100% - 26px');
+  margin-left: 11px;
+  border: solid 1px @borderColor;
+  border-radius: 3px;
+}
+
+.dashboard-filter-group-container {
+  max-height: 12rem;
+}
+
+.dashlet-remove-group:hover {
+  color: @blue;
+}
+
+.collapsed-filter-group {
+  justify-content: space-between;
+}
+
+.filter-widget-headerpane:hover {
+  &:not(.disabled-group) {
+    > div > i.dashlet-remove-group {
+      visibility: visible;
+    }
+  }
+
+  background-color: @primaryContentHoverBackground;
+  cursor: pointer;
+
+  > div > i.dashlet-collapse-group {
+    visibility: visible;
+  }
+
+  > div > div > div > i.dashlet-collapse-group {
+    visibility: visible;
+  }
+
+  > div > div > div > i.dashlet-remove-group {
+    visibility: visible;
+  }
+}
+
+.filter-widget-toolbar {
+  justify-content: flex-end;
+}
+
+.dashlet-group-filter-widget:hover {
+  &:not(.disabled-group) {
+    > div > div > i.dashlet-remove-group {
+      visibility: visible;
+    }
+
+    border-color: @blue;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  > div > div > i.dashlet-collapse-group {
+    visibility: visible;
+  }
+
+  > div > div > div > div > i.dashlet-collapse-group {
+    visibility: visible;
+  }
+
+  &.disabled-group {
+    label {
+      cursor: initial;
+    }
+  }
+}
+
+.dashlet-group-highlight-fct(@color) {
+  border: 2px solid @color;
+  border-radius: 6px;
+  border-color: @color;
+}
+
+.dashlet-widget-highlight-fct(@color) {
+  .dashlet-group-highlight-fct(@color);
+
+  box-shadow: 0 2px 8px 0 fade(@color, 0.5);
+}
+
+body.sugar-dark-theme {
+  .dashlet-widget-highlight {
+    .dashlet-group-highlight-fct(@color-dark-text-link-base);
+    .dashlet-widget-highlight-fct(@color-dark-text-link-base);
+  }
+
+  .dashlet-group-filter-widget.hover-highlight:hover {
+    .dashlet-group-highlight-fct(@color-dark-text-link-base);
+  }
+}
+
+body.sugar-light-theme {
+  .dashlet-widget-highlight {
+    .dashlet-group-highlight-fct(@color-blue-400);
+    .dashlet-widget-highlight-fct(@color-blue-400);
+  }
+
+  .dashlet-group-filter-widget.hover-highlight:hover {
+    .dashlet-group-highlight-fct(@color-blue-400);
+  }
+}
+
+.dashlet-group-edit {
+  // TODO look at moving to Tailwind
+  label {
+    display: inline-flex;
+    height: 100%;
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: var(--text-color);
+  }
+
+  .dashlet-group-remove-field {
+    height: fit-content;
+    visibility: hidden;
+  }
+
+  &:hover {
+    background-color: @primaryContentHoverBackground;
+
+    .dashlet-group-remove-field {
+      visibility: visible;
+      color: @gray70;
+    }
+
+    .dashlet-group-remove-field:hover {
+      visibility: visible;
+      color: @blue;
+    }
+  }
+}
+
+.dashboard-group-edit-name {
+  border-bottom: solid 1px @borderColor;
+  padding-bottom: 0.5rem;
+}
+
+.dashboard-filters-multiselect-wrapper {
+  border: solid 1px @borderColor;
+  margin: 10px;
+
+  .select-all {
+    .noselect();
+
+    margin-bottom: 0;
+    border-bottom: 1px solid @borderColor;
+  }
+
+  .items-center:hover {
+    cursor: pointer;
+    background-color: @primaryContentBackgroundAccent;
+  }
+
+  .item-selected.items-center {
+    background-color: @tabBackgroundHoverColor;
+  }
+
+  .item-selected.items-center:hover {
+    background-color: @selectedTabBackgroundHoverColor;
+  }
+}
+
+.dashlet-group-filter-widget-collapsed {
+  background-color: @bodyBackground;
+  border-color: @borderColor;
+
+  &:hover {
+    background-color: @primaryContentHoverBackground;
+  }
+}
+
+.filter-widget-group-headerpane:hover {
+  background-color: @primaryContentHoverBackground;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.dashlet-group-active {
+  width: calc(~'100% - 25px');
+  border: solid 2px @blue;
+  box-sizing: border-box;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.dashlet-group-invalid {
+  border-color: @errorBorder;
+}
+
+.dashboard .btn.report-visibility-button {
+  position: relative;
+}
+
+body.safari-browser .dashboard .cols .preview-headerbar {
+  z-index: initial;
+}
+
+.preview-headerbar.home-headerpane {
+  .headerpane {
+    min-height: 3rem;
+    height: 3rem;
+    width: calc(100vw ~"-" @sidebarNavWidth);
+  }
+}
+
+.datepicker-container > input {
+  z-index: 200;
+}

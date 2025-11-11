@@ -1,0 +1,82 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{> wizard-page.header }}
+<div class="modal-body">
+
+{{#eq wizardName "admin"}}
+    <ul class="thumbnails row-fluid">
+        <li class="span2">
+            <a class="thumbnail" href="#bwc/index.php?module=Administration&action=Locale&view=default">
+                <i class="sicon sicon-lg sicon-flag-lg"></i>
+                <span>{{str "LBL_WIZ_SYSTEM_LOCALE_SETTINGS" module}}</span>
+            </a>
+        </li>
+        <li class="span2">
+            <a class="thumbnail" href="#bwc/index.php?module=EmailMan&action=config">
+                <i class="sicon sicon-lg sicon-email-lg"></i>
+                <span>{{str "LBL_WIZ_EMAIL_SETTINGS" module}}</span>
+            </a>
+        </li>
+        <li class="span2">
+            <a class="thumbnail" href="#bwc/index.php?module=Configurator&action=EditView">
+                <i class="sicon sicon-lg sicon-settings-lg"></i>
+                <span>{{str "LBL_WIZ_APPLICATION_SETTINGS" module}}</span>
+            </a>
+        </li>
+        <li class="span2">
+            <a class="thumbnail" href="#bwc/index.php?module=Users&action=index">
+                <i class="sicon sicon-lg sicon-contact-lg"></i>
+                <span>{{str "LBL_WIZ_CREATE_USERS" module}}</span>
+            </a>
+        </li>
+        <li class="span2">
+            <a class="thumbnail" href="#bwc/index.php?module=Import&action=step1&import_module=Administration">
+                <i class="sicon sicon-lg sicon-upload-lg"></i>
+                <span>{{str "LBL_WIZ_IMPORT_DATA" module}}</span>
+            </a>
+        </li>
+        <li class="span2">
+            <a class="thumbnail" href="#bwc/index.php?module=ModuleBuilder&action=index&type=studio">
+                <i class="sicon sicon-lg sicon-studio-lg"></i>
+                <span>{{str "LBL_WIZ_CONFIGURE_APPLICATION" module}}</span>
+            </a>
+        </li>
+    </ul>
+{{/eq}}
+    <ul class="thumbnails row-fluid">
+        <li class="span3">
+            <a class="thumbnail" target="_blank" href="http://support.sugarcrm.com/03_Training">
+                <i class="{{buildIcon 'sicon-sugar-u'}}"></i>
+                <span>{{str "LBL_WIZ_SUGAR_TRAINING" module}}</span>
+            </a>
+        </li>
+        <li class="span3">
+            <a class="thumbnail" target="_blank" href="http://support.sugarcrm.com/02_Documentation">
+                <i class="{{buildIcon 'sicon-document-lg'}}"></i>
+                <span>{{str "LBL_WIZ_DOCUMENTATION" module}}</span>
+            </a>
+        </li>
+        <li class="span3">
+            <a class="thumbnail" target="_blank" href="http://support.sugarcrm.com/04_Find_Answers/02KB">
+                <i class="{{buildIcon 'sicon-knowledgebase-xl'}}"></i>
+                <span>{{str "LBL_WIZ_KNOWLEDGE_BASE" module}}</span></a>
+        </li>
+        <li class="span3">
+            <a class="thumbnail" target="_blank" href="http://community.sugarcrm.com">
+                <i class="{{buildIcon 'sicon-sugar-club'}}"></i>
+                <span>{{str "LBL_WIZ_FORUMS" module}}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+{{> wizard-page.footer }}

@@ -1,0 +1,90 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2 xmlns="http://www.w3.org/1999/html">Overview</h2>
+<span class="lead">
+    Creates Default Relationship of DRI_Workflows
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This request will creates default relationship of DRI_Workflows with some Sugar modules 
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                repair
+            </td>
+            <td>
+                Boolean
+            </td>
+            <td>
+                After writing the fields and relationship meta into the vardefs.php, should QRR be run or not 
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "repair": "true",
+}
+</pre>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be true meaning successful execution, otherwise, error will be thrown
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                response
+            </td>
+            <td>
+                Boolean
+            </td>
+            <td>
+                Successful execution or not
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">{
+    "response" : true
+}</pre>

@@ -1,0 +1,281 @@
+@sweetspotWidth: 500px;
+@sweetspotHalfWidth: 50px;
+@sweetspotHeight: 60px;
+@sweetspotGrey: @gray40;
+@sweetspotDarkText: @gray30;
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#sweetspot {
+  max-height: 520px;
+  .noselect();
+
+  display: none;
+  position: fixed;
+  width: @sweetspotWidth;
+  min-height: @sweetspotHeight;
+  background-color: @gray20;
+  top: 14%;
+  z-index: 100000;
+  left: ~'-moz-calc(50% - 250px)';
+  left: ~'-webkit-calc(50% - 250px)';
+  left: ~'calc(50% - 250px)';
+  margin: 0 auto;
+  border-radius: 10px;
+  border: 6px solid fade(@black, 50%);
+
+  &[data-theme=light] {
+    border-radius: 2px;
+    border: @borderWidget;
+    box-shadow: @shadowWidget;
+
+    input[type=text] {
+      color: @gray80;
+      background-color: @transparent;
+    }
+
+    ul {
+      background-color: @transparent;
+    }
+
+    .sweetspot-results {
+      p {
+        margin: 0 10px;
+        padding: 2px 0 0;
+        background-color: @transparent;
+        color: @gray80;
+        border-bottom: 1px solid @gray80;
+      }
+
+      li[data-sweetaction] {
+        border-radius: 0;
+
+        &.active {
+          background-color: fade(@black, 7%);
+        }
+
+        &:hover {
+          background-color: fade(@black, 7%);
+        }
+      }
+    }
+  }
+
+  &[data-theme=dark] {
+    border-radius: 2px;
+    border: 1px solid @gray90;
+    box-shadow: 2px 5px 15px fade(@black, 50%);
+    background-color: @gray80;
+
+    input[type=text] {
+      color: @sweetspotDarkText;
+      background-color: transparent;
+    }
+
+    ul {
+      background-color: @gray90;
+    }
+
+    i {
+      color: fade(@white, 80%);
+
+      &:hover {
+        color: @sweetspotDarkText;
+        cursor: pointer;
+      }
+    }
+
+    .sweetspot-results {
+      p {
+        margin: 0 10px;
+        padding: 2px 0 0;
+        background-color: transparent;
+        color: @sweetspotDarkText;
+        border-bottom: 1px solid @gray70;
+      }
+
+      li[data-sweetaction] {
+        border-radius: 0;
+
+        a {
+          color: @sweetspotDarkText;
+
+          > div.result-text {
+            div.result-keyword.label {
+              background-color: fade(@white, 80%);
+              color: @gray90;
+              border: none;
+            }
+          }
+        }
+
+        .sweetspot-icon {
+          color: fade(@white, 80%);
+        }
+
+        &.active {
+          background-color: fade(@white, 7%);
+        }
+
+        &:hover {
+          background-color: fade(@white, 7%);
+        }
+      }
+    }
+  }
+
+  input[type=text] {
+    display: block;
+    border: 0;
+    padding: 0 5px;
+    margin: 0;
+    position: absolute;
+    width: calc(~"100% - 75px");
+    color: @gray90;
+    background-color: @sweetspotGrey;
+    font-size: 34px;
+    box-shadow: none;
+    height: 50px;
+    top: 5px;
+    left: 5px;
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  i {
+    margin: 3px 3px 0 0;
+
+    &:hover {
+      color: @sicon-hover-color;
+      cursor: pointer;
+    }
+  }
+
+  .sweetspot-searchbar {
+    height: @sweetspotHeight;
+  }
+
+  .sweetspot-results {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    list-style-type: none;
+
+    > li {
+      margin: 0;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+
+      li[data-sweetaction] {
+        height: 50px;
+        margin: 5px;
+        background-color: @transparent;
+        border-radius: 3px;
+        position: relative;
+
+        span.label {
+          position: absolute;
+          top: 9px;
+          left: 6px;
+        }
+
+        a {
+          color: @gray90;
+          position: relative;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          display: block;
+          height: 100%;
+          outline: 0;
+
+          > div.result-text {
+            div.result-keyword.label {
+              display: block;
+              float: right;
+              margin: 6px 0 0 3px;
+            }
+
+            div.result-name {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              display: block;
+            }
+
+            position: absolute;
+            white-space: nowrap;
+            left: 50px;
+            font-size: 24px;
+            top: 9px;
+            line-height: 36px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            bottom: 9px;
+            right: 50px;
+            padding: 0;
+            margin: 0;
+          }
+        }
+
+        &.active {
+          background-color: @sweetspotGrey;
+
+          .result-icon {
+            display: none;
+          }
+        }
+
+        &:hover {
+          background-color: @sweetspotGrey;
+        }
+
+        .sweetspot-icon {
+          position: absolute;
+          right: 20px;
+          top: 12px;
+          font-size: 20px;
+          color: fade(@black, 20%);
+        }
+      }
+    }
+
+    p {
+      height: 18px;
+      margin: 0;
+      padding: 2px 10px 0;
+      background-color: fade(@black, 50%);
+      color: @sweetspotGrey;
+      border-radius: 0;
+      font-size: 11px;
+      font-variant: small-caps;
+    }
+  }
+}
+
+@media (max-width: 525px) {
+  #sweetspot {
+    width: 97%;
+    left: auto;
+    right: auto;
+  }
+}

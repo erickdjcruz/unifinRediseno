@@ -1,0 +1,116 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+
+<h2>Overview</h2>
+<span class="lead">
+    Initiate a new document merge request.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>mergeType</td>
+            <td>String</td>
+            <td>The type of the merge</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>useRevision</td>
+            <td>boolean</td>
+            <td>Indicates whether to use revisions</td>
+            <td>No (default is true)</td>
+        </tr>
+        <tr>
+            <td>templateName</td>
+            <td>String</td>
+            <td>The filename of the template</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>templateId</td>
+            <td>String</td>
+            <td>The ID of the template</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>recordId</td>
+            <td>String</td>
+            <td>The ID of the record we want to merge</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>recordModule</td>
+            <td>String</td>
+            <td>The module of the record we want to merge</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>parentId</td>
+            <td>String</td>
+            <td>The ID of parent record. Only if the merge is intiated from a subpanel</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>parentModule</td>
+            <td>String</td>
+            <td>The module of parent record. Only if the merge is intiated from a subpanel</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>maxRelate</td>
+            <td>Integer</td>
+            <td>Maximum records to retrieve in a collection</td>
+            <td>No (default is 20)</td>
+        </tr>
+        <tr>
+            <td>selectedRecords</td>
+            <td>Array</td>
+            <td>A list of record IDs used in multimerge</td>
+            <td>No</td>
+        </tr>
+    </tbody>
+</table>
+
+</pre>
+
+<h2>Response Arguments</h2>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+    It will return the ID of the DocumentMerge record.
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/DocumentMerge/merge</code> POST endpoint.
+        </td>
+    </tr>
+</table>

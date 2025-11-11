@@ -1,0 +1,64 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="active-subscriptions">
+    {{#if purchasesModule}}
+        {{#if collection.dataFetched}}
+            {{#if collection.models.length}}
+                {{#each collection.models}}
+                    <div class="subscription-entry" data-id="{{attributes.id}}">
+                        <div class="content-row">
+                            <div class="row-cell pull-right"><time datetime="{{attributes.service_end_date}}"
+                                                                   class="date"
+                                                                   style="{{#if attributes.expiryComingSoon}}color:#AA0001{{/if}}">
+                                {{attributes.service_remaining_time}}</time>
+                            </div>
+                            {{#with ../collection.fieldsMeta.purchase}}
+                                {{field ../../this model=../this template='list'}}
+                            {{/with}}
+                        </div>
+                        <div class="content-row">
+                            <div class="row-left">
+                                <div class="row-cell">{{str "LBL_ACTIVE_SUBSCRIPTIONS_TOTAL" attributes._module}}</div>
+                                {{#with ../collection.fieldsMeta.total_amount}}
+                                    <div class="row-cell">{{field ../../this model=../this template='list'}}</div>
+                                {{/with}}
+                            </div>
+                            <div class="row-cell">
+                                <div data-bs-placement="top"
+                                     data-original-title="{{str 'LBL_CALENDAR_START_DATE'}}: {{attributes.startDate}}
+{{str 'LBL_CALENDAR_END_DATE'}}: {{attributes.endDate}}
+{{str 'LBL_LIST_SUPPORT_EXPIRES' 'Products'}}: {{attributes.service_remaining_time}}"
+                                     rel="tooltip" class="timeline-active-subscription"
+                                     style="width:{{attributes.subscriptionValidityActive}}%;
+                                             margin-left:{{attributes.timelineOffset}}%"
+                                >
+                                    <div style="width:{{attributes.subscriptionActiveWidth}}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+            {{else}}
+                <div class="block-footer">{{str "LBL_NO_ACTIVE_SUBSCRIPTIONS"}}</div>
+            {{/if}}
+        {{else}}
+            <div class="block-footer">
+                {{str "LBL_LOADING" module}}
+            </div>
+        {{/if}}
+    {{else}}
+        <div class="block-footer">
+            {{str "LBL_REQUIRE_REVENUE_LINE_ITEMS" module moduleName}}
+        </div>
+    {{/if}}
+</div>

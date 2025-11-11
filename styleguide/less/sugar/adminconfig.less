@@ -1,0 +1,151 @@
+/* Styles for the Admin page */
+
+.admin-config {
+  .admin-config-body-header {
+    margin: 13px 0 0 22px;
+
+    .admin-config-body-title {
+      font-weight: bold;
+      font-size: @fontSizeMedium;
+    }
+  }
+
+  .admin-config-body {
+    .labels-on-side {
+      .record-label {
+        float: left;
+      }
+
+      .sub-title {
+        margin-left: calc(~"-19vw - 12px");
+      }
+
+      input {
+        &[type="checkbox"] {
+          margin-left: 0;
+        }
+      }
+    }
+
+    .timeline-config {
+      label {
+        display: inline-block;
+      }
+    }
+
+    .timeline-alert {
+      background-color: var(--light-blue-half);
+      margin: 10px 0 20px;
+      padding: 20px 19px;
+    }
+
+    .row-fluid input[type="checkbox"] {
+      display: inline-block;
+    }
+
+    .admin-config-help-block {
+      .console-config-instructions();
+
+      margin: 52px 8px 22px;
+      position: relative;
+
+      &::before {
+        content: "";
+        border-top: @borderWidget;
+        position: absolute;
+        left: -40px;
+        top: -29px;
+        width: calc(~"100% + 60px");
+      }
+    }
+  }
+
+  .record {
+    .labels-on-side:not(.empty-label) {
+      padding-left: 0;
+    }
+
+    .nav.nav-tabs {
+      padding-top: 10px;
+
+      .tab a {
+        margin: 0 0 1px;
+        padding: 5px 8px;
+      }
+
+      .tab a:focus {
+        outline: none;
+      }
+    }
+
+    .tab-pane {
+      padding: 15px 30px;
+    }
+
+    .sub-title {
+      padding: 8px;
+      font-weight: bold;
+    }
+
+    .row-fluid {
+      .record-cell {
+        input {
+          &:not([type="file"]):not(.required) {
+            border: @borderWidget;
+            box-shadow: none;
+          }
+
+          &[type="text"].hexvar {
+            text-transform: uppercase;
+            width: 80px;
+          }
+        }
+
+        .ellipsis_inline.sub-title {
+          font-size: @baseFontSize;
+        }
+
+        .fieldset-field {
+          font-size: @baseFontSize;
+          color: @gray70;
+          line-height: 28px;
+
+          .select2-container {
+            min-width: 50px;
+          }
+        }
+
+        &:not([data-type="sub-title"]):not([data-name^="portaltheme"]) {
+          margin-left: 20px;
+        }
+
+        .file-preview {
+          max-width: 200px;
+          max-height: 100px;
+          margin: 10px 0 5px;
+
+          img {
+            max-height: 100px;
+            min-height: 20px;
+            min-width: 20px;
+          }
+        }
+      }
+
+      &:not(:first-child) {
+        .record-cell[data-type="sub-title"] {
+          margin-top: 35px;
+
+          &::before {
+            content: "";
+            border-top: solid 1px @gray40;
+            position: absolute;
+            left: -30px;
+            top: -13px;
+            width: calc(~"100% + 60px");
+          }
+        }
+      }
+    }
+  }
+}

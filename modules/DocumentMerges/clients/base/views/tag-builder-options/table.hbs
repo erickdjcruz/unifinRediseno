@@ -1,0 +1,35 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+<div class="dm-table-assistant">
+    <table class="tableAssistant dm-table-assistant-border">
+        <thead>
+            <tr>
+                {{#each tableAssistant.fields}}
+                    <th class="dm-table-assistant-border">
+                        {{label}}
+                    </th>
+                {{/each}}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {{#each tableAssistant.fields}}
+                    <td class="dm-table-assistant-border">
+                        {{#if @first}}{{../../tableAssistant.startingCollectionTag}}{{/if}}{{name}}{{#if @last}}{{../../tableAssistant.endingCollectionTag}}{{/if}}
+                    </td>
+                {{/each}}
+            </tr>
+        </tbody>
+    </table>
+</div>

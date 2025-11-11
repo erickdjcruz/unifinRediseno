@@ -1,0 +1,54 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="datapoint pull-left flex flex-col px-2 pb-1 border-l border-[--border-color-light] first:border-l-0">
+    <div class="flex flex-row items-center justify-end mb-1">
+        {{#if this.arrow}}
+            <span class="sicon committed_arrow{{this.arrow}} pr-2"></span>
+        {{/if}}
+        <span class="text-sm">{{this.label}}</span>
+    </div>
+    {{#if this.hasDataAccess}}
+        {{!-- TODO accessibility --}}
+        {{#if this.isManager}}
+            <div class="forecast-value flex justify-between items-center">
+                <span class="text-xs">{{str 'LBL_TEAM_COMMITMENT' module}}</span>
+                <span class="forecast-value-input pl-4 rtl:pl-0 rtl:pr-4 relative text-base">{{formatCurrency value}}</span>
+            </div>
+            <div class="sum-value flex justify-between items-center text-label py-1">
+                <span class="text-xs">{{str 'LBL_ADJUSTED_TOTAL' module}}</span>
+                <span class="text-xs">{{formatCurrency this.total}}</span>
+            </div>
+        {{else}}
+            <div class="forecast-value flex justify-between items-center">
+                <span class="text-xs">{{str 'LBL_COMMITMENT' module}}</span>
+                <span class="forecast-value-input pl-4 rtl:pl-0 rtl:pr-4 relative text-base">{{formatCurrency value}}</span>
+            </div>
+            <div class="sum-value flex justify-between items-center text-label py-1">
+                <span class="text-xs pr-4">{{str 'LBL_OPPORTUNITY_FORECAST' module}}</span>
+                <span class="text-xs">{{formatCurrency this.total}}</span>
+            </div>
+            {{#if this.isRLIMode}}
+                <div class="sum-value flex justify-between items-center text-label py-1">
+                    <span class="text-xs pr-4">{{str 'LBL_REVENUELINEITEM_FORECAST' module}}</span>
+                    <span class="text-xs">{{formatCurrency this.rliTotal}}</span>
+                </div>
+            {{/if}}
+        {{/if}}
+        <div class="sum-value flex justify-between items-center text-label py-1">
+            <span class="text-xs">{{str 'LBL_LAST_COMMITMENT' module}}</span>
+            <span class="text-xs">{{formatCurrency this.lastCommit}}</span>
+        </div>
+    {{else}}
+        {{{this.noDataAccessTemplate}}}
+    {{/if}}
+</div>

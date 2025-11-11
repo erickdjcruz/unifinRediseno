@@ -1,0 +1,33 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="omni-headerpane">
+    <h1>
+        <span class="record-cell" data-type="label" data-name="omni-title">
+            <span class="table-cell-wrapper">
+                <span class="omni-headerpane-term">
+                    <div class="omni-search-header">
+                        {{str 'LBL_SEARCH_RESULTS_FOR'}}
+                    </div>
+                    <div class="ellipsis_inline" data-original-title="{{#if searchTerm.term}}{{searchTerm.term}}{{/if}}">
+                        {{#if searchTerm.term}}"{{searchTerm.term}}"{{/if}}
+                    </div>
+                    <div class="omni-search-header">
+                        {{#if countLabel}}
+                            <span class="count">({{countLabel}})</span>
+                        {{/if}}
+                    </div>
+                </span>
+            </span>
+        </span>
+    </h1>
+</div>

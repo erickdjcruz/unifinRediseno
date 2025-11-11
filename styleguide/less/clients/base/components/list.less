@@ -1,0 +1,152 @@
+td.preview-list-cell {
+  text-align: center;
+}
+
+a.preview-list-item:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* jQuery Resizable Columns v0.1.0 | http://dobtco.github.io/jquery-resizable-columns/ | Licensed MIT | Built Wed Apr 30 2014 14:24:25 */
+.rc-handle-container {
+  position: relative;
+  z-index: 1;
+}
+
+.rc-handle {
+  position: absolute;
+  width: 7px;
+  cursor: ew-resize;
+  margin-left: -3px;
+
+  &.rc-column-resizing {
+    z-index: 8;
+  }
+}
+
+table.rc-table-resizing,
+table.rc-table-resizing thead,
+table.rc-table-resizing thead > th,
+table.rc-table-resizing thead > th > a {
+  cursor: ew-resize;
+}
+
+// Common styling for all list layouts that implement flex styling and
+// implement sticky headers and columns
+.frozen-list-headers.flex-list-layout .main-pane {
+  .main-content {
+    .paginated-flex-list {
+      height: 100%;
+
+      .flex-table-pagination {
+        background-color: var(--primary-content-background);
+        display: flex;
+        position: absolute;
+        width: 100%;
+      }
+
+      .flex-list-view {
+        height: calc(~'100% - 37px');
+
+        .flex-list-view-container {
+          .flex-list-view-content {
+            .rc-handle-container {
+              position: absolute;
+              top: 0;
+              z-index: 101;
+            }
+
+            table {
+              thead {
+                tr {
+                  box-shadow: inset 0 1px 0 @borderColor, inset 0 -2px 0 @borderColor;
+                }
+
+                .alert {
+                  &:not(.alert-process) {
+                    &::before {
+                      all: unset;
+                    }
+
+                    padding: 0;
+                    position: relative;
+                  }
+                }
+              }
+
+              td.sticky-column.stick-right {
+                &:focus-within {
+                  z-index: 11;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.drawer.frozen-list-headers.flex-list-layout .main-pane {
+  .main-content {
+    .flex-list-view {
+      height: calc(~'100% - 78px');
+    }
+  }
+}
+
+.dashboard .flex-table-pagination {
+  .block-footer {
+    text-align: left;
+  }
+}
+
+.dashboard .multi-line > .flex-table-pagination {
+  bottom: 0;
+  z-index: 10;
+  border-top: @borderWidget;
+}
+
+.vis_action_hidden input {
+  .hide();
+}
+
+.sidebar-visible,
+.sidebar-visible ~ #drawers {
+  .flex-list-view {
+    table {
+      .alert {
+        .alert-list-contents {
+          width: 66vw;
+        }
+      }
+    }
+  }
+}
+
+// Omniconsole shifts all dom elements in #conent over to the right by 320px. This is to account for that
+.omniconsole-visible,
+.omniconsole-visible ~ #drawers {
+  .flex-list-view {
+    table {
+      .alert {
+        .alert-list-contents {
+          width: calc(~'100vw - 320px');
+        }
+      }
+    }
+  }
+}
+
+.omniconsole-visible.sidebar-visible,
+.omniconsole-visible.sidebar-visible ~ #drawers {
+  .flex-list-view {
+    table {
+      .alert {
+        .alert-list-contents {
+          width: calc(~'66vw - 320px');
+        }
+      }
+    }
+  }
+}

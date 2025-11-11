@@ -1,0 +1,97 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Get NearBy records
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint returns nearby records based on radius, latitude and longitude.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>radius</td>
+        <td>String</td>
+        <td>The radius of the the geocoded record</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>latitude</td>
+        <td>String</td>
+        <td>The latitude of the the geocoded record</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>longitude</td>
+        <td>String</td>
+        <td>The longitude of the the geocoded record</td>
+        <td>No</td>
+    </tr>
+    </tbody>
+</table>
+
+</pre>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+    {
+        "records": [
+            {
+                "id": "1b1f9872-1309-11ed-af3b-0242ac140008",
+                "date_entered": "2022-08-03 08:48:52",
+                "date_modified": "2022-08-03 14:03:34",
+                "deleted": 0,
+                "parent_id": "758cf2fa-11a1-11ed-bd66-0242ac140009",
+                "parent_type": "Accounts",
+                "parent_name": "Income Free Investing LP",
+                "parent_user_name": "Chris Olliver",
+                "address": "Malu Mare, Romania",
+                "status": "COMPLETED",
+                "postalcode": "14215",
+                "country": "Romania",
+                "latitude": "44.2758957190",
+                "longitude": "23.8613008870",
+                "geocoded": 1,
+                "error_message": null
+            }
+        ]
+    }
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_18
+        </td>
+        <td>
+            Added <code>maps/nearby</code> GET endpoint.
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,15 @@
+{
+  "name": "maple-syrup",
+  "version": "1.0.0",
+  "description": "A design token implementation for Sugar products.",
+  "main": "index.js",
+  "repository": "git@github.com:sugarcrm/maple-syrup.git",
+  "author": "Scott King <scott.king@sugarcrm.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "style-dictionary build --config ./config.js"
+  },
+  "dependencies": {
+    "style-dictionary": "^3.7.2"
+  }
+}

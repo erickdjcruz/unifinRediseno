@@ -1,0 +1,632 @@
+
+2025-11-11 16:15:51...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:15:57...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:16:24...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:16:52...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:16:55...Begin System Check Process *************
+2025-11-11 16:16:55...XML Parsing Support Found
+2025-11-11 16:16:55...MBString Support Found
+2025-11-11 16:16:55...ZIP Support Found
+2025-11-11 16:16:55.../custom directory and subdirectory check passed
+2025-11-11 16:16:55...cache directory and subdirectory check passed
+2025-11-11 16:16:57.../module  directory and subdirectory check passed
+2025-11-11 16:16:57.../upload directory check passed
+2025-11-11 16:16:57.../zip check passed
+2025-11-11 16:16:57.../BCMATH check passed
+2025-11-11 16:16:57...Testing .htaccess redirects
+2025-11-11 16:16:57...Passed .htaccess redirects check
+2025-11-11 16:16:57...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:16:57...php.ini location found. /Applications/MAMP/bin/php/php8.2.0/conf/php.ini
+2025-11-11 16:16:57...Outputting HTML for System check
+2025-11-11 16:16:57...No Errors were found *************
+2025-11-11 16:16:59...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:17:05...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:17:08...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:17:20...Begin DB Check Process *************
+2025-11-11 16:17:20...testing with mysql:mysqli
+2025-11-11 16:17:20...Basic form info is valid, continuing Process.
+2025-11-11 16:17:20...Testing user account...
+2025-11-11 16:17:20...Connection made using  host: localhost, usr: root
+2025-11-11 16:17:20...Testing priviliged account...
+2025-11-11 16:17:20...Connection made using  host: localhost, usr: root
+2025-11-11 16:17:20...DB not selected, will create catorce
+2025-11-11 16:17:20...Passed DB install check
+2025-11-11 16:17:20...Begining to check FTS Settings.
+2025-11-11 16:17:20...FTS connection results: 1
+2025-11-11 16:17:20...End DB Check Process *************
+2025-11-11 16:17:20...SUCCESS:: no errors detected!
+2025-11-11 16:17:21...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:17:31...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:17:38...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:17:52...installerHook: Could not find custom/install/install_hooks.php
+2025-11-11 16:17:52...calling handleSugarConfig()
+2025-11-11 16:17:52...calling handleHtaccess()
+2025-11-11 16:17:52...calling handleDbCreateDatabase()
+2025-11-11 16:17:53...looping through all the Beans and create their tables
+2025-11-11 16:17:54...processing table acl_actions
+2025-11-11 16:17:54...creating table acl_actions
+2025-11-11 16:17:54...creating Relationship Meta for ACLAction
+2025-11-11 16:17:54...processing table acl_roles
+2025-11-11 16:17:54...creating table acl_roles
+2025-11-11 16:17:54...creating Relationship Meta for ACLRole
+2025-11-11 16:17:54...processing table relationships
+2025-11-11 16:17:54...processing table acl_role_sets
+2025-11-11 16:17:54...creating table acl_role_sets
+2025-11-11 16:17:54...creating Relationship Meta for ACLRoleSet
+2025-11-11 16:17:54...processing table leads
+2025-11-11 16:17:54...creating table leads
+2025-11-11 16:17:54...creating Relationship Meta for Lead
+2025-11-11 16:17:54...processing table cases
+2025-11-11 16:17:54...creating table cases
+2025-11-11 16:17:54...creating Relationship Meta for Case
+2025-11-11 16:17:54...processing table bugs
+2025-11-11 16:17:54...creating table bugs
+2025-11-11 16:17:54...creating Relationship Meta for Bug
+2025-11-11 16:17:54...processing table campaign_log
+2025-11-11 16:17:54...creating table campaign_log
+2025-11-11 16:17:54...creating Relationship Meta for CampaignLog
+2025-11-11 16:17:54...processing table project
+2025-11-11 16:17:54...creating table project
+2025-11-11 16:17:54...creating Relationship Meta for Project
+2025-11-11 16:17:54...processing table project_task
+2025-11-11 16:17:55...creating table project_task
+2025-11-11 16:17:55...creating Relationship Meta for ProjectTask
+2025-11-11 16:17:55...processing table campaigns
+2025-11-11 16:17:55...creating table campaigns
+2025-11-11 16:17:55...creating Relationship Meta for Campaign
+2025-11-11 16:17:55...processing table prospect_lists
+2025-11-11 16:17:55...creating table prospect_lists
+2025-11-11 16:17:55...creating Relationship Meta for ProspectList
+2025-11-11 16:17:55...processing table prospects
+2025-11-11 16:17:55...creating table prospects
+2025-11-11 16:17:55...creating Relationship Meta for Prospect
+2025-11-11 16:17:55...processing table email_marketing
+2025-11-11 16:17:55...creating table email_marketing
+2025-11-11 16:17:55...creating Relationship Meta for EmailMarketing
+2025-11-11 16:17:55...processing table campaign_trkrs
+2025-11-11 16:17:55...creating table campaign_trkrs
+2025-11-11 16:17:55...creating Relationship Meta for CampaignTracker
+2025-11-11 16:17:55...processing table releases
+2025-11-11 16:17:55...creating table releases
+2025-11-11 16:17:55...creating Relationship Meta for Release
+2025-11-11 16:17:55...processing table emailman
+2025-11-11 16:17:55...creating table emailman
+2025-11-11 16:17:55...creating Relationship Meta for EmailMan
+2025-11-11 16:17:55...processing table schedulers
+2025-11-11 16:17:55...creating table schedulers
+2025-11-11 16:17:55...creating Relationship Meta for Scheduler
+2025-11-11 16:17:55...processing table job_queue
+2025-11-11 16:17:55...creating table job_queue
+2025-11-11 16:17:55...creating Relationship Meta for SchedulersJob
+2025-11-11 16:17:55...processing table contacts
+2025-11-11 16:17:55...creating table contacts
+2025-11-11 16:17:55...creating Relationship Meta for Contact
+2025-11-11 16:17:55...processing table accounts
+2025-11-11 16:17:55...creating table accounts
+2025-11-11 16:17:55...creating Relationship Meta for Account
+2025-11-11 16:17:55...processing table opportunities
+2025-11-11 16:17:55...creating table opportunities
+2025-11-11 16:17:55...creating Relationship Meta for Opportunity
+2025-11-11 16:17:55...processing table email_templates
+2025-11-11 16:17:55...creating table email_templates
+2025-11-11 16:17:55...creating Relationship Meta for EmailTemplate
+2025-11-11 16:17:55...processing table users_signatures
+2025-11-11 16:17:55...creating table users_signatures
+2025-11-11 16:17:55...creating Relationship Meta for UserSignature
+2025-11-11 16:17:55...processing table notes
+2025-11-11 16:17:55...creating table notes
+2025-11-11 16:17:55...creating Relationship Meta for Note
+2025-11-11 16:17:55...processing table calls
+2025-11-11 16:17:55...creating table calls
+2025-11-11 16:17:55...creating Relationship Meta for Call
+2025-11-11 16:17:55...processing table emails
+2025-11-11 16:17:55...creating table emails
+2025-11-11 16:17:55...creating Relationship Meta for Email
+2025-11-11 16:17:55...processing table meetings
+2025-11-11 16:17:55...creating table meetings
+2025-11-11 16:17:55...creating Relationship Meta for Meeting
+2025-11-11 16:17:55...processing table tasks
+2025-11-11 16:17:55...creating table tasks
+2025-11-11 16:17:55...creating Relationship Meta for Task
+2025-11-11 16:17:55...processing table users
+2025-11-11 16:17:55...creating table users
+2025-11-11 16:17:55...creating Relationship Meta for User
+2025-11-11 16:17:55...processing table users
+2025-11-11 16:17:55...processing table currencies
+2025-11-11 16:17:56...creating table currencies
+2025-11-11 16:17:56...creating Relationship Meta for Currency
+2025-11-11 16:17:56...processing table tracker
+2025-11-11 16:17:56...creating table tracker
+2025-11-11 16:17:56...creating Relationship Meta for Tracker
+2025-11-11 16:17:56...processing table tracker_perf
+2025-11-11 16:17:56...creating table tracker_perf
+2025-11-11 16:17:56...creating Relationship Meta for tracker_perf
+2025-11-11 16:17:56...processing table tracker_sessions
+2025-11-11 16:17:56...creating table tracker_sessions
+2025-11-11 16:17:56...creating Relationship Meta for tracker_sessions
+2025-11-11 16:17:56...processing table tracker_queries
+2025-11-11 16:17:56...creating table tracker_queries
+2025-11-11 16:17:56...creating Relationship Meta for tracker_queries
+2025-11-11 16:17:56...processing table import_maps
+2025-11-11 16:17:56...creating table import_maps
+2025-11-11 16:17:56...creating Relationship Meta for ImportMap
+2025-11-11 16:17:56...processing table users_last_import
+2025-11-11 16:17:56...creating table users_last_import
+2025-11-11 16:17:56...creating Relationship Meta for UsersLastImport
+2025-11-11 16:17:56...processing table config
+2025-11-11 16:17:56...creating table config
+2025-11-11 16:17:56...creating Relationship Meta for Administration
+2025-11-11 16:17:56...processing table upgrade_history
+2025-11-11 16:17:56...creating table upgrade_history
+2025-11-11 16:17:56...creating Relationship Meta for UpgradeHistory
+2025-11-11 16:17:56...processing table vcals
+2025-11-11 16:17:56...creating table vcals
+2025-11-11 16:17:56...creating Relationship Meta for vCal
+2025-11-11 16:17:56...processing table calendar
+2025-11-11 16:17:56...creating table calendar
+2025-11-11 16:17:56...creating Relationship Meta for Calendar
+2025-11-11 16:17:56...processing table versions
+2025-11-11 16:17:56...creating table versions
+2025-11-11 16:17:56...creating Relationship Meta for Version
+2025-11-11 16:17:56...processing table documents
+2025-11-11 16:17:56...creating table documents
+2025-11-11 16:17:56...creating Relationship Meta for Document
+2025-11-11 16:17:56...processing table document_revisions
+2025-11-11 16:17:56...creating table document_revisions
+2025-11-11 16:17:56...creating Relationship Meta for DocumentRevision
+2025-11-11 16:17:56...processing table fields_meta_data
+2025-11-11 16:17:56...creating table fields_meta_data
+2025-11-11 16:17:56...creating Relationship Meta for FieldsMetaData
+2025-11-11 16:17:56...processing table inbound_email
+2025-11-11 16:17:56...creating table inbound_email
+2025-11-11 16:17:56...creating Relationship Meta for InboundEmail
+2025-11-11 16:17:56...processing table saved_search
+2025-11-11 16:17:56...creating table saved_search
+2025-11-11 16:17:56...creating Relationship Meta for SavedSearch
+2025-11-11 16:17:56...processing table user_preferences
+2025-11-11 16:17:56...creating table user_preferences
+2025-11-11 16:17:56...creating Relationship Meta for UserPreference
+2025-11-11 16:17:56...processing table email_addresses
+2025-11-11 16:17:56...creating table email_addresses
+2025-11-11 16:17:56...creating Relationship Meta for EmailAddress
+2025-11-11 16:17:56...processing table emails_text
+2025-11-11 16:17:56...creating table emails_text
+2025-11-11 16:17:56...creating Relationship Meta for EmailText
+2025-11-11 16:17:56...processing table saved_reports
+2025-11-11 16:17:56...creating table saved_reports
+2025-11-11 16:17:56...creating Relationship Meta for SavedReport
+2025-11-11 16:17:56...processing table acl_fields
+2025-11-11 16:17:56...creating table acl_fields
+2025-11-11 16:17:56...creating Relationship Meta for ACLField
+2025-11-11 16:17:56...processing table contracts
+2025-11-11 16:17:56...creating table contracts
+2025-11-11 16:17:56...creating Relationship Meta for Contract
+2025-11-11 16:17:56...processing table teams
+2025-11-11 16:17:56...creating table teams
+2025-11-11 16:17:56...creating Relationship Meta for Team
+2025-11-11 16:17:56...processing table team_memberships
+2025-11-11 16:17:56...creating table team_memberships
+2025-11-11 16:17:56...creating Relationship Meta for TeamMembership
+2025-11-11 16:17:56...processing table team_sets
+2025-11-11 16:17:56...creating table team_sets
+2025-11-11 16:17:56...creating Relationship Meta for TeamSet
+2025-11-11 16:17:56...processing table team_sets_modules
+2025-11-11 16:17:56...creating table team_sets_modules
+2025-11-11 16:17:56...creating Relationship Meta for TeamSetModule
+2025-11-11 16:17:56...processing table team_notices
+2025-11-11 16:17:56...creating table team_notices
+2025-11-11 16:17:56...creating Relationship Meta for TeamNotices
+2025-11-11 16:17:56...processing table product_templates
+2025-11-11 16:17:56...creating table product_templates
+2025-11-11 16:17:56...creating Relationship Meta for ProductTemplate
+2025-11-11 16:17:56...processing table product_types
+2025-11-11 16:17:56...creating table product_types
+2025-11-11 16:17:56...creating Relationship Meta for ProductType
+2025-11-11 16:17:56...processing table product_categories
+2025-11-11 16:17:56...creating table product_categories
+2025-11-11 16:17:56...creating Relationship Meta for ProductCategory
+2025-11-11 16:17:56...processing table manufacturers
+2025-11-11 16:17:56...creating table manufacturers
+2025-11-11 16:17:56...creating Relationship Meta for Manufacturer
+2025-11-11 16:17:56...processing table quotes
+2025-11-11 16:17:56...creating table quotes
+2025-11-11 16:17:56...creating Relationship Meta for Quote
+2025-11-11 16:17:56...processing table product_bundle_notes
+2025-11-11 16:17:56...creating table product_bundle_notes
+2025-11-11 16:17:56...creating Relationship Meta for ProductBundleNote
+2025-11-11 16:17:56...processing table products
+2025-11-11 16:17:57...creating table products
+2025-11-11 16:17:57...creating Relationship Meta for Product
+2025-11-11 16:17:57...processing table product_bundles
+2025-11-11 16:17:57...creating table product_bundles
+2025-11-11 16:17:57...creating Relationship Meta for ProductBundle
+2025-11-11 16:17:57...processing table revenue_line_items
+2025-11-11 16:17:57...creating table revenue_line_items
+2025-11-11 16:17:57...creating Relationship Meta for RevenueLineItem
+2025-11-11 16:17:57...processing table shippers
+2025-11-11 16:17:57...creating table shippers
+2025-11-11 16:17:57...creating Relationship Meta for Shipper
+2025-11-11 16:17:57...processing table taxrates
+2025-11-11 16:17:57...creating table taxrates
+2025-11-11 16:17:57...creating Relationship Meta for TaxRate
+2025-11-11 16:17:57...processing table timeperiods
+2025-11-11 16:17:57...creating table timeperiods
+2025-11-11 16:17:57...creating Relationship Meta for TimePeriod
+2025-11-11 16:17:57...processing table timeperiods
+2025-11-11 16:17:57...processing table timeperiods
+2025-11-11 16:17:57...processing table timeperiods
+2025-11-11 16:17:57...processing table timeperiods
+2025-11-11 16:17:57...processing table timeperiods
+2025-11-11 16:17:57...processing table timeperiods
+2025-11-11 16:17:57...processing table forecasts
+2025-11-11 16:17:57...creating table forecasts
+2025-11-11 16:17:57...creating Relationship Meta for Forecast
+2025-11-11 16:17:57...processing table forecast_worksheets
+2025-11-11 16:17:57...creating table forecast_worksheets
+2025-11-11 16:17:57...creating Relationship Meta for ForecastWorksheet
+2025-11-11 16:17:57...processing table forecast_manager_worksheets
+2025-11-11 16:17:57...creating table forecast_manager_worksheets
+2025-11-11 16:17:57...creating Relationship Meta for ForecastManagerWorksheet
+2025-11-11 16:17:57...processing table opportunities
+2025-11-11 16:17:57...processing table users
+2025-11-11 16:17:57...processing table quotas
+2025-11-11 16:17:57...creating table quotas
+2025-11-11 16:17:57...creating Relationship Meta for Quota
+2025-11-11 16:17:57...processing table workflow
+2025-11-11 16:17:57...creating table workflow
+2025-11-11 16:17:57...creating Relationship Meta for WorkFlow
+2025-11-11 16:17:57...processing table workflow_triggershells
+2025-11-11 16:17:57...creating table workflow_triggershells
+2025-11-11 16:17:57...creating Relationship Meta for WorkFlowTriggerShell
+2025-11-11 16:17:57...processing table workflow_alertshells
+2025-11-11 16:17:57...creating table workflow_alertshells
+2025-11-11 16:17:57...creating Relationship Meta for WorkFlowAlertShell
+2025-11-11 16:17:57...processing table workflow_alerts
+2025-11-11 16:17:57...creating table workflow_alerts
+2025-11-11 16:17:57...creating Relationship Meta for WorkFlowAlert
+2025-11-11 16:17:57...processing table workflow_actionshells
+2025-11-11 16:17:57...creating table workflow_actionshells
+2025-11-11 16:17:57...creating Relationship Meta for WorkFlowActionShell
+2025-11-11 16:17:57...processing table workflow_actions
+2025-11-11 16:17:57...creating table workflow_actions
+2025-11-11 16:17:57...creating Relationship Meta for WorkFlowAction
+2025-11-11 16:17:57...processing table expressions
+2025-11-11 16:17:57...creating table expressions
+2025-11-11 16:17:57...creating Relationship Meta for Expression
+2025-11-11 16:17:57...processing table session_active
+2025-11-11 16:17:57...creating table session_active
+2025-11-11 16:17:57...creating Relationship Meta for SessionManager
+2025-11-11 16:17:57...processing table contract_types
+2025-11-11 16:17:57...creating table contract_types
+2025-11-11 16:17:57...creating Relationship Meta for ContractType
+2025-11-11 16:17:57...processing table holidays
+2025-11-11 16:17:57...creating table holidays
+2025-11-11 16:17:57...creating Relationship Meta for Holiday
+2025-11-11 16:17:57...processing table docusign_envelopes
+2025-11-11 16:17:57...creating table docusign_envelopes
+2025-11-11 16:17:57...creating Relationship Meta for DocuSignEnvelope
+2025-11-11 16:17:57...processing table custom_queries
+2025-11-11 16:17:57...creating table custom_queries
+2025-11-11 16:17:57...creating Relationship Meta for CustomQuery
+2025-11-11 16:17:57...processing table data_sets
+2025-11-11 16:17:57...creating table data_sets
+2025-11-11 16:17:57...creating Relationship Meta for DataSet
+2025-11-11 16:17:57...processing table dataset_attributes
+2025-11-11 16:17:57...creating table dataset_attributes
+2025-11-11 16:17:57...creating Relationship Meta for DataSet_Attribute
+2025-11-11 16:17:57...processing table dataset_layouts
+2025-11-11 16:17:57...creating table dataset_layouts
+2025-11-11 16:17:57...creating Relationship Meta for DataSet_Layout
+2025-11-11 16:17:57...processing table report_maker
+2025-11-11 16:17:57...creating table report_maker
+2025-11-11 16:17:57...creating Relationship Meta for ReportMaker
+2025-11-11 16:17:57...processing table pmse_project
+2025-11-11 16:17:57...creating table pmse_project
+2025-11-11 16:17:57...creating Relationship Meta for pmse_Project
+2025-11-11 16:17:57...processing table pmse_inbox
+2025-11-11 16:17:57...creating table pmse_inbox
+2025-11-11 16:17:57...creating Relationship Meta for pmse_Inbox
+2025-11-11 16:17:57...processing table pmse_business_rules
+2025-11-11 16:17:57...creating table pmse_business_rules
+2025-11-11 16:17:57...creating Relationship Meta for pmse_Business_Rules
+2025-11-11 16:17:57...processing table pmse_emails_templates
+2025-11-11 16:17:57...creating table pmse_emails_templates
+2025-11-11 16:17:57...creating Relationship Meta for pmse_Emails_Templates
+2025-11-11 16:17:57...processing table pmse_bpmn_activity
+2025-11-11 16:17:57...creating table pmse_bpmn_activity
+2025-11-11 16:17:57...creating Relationship Meta for pmse_BpmnActivity
+2025-11-11 16:17:57...processing table pmse_bpmn_artifact
+2025-11-11 16:17:57...creating table pmse_bpmn_artifact
+2025-11-11 16:17:57...creating Relationship Meta for pmse_BpmnArtifact
+2025-11-11 16:17:57...processing table pmse_bpmn_bound
+2025-11-11 16:17:57...creating table pmse_bpmn_bound
+2025-11-11 16:17:57...creating Relationship Meta for pmse_BpmnBound
+2025-11-11 16:17:57...processing table pmse_bpmn_data
+2025-11-11 16:17:57...creating table pmse_bpmn_data
+2025-11-11 16:17:57...creating Relationship Meta for pmse_BpmnData
+2025-11-11 16:17:57...processing table pmse_bpmn_diagram
+2025-11-11 16:17:57...creating table pmse_bpmn_diagram
+2025-11-11 16:17:57...creating Relationship Meta for pmse_BpmnDiagram
+2025-11-11 16:17:57...processing table pmse_bpmn_documentation
+2025-11-11 16:17:57...creating table pmse_bpmn_documentation
+2025-11-11 16:17:57...creating Relationship Meta for pmse_BpmnDocumentation
+2025-11-11 16:17:57...processing table pmse_bpmn_event
+2025-11-11 16:17:57...creating table pmse_bpmn_event
+2025-11-11 16:17:57...creating Relationship Meta for pmse_BpmnEvent
+2025-11-11 16:17:57...processing table pmse_bpmn_extension
+2025-11-11 16:17:57...creating table pmse_bpmn_extension
+2025-11-11 16:17:57...creating Relationship Meta for pmse_BpmnExtension
+2025-11-11 16:17:57...processing table pmse_bpmn_flow
+2025-11-11 16:17:57...creating table pmse_bpmn_flow
+2025-11-11 16:17:57...creating Relationship Meta for pmse_BpmnFlow
+2025-11-11 16:17:57...processing table pmse_bpmn_gateway
+2025-11-11 16:17:57...creating table pmse_bpmn_gateway
+2025-11-11 16:17:57...creating Relationship Meta for pmse_BpmnGateway
+2025-11-11 16:17:57...processing table pmse_bpmn_lane
+2025-11-11 16:17:58...creating table pmse_bpmn_lane
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmnLane
+2025-11-11 16:17:58...processing table pmse_bpmn_laneset
+2025-11-11 16:17:58...creating table pmse_bpmn_laneset
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmnLaneset
+2025-11-11 16:17:58...processing table pmse_bpmn_participant
+2025-11-11 16:17:58...creating table pmse_bpmn_participant
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmnParticipant
+2025-11-11 16:17:58...processing table pmse_bpmn_process
+2025-11-11 16:17:58...creating table pmse_bpmn_process
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmnProcess
+2025-11-11 16:17:58...processing table pmse_bpm_flow
+2025-11-11 16:17:58...creating table pmse_bpm_flow
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmFlow
+2025-11-11 16:17:58...processing table pmse_bpm_thread
+2025-11-11 16:17:58...creating table pmse_bpm_thread
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmThread
+2025-11-11 16:17:58...processing table pmse_bpm_notes
+2025-11-11 16:17:58...creating table pmse_bpm_notes
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmNotes
+2025-11-11 16:17:58...processing table pmse_bpm_related_dependency
+2025-11-11 16:17:58...creating table pmse_bpm_related_dependency
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmRelatedDependency
+2025-11-11 16:17:58...processing table pmse_bpm_activity_user
+2025-11-11 16:17:58...creating table pmse_bpm_activity_user
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmActivityUser
+2025-11-11 16:17:58...processing table pmse_bpm_event_definition
+2025-11-11 16:17:58...creating table pmse_bpm_event_definition
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmEventDefinition
+2025-11-11 16:17:58...processing table pmse_bpm_gateway_definition
+2025-11-11 16:17:58...creating table pmse_bpm_gateway_definition
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmGatewayDefinition
+2025-11-11 16:17:58...processing table pmse_bpm_activity_definition
+2025-11-11 16:17:58...creating table pmse_bpm_activity_definition
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmActivityDefinition
+2025-11-11 16:17:58...processing table pmse_bpm_activity_step
+2025-11-11 16:17:58...creating table pmse_bpm_activity_step
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmActivityStep
+2025-11-11 16:17:58...processing table pmse_bpm_form_action
+2025-11-11 16:17:58...creating table pmse_bpm_form_action
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmFormAction
+2025-11-11 16:17:58...processing table pmse_bpm_dynamic_forms
+2025-11-11 16:17:58...creating table pmse_bpm_dynamic_forms
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmDynaForm
+2025-11-11 16:17:58...processing table pmse_bpm_process_definition
+2025-11-11 16:17:58...creating table pmse_bpm_process_definition
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmProcessDefinition
+2025-11-11 16:17:58...processing table pmse_bpm_config
+2025-11-11 16:17:58...creating table pmse_bpm_config
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmConfig
+2025-11-11 16:17:58...processing table pmse_bpm_group
+2025-11-11 16:17:58...creating table pmse_bpm_group
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmGroup
+2025-11-11 16:17:58...processing table pmse_bpm_group_user
+2025-11-11 16:17:58...creating table pmse_bpm_group_user
+2025-11-11 16:17:58...creating Relationship Meta for pmse_BpmGroupUser
+2025-11-11 16:17:58...processing table pmse_email_message
+2025-11-11 16:17:58...creating table pmse_email_message
+2025-11-11 16:17:58...creating Relationship Meta for pmse_EmailMessage
+2025-11-11 16:17:58...processing table business_centers
+2025-11-11 16:17:58...creating table business_centers
+2025-11-11 16:17:58...creating Relationship Meta for BusinessCenter
+2025-11-11 16:17:58...processing table shifts
+2025-11-11 16:17:58...creating table shifts
+2025-11-11 16:17:58...creating Relationship Meta for Shift
+2025-11-11 16:17:58...processing table shift_exceptions
+2025-11-11 16:17:58...creating table shift_exceptions
+2025-11-11 16:17:58...creating Relationship Meta for ShiftException
+2025-11-11 16:17:58...processing table changetimers
+2025-11-11 16:17:58...creating table changetimers
+2025-11-11 16:17:58...creating Relationship Meta for ChangeTimer
+2025-11-11 16:17:58...processing table metrics
+2025-11-11 16:17:58...creating table metrics
+2025-11-11 16:17:58...creating Relationship Meta for Metric
+2025-11-11 16:17:58...processing table messages
+2025-11-11 16:17:58...creating table messages
+2025-11-11 16:17:58...creating Relationship Meta for Message
+2025-11-11 16:17:58...processing table mobile_devices
+2025-11-11 16:17:58...creating table mobile_devices
+2025-11-11 16:17:58...creating Relationship Meta for MobileDevice
+2025-11-11 16:17:58...processing table purchases
+2025-11-11 16:17:58...creating table purchases
+2025-11-11 16:17:58...creating Relationship Meta for Purchase
+2025-11-11 16:17:58...processing table purchased_line_items
+2025-11-11 16:17:58...creating table purchased_line_items
+2025-11-11 16:17:58...creating Relationship Meta for PurchasedLineItem
+2025-11-11 16:17:58...processing table push_notifications
+2025-11-11 16:17:58...creating table push_notifications
+2025-11-11 16:17:58...creating Relationship Meta for PushNotification
+2025-11-11 16:17:58...processing table external_users
+2025-11-11 16:17:58...creating table external_users
+2025-11-11 16:17:58...creating Relationship Meta for ExternalUser
+2025-11-11 16:17:58...processing table 
+2025-11-11 16:17:58...processing table styleguide
+2025-11-11 16:17:58...creating table styleguide
+2025-11-11 16:17:58...creating Relationship Meta for Styleguide
+2025-11-11 16:17:58...processing table outbound_email
+2025-11-11 16:17:58...creating table outbound_email
+2025-11-11 16:17:58...creating Relationship Meta for OutboundEmail
+2025-11-11 16:17:58...processing table emails_email_addr_rel
+2025-11-11 16:17:58...creating table emails_email_addr_rel
+2025-11-11 16:17:58...creating Relationship Meta for EmailParticipant
+2025-11-11 16:17:58...processing table data_privacy
+2025-11-11 16:17:59...creating table data_privacy
+2025-11-11 16:17:59...creating Relationship Meta for DataPrivacy
+2025-11-11 16:17:59...processing table report_schedules
+2025-11-11 16:17:59...creating table report_schedules
+2025-11-11 16:17:59...creating Relationship Meta for ReportSchedule
+2025-11-11 16:17:59...processing table notifications
+2025-11-11 16:17:59...creating table notifications
+2025-11-11 16:17:59...creating Relationship Meta for Notifications
+2025-11-11 16:17:59...processing table eapm
+2025-11-11 16:17:59...creating table eapm
+2025-11-11 16:17:59...creating Relationship Meta for EAPM
+2025-11-11 16:17:59...processing table oauth_consumer
+2025-11-11 16:17:59...creating table oauth_consumer
+2025-11-11 16:17:59...creating Relationship Meta for OAuthKey
+2025-11-11 16:17:59...processing table oauth_tokens
+2025-11-11 16:17:59...creating table oauth_tokens
+2025-11-11 16:17:59...creating Relationship Meta for OAuthToken
+2025-11-11 16:17:59...processing table sugarfavorites
+2025-11-11 16:17:59...creating table sugarfavorites
+2025-11-11 16:17:59...creating Relationship Meta for SugarFavorites
+2025-11-11 16:17:59...processing table weblogichooks
+2025-11-11 16:17:59...creating table weblogichooks
+2025-11-11 16:17:59...creating Relationship Meta for WebLogicHook
+2025-11-11 16:17:59...processing table activities
+2025-11-11 16:17:59...creating table activities
+2025-11-11 16:17:59...creating Relationship Meta for Activity
+2025-11-11 16:17:59...processing table comments
+2025-11-11 16:17:59...creating table comments
+2025-11-11 16:17:59...creating Relationship Meta for Comment
+2025-11-11 16:17:59...processing table subscriptions
+2025-11-11 16:17:59...creating table subscriptions
+2025-11-11 16:17:59...creating Relationship Meta for Subscription
+2025-11-11 16:17:59...processing table filters
+2025-11-11 16:17:59...creating table filters
+2025-11-11 16:17:59...creating Relationship Meta for Filters
+2025-11-11 16:17:59...processing table dashboards
+2025-11-11 16:17:59...creating table dashboards
+2025-11-11 16:17:59...creating Relationship Meta for Dashboard
+2025-11-11 16:17:59...processing table tags
+2025-11-11 16:17:59...creating table tags
+2025-11-11 16:17:59...creating Relationship Meta for Tag
+2025-11-11 16:17:59...processing table categories
+2025-11-11 16:17:59...creating table categories
+2025-11-11 16:17:59...creating Relationship Meta for Category
+2025-11-11 16:17:59...processing table pubsub_moduleevent_pushsubs
+2025-11-11 16:17:59...creating table pubsub_moduleevent_pushsubs
+2025-11-11 16:17:59...creating Relationship Meta for PubSub_ModuleEvent_PushSub
+2025-11-11 16:17:59...processing table pdfmanager
+2025-11-11 16:17:59...creating table pdfmanager
+2025-11-11 16:17:59...creating Relationship Meta for PdfManager
+2025-11-11 16:17:59...processing table kbdocuments
+2025-11-11 16:17:59...creating table kbdocuments
+2025-11-11 16:17:59...creating Relationship Meta for KBDocument
+2025-11-11 16:17:59...processing table kbcontents
+2025-11-11 16:17:59...creating table kbcontents
+2025-11-11 16:17:59...creating Relationship Meta for KBContent
+2025-11-11 16:17:59...processing table kbarticles
+2025-11-11 16:17:59...creating table kbarticles
+2025-11-11 16:17:59...creating Relationship Meta for KBArticle
+2025-11-11 16:17:59...processing table kbcontent_templates
+2025-11-11 16:17:59...creating table kbcontent_templates
+2025-11-11 16:17:59...creating Relationship Meta for KBContentTemplate
+2025-11-11 16:17:59...processing table embedded_files
+2025-11-11 16:17:59...creating table embedded_files
+2025-11-11 16:17:59...creating Relationship Meta for EmbeddedFile
+2025-11-11 16:17:59...processing table visual_pipeline
+2025-11-11 16:17:59...creating table visual_pipeline
+2025-11-11 16:17:59...creating Relationship Meta for VisualPipeline
+2025-11-11 16:17:59...processing table console_configuration
+2025-11-11 16:17:59...creating table console_configuration
+2025-11-11 16:17:59...creating Relationship Meta for ConsoleConfiguration
+2025-11-11 16:17:59...processing table sugar_live
+2025-11-11 16:17:59...creating table sugar_live
+2025-11-11 16:17:59...creating Relationship Meta for SugarLive
+2025-11-11 16:17:59...processing table escalations
+2025-11-11 16:17:59...creating table escalations
+2025-11-11 16:17:59...creating Relationship Meta for Escalation
+2025-11-11 16:17:59...processing table commentlog
+2025-11-11 16:17:59...creating table commentlog
+2025-11-11 16:17:59...creating Relationship Meta for CommentLog
+2025-11-11 16:17:59...processing table data_archivers
+2025-11-11 16:17:59...creating table data_archivers
+2025-11-11 16:17:59...creating Relationship Meta for DataArchiver
+2025-11-11 16:17:59...processing table archive_runs
+2025-11-11 16:17:59...creating table archive_runs
+2025-11-11 16:17:59...creating Relationship Meta for ArchiveRuns
+2025-11-11 16:17:59...processing table hint_enrich_field_config
+2025-11-11 16:17:59...creating table hint_enrich_field_config
+2025-11-11 16:17:59...creating Relationship Meta for HintEnrichFieldConfig
+2025-11-11 16:17:59...processing table hint_accountsets
+2025-11-11 16:17:59...creating table hint_accountsets
+2025-11-11 16:17:59...creating Relationship Meta for HintAccountset
+2025-11-11 16:17:59...processing table hint_news_notifications
+2025-11-11 16:17:59...creating table hint_news_notifications
+2025-11-11 16:17:59...creating Relationship Meta for HintNewsNotification
+2025-11-11 16:17:59...processing table hint_notification_targets
+2025-11-11 16:17:59...creating table hint_notification_targets
+2025-11-11 16:17:59...creating Relationship Meta for HintNotificationTarget
+2025-11-11 16:17:59...processing table document_templates
+2025-11-11 16:17:59...creating table document_templates
+2025-11-11 16:17:59...creating Relationship Meta for DocumentTemplate
+2025-11-11 16:18:00...processing table document_merges
+2025-11-11 16:18:00...creating table document_merges
+2025-11-11 16:18:00...creating Relationship Meta for DocumentMerge
+2025-11-11 16:18:00...processing table cloud_drive_paths
+2025-11-11 16:18:00...creating table cloud_drive_paths
+2025-11-11 16:18:00...creating Relationship Meta for CloudDrivePath
+2025-11-11 16:18:00...processing table geocode
+2025-11-11 16:18:00...creating table geocode
+2025-11-11 16:18:00...creating Relationship Meta for Geocode
+2025-11-11 16:18:00...processing table geocode_job
+2025-11-11 16:18:00...creating table geocode_job
+2025-11-11 16:18:00...creating Relationship Meta for GeocodeJob
+2025-11-11 16:18:00...processing table dri_workflows
+2025-11-11 16:18:00...creating table dri_workflows
+2025-11-11 16:18:00...creating Relationship Meta for DRI_Workflow
+2025-11-11 16:18:00...processing table dri_workflow_task_templates
+2025-11-11 16:18:00...creating table dri_workflow_task_templates
+2025-11-11 16:18:00...creating Relationship Meta for DRI_Workflow_Task_Template
+2025-11-11 16:18:00...processing table dri_subworkflows
+2025-11-11 16:18:00...creating table dri_subworkflows
+2025-11-11 16:18:00...creating Relationship Meta for DRI_SubWorkflow
+2025-11-11 16:18:00...processing table dri_workflow_templates
+2025-11-11 16:18:00...creating table dri_workflow_templates
+2025-11-11 16:18:00...creating Relationship Meta for DRI_Workflow_Template
+2025-11-11 16:18:00...processing table cj_web_hooks
+2025-11-11 16:18:00...creating table cj_web_hooks
+2025-11-11 16:18:00...creating Relationship Meta for CJ_WebHook
+2025-11-11 16:18:00...processing table cj_forms
+2025-11-11 16:18:00...creating table cj_forms
+2025-11-11 16:18:00...creating Relationship Meta for CJ_Form
+2025-11-11 16:18:00...processing table dri_subworkflow_templates
+2025-11-11 16:18:00...creating table dri_subworkflow_templates
+2025-11-11 16:18:00...creating Relationship Meta for DRI_SubWorkflow_Template
+2025-11-11 16:18:03...Begin creating Defaults
+2025-11-11 16:18:03...INSERT defaults INTO config TABLE
+2025-11-11 16:18:03...Actualizando información de licencia
+2025-11-11 16:18:04...Creando usuarios por defecto
+2025-11-11 16:18:04...Creando informes predefinidos
+2025-11-11 16:18:07...Creando trabajos del planificador por defecto
+2025-11-11 16:18:07...creating new user for Snip
+2025-11-11 16:18:07...Adding default maps configurations
+2025-11-11 16:18:07...Converting Opportunities to use RevenueLineItems
+2025-11-11 16:18:13...Converting Opportunities Reports to use RevenueLineItems
+2025-11-11 16:18:13...converting Forecasts to use RevenueLineItems
+2025-11-11 16:18:13...creating default dashboards
+2025-11-11 16:18:14...populating the db with seed data
+2025-11-11 16:18:14...done populating the db with seed data
+2025-11-11 16:18:14...Installing Business Process Management designs
+2025-11-11 16:18:18...Process Design Process Definitions installations: 12
+2025-11-11 16:18:18...Process Design Process Business Rules installations: 3
+2025-11-11 16:18:18...Process Design Process Email Templates installations: 13
+2025-11-11 16:18:18...Process Design files cleaned up: 12
+2025-11-11 16:19:04...Completed installation of Business Process Management designs
+2025-11-11 16:19:04...running full indexer
+2025-11-11 16:19:19...Converting all the saved-reports-chart dashlets to the newly added report-dashlet
+2025-11-11 16:19:19...Done converting all the saved-reports-chart dashlets to the newly added report-dashlet
+2025-11-11 16:19:19...Done populating data *********
+2025-11-11 16:19:19...Running post-install hooks
+2025-11-11 16:19:19...Finished post-install hooks
+2025-11-11 16:19:25...Populating file cache
+2025-11-11 16:19:25...Populating metadata cache
+2025-11-11 16:19:38...Installation has completed *********
+2025-11-11 16:27:22...installerHook: Could not find custom/install/install_hooks.php

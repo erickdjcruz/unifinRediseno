@@ -1,0 +1,29 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="flex flex-row items-center ml-5 sorting-dropdown">
+    <div class="mr-2.5">{{#if isPrimary}}{{str 'LBL_PRIMARY_SORT'}}{{else}}{{str 'LBL_SECONDARY_SORT'}}{{/if}}</div>
+    <div class="sorting-dropdown-select w-40">
+        <select class="w-full">
+            {{#unless isPrimary}}
+                <option value=""></option>
+                <option value=""></option>
+            {{/unless}}
+            {{#each this.dropdownFields}}
+                <option value="{{name}}">{{str label ../module}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="sorting-dropdown-arrow disabled">
+        <i class="sicon sicon-arrow-down"></i>
+    </div>
+</div>

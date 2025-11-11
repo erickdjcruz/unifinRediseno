@@ -1,0 +1,532 @@
+/* BUTTONS
+  ----------------*/
+
+/* twitter-bootstrap import START */
+
+// Base styles
+// --------------------------------------------------
+
+// Core
+.btn {
+  display: inline-block;
+  margin-bottom: 0; // For input.btn
+  line-height: @baseLineHeight;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: @baseBorderRadius;
+  background-color: @btnBackground;
+
+  /*sugar mods*/
+  padding: 4px 6px;
+  font-weight: 600;
+
+  /*end sugar mods*/
+
+  // Hover state
+  &:hover {
+    color: @textColorHover;
+    border-color: @borderColorFocus;
+    text-decoration: none;
+    background-position: 0 -15px;
+  }
+
+  // Focus state for keyboard and accessibility
+  &:not(.disabled):not(:active):focus {
+    .tab-focus();
+  }
+
+  // Active state
+  &.active,
+  &:active {
+    background-image: none;
+    outline: 0;
+    box-shadow: inset 0 2px 4px @gray80, 0 1px 2px @gray90;
+
+    &.no-inset {
+      box-shadow: none;
+    }
+  }
+
+  // Disabled state
+  &.disabled,
+  &[disabled] {
+    cursor: default;
+    background-image: none;
+    opacity: 0.65;
+    box-shadow: none;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+
+// Button Sizes
+// --------------------------------------------------
+
+// Large
+.btn-large {
+  padding: @paddingLarge;
+  font-size: @fontSizeLarge;
+  border-radius: @borderRadiusLarge;
+}
+
+// Small
+.btn-small {
+  padding: @paddingSmall;
+  font-size: @fontSizeSmall;
+  border-radius: @borderRadiusSmall;
+}
+
+// Mini
+.btn-mini {
+  padding: @paddingMini;
+  font-size: @fontSizeMini;
+  border-radius: @borderRadiusSmall;
+}
+
+// Block button
+// -------------------------
+
+.btn-block {
+  display: block;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: border-box;
+}
+
+// Vertically space out multiple block buttons
+.btn-block + .btn-block {
+  margin-top: 5px;
+}
+
+// Specificity overrides
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  &.btn-block {
+    width: 100%;
+  }
+}
+
+// Alternate buttons
+// --------------------------------------------------
+
+// Provide *some* extra contrast for those who can get it
+.btn-primary.active,
+.btn-warning.active,
+.btn-info.active,
+.btn-inverse.active {
+  color: @gray10;
+}
+
+.btn-danger.active {
+  color: fade(@darkRed, 75%);
+}
+
+.btn-success.active {
+  color: fade(@darkArmy, 75%);
+}
+
+.btn-primary {
+  .buttonBackground(@btnPrimaryBackground, @btnPrimaryBackgroundHighlight);
+}
+// Warning appears are orange
+.btn-warning {
+  .buttonBackground(@btnWarningBackground, @btnWarningBackgroundHighlight);
+}
+// Danger and error appear as red
+.btn-danger {
+  .buttonBackground(@btnDangerBackground, @btnDangerBackgroundHighlight);
+}
+// Success appears as green
+.btn-success {
+  .buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
+}
+// Info appears as a neutral blue
+.btn-info {
+  .buttonBackground(@btnInfoBackground, @btnInfoBackgroundHighlight);
+}
+// Inverse appears as dark gray
+.btn-inverse {
+  .buttonBackground(@btnInverseBackground, @btnInverseBackgroundHighlight);
+}
+// Notification appears as blue
+.btn-notification {
+  .buttonBackground(@btnNotificationBackground, @btnNotificationBackgroundHighlight);
+}
+
+// Link buttons
+// --------------------------------------------------
+
+// Make a button look and behave like a link
+.btn-link,
+.btn-link:active,
+.btn-link[disabled] {
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+}
+
+.btn-link {
+  border-color: transparent;
+  cursor: pointer;
+  color: @linkColor;
+  border-radius: 0;
+}
+
+.btn-link:hover {
+  color: @linkColorHover;
+  text-decoration: underline;
+  background-color: transparent;
+}
+
+.btn-link[disabled]:hover {
+  color: @gray90;
+  text-decoration: none;
+}
+
+/* twitter-bootstrap import END */
+
+.btn {
+  font-size: @fontSizeSmall;
+  line-height: @baseFontSize;
+  padding: 7px;
+  box-shadow: none;
+  border: @borderWidget;
+  text-shadow: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.icon-and-text {
+    > .sicon {
+      margin-right: 4px;
+    }
+  }
+
+  /**
+   * Preventative measures. The line height is miscalculated due to our SugarIcons icons being 12px instead of 14px.
+   * We needed to remove the line height on font load and manually set it here so we have the proper inner height of
+   * 12x12px which properly sizes our buttons at 28px tall.
+   */
+  & > .sicon {
+    line-height: 12px;
+  }
+
+  > .sicon {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    line-height: 12px;
+    vertical-align: top;
+
+    &.icon-create {
+      margin-right: 8px;
+    }
+  }
+
+  &.addNote {
+    display: flex;
+    align-items: center;
+
+    > .sicon {
+      margin-right: 4px;
+    }
+  }
+
+  // Hover state
+  &:not(.disabled):hover,
+  &.focus {
+    box-shadow: inset 0 0 10px fade(@black, 10%);
+
+    &.no-inset {
+      box-shadow: none;
+    }
+  }
+
+  &.active {
+    color: @white;
+    text-shadow: none;
+    box-shadow: none;
+
+    > .sicon {
+      color: @white;
+    }
+  }
+
+  &.rowaction:not(.btn-primary) {
+    line-height: 12px;
+    padding: 7px;
+
+    &.active {
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+// invisible appears as no button
+.btn.btn-invisible {
+  background-image: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  font-weight: normal;
+  font-size: @baseFontSize;
+  line-height: @baseFontSize;
+  box-shadow: none;
+
+  &:not(.disabled):hover {
+    box-shadow: none;
+    border-color: transparent;
+    background-color: transparent;
+    text-decoration: none;
+
+    > .sicon {
+      color: @sicon-hover-color;
+      text-shadow: none;
+    }
+  }
+
+  &.more,
+  &.less {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &.active {
+    color: @sicon-active-color;
+    box-shadow: none;
+    background: @gray60;
+  }
+
+  &.disabled {
+    text-decoration: none;
+    color: @sicon-color;
+    opacity: 0.65;
+  }
+  //a darker version of btn-invisible
+  &.btn-dark {
+    background-color: @btnDarkInvisibleBackground;
+    padding: 7px;
+    line-height: 12px;
+
+    &:hover {
+      background-color: @btnDarkInvisibleBackgroundHover;
+    }
+
+    > .sicon {
+      color: @sicon-color;
+    }
+  }
+}
+
+// Buttons styled as links
+.btn.btn-link {
+  color: @linkColor;
+
+  &:not(.disabled):not(.btn-invisible):hover {
+    text-decoration: underline;
+    color: @linkColorHover;
+    box-shadow: none;
+    background: @btnBackground;
+  }
+
+  &.inline-cancel:hover {
+    background: @tableRowHover;
+  }
+
+  &.active,
+  &:not(.disabled):active {
+    color: @linkColor;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+.btn.btn-inline {
+  padding: 0;
+  margin: 0;
+  border: none;
+  height: auto;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  vertical-align: baseline;
+}
+
+.btn-fixed {
+  width: 178px;
+  margin-right: 10px;
+}
+
+// Set caret text color
+.btn-primary,
+.btn-primary:hover,
+.btn-info,
+.btn-info:hover,
+.btn-inverse,
+.btn-inverse:hover {
+  color: @white;
+
+  .sicon {
+    color: @white;
+  }
+}
+
+.btn-warning,
+.btn-warning:hover {
+  color: darken(@darkYellow, 20%);
+}
+
+.btn-danger {
+  color: @darkRed !important;
+}
+
+.btn-danger:hover,
+.btn-danger:active {
+  color: darken(@darkRed, 20%) !important;
+}
+
+.btn-success {
+  color: @darkArmy !important;
+}
+
+.btn-success:hover,
+.btn-success:active {
+  color: darken(@darkArmy, 20%) !important;
+}
+
+.btn.btn-input-addon {
+  z-index: 2;
+  position: absolute;
+  right: 0;
+}
+
+input.required + .btn.btn-input-addon {
+  border-bottom: @borderWidget;
+  border-top: @borderWidget;
+  border-right: @borderWidget;
+}
+
+/* NEW SKIN START */
+
+.btn {
+  /* override */
+  &.active {
+    background: @btnActiveBackground;
+  }
+
+  /* override */
+  &.btn-invisible.disabled {
+    background: none;
+  }
+
+  &.disabled {
+    > .sicon {
+      color: @btnDisabledIconColor;
+    }
+
+    &.btn-primary {
+      > .sicon {
+        color: inherit;
+      }
+    }
+  }
+}
+
+/* additive */
+.btn-primary {
+  border-color: @PrimaryButtonBorder;
+  background-color: @PrimaryButton;
+
+  &:not(.disabled):not(.btn-invisible):hover {
+    box-shadow: none;
+    border: solid 1px @btnPrimaryHoverBorder;
+    background: @btnPrimaryHoverBackground;
+  }
+
+  &:not(.disabled):not(.btn-invisible):active.btn {
+    /* .btn at the end of this selector is necessary to override default theme */
+    border: solid 1px @btnPrimaryActiveBorder;
+    background-color: @btnPrimaryActiveBackground;
+  }
+}
+
+.btn.btn-secondary {
+  background-color: @btnSecondaryBackground;
+  border-color: var(--btn-secondary-border);
+  color: @btnSecondaryColor;
+
+  &:hover {
+    background-color: @btnSecondaryBackgroundHover;
+    border-color: var(--btn-secondary-border-hover);
+    color: @btnSecondaryColorHover;
+    box-shadow: none;
+    background-image: none;
+  }
+
+  &:active:not(.disabled):not(.btn-invisible) {
+    background: @btnSecondaryBackgroundActive;
+  }
+
+  &:focus {
+    background: @btnSecondaryBackgroundFocus;
+  }
+
+  &.disabled,
+  &[disabled] {
+    background-color: @btnSecondaryBackgroundDisabled;
+    color: @btnSecondaryColorDisabled;
+  }
+}
+
+.btn-group {
+  &,
+  &.open {
+    .btn-primary.dropdown-toggle {
+      background: @btnPrimaryBackground;
+
+      .sicon {
+        color: @white;
+      }
+    }
+  }
+}
+
+/* NEW SKIN END */
+
+.actionmenu-checkbox {
+  height: 12px;
+}
+
+// SugarIcons button behaviour
+.btn {
+  &.sort-order-selector {
+    line-height: 12px;
+    padding: 7px;
+  }
+
+  &.favorite-button {
+    line-height: 12px;
+    padding: 7px;
+
+    &:hover > .sicon,
+    &.active {
+      &:hover > .sicon,
+      > .sicon {
+        color: @sicon-hover-color;
+      }
+    }
+  }
+
+  &:not(.btn-primary):not(.btn-notification):not(.btn-invisible):not(.disabled):not(.active):hover {
+    .sicon {
+      color: @sicon-hover-color;
+    }
+  }
+}

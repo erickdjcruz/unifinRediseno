@@ -1,0 +1,58 @@
+.activity-card {
+  .activity-card-main {
+    .activity-card-header {
+      .panel-header {
+        .activity-card-header {
+          &.email-state {
+            padding-left: 0;
+            padding-right: 12px;
+          }
+        }
+      }
+
+      .panel-users {
+        .header-user {
+          .user-value {
+            padding-left: 0;
+            padding-right: 4px;
+          }
+        }
+      }
+    }
+
+    .activity-card-content {
+      .activity-date-modified {
+        text-align: right;
+      }
+
+      .activity-card-content-body {
+        .label {
+          &.label-pending,
+          &.label-important,
+          &.label-success,
+          &.label-inverse {
+            margin-left: 0;
+            margin-right: 12px;
+          }
+        }
+      }
+    }
+  }
+
+  .cabmenu {
+    right: unset;
+    left: 12px;
+
+    .dropdown-menu {
+      left: 7px;
+      right: auto;
+
+      > li span {
+        i {
+          padding-right: 0;
+          padding-left: 5px;
+        }
+      }
+    }
+  }
+}

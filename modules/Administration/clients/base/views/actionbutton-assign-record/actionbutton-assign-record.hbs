@@ -1,0 +1,40 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="span6 record-cell edit" data-type="text">
+    <div class="labels-on-side">
+        <div class="record-label-wrapper span2">
+            <div class="record-label">
+                {{str "LBL_ACTIONBUTTON_ASSIGN_TO"}}
+            </div>
+        </div>
+        <div class="record-link-wrapper span4">
+            <span class="normal index">
+                <span class="edit">
+                    <input type="checkbox" {{#if _properties.assignToCurrentUser}}checked{{/if}} /> {{str 'LBL_ACTIONBUTTON_ASSIGN_CURRENT_USER'}}
+                </span>
+            </span>
+        </div>
+    </div>
+    <div class="labels-on-side" data-container="assign-user-field-container">
+        <div class="record-label-wrapper span2">
+            <div class="record-label">
+            </div>
+        </div>
+        <div class="record-link-wrapper span4">
+            <span class="normal index">
+                <span class="edit inherit-width" data-container="field">
+                </span>
+            </span>
+        </div>
+    </div>
+</div>

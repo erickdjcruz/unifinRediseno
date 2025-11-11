@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => '列出 Smart Guide Sugar 操作',
+    'LBL_MODULE_TITLE' => 'Smart Guide Sugar 操作',
+    'LBL_HOMEPAGE_TITLE' => '我的 Smart Guide Sugar 操作',
+    'LNK_NEW_RECORD' => '新的 Smart Guide Sugar 操作',
+    'LNK_VIEW_RECORDS' => '查看 Smart Guide Sugar 操作',
+    'LNK_CJ_FORM_LIST' => '查看 Smart Guide Sugar 操作',
+    'LNK_LIST' => 'Smart Guide Sugar 操作',
+    'LBL_SEARCH_FORM_TITLE' => '搜索 Smart Guide Sugar 操作',
+    'LBL_MODULE_NAME' => 'Smart Guide Sugar 操作',
+    'LBL_MODULE_NAME_SINGULAR' => 'Smart Guide Sugar 操作',
+    'LBL_TRIGGER_EVENT' => '触发器事件',
+    'LBL_ACTION_TYPE' => '行动类型',
+    'LBL_PARENT_MODULE' => '父模块',
+    'LBL_RELATIONSHIP' => '关系',
+    'LBL_ACTIVITY_TEMPLATE' => '活动模板',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => '智能指南/阶段/活动模板',
+    'LBL_ACTIVE' => '活动的',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => '%s 活动模板已经有一个 使用 %s 触发事件的 Sugar Action。对于 Smart Guide 中的每个阶段或活动，每个触发事件类型只能有一个活动的 Sugar Action。',
+    'LBL_RECORDVIEW_PANEL4' => '填充字段',
+    'LBL_POPULATE_FIELDS' => '填充字段',
+    'LBL_ADD_FIELD' => '添加字段',
+    'LBL_REMOVE_FIELD' => '删除字段',
+    'LBL_FIELD_NAME' => '字段名称',
+    'LBL_FIELD_VALUE' => '字段值',
+    'LBL_FIELD_NOT_AVAILABLE' => '此字段不适用于列表视图。',
+    'LBL_ACTION_TRIGGER_TYPE' => '行动触发器类型',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => '找不到相关记录',
+    'LBL_IGNORE_ERRORS' => '忽略错误',
+    'LBL_NO_DISPLAY_FIELDS' => '没有要显示的字段。',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => '活动模板链接字段',
+    'LBL_STAGE_TEMPLATE_LINK' => '阶段模板链接字段',
+    'LBL_EMAIL_TEMPLATES' => '电子邮件模板',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => '选择“收件人”电子邮件地址',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => '电子邮件字段',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => '显示图标',
+    'CJ_FORMS_LBL_PARENT_NAME' => '智能指南/阶段/活动模板',
+    'LBL_ACTIVITY_MODULE' => '活动模块',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Smart Guide 模板',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => '选择智能指南模板触发器',
+    'LBL_MAIN_TRIGGER_TYPE' => '触发器类型',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => '选择触发器类型',
+    'LBL_MODULE_TRIGGER' => '模块触发器',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => '选择模块触发器',
+    'LBL_FIELD_TRIGGER' => '字段触发器',
+    'LBL_CJ_TARGET_PLACEHOLDER' => '选择智能指南目标',
+    'LBL_CJ_TARGET' => 'Smart Guide 目标',
+    'LBL_CJ_ACTION' => 'Smart Guide 操作',
+    'LBL_CJ_ACTION_PLACEHOLDER' => '选择智能指南操作',
+    'LBL_TRIGGER_TITLE' => '触发器',
+    'LBL_TRIGGER_DESCRIPTION' => '使用下面的字段选择触发器类型和激活触发器的条件。',
+    'LBL_TARGET_ACTION_TITLE' => '目标和操作',
+    'LBL_TARGET_ACTION_DESCRIPTION' => '使用下面的字段选择触发器激活时将在哪里执行哪些操作。',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => '选择智能指南阶段',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => '选择智能指南活动',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => '选择智能指南活动',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => '选择阶段活动操作',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => '选择智能指南活动操作',
+];

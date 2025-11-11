@@ -1,0 +1,43 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+{{#if fieldList}}
+    <div class='console-preview multi-line-list-view'>
+        <table class='table table-striped dataTable multi-line-table'>
+            <thead>
+                <tr>
+                    {{#each fieldList}}
+                        <th class='cell-medium'>
+                            {{#each this}}
+                                {{#unless @first}} / {{/unless}}{{str label ../../moduleName}}
+                            {{/each}}
+                        </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each rowDesign}}
+                    <tr class='multi-line-row'>
+                        {{#each this}}
+                            <td class='subfields'>
+                                {{#each this}}
+                                    <div class='{{this}}'></div>
+                                {{/each}}
+                            </td>
+                        {{/each}}
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+{{/if}}

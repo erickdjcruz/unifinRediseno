@@ -1,0 +1,68 @@
+@currencyFieldElement: ~'div[class*="currency-field"]';
+@discountFieldElement: ~'div[class*="discount-amount-field"]';
+
+[data-type=fieldset],
+.dataTable [data-type=fieldset] {
+  min-width: 155px;
+
+  span[class*="discount-field"]:not(.overflow-visible) {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+    &.detail > .fieldset-field > span {
+      @{currencyFieldElement},
+      @{discountFieldElement} {
+        text-align: left;
+      }
+    }
+
+    .fieldset-field {
+      &:first-child {
+        width: 100%;
+      }
+
+      span {
+        @{currencyFieldElement} {
+          overflow-x: hidden;
+          text-overflow: ellipsis;
+          text-align: right;
+        }
+
+        &.edit [name=discount_amount] {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          text-align: right;
+        }
+
+        .discount-select-dropdown {
+          // Make sure we don't break this size. Sometimes the enum doesn't pick up a click event
+          // and we don't want to ruin the field format when the entire label gets rendered.
+          max-width: 28px;
+
+          .select2-choice {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            padding-right: 8px;
+            padding-left: 8px;
+
+            .select2-chosen {
+              margin-right: auto;
+              text-align: center;
+              overflow: visible;
+            }
+
+            .select2-arrow {
+              display: none;
+            }
+          }
+
+          .select2-default > span[class*="select2-chosen"] {
+            color: @black;
+          }
+        }
+      }
+    }
+  }
+}

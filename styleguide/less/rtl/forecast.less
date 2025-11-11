@@ -1,0 +1,90 @@
+// Forecasts Datapoints/Info/Timeperiod
+.topline {
+  .controls {
+    float: right;
+  }
+
+  div.datapoints {
+    text-align: left;
+    float: left;
+
+    .pull-left {
+      float: left;
+    }
+  }
+
+  .datapoint {
+    padding-left: 10px;
+    border-left: @borderWidgetLight;
+    border-right: 0;
+  }
+
+  .span4 {
+    padding: 10px 15px 0 0;
+
+    &::before {
+      right: 5px;
+    }
+  }
+}
+
+.currency-field {
+  label.original {
+    margin: 0 0 0 4px;
+  }
+}
+
+.info {
+  // smaller non-bold "totals" numbers below Best/Likely
+  .last-commit {
+    div.datapoints {
+      float: left;
+    }
+
+    .datapoint {
+      text-align: left;
+      padding: 8px 0 8px 7px;
+    }
+
+    .span8 {
+      margin-left: 0;
+    }
+  }
+}
+
+.forecast-value {
+  .text-xs {
+    margin-left: 1rem;
+    margin-right: 0;
+  }
+}
+
+.forecast-value-input {
+  .clickToEdit {
+    span.edit-icon {
+      left: unset;
+      position: absolute;
+      right: 0;
+      top: -2px;
+    }
+  }
+}
+
+.forecast-metrics {
+  .metrics-help-button {
+    margin-left: -5px;
+  }
+
+  .metrics-help-modal {
+    .popover-content {
+      .sicon-help-lg {
+        margin-left: 0.5rem;
+      }
+
+      .sicon-close {
+        right: auto !important;
+        left: 0.75rem;
+      }
+    }
+  }
+}

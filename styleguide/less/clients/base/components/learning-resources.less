@@ -1,0 +1,105 @@
+.resource-list {
+  min-height: 86px;
+  display: block;
+}
+
+.resource {
+  display: block;
+  width: 100%;
+
+  &:last-child {
+    padding-bottom: 0.875rem;
+  }
+
+  i {
+    display: inline-block;
+  }
+}
+
+.resource-info {
+  a {
+    margin-bottom: 3px;
+    margin-top: -2px;
+    display: block;
+    font-size: 14px;
+  }
+
+  .details {
+    font-size: 12px;
+    line-height: 14px;
+    margin-bottom: 0;
+    text-align: left;
+  }
+}
+
+.popover.feedback .arrow {
+  left: 74%;
+}
+
+.popover.helpmodal {
+  .popover-content {
+    padding-top: 0;
+
+    .helplet-body {
+      max-height: 300px;
+      overflow-y: auto;
+      margin: 10px 0;
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      p.body-text {
+        margin-top: 10px;
+      }
+    }
+
+    .feedback-close:hover {
+      text-decoration: none;
+    }
+  }
+
+  .arrow {
+    left: 94%;
+  }
+
+  .resource {
+    display: block;
+    width: auto;
+    padding: 10px 15px 10px 0;
+    border-right: none;
+    border-bottom: @borderWidget;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    i {
+      font-size: initial;
+      padding: 1px;
+    }
+  }
+
+  .resource-info {
+    margin-left: 30px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    a {
+      margin-top: 0;
+    }
+  }
+
+  .btn.btn-link {
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+
+    &.disabled .label {
+      color: @white;
+      cursor: default;
+    }
+  }
+}

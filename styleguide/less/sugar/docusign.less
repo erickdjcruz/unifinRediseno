@@ -1,0 +1,150 @@
+.dashlet .docusign {
+  ul.nav-tabs {
+    display: flex;
+    height: 30px;
+    border-bottom: none;
+
+    li.dropdown {
+      float: right;
+    }
+  }
+
+  .docusignChart {
+    margin: 0 auto;
+  }
+
+  .envelopes_docusign_content {
+    display: none;
+    border-top: 1px solid @docusignDashletBorderColor;
+  }
+
+  .documents_docusign_content {
+    display: none;
+    border-top: 1px solid @docusignDashletBorderColor;
+
+    .flex-list-view {
+      clear: right;
+    }
+  }
+
+  .drafts_docusign_content {
+    display: none;
+    border-top: 1px solid @docusignDashletBorderColor;
+  }
+
+  .stick-first {
+    left: 0;
+  }
+
+  .addDocument,
+  .sendEnvelope,
+  .selectTemplate,
+  .sendWithTemplate {
+    line-height: 18px;
+  }
+
+  .nav > li {
+    white-space: nowrap;
+
+    a {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .sticky-column.stick-right {
+    background-color: var(--primary-content-background);
+  }
+
+  .docusign-documents-header {
+    height: 35px;
+
+    .btn-toolbar {
+      button {
+        margin-left: 10px;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+  }
+
+  > div:first-of-type {
+    height: calc(100% - 16px);
+
+    .main {
+      height: 100%;
+      border-top: 1px solid @docusignDashletBorderColor;
+
+      .overview_docusign_content {
+        height: 100%;
+
+        div[class^="chart"] {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .flex-list-view {
+    border-top: 0;
+  }
+
+  .envelopes_docusign_content .table thead:first-child tr:first-child th,
+  .drafts_docusign_content .table thead:first-child tr:first-child th {
+    border-top: 0;
+  }
+
+  .envelopes_docusign_content .table tr td,
+  .documents_docusign_content .table tr td,
+  .drafts_docusign_content .table tr td {
+    height: 28px !important;
+  }
+}
+
+.envelopeSetup {
+  margin: 50px 20px;
+}
+
+.templates-list .flex-list-view[class$="-actions"]:not(.scroll-width) .flex-list-view-content .dataTable td:last-child:not(.alert) {
+  height: 28px;
+}
+
+.templatesFilter {
+  .width-auto();
+
+  padding: 5px 8px;
+
+  input {
+    width: -webkit-fill-available;
+
+    &:focus {
+      outline: 3px auto #517bf8;
+      outline-offset: 0;
+      box-shadow: none;
+      border-color: @docusignInputFocus;
+    }
+  }
+
+  .sicon.sicon-close {
+    position: absolute;
+    right: 7px;
+    padding: 7px 10px;
+    cursor: pointer;
+  }
+}
+
+body.safari-browser {
+  .docusign {
+    .dataTable {
+      th,
+      td {
+        &.sticky-column {
+          &.stick-first {
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if appIsSynced}}
+    {{#if route}}
+        <a class="sidebar-nav-item-btn absolute bg-transparent flex flex-row h-full items-center p-0 rtl:text-right text-base text-left w-full" href="{{route}}" aria-label="{{str label module}}">
+    {{else}}
+        <button class="sidebar-nav-item-btn absolute bg-transparent flex flex-row h-full items-center p-0 rtl:text-right text-base text-left w-full"
+            aria-label="{{str label module}}"
+            {{#if ../track}}track="{{../track}}"{{/if}}>
+    {{/if}}
+
+    <span class="collapsed h-full w-full" rel="tooltip" data-bs-placement="{{tooltipPlacement}}"
+          title="{{str label module}}">
+        <span class="{{buildIcon icon}} inline-flex items-center justify-center h-full w-full bg-transparent text-white cursor-pointer"></span>
+    </span>
+
+    <span class="expanded h-full w-full ellipsis_inline pr-4 text-white" data-bs-placement="{{tooltipPlacement}}" title="{{str label module}}" aria-label="{{str label module}}">
+        <span class="{{buildIcon icon}} inline-flex items-center justify-center h-full w-15 bg-transparent text-white cursor-pointer"></span>
+        <span class="text-sm">
+            {{str label module}}
+        </span>
+    </span>
+
+    {{#if route}}</a>{{else}}</button>{{/if}}
+
+    {{#if secondaryAction}}
+        <button class="sidebar-nav-item-kebab group/kebab bg-transparent absolute focus-within:bg-blue-100 h-full hover:bg-blue-100 invisible group-hover/nav-item:visible p-0 right-0 w-4" aria-label="{{secondaryActionLabel}}">
+            <i class="{{buildIcon 'sicon-kebab'}} text-white group-hover/kebab:text-blue-600"></i>
+        </button>
+    {{/if}}
+{{/if}}

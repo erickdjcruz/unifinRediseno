@@ -1,0 +1,289 @@
+/* TOPLINE
+  ----------------*/
+
+.topline {
+  clear: both;
+  position: relative;
+  border-bottom: @borderWidgetLight;
+  //this is the container
+  .controls {
+    float: left;
+
+    .control-label {
+      margin-bottom: 0;
+    }
+    //this is the anchor styled as select
+    .select2-choice {
+      //get rid of select box styling
+      border: 0 none;
+      background-image: none;
+      background-color: transparent;
+      color: @textColor;
+      box-shadow: none;
+      padding-left: 0;
+      //this is the font and text
+      span {
+        font-size: @fontSizeLarge;
+      }
+    }
+
+    .select2-choice:focus {
+      box-shadow: none;
+      border: 0 none;
+    }
+
+    select {
+      width: 160px;
+    }
+  }
+
+  select {
+    width: 130px;
+  }
+
+  hr {
+    margin: 8px 0 -1px;
+    padding: 0;
+    border-top: 2px solid @gray70;
+  }
+
+  table {
+    margin: 0;
+  }
+
+  .btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+
+  .title {
+    padding: 10px 10px 0 0;
+    margin-left: 20px;
+    float: left;
+  }
+
+  .datapoint {
+    min-width: 120px;
+  }
+
+  .datapoint1 {
+    float: right;
+    margin-top: 10px;
+    min-width: 120px;
+    padding-right: 20px;
+  }
+
+  .datapoint2 {
+    float: right;
+    margin-top: 10px;
+    min-width: 120px;
+  }
+
+  .log {
+    position: absolute;
+    overflow: hidden;
+    top: 57px;
+    color: @gray60;
+
+    .datapoint1,
+    .datapoint2 {
+      position: absolute;
+      top: 0;
+      width: 120px;
+    }
+
+    .datapoint1 {
+      right: 150px;
+    }
+
+    .datapoint2 {
+      right: 20px;
+    }
+
+    .title {
+      padding: 0 10px 10px 0;
+    }
+
+    .toggle {
+      padding-top: 3px;
+    }
+  }
+
+  //nutmeg
+  .datapoint1,
+  .log .datapoint1 {
+    right: -20px;
+  }
+
+  .datapoint2,
+  .log .datapoint2 {
+    right: 110px;
+  }
+
+  div.divider {
+    float: left;
+    right: auto;
+    right: 121px;
+    border-right: @borderWidgetLight;
+    height: 80px;
+    width: 1px;
+    top: 0;
+    padding-left: 13px;
+    margin-right: 10px;
+  }
+
+  .row-fluid {
+    margin: 0;
+    padding: 0;
+  }
+
+  .span4 {
+    margin-left: 1rem;
+    width: 29.914893614%;
+    padding: 10px 10px 0 0;
+
+    &::before {
+      width: 6px;
+      background-color: @blue;
+      height: 74px;
+      left: 5px;
+      content: "";
+      top: 3px;
+      position: absolute;
+    }
+  }
+
+  .span8 {
+    width: 63.957447%;
+  }
+
+  .span12 {
+    width: 96%;
+    margin-right: 2%;
+  }
+
+  .hr {
+    width: 100%;
+    height: 1px;
+    border-bottom: @borderWidgetLight;
+    float: left;
+  }
+}
+
+.topline,
+.info .results.extend {
+  .sicon {
+    &.font-green {
+      color: @green;
+    }
+
+    &.font-red {
+      color: @red;
+    }
+  }
+}
+
+#history_log_results {
+  article:nth-child(even),
+  article:nth-child(odd) {
+    background-color: transparent;
+    border-top: 1px solid @gray70;
+    border-bottom-color: @gray90;
+    padding: 10px 20px;
+  }
+}
+
+.info {
+  .results.extend {
+    max-height: 118px;
+    background-color: var(--history-log-background);
+    background-color: @gray80 e("\9");
+    background-image: none;
+    color: var(--history-log-color);
+    outline: 0;
+    position: relative;
+    margin: 0;
+    padding: 0;
+  }
+
+  .relativetime {
+    position: relative;
+    top: -2px;
+  }
+
+  .last-commit {
+    border-bottom: @borderWidgetLight;
+
+    .datapoint {
+      float: left;
+      min-width: 120px;
+      text-align: right;
+    }
+
+    .span8 {
+      float: right;
+    }
+
+    .span12 {
+      width: 96%;
+      margin-left: 2%;
+      margin-right: 2%;
+
+      &.commit-date {
+        min-height: inherit;
+        padding: 8px 18px;
+        margin-left: 0;
+      }
+    }
+
+    .hr {
+      width: 100%;
+      height: 1px;
+      border-top: @borderWidgetLight;
+      float: left;
+    }
+  }
+
+  .row-fluid .span4 {
+    min-height: inherit;
+    padding: 8px 18px;
+    margin-left: 0;
+  }
+}
+
+.topline-timeperiod-dropdown {
+  border: @borderWidget;
+  width: auto;
+  margin-top: 5px;
+
+  .result-selected {
+    display: block;
+    font-weight: bold;
+  }
+
+  .select2-search {
+    padding-top: 4px;
+  }
+
+  .select2-results {
+    margin: 0;
+    padding: 0;
+    max-height: 235px;
+
+    li {
+      line-height: 26px;
+      border-bottom: @borderWidgetLight;
+    }
+
+    li:hover,
+    .select2-highlighted {
+      background: @dropdownLinkBackgroundHover;
+      color: @dropdownLinkColorHover;
+    }
+  }
+}
+
+.data2 {
+  font-size: 12px;
+}

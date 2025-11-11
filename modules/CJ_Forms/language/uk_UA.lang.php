@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Список дій у Sugar, пов’язаних зі Smart Guide',
+    'LBL_MODULE_TITLE' => 'Дія в Sugar, пов’язана зі Smart Guide',
+    'LBL_HOMEPAGE_TITLE' => 'Мої дії в Sugar, пов’язані зі Smart Guide',
+    'LNK_NEW_RECORD' => 'Нова дія в Sugar, пов’язана зі Smart Guide',
+    'LNK_VIEW_RECORDS' => 'Переглянути дії в Sugar, пов’язані зі Smart Guide',
+    'LNK_CJ_FORM_LIST' => 'Переглянути дії в Sugar, пов’язані зі Smart Guide',
+    'LNK_LIST' => 'Дії в Sugar, пов’язані зі Smart Guide',
+    'LBL_SEARCH_FORM_TITLE' => 'Пошук дії в Sugar, пов’язаної зі Smart Guide',
+    'LBL_MODULE_NAME' => 'Дії в Sugar, пов’язані зі Smart Guide',
+    'LBL_MODULE_NAME_SINGULAR' => 'Дія в Sugar, пов’язана зі Smart Guide',
+    'LBL_TRIGGER_EVENT' => 'Подія-тригер',
+    'LBL_ACTION_TYPE' => 'Тип дії',
+    'LBL_PARENT_MODULE' => 'Модуль батьківського рівня',
+    'LBL_RELATIONSHIP' => 'Зв’язок',
+    'LBL_ACTIVITY_TEMPLATE' => 'Шаблон дії',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Smart Guide/Стадія/Шаблон дії',
+    'LBL_ACTIVE' => 'Активний',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'Шаблон активності %s вже містить дію в Sugar, що використовує подію-тригер %s. Існує обмеження на одну активну дію в Sugar для кожного типу події-тригера для кожного етапу або активності в Smart Guide.',
+    'LBL_RECORDVIEW_PANEL4' => 'Заповнити поля',
+    'LBL_POPULATE_FIELDS' => 'Заповнити поля',
+    'LBL_ADD_FIELD' => 'Додати поле',
+    'LBL_REMOVE_FIELD' => 'Видалити поле',
+    'LBL_FIELD_NAME' => 'Назва поля',
+    'LBL_FIELD_VALUE' => 'Значення поля',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Це поле не доступне для подання списку.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Тип тригера дії',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Не вдалося знайти пов’язаний запис',
+    'LBL_IGNORE_ERRORS' => 'Ігнорувати помилки',
+    'LBL_NO_DISPLAY_FIELDS' => 'Відсутні поля для відображення.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Поле посилання на шаблон активності',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Поле посилання на шаблон стадії',
+    'LBL_EMAIL_TEMPLATES' => 'Шаблон повідомлення електронної пошти',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Виберіть адресу адресата електронної пошти',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'Поля електронної пошти',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Піктограма відображення',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Smart Guide/Стадія/Шаблон дії',
+    'LBL_ACTIVITY_MODULE' => 'Модуль активності',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Шаблон Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Вибрати тригер шаблону Smart Guide',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Тип тригера',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Вибрати тип тригера',
+    'LBL_MODULE_TRIGGER' => 'Тригер модуля',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Вибрати тригер модуля',
+    'LBL_FIELD_TRIGGER' => 'Тригер поля',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Вибрати цільову аудиторію споживачів Smart Guide',
+    'LBL_CJ_TARGET' => 'Ціль Smart Guide',
+    'LBL_CJ_ACTION' => 'Дія в Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Вибрати дію в Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'Тригер',
+    'LBL_TRIGGER_DESCRIPTION' => 'Скористайтеся полями нижче, щоб вибрати тип тригера і умови, за яких він активується.',
+    'LBL_TARGET_ACTION_TITLE' => 'Цільова аудиторія споживачів і дія',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Скористайтеся полями нижче, щоб вибрати, де і які дії відбуватимуться, коли тригер буде активовано.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Вибрати стадію Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Вибрати активності Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Вибрати активність Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Вибрати дію активностей стадії',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Вибрати дію активностей Smart Guide',
+];

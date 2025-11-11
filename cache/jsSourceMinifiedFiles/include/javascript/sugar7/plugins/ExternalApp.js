@@ -1,0 +1,2 @@
+(function(app){app.events.on('app:init',function(){app.plugins.register('ExternalApp',['view'],{onAttach:function(component,plugin){this.on('init',function(){this.addExternalAppFieldsToContext();},this);},addExternalAppFieldsToContext:function(){var fieldsToAdd=[];if(this.meta&&this.meta.panels){_.each(this.meta.panels,function(panel){var fields=panel.fields;_.each(fields,function(field){if(field.type==='external-app-field'&&_.isArray(field.loadField)){fieldsToAdd=fieldsToAdd.concat(field.loadField);}});});}
+this.context.addFields(fieldsToAdd);}});});})(SUGAR.App);

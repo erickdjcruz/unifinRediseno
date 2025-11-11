@@ -1,0 +1,30 @@
+#portal {
+  .activity-timeline-base #moduleActivity {
+    border-top: 2px solid @borderColor;
+    margin-top: 38px;
+
+    .actions {
+      top: -38px;
+    }
+  }
+
+  .activity-card {
+    // Message Card
+    &.activity-card-messages {
+      .activity-card-main {
+        padding: 9px 12px 16px;
+      }
+    }
+
+    // Note Card
+    &.activity-card-notes {
+      .activity-card-main {
+        .activity-card-header {
+          .panel-header {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+}

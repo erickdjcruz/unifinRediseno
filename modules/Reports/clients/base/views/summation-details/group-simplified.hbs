@@ -1,0 +1,68 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<table class="simplified-table report-item-border-thick clear-both m-0 w-full">
+    {{!--Display group header--}}
+    {{#each groupBy}}
+        <tr class="{{#if @first}}group{{else}}subgroup{{/if}} single">
+            <td class="{{#if @first}}simplified-summary-table-group-header{{else}}simplified-summary-table-subgroup-header{{/if}}" colspan="{{../colspan}}">
+                {{#if @first}}
+                    <i class="sicon sicon-arrow-left-double up" groupid="{{../groupId}}"></i>
+                {{/if}}
+                {{#sanitize}}
+                    {{{this}}}
+                {{/sanitize}}
+            </td>
+        </tr>
+    {{/each}}
+    <tr>
+        <td>
+            <table class="w-full report-item-border-thick" data-table="group-body">
+                {{!--Display soubgroups--}}
+                {{#each subgroups}}
+                    {{#if header.length}}
+                    {{!--Display soubgroup header--}}
+                        {{#each header}}
+                            {{#if this}}
+                                <tr class="subgroup single">
+                                    <th class="simplified-summary-table-subgroup-header pl-4 text-left" colspan="{{../../../../colspan}}">
+                                        {{#sanitize}}
+                                            {{{this}}}
+                                        {{/sanitize}}
+                                    </th>
+                                </tr>
+                            {{/if}}
+                        {{/each}}
+                    {{/if}}
+                    {{!--Display list normal header--}}
+                    <tr class="subgroup single">
+                        {{partial 'row-header-simplified' ../templateComponent view=../templateComponent fields=../../fields}}
+                    </tr>
+                    {{!--need to render collection for each soubgroup--}}
+                    {{#each records}}
+                        <tr class="single">
+                            {{#each this}}
+                                <td class="wrap-report-text bg-[--primary-content-background] overflow-hidden pl-1">
+                                    <div class="ellipsis_inline" data-bs-placement="bottom" data-html="true" data-original-title="{{this}}">
+                                        {{#sanitize}}
+                                            {{{this}}}
+                                        {{/sanitize}}
+                                    </div>
+                                </td>
+                            {{/each}}
+                        </tr>
+                    {{/each}}
+                {{/each}}
+            </table>
+        </td>
+    </tr>
+</table>

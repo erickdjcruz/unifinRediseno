@@ -1,0 +1,20 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="report-filters-container overflow-y-auto overflow-x-hidden h-full" data-container="filters-container">
+</div>
+<div class="h-full {{#if _usePreviewClasses}}report-dashlet-preview-no-data-available mt-15 mx-5{{else}}report-dashlet-no-data-available ml-0 mt-0 w-[489px]{{/if}} hidden text-center" data-widget="report-no-filters">
+    {{str "LBL_NO_FILTERS_REPORT_AVAILABLE"}}
+</div>
+<div class="h-full {{#if _usePreviewClasses}}report-dashlet-preview-no-data-available mt-15 mx-5{{else}}report-dashlet-no-data-available ml-0 mt-0 w-[489px]{{/if}} hidden text-center" data-widget="report-hidden-filters">
+    {{{str "LBL_NO_RUNTIME_FILTERS_REPORT_AVAILABLE"}}}
+</div>

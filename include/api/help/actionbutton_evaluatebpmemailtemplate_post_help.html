@@ -1,0 +1,210 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2 xmlns="http://www.w3.org/1999/html">Overview</h2>
+<span class="lead">
+    Merges a BPM Email Template and returns the merged data.
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This request will merge and return the email template data merging
+    the target record bean with the given BPME email template body.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                targetRecordModule
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Record module
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                targetRecordId
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Record ID
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                targetTemplateId
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                BPM Email Template ID.
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                emailToField
+            </td>
+            <td>
+                Boolean
+            </td>
+            <td>
+                Prepopulate Email Recipient?
+            </td>
+            <td>
+                False
+            </td>
+        </tr>
+        <tr>
+            <td>
+                emailToData
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                Sugar logic formula that will evaluate the recipient list
+            </td>
+            <td>
+                False
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "targetTemplateId": "7d2e21a6-8a76-a74f-bb53-535620211304",
+    "targetRecordId": "3232sda6-8a76-a74f-bb53-535620232304",
+    "targetRecordModule": "Accounts",
+    "emailToField": true,
+    "emailToData": {
+        "formulaElement": "toString(\"test@sugarcrm.com\")"
+    }
+}
+</pre>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the following fields:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                body
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Email Body
+            </td>
+        </tr>
+        <tr>
+            <td>
+                subject
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Email Subject
+            </td>
+        </tr>
+        <tr>
+            <td>
+                description
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Email Description (taken from the Email Template record)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                emailTo
+            </td>
+            <td>
+                Array or Boolean
+            </td>
+            <td>
+                List of email recipients.
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">{
+    "body": "Hi Tyri, Please check our website: https://www.sugarcrm.com/",
+    "subject": "Casual Friday",
+    "description": "Weekly updates",
+    "emailTo" : [
+        {
+            "email_address": "test@sugarcrm.com",
+            "email_address_id": "1e2521a6-8a76-a74f-bb53-535620211304",
+        }
+    ]
+}</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_13
+        </td>
+        <td>
+            Added <code>/actionButton/evaluateBPMEmailTemplate</code> POST endpoint.
+        </td>
+    </tr>
+</table>

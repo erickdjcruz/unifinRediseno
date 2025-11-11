@@ -1,0 +1,156 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Retrieve a list of occurrences records given a master event id.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            masterRecordId
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            Master Event Id
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    <tr>
+        <td>
+            occurrences
+        </td>
+        <td>
+            Array
+        </td>
+        <td>
+            A list of occurrences original start dates
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            eventType
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            Either occurrence or exception
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            limit
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            How many records to retrieve
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            offset
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            Where should the retrieval pointer be placed at
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Request</h3>
+<pre class="pre-scrollable">
+http://{site_url}/rest/v11_23/Meetings/retrieveOccurrences
+{
+    "module": "Meetings",
+    "masterRecordId": "id-id-id"
+    "occurrences": ["yyyy-mm-ddThh:mm:ss-00:00"],
+    "eventType": "occurrence",
+    "limit": "10",
+    "offset": "30",
+}
+</pre>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            &lt;records fields&gt;
+        </td>
+        <td>
+            Returns the fields for the required events.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+Array
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_23
+        </td>
+        <td>
+            Added <code>/Meetings/retrieveOccurrences</code> POST endpoint.
+        </td>
+    </tr>
+</table>

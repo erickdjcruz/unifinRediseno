@@ -1,0 +1,126 @@
+.dashboard {
+  .headerpane {
+    h1 {
+      > .record-cell.edit {
+        padding: 15px 20px 0 0;
+
+        input[type="text"] {
+          margin: 0 -7px 0 0;
+        }
+      }
+    }
+  }
+
+  .dashlet-content {
+    .forecast-details {
+      .span6.text-right {
+        text-align: left;
+      }
+    }
+
+    .bestNumbers {
+      .span6.text-center:not(:first-child) {
+        margin-right: @fluidGridGutterWidth;
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+.dashboard .btn-slider .noUiSliderEnds {
+  margin: 0 0 0 30px;
+}
+
+.dashboard .dashlet-content .dashlet-options > .row-fluid > div:last-child {
+  float: left;
+  margin-left: 0;
+}
+
+.dashlet {
+  h4 {
+    padding: 7px 10px 8px 80px;
+  }
+
+  .dashlet-title.record-toolbar {
+    padding-top: 11px;
+    padding-bottom: 11px;
+
+    .record-cell {
+      padding-left: 20px;
+    }
+
+    .record-cell[data-type="avatar"],
+    .record-cell[data-type="image"] {
+      margin-right: 0;
+      margin-left: 20px;
+    }
+  }
+
+  .kbcontents h4 {
+    padding: 0;
+  }
+}
+
+.resource-info {
+  margin-right: 44px;
+  margin-left: 0;
+}
+
+#tutorial .resource-info {
+  text-align: right;
+}
+
+.dashboard .dashlets .dashlet-row .rows.well > .btn {
+  left: 0;
+  right: auto;
+}
+
+.dashboard .dashlets .dashlet-row .rows.well > .btn:not(:nth-child(1)) {
+  left: 20px;
+}
+
+.news-article .avatar {
+  float: right;
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+.sidebar-content {
+  .dashboard {
+    .headerpane {
+      h1 {
+        div.dropdown {
+          padding-right: 4px;
+
+          > a {
+            padding: 4px 2px 4px 16px;
+          }
+        }
+      }
+    }
+
+    .cols .dashlets {
+      margin-right: 1.5%;
+
+      > li:last-child {
+        padding-right: 5px;
+      }
+    }
+  }
+}
+
+/* NEW SKIN START */
+
+.sidebar-content {
+  .dashboard {
+    .headerpane {
+      h1 {
+        div.dropdown > a {
+          padding-right: 0;
+        }
+      }
+    }
+  }
+}
+
+/* NEW SKIN END */

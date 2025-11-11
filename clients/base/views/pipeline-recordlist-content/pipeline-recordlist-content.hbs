@@ -1,0 +1,92 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div id="my-pipeline-content">
+    <div class="table-responsive px-4">
+        <div class="pipeline-fade w-8 absolute"></div>
+        <table class="table relative mb-0">
+            <tbody>
+            <tr>
+                {{#eq model.attributes.pipeline_type 'date_closed'}}
+                <td class="arrowholder left w-10">
+                    <a class="nav-arrow-left h-8 inline-block mr-1.5 text-center w-8" name="arrow-left" tabindex="-1">
+                        <i class="sicon sicon-chevron-left arrow mt-2.5"></i>
+                    </a>
+                </td>
+                {{/eq}}
+                {{#if hasAccessToView}}
+                    {{#each recordsToDisplay}}
+                        <td>
+                            <div class="kanban-col kanban-col-{{colorIndex}} min-w-[15rem] mt-5 mx-2.5 rounded-lg">
+                                <div class="kanban-col-header color-kanban-col-header-{{colorIndex}} font-bold text-lg pt-3 pl-4">
+                                    <div class='flex mr-4 original-title' id='original-title-{{headerID}}'>
+                                        <span class='ellipsis_inline' title='{{headerName}}'>
+                                            {{headerName}}
+                                        </span>
+                                        {{#if ../isShowCount}}
+                                            {{partial 'count' ../../this this}}
+                                        {{/if}}
+                                    </div>
+                                    <div id='original-sum-title-{{headerID}}'>
+                                        {{#if ../isShowTotal}}
+                                            {{partial 'total' ../../this this}}
+                                        {{/if}}
+                                    </div>
+                                    <hr class="mt-3 mr-4 mb-0 rounded" />
+                                </div>
+                                <div class="text-center text-xs pl-4">
+                                    <i class="sicon sicon-caret-up invisible"></i>
+                                </div>
+
+                                <div class="column-fade column-fade-top pl-4 fade-alpha-{{colorIndex}} absolute invisible h-7.5"></div>
+                                <ul class="column hide hover:overflow-y-auto overflow-hidden mb-0 px-4 relative" data-column-key="{{headerKey}}">
+                                    {{#if records.length}}
+                                        {{#each records.models}}
+                                            {{#if id}}
+                                                <li data-modelId="{{id}}" class="noselect">
+                                                    {{partial 'pipeline-record-tile' ../../../../this fields=fields model=this meta=../../../../meta view=../../../../this}}
+                                                </li>
+                                            {{/if}}
+                                        {{/each}}
+                                    {{/if}}
+                                </ul>
+                                <div class="column-bottom-controls absolute w-full">
+                                    <div class="column-fade column-fade-bottom pl-4 fade-alpha-{{colorIndex}} invisible h-7.5"></div>
+                                    <div class="text-center text-xs pl-4">
+                                        <i class="sicon sicon-caret-down invisible"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    {{/each}}
+                {{/if}}
+                {{#eq model.attributes.pipeline_type 'date_closed'}}
+                    <td class="arrowholder right text-right w-10">
+                        <a class="nav-arrow-right h-8 inline-block ml-1.5 relative text-center w-8" name="arrow-right" tabindex="-1">
+                            <i class="sicon sicon-chevron-right arrow mt-2.5"></i>
+                        </a>
+                    </td>
+                {{/eq}}
+            </tr>
+            </tbody>
+        </table>
+
+        {{#unless hasAccessToView}}
+            <div id="noData">
+                <div class="block-footer">
+                    <p>{{str 'ERR_NO_VIEW_ACCESS_TITLE'}}</p>
+                    <p>{{str 'ERR_NO_VIEW_ACCESS_REASON'}}. {{str 'ERR_NO_VIEW_ACCESS_ACTION'}}</p>
+                </div>
+            </div>
+        {{/unless}}
+    </div>
+</div>

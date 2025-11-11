@@ -1,0 +1,65 @@
+#config-accordion {
+  margin-bottom: 0;
+
+  .accordion-heading {
+    height: 48px;
+
+    &.active {
+      background-color: @primaryContentBackground;
+    }
+
+    .accordion-toggle {
+      padding: 14px 16px 16px 20px;
+      background: @primaryContentBackground;
+      color: @textColor;
+
+      .resetLink {
+        color: @linkColor;
+      }
+
+      &.collapsed {
+        background: var(--headerpane-background);
+      }
+
+      .resetLink:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .accordion-toggle:hover {
+      text-decoration: none;
+    }
+  }
+
+  .accordion-group {
+    margin-bottom: 0;
+    border-bottom: @borderWidget;
+    border-right: none;
+  }
+
+  .accordion-inner {
+    padding-top: 10px;
+    background-color: @primaryContentBackground;
+    border: none;
+  }
+
+  fieldset {
+    border: 1px dashed @gray40;
+    padding: 8px 10px 0;
+    margin-bottom: 10px;
+  }
+
+  fieldset.disabled {
+    border-color: @gray70;
+  }
+
+  .radioenum-inline {
+    display: inline;
+
+    label {
+      display: inline-block;
+      margin-right: 20px;
+      font-size: 15px;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if meta.short}}
+    <span class="label-{{meta.id}}" title=""><a href="javascript:void(0)" class="">
+        {{meta.name}}</a></span>
+{{else}}
+    <div class="kpi-metric{{#if active}} active{{/if}}">
+        <div class="kpi-metric-tab" data-bs-placement="bottom">
+            <div class="kpi-metric-tab-content">
+                <span class="kpi-metric-label{{#if active}} active{{/if}} ellipsis_inline" rel="tooltip" title="{{meta.name}}">
+                    {{meta.name}}
+                </span>
+                <div class="kpi-metric-badges"></div>
+            </div>
+            <div class="kpi-metric-number-row {{#if active}} active{{/if}}"></div>
+        </div>
+        <div class="btn-group">
+            <button
+                type="button"
+                data-bs-toggle="dropdown"
+                class="btn btn-invisible dropdown-toggle"
+                aria-haspopup="true"
+                aria-expanded="false"
+                data-bs-display="static"
+            >
+                <i class="sicon sicon-kebab"></i>
+            </button>
+            <ul class="dropdown-menu border-0 dark:border border-[--dropdown-border-widget] rounded-md shadow-xl" role="menu">
+                <li role="presentation"><a role="menuitem" href="#{{buildRoute module='Metrics' id=meta.id}}" class="manage">{{str "LBL_SEE_DETAILS" module}}
+                </a></li>
+                {{#if hasAdminAccess}}
+                    <li role="presentation"><a role="menuitem" href="#{{buildRoute id=meta.id module='Metrics' action="edit"}}" class="edit-metric">{{str 'LBL_EDIT_BUTTON'}}</a></li>
+                {{/if}}
+                <li role="presentation"><button type="button" role="menuitem" class="create-new hide-btn">{{str "LBL_HIDE_NEW" module}}</button></li>
+                {{#if hasAdminAccess}}
+                    <li role="presentation"><button type="button" role="menuitem" class="delete-metric-btn">{{str 'LBL_DELETE'}}</button></li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+{{/if}}

@@ -1,0 +1,31 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="tabbable flex flex-col h-full{{#if meta.notabs}} hide-tabs{{/if}}">
+    <div class="tabs">
+        <ul class="nav nav-tabs related-tabs{{#if meta.notabs}} hide{{/if}}">
+            <li class="more-tabs hidden">
+                <a track="click:actiondropdown"
+                   class="btn dropdown-toggle btn-invisible font-semibold outline-none p-t-1.5 px-3 pb-0.75 text-center text-[--label-color]"
+                   data-bs-toggle="dropdown" href="javascript:void(0);"
+                   role="button" tabindex="{{tabIndex}}" aria-haspopup="true" aria-expanded="false"
+                   aria-label="{{str 'LBL_MORE_TABS'}}">
+                    <span class="sicon sicon-kebab"></span>
+                    {{tooltipTemplate (str 'LBL_MORE_TABS') 'bottom'}}
+                </a>
+                <ul data-menu="dropdown" class="dropdown-menu border-0 dark:border border-[--dropdown-border-widget] rounded-md shadow-xl" role="menu" data-container="overflow"></ul>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content">
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Κατάλογος Ενεργειών Sugar σχετικά με τον Smart Guide',
+    'LBL_MODULE_TITLE' => 'Ενέργεια Sugar σχετικά με τον Smart Guide',
+    'LBL_HOMEPAGE_TITLE' => 'Ενέργειες Sugar σχετικά με τον Smart Guide μου',
+    'LNK_NEW_RECORD' => 'Ενέργεια Sugar σχετικά με νέο Smart Guide',
+    'LNK_VIEW_RECORDS' => 'Ενέργειες Sugar προβολής Smart Guide',
+    'LNK_CJ_FORM_LIST' => 'Ενέργειες Sugar προβολής Smart Guide',
+    'LNK_LIST' => 'Ενέργειες Sugar σχετικά με τον Smart Guide',
+    'LBL_SEARCH_FORM_TITLE' => 'Ενέργειας Sugar αναζήτησης Smart Guide',
+    'LBL_MODULE_NAME' => 'Ενέργειες Sugar σχετικά με τον Smart Guide',
+    'LBL_MODULE_NAME_SINGULAR' => 'Ενέργεια Sugar σχετικά με τον Smart Guide',
+    'LBL_TRIGGER_EVENT' => 'Εκδήλωση Trigger',
+    'LBL_ACTION_TYPE' => 'Τύπος Δράσης',
+    'LBL_PARENT_MODULE' => 'Γονική ενότητα',
+    'LBL_RELATIONSHIP' => 'Σχέση',
+    'LBL_ACTIVITY_TEMPLATE' => 'Πρότυπο δραστηριότητας',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Πρότυπο Έξυπνου οδηγού/Σταδίου/Δραστηριότητας',
+    'LBL_ACTIVE' => 'Ενεργό',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'Το Πρότυπο δραστηριότητας %s έχει ήδη μια Ενέργεια Sugar που χρησιμοποιεί την Εκδήλωση Trigger %s. Υπάρχει όριο μίας Ενέργειας Sugar ανά τύπο Εκδήλωσης Trigger για κάθε στάδιο ή δραστηριότητα σε έναν Smart Guide.',
+    'LBL_RECORDVIEW_PANEL4' => 'Συμπλήρωση πεδίων',
+    'LBL_POPULATE_FIELDS' => 'Συμπλήρωση πεδίων',
+    'LBL_ADD_FIELD' => 'Προσθήκη Πεδίου',
+    'LBL_REMOVE_FIELD' => 'Αφαίρεση Πεδίου',
+    'LBL_FIELD_NAME' => 'Όνομα Πεδίου',
+    'LBL_FIELD_VALUE' => 'Τιμή πεδίου',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Αυτό το πεδίο δεν είναι διαθέσιμο για προβολή λίστας.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Τύπος ενεργοποίησης ενέργειας',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Δεν ήταν δυνατή η εύρεση σχετικής εγγραφής',
+    'LBL_IGNORE_ERRORS' => 'Παράβλεψη σφαλμάτων',
+    'LBL_NO_DISPLAY_FIELDS' => 'Δεν υπάρχουν πεδία για εμφάνιση.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Πεδίο συνδέσμου προτύπου δραστηριότητας',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Πεδίο συνδέσμου προτύπου σταδίου',
+    'LBL_EMAIL_TEMPLATES' => 'Πρότυπο Email',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Επιλέξτε "Προς" διεύθυνση email',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'Πεδία email',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Εμφάνιση εικονιδίου',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Πρότυπο Έξυπνου οδηγού/Σταδίου/Δραστηριότητας',
+    'LBL_ACTIVITY_MODULE' => 'Ενότητα δραστηριότητας',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Πρότυπο Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Επιλογή ενεργοποιητή προτύπων Smart Guide',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Τύπος ενεργοποιητή',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Επιλογή τύπου ενεργοποιητή',
+    'LBL_MODULE_TRIGGER' => 'Ενεργοποιητής μονάδας',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Επιλογή ενεργοποιητή ενοτήτων',
+    'LBL_FIELD_TRIGGER' => 'Ενεργοποιητής πεδίου',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Επιλογή στόχου Smart Guide',
+    'LBL_CJ_TARGET' => 'Στόχος Smart Guide',
+    'LBL_CJ_ACTION' => 'Ενέργεια Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Επιλογή ενέργειας Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'Ενεργοποιητής',
+    'LBL_TRIGGER_DESCRIPTION' => 'Χρησιμοποιήστε τα παρακάτω πεδία για να επιλέξετε τον τύπο ενεργοποιητή και τις συνθήκες που θα ενεργοποιούν τον ενεργοποιητή.',
+    'LBL_TARGET_ACTION_TITLE' => 'Στόχος και ενέργεια',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Χρησιμοποιήστε τα παρακάτω πεδία για να επιλέξετε πού και ποιες ενέργειες θα πραγματοποιούνται όταν ενεργοποιηθεί ο ενεργοποιητής.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Επιλογή σταδίου Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Επιλογή δραστηριοτήτων Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Επιλογή δραστηριότητας Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Επιλογή ενέργειας δραστηριοτήτων σταδίου',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Επιλογή ενέργειας δραστηριοτήτων Smart Guide',
+];

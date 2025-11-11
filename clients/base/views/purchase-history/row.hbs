@@ -1,0 +1,112 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#with rowModel}}
+    <li>
+        <div class="purchase-entry" data-id="{{attributes.id}}">
+            <div class="content-row" data-id="{{attributes.id}}">
+                {{#with collection.fieldsMeta.name}}
+                    <div class="row-cell ellipsis_inline purchase-name" data-fieldname="name">
+                        {{field ../collection.component model=../this template="list"}}
+                    </div>
+                {{/with}}
+                <div class="row-cell pli-count toggle-pli-list">
+                    <span class="pli-count-label">{{attributes.pli_count}}</span>
+                    <i class="{{#if chevronIcon}}{{buildIcon chevronIcon}}{{else}}sicon sicon-chevron-down{{/if}} toggle-list"
+                        data-id="{{attributes.id}}" rel="tooltip" data-bs-placement="bottom"
+                        title="{{str "LBL_DASHLET_TOGGLE"}}">
+                    </i>
+                </div>
+            </div>
+            {{#if showPliList}}
+                <div class="pli-entries">
+                    {{#if pliCollection.dataFetched}}
+                        {{#each pliCollection.models}}
+                            <div class="content-row pli-entry" data-id="{{attributes.id}}">
+                                <div class="row-cell purchase-details purchase-details-date">
+                                    {{#with ../pliCollection.fieldsMeta.name}}
+                                        <span class="ellipsis_inline pli-name" data-fieldname="name">
+                                            {{field ../../pliCollection.component model=../this template="detail"}}
+                                        </span>
+                                    {{/with}}
+                                </div>
+                                <div class="row-cell purchase-details purchase-details-quantity ellipsis_inline">
+                                    {{#with ../pliCollection.fieldsMeta.quantity}}
+                                        {{field ../../pliCollection.component model=../this}}
+                                    {{/with}}
+                                </div>
+                                <div class="row-cell purchase-details purchase-details-total ellipsis_inline">
+                                    {{#with ../pliCollection.fieldsMeta.total_amount}}
+                                        {{field ../../pliCollection.component model=../this template='list'}}
+                                    {{/with}}
+                                </div>
+                            </div>
+                        {{/each}}
+                        {{#eq pliCollection.next_offset "-1"}}
+                            {{#unless pliCollection.length}}
+                                <div class="content-row pli-entry pli-entry-centered">
+                                    <div class="no-plis">
+                                        {{str 'LBL_NO_PLIS'}}
+                                    </div>
+                                </div>
+                            {{/unless}}
+                        {{else}}
+                            {{#unless pliLoading}}
+                                <div class="content-row pli-entry pli-entry-centered">
+                                    <button data-action="show-more-plis" data-id="{{attributes.id}}" class="btn btn-link btn-invisible show-more-plis">
+                                        {{../pliCollection.component.showMorePlisLabel}}
+                                    </button>
+                                </div>
+                            {{/unless}}
+                        {{/eq}}
+                    {{/if}}
+                    {{#if pliLoading}}
+                        <div class="content-row pli-entry">
+                            {{loading 'LBL_ALERT_TITLE_LOADING'}}
+                        </div>
+                    {{/if}}
+                </div>
+            {{/if}}
+            <div class="content-row">
+                <div class="row-cell purchase-details purchase-details-date ellipsis_inline">
+                    <span class="purchase-dates">
+                        {{#notEq attributes.start_date attributes.end_date}}
+                            {{#with ../collection.fieldsMeta.start_date}}
+                                {{field ../../collection.component model=../../this template='dashlet-date'}}
+                            {{/with}}
+                            -
+                        {{/notEq}}
+                        {{#with collection.fieldsMeta.end_date}}
+                            {{field ../collection.component model=../this template='dashlet-date'}}
+                        {{/with}}
+                    </span>
+                </div>
+                <div class="row-cell purchase-details purchase-details-quantity ellipsis_inline">
+                    <span class="totals-label ellipsis_inline" rel="tooltip" data-bs-placement="bottom"
+                        data-original-title="{{str "LBL_PURCHASE_HISTORY_TOTAL_QUANTITY" attributes._module}}">
+                        {{str "LBL_PURCHASE_HISTORY_TOTAL_QUANTITY" attributes._module}}
+                    </span>
+                    <span rel="tooltip" data-bs-placement="bottom" title="{{attributes.total_quantity}}">{{attributes.total_quantity}}</span>
+                </div>
+                <div class="row-cell purchase-details purchase-details-total ellipsis_inline">
+                    <span class="totals-label" rel="tooltip" data-bs-placement="bottom"
+                        data-original-title="{{str "LBL_PURCHASE_HISTORY_TOTAL_CURRENCY" attributes._module}}">
+                        {{str "LBL_PURCHASE_HISTORY_TOTAL_CURRENCY" attributes._module}}
+                    </span>
+                    {{#with collection.fieldsMeta.total_revenue}}
+                        {{field ../collection.component model=../this template='list'}}
+                    {{/with}}
+                </div>
+            </div>
+        </div>
+    </li>
+{{/with}}

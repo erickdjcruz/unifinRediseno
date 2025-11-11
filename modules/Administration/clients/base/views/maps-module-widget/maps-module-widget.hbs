@@ -1,0 +1,42 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="subpanel-header row-fluid panel_body">
+    <div class="span6 flex" rel="tooltip" data-bs-placement="bottom" title="{{getModuleName widgetModule plural=true}}">
+        {{moduleLabel widgetModule 'sm' class='pull-left'}}
+        <h4 class="pull-left">{{getModuleName widgetModule plural=true}}</h4>
+    </div>
+    <div class="subpanel-controls btn-toolbar pull-right span6">
+        <span class="pull-right maps-small-margin-right">
+            <span class="small">
+                <a class="rowaction btn" rel="tooltip" data-action="open-subpanel-config" data-bs-placement="bottom" title="{{str 'LBL_MAPS_MODULE_SLAYOUT' module}}">
+                     <i class="sicon sicon-list"></i>
+                </a>
+            </span>
+            <span class="small">
+                <a class="rowaction btn" rel="tooltip" data-action="open-mappings" data-bs-placement="bottom" title="{{str 'LBL_MAPS_MODULE_MAPPINGS' module}}">
+                     <i class="sicon sicon-edit"></i>
+                </a>
+            </span>
+            <span class="small hide">
+                <a class="rowaction btn" rel="tooltip" data-action="open-settings" data-bs-placement="bottom" title="{{str 'LBL_MAPS_MODULE_OPTIONS' module}}">
+                     <i class="sicon sicon-settings"></i>
+                </a>
+            </span>
+            <span class="small">
+                <a class="rowaction btn" rel="tooltip" data-action="remove-module" data-bs-placement="bottom" title="{{str 'LBL_MAPS_MODULE_REMOVE' module}}">
+                     <i class="sicon sicon-minus"></i>
+                </a>
+            </span>
+        </span>
+    </div>
+</div>

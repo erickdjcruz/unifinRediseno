@@ -1,0 +1,118 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Retrieve events to show in calendar
+</span>
+
+<h2>Request</h2>
+<code class="codesample">
+    POST /Calendar/getEvents
+</code>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the following:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                calendarConfigurations
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                List of calendar configurations
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                endDate
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                End Date Event
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                location
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The calendar location
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                startDate
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Start Date Event
+            </td>
+        </tr>
+
+
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+{
+    calendarConfigurations: [{
+        "calendarId": "330cfcba-b7d2-11eb-8bf0-0242ac140004",
+        "userId": "1",
+        "teamId": ""
+    }]
+    endDate: "2021-08-07"
+    location: "main"
+    startDate: "2021-04-25"
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/Calendar/modules</code> POST endpoint.
+        </td>
+    </tr>
+</table>

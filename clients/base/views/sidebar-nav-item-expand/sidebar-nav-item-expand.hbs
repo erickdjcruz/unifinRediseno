@@ -1,0 +1,37 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if appIsSynced}}
+    <button
+        class="collapsed sidebar-nav-item-btn absolute bg-transparent flex flex-row items-center h-full p-0 rtl:text-right text-base w-full"
+        rel="tooltip"
+        data-bs-placement="{{tooltipPlacement}}"
+        title="{{str 'LBL_SIDEBAR_NAV_OPEN' module}}"
+        aria-label="{{str 'LBL_SIDEBAR_NAV_OPEN' module}}"
+        track="{{track}}"
+    >
+        <span
+            class="{{buildIcon icon}} inline-flex items-center justify-center h-full w-full bg-transparent text-white cursor-pointer"
+        ></span>
+    </button>
+    <button
+        class="expanded sidebar-nav-item-btn absolute bg-transparent flex flex-row items-center h-full p-0 rtl:text-right text-base w-full"
+        aria-label="{{str 'LBL_SIDEBAR_NAV_CLOSE' module}}"
+        track="{{track}}"
+    >
+        <span class="h-full w-15">
+            <span
+                class="{{buildIcon icon}} inline-flex items-center justify-center h-full w-full bg-transparent text-white cursor-pointer"
+            ></span>
+        </span>
+    </button>
+{{/if}}

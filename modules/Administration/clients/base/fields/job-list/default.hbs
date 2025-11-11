@@ -1,0 +1,121 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<span class="pull-right">
+    <span class="btn-group refresh" data-action="refreshList">
+        <button class="btn" rel="tooltip" title="{{str 'LBL_LIST_REFRESH' module}}"
+                aria-label="{{str 'LBL_LIST_REFRESH' module}}">
+            <i class="sicon sicon-refresh"></i></button>
+    </span>
+    <span class="btn-group refresh" data-action="removeJob">
+        <button class="btn" rel="tooltip" title="{{str 'LBL_REMOVE' module}}"
+                aria-label="{{str 'LBL_REMOVE' module}}">
+            <i class="sicon sicon-remove"></i>
+        </button>
+    </span>
+</span>
+<h4>{{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_TITLE" module}}</h4>
+<div class="well well-small">
+    {{#if id}}
+        <div class="row-fluid">
+            <div class="span2">
+                <strong>{{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_WORK_STATUS" ../module}}:</strong>
+            </div>
+            <div class="span4">
+                {{#eq status "done"}}
+                    {{#eq resolution "failure"}}
+                        <span class="badge badge-important">
+                            {{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_FAIL" ../../../module}}
+                        </span>
+                    {{/eq}}
+                    {{#notEq resolution "failure"}}
+                        <span class="badge badge-success">
+                            {{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_DONE" ../../../module}}
+                        </span>
+                    {{/notEq}}
+                {{/eq}}
+                {{#notEq status "done"}}
+                    {{#if dataParsed.status}}
+                        {{#eq dataParsed.status "1"}}
+                            <span class="badge badge-warning">
+                                {{#eq status "running"}}
+                                    {{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_WAITING_FOR_ALTER" ../../module}}
+                                {{/eq}}
+                            </span>
+                        {{/eq}}
+                        {{#eq dataParsed.status "2"}}
+
+                            {{#eq status "running"}}
+                                <span class="badge badge-warning">
+                                    {{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_TMP_TABLE_CREATING" ../../module}}
+                                </span>
+                            {{/eq}}
+                            {{#notEq status "running"}}
+                                <span class="badge badge-dark">
+                                    {{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_TMP_TABLE_PENDING" ../../module}}
+                                </span>
+                            {{/notEq}}
+
+                        {{/eq}}
+                        {{#eq dataParsed.status "3" }}
+                            {{#if dataParsed.count}}
+                                <span class="badge badge-warning">
+                            {{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_COPYING" ../../../module}}
+                                    {{percent_complete}} %</span>
+                            {{else}}
+                                <span class="badge badge-dark">
+                                    {{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_START_COPYING" ../../../module}}
+                                </span>
+                            {{/if}}
+                        {{/eq}}
+                    {{else}}
+                        <span class="badge badge-dark">
+                            {{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_WAITING_FOR_JOB_STARTED" ../../../module}}
+                        </span>
+                    {{/if}}
+                {{/notEq}}
+            </div>
+            {{#if dataParsed.is_alter_complete}}
+                <div class="span3">
+                    <strong>{{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_ROWS_PROCESSED" ../../module}}:</strong>
+                </div>
+                <div class="span3">{{dataParsed.chunk_offset}} / {{dataParsed.count}}</div>
+            {{/if}}
+        </div>
+        <div class="row-fluid">
+            <div class="span2"><strong>{{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_MESSAGE" ../module}}:</strong></div>
+            <div class="span4">{{message}}</div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2"><strong>{{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_CREATED" ../module}}:</strong></div>
+            <div class="span4">{{{timeAgo date_entered}}}</div>
+
+            <div class="span3"><strong>{{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_EXECUTED" ../module}}:</strong></div>
+            <div class="span3">{{{timeAgo date_modified}}}</div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2"><strong>{{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_STATUS" ../module}}:</strong></div>
+            <div class="span4">{{status}}</div>
+
+            <div class="span3"><strong>{{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_RESULT" ../module}}:</strong></div>
+            <div class="span3">{{resolution}}</div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2"><strong>{{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_DATA" ../module}}:</strong></div>
+            <div class="span10">
+                <pre style="max-height: 100px;overflow-y: scroll">{{dataPretty}}</pre>
+            </div>
+        </div>
+    {{else}}
+        <h4>{{str "LBL_MANAGE_RELATE_DENORMALIZATION_JOB_IS_NOT_SCHEDULED" module}}</h4>
+    {{/if}}
+</div>

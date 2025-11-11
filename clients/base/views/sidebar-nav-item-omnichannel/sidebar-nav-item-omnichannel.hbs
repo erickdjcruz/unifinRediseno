@@ -1,0 +1,42 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if isAvailable}}
+    <button class="sidebar-nav-item-btn absolute bg-transparent flex flex-row items-center h-full p-0 rtl:text-right text-base text-initial w-full">
+        <span class="collapsed h-full w-full" rel="tooltip" data-bs-placement="{{tooltipPlacement}}" title="{{str 'LBL_OMNICHANNEL' module}}">
+            <i class="sicon sicon-sugar-live-lg inline-flex items-center justify-center h-full w-full text-white"></i>
+            <i class="sicon sicon-check-circle omnichannel-logged-in bg-[--sidebar-nav-background] absolute hidden rounded-lg text-white text-2xs top-1/4"></i>
+        </span>
+
+        <span class="expanded h-full w-full ellipsis_inline pr-4 text-white text-start" data-bs-placement="{{tooltipPlacement}}" title="{{str 'LBL_OMNICHANNEL' module}}">
+            <span class="h-full w-15">
+                <i class="{{buildIcon 'sicon-sugar-live-lg'}} inline-flex items-center justify-center h-full w-15 text-white"></i>
+                <i class="{{buildIcon 'sicon-check-circle'}} omnichannel-logged-in bg-[--sidebar-nav-background] absolute hidden rounded-lg text-white text-2xs top-1/4"></i>
+            </span>
+            <span class="text-sm">{{str 'LBL_OMNICHANNEL'}}</span>
+        </span>
+    </button>
+
+    {{#if configAvailable}}
+        <button class="sidebar-nav-item-kebab bg-transparent absolute h-full p-0 right-0 w-4" aria-label="{{secondaryActionLabel}}">
+            <i class="{{buildIcon 'sicon-kebab'}} text-white"></i>
+        </button>
+        <button
+            class="sidebar-nav-item-kebab-disabled group/kebab bg-transparent absolute focus-within:bg-blue-100 hover:bg-blue-100 h-full hidden [&:not(.hidden)]:block invisible group-hover/nav-item:visible p-0 right-0"
+            rel="tooltip"
+            title="{{str 'LBL_OMNICHANNEL_SET_OFFLINE_BEFORE_CONFIGURING'}}"
+            aria-label="{{str 'LBL_OMNICHANNEL_SET_OFFLINE_BEFORE_CONFIGURING'}}"
+        >
+            <i class="{{buildIcon 'sicon-kebab'}} disabled text-white group-hover/kebab:text-blue-600"></i>
+        </button>
+    {{/if}}
+{{/if}}

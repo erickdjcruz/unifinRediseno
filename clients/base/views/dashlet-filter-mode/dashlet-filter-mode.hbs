@@ -1,0 +1,32 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="data-skeleton-loader hidden h-full w-full"></div>
+{{#if _noFilters}}
+    <div class="dashlet-filter-mode-no-filters h-full table text-center w-full">
+        <div class="dashlet-no-filters-text">
+            {{str 'LBL_DASHLET_NO_RUNTIME_FILTERS'}}
+        </div>
+    </div>
+{{else}}
+    {{#if _noRights}}
+        <div class="dashlet-filter-mode-no-permissions h-full table text-center w-full">
+            <div class="dashlet-no-permissions-text align-middle table-cell">
+                {{str 'LBL_REPORTS_DASHLET_RUNTIME_NO_PERMISSONS'}}
+            </div>
+        </div>
+    {{else}}
+        <div class="w-full h-full dashboard-filter-mode-container" data-container="filter-widgets-container">
+            <h5 class="ml-3">{{str 'LBL_RUNTIME_FILTERS'}}</h5>
+        </div>
+    {{/if}}
+{{/if}}

@@ -1,0 +1,173 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Returns a list of data changes for a specific module.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            module
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            The name of the module.
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<h2>Query Parameters</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                max_num
+            </td>
+            <td>
+                Integer
+            </td>
+            <td>
+                A maximum number of Audit records to return. The default is 100 records.
+            </td>
+            <td>
+                False
+            </td>
+        </tr>
+        <tr>
+            <td>
+                offset
+            </td>
+            <td>
+                Integer
+            </td>
+            <td>
+                The number of records to skip over before records are returned.
+                The default is 0.
+            </td>
+            <td>
+                False
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            next_offset
+        </td>
+        <td>
+            Integer
+        </td>
+        <td>
+            Displays the next offset for retrieval of additional results. -1 will be returned when there are no more
+            records.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            records
+        </td>
+        <td>
+            Array
+        </td>
+        <td>
+            An array of results containing matched records.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+{
+   "next_offset":-1,
+   "records":[
+      {
+         "id":"b569e480-237a-5921-4382-512ff555fee7",
+         "parent_id":"ef1b40aa-5815-4f8d-e909-512d09617ac8",
+         "date_created":"03\/01\/2013 12:26am",
+         "created_by":"admin",
+         "field_name":"Team ID:",
+         "data_type":"team_list",
+         "before_value_string":"East",
+         "after_value_string":"Will"
+      },
+      {
+         "id":"bc0bee72-8398-a0a6-d731-512ff5bfebc7",
+         "parent_id":"ef1b40aa-5815-4f8d-e909-512d09617ac8",
+         "date_created":"03\/01\/2013 12:26am",
+         "created_by":"admin",
+         "field_name":"Teams",
+         "data_type":"id",
+         "before_value_string":"East, Global, West",
+         "after_value_string":"Jim, Will"
+      }
+   ]
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            v11_11
+        </td>
+        <td>
+            Added &lt;module&gt;/audit/export endpoint
+        </td>
+    </tr>
+    </tbody>
+</table>

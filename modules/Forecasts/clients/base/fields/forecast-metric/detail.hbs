@@ -1,0 +1,24 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="forecast-metric flex flex-col py-1 text-center {{#if active}}active{{/if}}" data-bs-placement="bottom"
+     {{#if dir}} dir="{{dir}}"{{/if}} rel="tooltip"
+    title="{{formatCurrency value}}{{#if alternateCurrency}} | {{convertedValueString}}{{/if}} ({{recordCount}})">
+    <div class="metric-row inline-flex max-w-full m-auto text-xs whitespace-nowrap">
+        <span class="ellipsis_inline inline-block">{{label}}</span><span class="bg-[--metric-badge-background] rounded-full px-1 py-0.5 ml-1 metric-badge">{{recordCount}}</span>
+    </div>
+    <div class="metric-row text-base font-semibold ellipsis_inline inline-block max-w-full m-auto whitespace-nowrap">{{formatCurrency value}}</div>
+    {{#if alternateCurrency}}
+        <div class="metric-row text-sm font-semibold alt-currency ellipsis_inline bg-[--label-background] px-1 inline-block max-w-full m-auto whitespace-nowrap">{{convertedValueString}}</div>
+    {{/if}}
+</div>
+

@@ -1,0 +1,154 @@
+
+.dashlet-content {
+  .kbcontents {
+    li h4 {
+      border: 0;
+      background-color: @transparent;
+      padding-left: 0;
+      padding-bottom: 2px;
+      padding-top: 0;
+
+      a {
+        color: @linkColor;
+      }
+    }
+
+    div.details {
+      padding-left: 0;
+
+      span {
+        &.kbs-dashlet-most-useful,
+        &.related-documents {
+          a.ellipsis_inline {
+            display: inherit !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.kb-contents-create {
+  .record {
+    max-width: 1024px;
+
+    .record-cell {
+      &.edit {
+        span[data-fieldname="attachment_list"],
+        div[data-name="attachment_list"] {
+          > span.edit {
+            .select2-container {
+              &.with-padding {
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.record-cell {
+  .record-label {
+    &[data-name="kbdocument_body_set"] {
+      margin-top: 12px;
+      margin-bottom: 6px;
+    }
+  }
+
+  &.edit {
+    &[data-name='kbdocument_body_set'] {
+      .labels-on-side {
+        margin-top: 33px;
+      }
+    }
+  }
+}
+
+[data-type="template-button"] {
+  .btn {
+    position: absolute;
+    right: 0;
+    top: -33px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+[data-type="usefulness"] {
+  .btn-group {
+    display: flex;
+    flex-direction: row;
+
+    .btn {
+      padding-right: 10px;
+      padding-left: 10px;
+      display: flex;
+      align-items: center;
+
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  span.record-edit-link-wrapper {
+    display: none !important;
+  }
+}
+
+.usefulness {
+  margin-top: -3px !important;
+  min-height: 28px !important;
+}
+
+[data-name="kbdocument_body_set"] {
+  span.record-edit-link-wrapper {
+    display: none !important;
+  }
+}
+
+[data-name="body_set"]&[data-type="fieldset"] {
+  span.record-edit-link-wrapper {
+    display: none !important;
+  }
+}
+
+.load-template {
+  margin-bottom: 8px;
+}
+
+.select2field-tags {
+  .select2-choices {
+    .select2-search-choice {
+      background: @dropdownLinkBackgroundHover !important;
+    }
+  }
+}
+
+[data-name="languages_languages"] {
+  .first-row {
+    .btn {
+      top: auto;
+    }
+  }
+}
+
+html.rtl {
+  .record .record-cell {
+    .record-label {
+      &[data-name="kbdocument_body_set"] {
+        margin-top: 12px;
+        margin-bottom: 6px;
+      }
+    }
+
+    [data-type="template-button"] {
+      .btn {
+        right: auto;
+        left: 0;
+      }
+    }
+  }
+}

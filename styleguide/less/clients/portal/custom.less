@@ -1,0 +1,258 @@
+// Portal local
+ul.nav.nav-tabs li.activity {
+  > p {
+    display: inline-block;
+  }
+
+  > .label {
+    display: inline-block;
+    min-width: 32px;
+    margin: 8px 8px 6px 12px;
+    font-weight: 500;
+  }
+}
+
+/**
+  * Portal Dashboard
+  * Overrides normal list view styling to make them 'dashlet-like'
+  **/
+#content > .row-fluid > .dashboard.main-pane {
+  top: 0;
+}
+
+#portal {
+  .touch .dashboard {
+    padding-top: 0 !important;
+  }
+
+  :focus {
+    outline: none;
+  }
+
+  .select2-container {
+    &.select2-container-active {
+      .select2-search-choice,
+      .select2-choice {
+        outline: none;
+      }
+    }
+  }
+
+  #content {
+    left: 0;
+    width: 100%;
+
+    .span12 {
+      .headerpane {
+        width: 100%;
+      }
+    }
+  }
+
+  #drawers {
+    .drawer {
+      left: 0;
+      right: 0;
+      width: 100%;
+    }
+  }
+
+  .navbar {
+    &.navbar-fixed-top {
+      left: 0;
+      width: 100%;
+    }
+  }
+}
+
+.dashboard {
+  top: 0;
+
+  .thumbnail {
+    position: relative;
+    background: @white;
+
+    .headerpane {
+      height: auto;
+      position: static;
+      min-height: 0;
+      border-radius: 3px;
+      border-bottom: 0;
+
+      h1 {
+        color: @tableHeader;
+        line-height: @baseLineHeight;
+        border-radius: 3px 3px 0 0;
+        #gradient > .vertical(@gray20, @gray30);
+
+        border-bottom: @borderWidgetLight;
+        margin: 0;
+        font-weight: 600;
+        font-size: 14px;
+        height: auto;
+        padding: 8px 0 0 10px;
+        display: table-cell;
+
+        a {
+          color: @gray60;
+        }
+      }
+
+      .btn-toolbar {
+        height: 32px;
+        padding: 5px 5px 0 0;
+        margin: 0;
+        #gradient > .vertical(@gray20, @gray30);
+
+        border-bottom: @borderWidgetLight;
+        border-radius: 0 4px 0 0;
+      }
+    }
+
+    .list-view {
+      width: 100%;
+      overflow: auto;
+      border-radius: 0 0 3px 3px;
+    }
+  }
+
+  .cols {
+    .thumbnail {
+      padding-bottom: 0;
+
+      .dataTable {
+        tbody {
+          tr:last-child {
+            td {
+              border-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.span8 .headerpane {
+  background: @headerpaneBackground;
+  width: 65.957446802%;
+  left: 0;
+}
+
+.headerpane h1 > .record-cell .record-cell {
+  display: inline-block;
+}
+
+#moduleActivity {
+  margin-bottom: 0;
+
+  h4 {
+    text-indent: 20px;
+    margin-bottom: 0;
+  }
+
+  .actions {
+    right: 20px;
+    top: 0;
+  }
+
+  ul.results {
+    margin: 0;
+
+    & > li {
+      margin-bottom: 0;
+      margin-top: 10px;
+      padding-left: 9px;
+    }
+  }
+}
+
+.dataTables_filter {
+  position: relative;
+  padding: 5px;
+  background: @gray20;
+  border-top: @borderWidgetLight;
+  border-bottom: @borderWidgetLight;
+  z-index: 1000;
+  margin: 0;
+  text-align: center;
+  #gradient > .vertical(@gray30, @gray20);
+
+  box-shadow: none;
+
+  input {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.modal-body > .form-horizontal {
+  padding: 20px;
+  margin-left: 0;
+}
+
+.results .search .label {
+  float: left;
+  margin: 0 1em 0 2em;
+}
+
+.controls.has-refresh.btn-group-fit.controls-two {
+  padding-right: 35px;
+}
+
+.controls.has-refresh.btn-group-fit .btn-group.refresh {
+  right: 0;
+}
+
+.control-group .controls.has-refresh.btn-group-fit .filter-view {
+  margin-right: 0;
+}
+
+.dashboard-pane {
+  top: 0;
+
+  .portal-home-dashboard {
+    padding: 20px 0;
+
+    > li:first-child {
+      padding-top: 0;
+      padding-right: 0;
+      padding-left: 0;
+
+      .list-view {
+        .dataTable {
+          overflow: auto;
+
+          th {
+            min-width: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.side.sidebar-content {
+  background-color: @gray20;
+}
+
+@media (min-width: 768px) {
+  .row-fluid .main-pane.span8 {
+    width: 66%;
+    overflow-y: auto;
+
+    > div .flex-list-view {
+      height: ~'calc(100% - 40px)';
+
+      .dataTable {
+        overflow: auto;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dataTable {
+    min-height: 200px;
+  }
+}

@@ -1,0 +1,41 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+{{#eq value.length "0"}}
+    <div class="controls-{{../fitGroupClass}} btn-fit" id="empty-field">
+        <button type="button" class="btn first" name="populate_add" data-index="0" rel="tooltip" title="{{str "LBL_ADD"}}"><i class="sicon sicon-plus"></i></button>
+    </div>
+{{else}}
+    {{#each value}}
+        <div class="controls-{{../fitGroupClass}} btn-fit">
+            <select class="select2 inherit-width" data-index="{{@index}}" id="{{../this.namePrefix}}_options{{@index}}" name="{{../this.namePrefix}}_options{{@index}}" {{#if def.tabindex}} tabindex="{{def.tabindex}}"{{/if}}>
+                {{#each ../optionsList}}
+                    <option value="{{@key}}" {{#eq @key ../id}}selected{{/eq}} >{{this}}</option>
+                {{/each}}
+            </select>
+            {{#each ../populateFieldsMetaData}}
+                {{#eq @key ../id}}
+                    <div class="inline-block {{#eq type ../../../this.customDateFieldType}}cj-populate-fields-subfield-fieldset w-3/5{{else}}cj-populate-fields-subfield w-[15.625rem]{{/eq}}" id="{{name}}">
+                        {{field ../../../this.view model=../../../this.view.model template='edit'}}
+                    </div>
+                {{/eq}}
+            {{/each}}
+        {{#if remove_button}}
+            <button type="button" class="btn second" name="populate_remove" data-index="{{@index}}" rel="tooltip" title="{{str "LBL_REMOVE"}}"><i class="sicon sicon-minus"></i></button>
+        {{/if}}
+        {{#if add_button}}
+            <button type="button" class="btn first" name="populate_add" data-index="{{@index}}" rel="tooltip" title="{{str "LBL_ADD"}}"><i class="sicon sicon-plus"></i></button>
+        {{/if}}
+        </div>
+    {{/each}}
+{{/eq}}

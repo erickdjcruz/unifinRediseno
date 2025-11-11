@@ -1,0 +1,6 @@
+(function(app){app.events.on('app:init',function(){app.plugins.register('CollectionFieldLoadAll',['field'],{onAttach:function(component,plugin){this.on('init',function(){var onComplete=_.bind(function(){if(this.disposed===true){return;}
+this.view.trigger('loaded_collection_field',this.name);},this);var fetchAll=_.bind(function(collection){var offsets;var hasMore;var options;var fields;if(this.disposed===true){return;}
+options={success:function(){fetchAll(collection);},add:true,limit:-1};fields=_.map(this.def.fields||[],function(field){return _.has(field,'name')?field.name:field;});if(!_.isEmpty(fields)){options.fields=fields;}
+if(this.def.order_by){options.order_by=this.def.order_by;}
+offsets=collection.next_offset||[0];hasMore=_.some(offsets,function(offset){return offset>-1;});if(hasMore){collection.paginate(options);}else{onComplete();}},this);if(this.model){this.listenTo(this.model,'sync',function(){var collection=this.model.get(this.name);if(this.disposed===true){return;}
+if(!this.model.isNew()){this.view.trigger('loading_collection_field',this.name);fetchAll(collection);}});}});}});});})(SUGAR.App);

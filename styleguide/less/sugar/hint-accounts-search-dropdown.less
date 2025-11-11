@@ -1,0 +1,72 @@
+.search-dropdown-list {
+  display: none;
+  margin-left: 0;
+  z-index: 1000;
+  position: absolute;
+  width: 99.5%;
+  min-width: 160px;
+  list-style: none;
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  border-color: @gray30;
+}
+
+.search-dropdown-list li {
+  height: 36px;
+  display: flex;
+  padding: 0 2px;
+  cursor: pointer;
+  align-items: center;
+  background-color: var(--input-background);
+  color: var(--text-color);
+  border: solid 1px @gray30;
+}
+
+.search-dropdown-list li:not(:first-child) {
+  border-top: 1px solid darkgray;
+}
+
+.search-dropdown-list li:hover {
+  color: var(--text-color);
+  background-color: var(--dropdown-link-background-hover);
+}
+
+.search-dropdown-list img {
+  width: 32px;
+  height: 32px;
+}
+
+.search-dropdown-list span {
+  flex: 1;
+  font-size: 11px;
+}
+
+.search-dropdown-list img + span {
+  padding: 0 0 0 10px;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  overflow-y: hidden;
+}
+
+.search-dropdown-list img + span + span {
+  text-align: right;
+}
+
+#accounts {
+  border-color: @activeTabBorderColor;
+  color: var(--text-color);
+}
+
+.search-dropdown-list__item--active {
+  color: #fff;
+  background-color: #ccc;
+}
+
+.search-dropdown-darkmode-list__item--active {
+  color: #fff;
+  background-color: #16191d;
+}

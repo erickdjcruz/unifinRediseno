@@ -1,0 +1,74 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if headerFields}}
+    <h4 data-toggle="dashlet" class="dashlet-title record-toolbar flex-grow m-0 ml-1.5 pt-0.5">
+        {{#each ../headerFields}}
+            <span class="record-cell" data-type="{{type}}" data-name="{{name}}">
+                <span class="table-cell-wrapper">
+                    {{#if ../../labels}}
+                        {{#unless dismiss_label}}
+                            <span class="record-label" data-name="{{name}}">
+                                {{str label ../../dashletModel.module}}
+                            </span>
+                        {{/unless}}
+                    {{/if}}
+                    <span class="index{{index}}" data-fieldname="{{name}}" data-index="{{index}}">
+                        {{field ../this model=../dashletModel template="dashlet-header"}}
+                    </span>
+                </span>
+            </span>
+        {{/each}}
+    </h4>
+{{else}}
+    <h4 data-toggle="dashlet" class="dashlet-title flex-grow m-0 ml-1.5 truncate overflow-hidden" rel="tooltip" data-bs-placement="bottom" data-original-title="{{meta.label}}">
+        {{meta.label}}{{#if modulesNumber}} ({{modulesNumber}}){{/if}}
+    </h4>
+{{/if}}
+<div class="btn-toolbar !ml-4 !my-0 !pl-0">
+{{#each buttons}}
+    {{#if type}}
+        {{field ../../this model=../../this.model}}
+    {{else}}
+        {{#if dropdown_buttons}}
+            <div class="btn-group">
+                {{#if (or ../../../this.canEdit alwaysOnDisplay)}}
+                    <button
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        class="btn btn-invisible dropdown-toggle"
+                        aria-label="{{#if custom_dashlet_label}}{{str custom_dashlet_label}}{{else}}{{str "LBL_DASHLET_CONFIGURE"}}{{/if}}"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        <i data-action="loading" class="sicon{{#if custom_dashlet_icon}} {{custom_dashlet_icon}}{{else}} sicon-settings{{/if}}" track="click:dashletToolbarCog"></i>
+
+                        <span class="absolute h-full w-full top-0 left-0" rel="tooltip"
+                              data-bs-placement="bottom"
+                              {{#if custom_dashlet_label}}title="{{str custom_dashlet_label}}"
+                              {{else}}title="{{str "LBL_DASHLET_CONFIGURE"}}"{{/if}}>
+                        </span>
+                    </button>
+
+                    <ul class="dropdown-menu border-0 dark:border border-[--dropdown-border-widget] rounded-md shadow-xl left" role="menu">
+                        {{#each dropdown_buttons}}
+                            {{#if (or ../../../../../this.canEdit this.alwaysOnDisplay)}}
+                                <li role="menuitem">{{field ../../../../../../this model=../../../../../../this.model}}</li>
+                            {{/if}}
+                        {{/each}}
+                    </ul>
+                {{/if}}
+            </div>
+        {{/if}}
+    {{/if}}
+{{/each}}
+</div>

@@ -1,0 +1,43 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#with view}}
+    <div class="header-user-group">
+        {{#if activity.attributes.from_collection.length}}
+            <div class="header-user-item">
+                <div class="activity-label">{{str 'LBL_FROM'}}</div>
+                {{partial 'user' this view=this userField=fromField model=activity}}
+            </div>
+        {{/if}}
+
+        {{#if activity.attributes.to_collection.length}}
+            <div class="header-user-item">
+                <div class="activity-label">{{str 'LBL_TO'}}</div>
+                {{partial 'user' this view=this userField=toField model=activity}}
+            </div>
+        {{/if}}
+
+        {{#if activity.attributes.cc_collection.length}}
+            <div class="header-user-item">
+                <div class="activity-label">{{str 'LBL_CC'}}</div>
+                {{partial 'user' this view=this userField=ccField model=activity}}
+            </div>
+        {{/if}}
+
+        {{#if activity.attributes.bcc_collection.length}}
+            <div class="header-user-item">
+                <div class="activity-label">{{str 'LBL_BCC'}}</div>
+                {{partial 'user' this view=this userField=bccField model=activity}}
+            </div>
+        {{/if}}
+    </div>
+{{/with}}

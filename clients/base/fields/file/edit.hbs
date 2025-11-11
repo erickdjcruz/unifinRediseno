@@ -1,0 +1,31 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{!-- File selector --}}
+<div class="file-select{{#if value.length}} hidden{{/if}}">
+    <label class="btn file-selector">
+        <input type="file" name="{{name}}" class="hidden" data-action="selectFile">
+        <span class="file-selector-label">
+            {{str 'LBL_ADD_ATTACHMENT' module}}
+        </span>
+    </label>
+    {{str 'LBL_MULTIATTACHMENTS_NO_FILE_SELECTED' module}}
+    <div class="external-api-direction-selector">
+        {{partial 'edit-api-direction-selector' this this}}
+    </div>
+</div>
+
+{{!-- File name display --}}
+<div class="file-name">
+    {{partial 'edit-filename' this this}}
+</div>
+{{#unless hideHelp}}{{#if def.help}}<p class="help-block">{{str def.help module}}</p>{{/if}}{{/unless}}

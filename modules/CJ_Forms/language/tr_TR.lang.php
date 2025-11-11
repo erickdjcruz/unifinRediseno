@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Smart Guide Sugar İşlemlerini Listele',
+    'LBL_MODULE_TITLE' => 'Smart Guide Sugar İşlemi',
+    'LBL_HOMEPAGE_TITLE' => 'Smart Guide Sugar İşlemlerim',
+    'LNK_NEW_RECORD' => 'Yeni Smart Guide Sugar İşlemi',
+    'LNK_VIEW_RECORDS' => 'Smart Guide Sugar İşemlerini Göster',
+    'LNK_CJ_FORM_LIST' => 'Smart Guide Sugar İşemlerini Göster',
+    'LNK_LIST' => 'Smart Guide Sugar İşlemleri',
+    'LBL_SEARCH_FORM_TITLE' => 'Smart Guide Sugar İşlemini Ara',
+    'LBL_MODULE_NAME' => 'Smart Guide Sugar İşlemleri',
+    'LBL_MODULE_NAME_SINGULAR' => 'Smart Guide Sugar İşlemi',
+    'LBL_TRIGGER_EVENT' => 'Tetikleyici Olay',
+    'LBL_ACTION_TYPE' => 'Aksiyon Tipi',
+    'LBL_PARENT_MODULE' => 'Üst Modül',
+    'LBL_RELATIONSHIP' => 'İlişki',
+    'LBL_ACTIVITY_TEMPLATE' => 'Etkinlik Şablonu',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Akıllı Kılavuz/Aşama/Etkinlik Şablonu',
+    'LBL_ACTIVE' => 'Aktif',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => '%s Etkinlik Şablonu, zaten %s Tetikleyici Olayını kullanan bir Sugar İşlemine sahip. Bir Smart Guide&#39;daki her bir aşama veya etkinlik için Tetikleyici Olay türü başına bir aktif Sugar İşlemi sınırı vardır.',
+    'LBL_RECORDVIEW_PANEL4' => 'Alanları Doldurun',
+    'LBL_POPULATE_FIELDS' => 'Alanları Doldurun',
+    'LBL_ADD_FIELD' => 'Alan Ekle',
+    'LBL_REMOVE_FIELD' => 'Alan Kaldır',
+    'LBL_FIELD_NAME' => 'Alan İsmi',
+    'LBL_FIELD_VALUE' => 'Alan Değeri',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Bu alan, liste görünümü için kullanılamaz.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Eylem Tetikleyici Türü',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'İlgili kayıt bulunamadı',
+    'LBL_IGNORE_ERRORS' => 'Hataları Yoksay',
+    'LBL_NO_DISPLAY_FIELDS' => 'Gösterilecek alanlar yok.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Etkinlik Şablonu Bağlantı Alanı',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Aşama Şablonu Bağlantı Alanı',
+    'LBL_EMAIL_TEMPLATES' => 'E-Posta Şablonu',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => '"Alıcı" E-posta Adresini seçin',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'E-posta Alanları',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Simgeyi Göster',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Akıllı Kılavuz/Aşama/Etkinlik Şablonu',
+    'LBL_ACTIVITY_MODULE' => 'Etkinlik Modülü',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Smart Guide Şablonu',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Smart Guide Şablon Tetikleyicisi&#39;ni seçin',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Tetikleyici Türü',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Tetikleyici Türünü Seçin',
+    'LBL_MODULE_TRIGGER' => 'Modül Tetikleyici',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Modül Tetikleyicisini Seçin',
+    'LBL_FIELD_TRIGGER' => 'Alan Tetikleyici',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Smart Guide Hedefini Seçin',
+    'LBL_CJ_TARGET' => 'Smart Guide Hedefi',
+    'LBL_CJ_ACTION' => 'Smart Guide İşlemi',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Smart Guide İşlemini Seçin',
+    'LBL_TRIGGER_TITLE' => 'Tetikleyici',
+    'LBL_TRIGGER_DESCRIPTION' => 'Tetikleyici türünü ve tetikleyiciyi etkinleştirecek koşulları seçmek için aşağıdaki alanları kullanın.',
+    'LBL_TARGET_ACTION_TITLE' => 'Hedef ve İşlem',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Tetikleyici etkinleştirildiğinde nerede ve hangi işlemlerin gerçekleşeceğini seçmek için aşağıdaki alanları kullanın.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Smart Guide Aşamasını Seçin',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Smart Guide Faaliyetlerini Seçin',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Smart Guide Faaliyetini Seçin',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Aşama Faaliyetleri İşlemini Seçin',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Smart Guide Faaliyetleri İşlemini Seçin',
+];

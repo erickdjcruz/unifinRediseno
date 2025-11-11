@@ -1,0 +1,26 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if appIsSynced}}
+    <a class="sidebar-nav-item-btn absolute bg-transparent h-full rtl:text-right text-base  w-full"
+        href="{{logoTargetUrl}}"
+        target="_blank"
+        rel="tooltip"
+        data-bs-placement="{{tooltipPlacement}}"
+        title="{{str label module}}"
+    >
+        <span class="collapsed {{buildIcon icon}} inline-flex items-center justify-center h-full text-white w-full"></span>
+        <span class="expanded inline-flex items-center h-full w-10/12 pl-6 pr-4 rtl:pl-4 rtl:!pr-6">
+            <img class="expanded sidebar-nav-item-sugarcrm-logo" src="{{logoImageUrl}}"></img>
+        </span>
+    </a>
+{{/if}}

@@ -1,0 +1,336 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Update calendar event
+</span>
+
+<h2>Request</h2>
+<code class="codesample">
+    POST /Calendar/updateRecord/recordId
+</code>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the following fields:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                agenda_event_template
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Agenda event template
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                assignedUserName
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Assigned user name
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                attendeeUserName
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                List of all atendees
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                calendarId
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Calendar ID
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                color
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Event color
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                day_event_template
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Day event template
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                dbclickRecordId
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The id of the clicked record
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                end
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                End date
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                eventUsers
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                Event users ID's
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                event_tooltip
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Event tooltip
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                isAllDay
+            </td>
+            <td>
+                bool
+            </td>
+            <td>
+                Is all day flag
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                module
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The module of event record
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                month_event_template
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Month event template
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                name
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Name of the event
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                recordId
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The record event ID
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                schedulermonth_event_template
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Scheduler month event template
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                start
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Start date
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                timeline_event_template
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Timeline event template
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                title
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The title of the event
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                uid
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                UUID
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                week_event_template
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Week event template
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+{
+    agenda_event_template: "c1 "
+    assignedUserName: "Adam Smith"
+    attendeeUserName: [{id: "1", name: "Adam Smith"}]
+    calendarId: "330cfcba-b7d2-11eb-8bf0-0242ac140004"
+    color: "#c0edff"
+    day_event_template: "c1 "
+    dbclickRecordId: "241c619e-b4b9-11eb-8d6a-0242ac140004"
+    end: "2021-05-12T00:30:00+03:00"
+    eventUsers: ["1"]
+    event_tooltip: "c1 "
+    id: null
+    isAllDay: false
+    kendoEvent: ""
+    module: "Calls"
+    month_event_template: "c1 "
+    name: "c1"
+    recordId: "241c619e-b4b9-11eb-8d6a-0242ac140004"
+    schedulermonth_event_template: "c1 "
+    start: "2021-05-11T00:00:00+03:00"
+    timeline_event_template: "c1 "
+    title: "c1"
+    uid: "bbf3e2f2-30ba-4997-ae75-231ae225978e"
+    week_event_template: "c1 "
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/Calendar/modules</code> POST endpoint.
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,164 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2 xmlns="http://www.w3.org/1999/html">Overview</h2>
+<span class="lead">
+    Retrieve metadata needed by the Formula Builder field
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    The request will return all the fields, related fields, related modules, functions help
+    and rollup fields of a given module
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                mapMeta
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                Metadata for generating the map
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                provider
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Map Provider
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                recordsMeta
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                Records locations metadata
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+    {
+        "mapMeta": {
+          "mapType": "r",
+          "mapZoom": 11,
+          "mapBounds": {
+            "center": {
+              "latitude": 39.96771001916813,
+              "longitude": -82.9779822248355,
+              "altitude": 0,
+              "altitudeReference": -1
+            },
+            "width": 1.23046875,
+            "height": 0.4236286330070982,
+            "crs": {
+              "id": "LatLon",
+              "bounds": [
+                90,
+                180,
+                -90,
+                -180
+              ]
+            },
+            "bounds": [
+              40.17952433567168,
+              -82.3627478498355,
+              39.75589570266458,
+              -83.5932165998355
+            ]
+          },
+          "fromDirections": false,
+          "mapExpanded": false
+        },
+        "recordsMeta": [
+          {
+            "id": "c1986960-79e2-11ec-9810-0242ac140008",
+            "date_entered": "2022-01-20T11:18:55+00:00",
+            "date_modified": "2022-01-26T13:18:11+00:00",
+            "deleted": false,
+            "parent_id": "951ba700-7931-11ec-a8e5-0242ac140008",
+            "parent_type": "Accounts",
+            "parent_name": "X-Sell Holdings",
+            "parent_user_name": "Max Jensen",
+            "address": "464 S High St, Columbus, OH 43215, United States",
+            "status": "COMPLETED",
+            "postalcode": "43215",
+            "country": "United States",
+            "latitude": 39.9526062012,
+            "longitude": -82.9988021851,
+            "geocoded": true,
+            "my_favorite": false,
+            "_acl": {
+              "fields": {}
+            },
+            "_erased_fields": [],
+            "_module": "Geocode"
+          }
+        ],
+        "provider": "bing",
+        "generationType": "map"
+      }
+</pre>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be a string of data which has been encoded using Base64 encoding.
+</span>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_16
+        </td>
+        <td>
+            Added <code>/maps/generateMap</code> POST endpoint.
+        </td>
+    </tr>
+</table>

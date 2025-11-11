@@ -1,0 +1,731 @@
+/* LABELS BADGES
+  ----------------*/
+
+/* twitter-bootstrap import START */
+
+// Base classes
+.label,
+.badge {
+  display: inline-block;
+  padding: 2px 4px;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-shadow: 0 -1px 0 @color-gray-800;
+}
+// Set unique padding and border-radius
+.label {
+  border-radius: 3px;
+}
+
+.badge {
+  padding-left: 9px;
+  padding-right: 9px;
+  border-radius: 9px;
+}
+
+// Empty labels/badges collapse
+.label,
+.badge {
+  &:empty {
+    display: none;
+  }
+}
+
+// Hover state, but only for links
+a {
+  &.label:hover,
+  &.badge:hover {
+    color: @color-white;
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+// Colors
+// Only give background-color difference to links (and to simplify, we don't qualifty with `a` but [href] attribute)
+.label,
+.badge {
+  // Important (red)
+  &-important {
+    background-color: @errorBackground;
+    color: @errorText;
+  }
+  &-important[href] { background-color: @errorBackground; }
+  // Warnings (orange)
+  &-warning {
+    background-color: @warningBackground;
+    color: @warningText;
+  }
+  &-warning[href] { background-color: @warningBackground; }
+  // Success (green)
+  &-success {
+    background-color: @successBackground;
+    color: @successText;
+  }
+  &-success[href] { background-color: @successBackground; }
+  // Info (turquoise)
+  &-info {
+    background-color: @infoBackground;
+    color: @infoText;
+  }
+  &-info[href] { background-color: @infoBackground; }
+  // Inverse (black)
+  &-inverse {
+    background-color: @color-gray-700;
+    color: @color-white;
+  }
+  &-inverse[href] { background-color: @color-gray-800; }
+}
+
+// Quick fix for labels/badges in buttons
+.btn {
+  .label,
+  .badge {
+    position: relative;
+    top: -1px;
+  }
+}
+
+.btn-mini {
+  .label,
+  .badge {
+    top: 0;
+  }
+}
+
+/* twitter-bootstrap import END */
+
+.label-spacer,
+.label {
+  text-shadow: none;
+  display: inline-block;
+  max-width: 100%;
+  padding: 2px 4px;
+  font-weight: 600;
+  text-align: center;
+  border-radius: @borderRadiusSmall;
+  box-sizing: border-box;
+}
+
+// undo link styling
+a.label,
+a > .label {
+  font-weight: 500;
+  text-shadow: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.label a {
+  font-weight: inherit;
+  text-shadow: none;
+  color: @color-white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.full-width {
+  > .label {
+    display: block;
+  }
+}
+
+.disabled .label-Users,
+.inactive [class*="label-"],
+[data-type="follow"] .label,
+[data-type="follow"] .label:hover {
+  background-color: @color-transparent;
+  border: 1px solid @color-gray-800;
+  color: @color-gray-900;
+  font-weight: 500;
+}
+
+[data-type="follow"] {
+  .label[class*="label-"] {
+    background-color: @color-gray-800;
+    border: 1px solid @color-gray-900;
+    color: @color-white;
+    font-weight: 600;
+    width: 100%;
+  }
+}
+
+[data-type="follow"],
+[data-type="badge"] {
+  .label:not([class*="label-"]) {
+    background: var(--secondary-content-background);
+    border-color: var(--border-color);
+    color: var(--text-color);
+    font-weight: 500;
+    width: 100%;
+  }
+}
+
+[data-type="badge"] [data-action="convert"]:hover {
+  cursor: pointer;
+  background-color: var(--secondary-content-background);
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.label-module {
+  padding: 3px 0 0 3px;
+  text-align: left;
+  margin: 0;
+  font-weight: 400;
+  border: none;
+  border-radius: @baseBorderRadius;
+  box-sizing: border-box;
+}
+
+.label-module-lg {
+  height: @sizeLarge;
+  width: @sizeLarge;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 16px;
+  padding: 4px 0 0 5px;
+}
+
+.label-module-md {
+  height: @sizeMedium;
+  width: @sizeMedium;
+  font-size: 13px;
+  line-height: 13px;
+  padding: 3px 0 0 4px;
+}
+
+.label-module-btn {
+  height: @sizeButton;
+  width: @sizeButton;
+  font-size: 11px;
+  line-height: 11px;
+  padding: 3px 0 0 4px;
+}
+
+.label-module-sm {
+  height: @sizeSmall;
+  width: @sizeSmall;
+  border-radius: @borderRadiusSmall;
+  font-size: 10px;
+  line-height: 10px;
+  padding: 2px 0 0 2px;
+}
+
+.label-module-mini {
+  height: @sizeMini;
+  width: @sizeMini;
+  border-radius: @borderRadiusMini;
+  font-size: 8px;
+  line-height: 8px;
+  padding: 3px 0 0 2px;
+}
+
+.dropdown-menu .label-module-mini {
+  margin: -2px 10px 0 0;
+  vertical-align: middle;
+}
+
+.label-spacer {
+  visibility: hidden !important;
+  display: block !important;
+  height: 0 !important;
+  padding: 0 7px !important;
+  line-height: 0 !important;
+  border: none !important;
+}
+
+.label {
+  &-important {
+    background-color: @errorBackground;
+    border: 1px solid @errorBackground;
+    color: @errorText;
+  }
+
+  &-warning {
+    background-color: @warningBackground;
+    color: @warningText;
+    border: 1px solid @warningBackground;
+  }
+
+  &-pending {
+    background-color: @pendingBackground;
+    border: 1px solid @pendingBackground;
+    color: @pendingText;
+  }
+
+  &-success {
+    background-color: @successBackground;
+    border: 1px solid @successBackground;
+    color: @successText;
+  }
+
+  &-info {
+    background-color: @infoBackground;
+    border: 1px solid @infoBackground;
+    color: var(--inform-text-color);
+  }
+
+  &-inverse,
+  &-unknown { background-color: @color-gray-800; }
+  &-log { background-color: @color-black; }
+
+  /* Modules */
+
+  /* TODO: Deprecated - as this is no longer used because of Module Names and Icons config */
+  &-Accounts {
+    background-color: @el-accounts-bg;
+    border: 1px solid @el-accounts-bg;
+    color: @el-accounts-text;
+
+    a {
+      color: @el-accounts-text;
+    }
+  }
+
+  &-Bugs {
+    background-color: @el-bugs-bg;
+    border: 1px solid @el-bugs-bg;
+    color: @el-bugs-text;
+
+    a {
+      color: @el-bugs-text;
+    }
+  }
+
+  &-BusinessCenters {
+    background-color: @el-bc-bg;
+    border: 1px solid @el-bc-bg;
+    color: @el-bc-text;
+
+    a {
+      color: @el-bc-text;
+    }
+  }
+
+  &-Calendar {
+    background-color: @el-calendar-bg;
+    border: 1px solid @el-calendar-bg;
+    color: @el-calendar-text;
+
+    a {
+      color: @el-calendar-text;
+    }
+  }
+
+  &-Calls {
+    background-color: @el-calls-bg;
+    border: 1px solid @el-calls-bg;
+    color: @el-calls-text;
+
+    a {
+      color: @el-calls-text;
+    }
+  }
+
+  &-Campaigns {
+    background-color: @el-campaigns-bg;
+    border: 1px solid @el-campaigns-bg;
+    color: @el-campaigns-text;
+
+    a {
+      color: @el-campaigns-text;
+    }
+  }
+
+  &-CampaignLog {
+    background-color: @el-campaignlog-bg;
+    border: 1px solid @el-campaignlog-bg;
+    color: @el-campaignlog-text;
+
+    a {
+      color: @el-campaignlog-text;
+    }
+  }
+
+  &-Cases {
+    background-color: @el-cases-bg;
+    border: 1px solid @el-cases-bg;
+    color: @el-cases-text;
+
+    a {
+      color: @el-cases-text;
+    }
+  }
+
+  &-Contacts {
+    background-color: @el-contacts-bg;
+    border: 1px solid @el-contacts-bg;
+    color: @el-contacts-text;
+
+    a {
+      color: @el-contacts-text;
+    }
+  }
+
+  &-Documents {
+    background-color: @el-documents-bg;
+    border: 1px solid @el-documents-bg;
+    color: @el-documents-text;
+
+    a {
+      color: @el-documents-text;
+    }
+  }
+
+  &-DocuSignEnvelopes {
+    background-color: @el-docusignenvelopes-bg;
+    border: 1px solid @el-docusignenvelopes-bg;
+    color: @el-docusignenvelopes-text;
+
+    a {
+      color: @el-docusignenvelopes-text;
+    }
+  }
+
+  &-Emails {
+    background-color: @el-emails-bg;
+    border: 1px solid @el-emails-bg;
+    color: @el-emails-text;
+
+    a {
+      color: @el-emails-text;
+    }
+  }
+
+  &-Escalations {
+    background-color: @el-escalations-bg;
+    border: 1px solid @el-escalations-bg;
+    color: @el-escalations-text;
+
+    a {
+      color: @el-escalations-text;
+    }
+  }
+
+  &-Files {
+    background-color: @el-files-bg;
+    border: 1px solid @el-files-bg;
+    color: @el-files-text;
+
+    a {
+      color: @el-files-text;
+    }
+  }
+
+  &-Forecasts {
+    background-color: @el-forecasts-bg;
+    border: 1px solid @el-forecasts-bg;
+    color: @el-forecasts-text;
+
+    a {
+      color: @el-forecasts-text;
+    }
+  }
+
+  &-KBArticles {
+    background-color: @el-kbarticles-bg;
+    border: 1px solid @el-kbarticles-bg;
+    color: @el-kbarticles-text;
+
+    a {
+      color: @el-kbarticles-text;
+    }
+  }
+
+  &-KBContents {
+    background-color: @el-kbcontents-bg;
+    border: 1px solid @el-kbcontents-bg;
+    color: @el-kbcontents-text;
+
+    a {
+      color: @el-kbcontents-text;
+    }
+  }
+
+  &-KBDocuments {
+    background-color: @el-kbdocuments-bg;
+    border: 1px solid @el-kbdocuments-bg;
+    color: @el-kbdocuments-text;
+
+    a {
+      color: @el-kbdocuments-text;
+    }
+  }
+
+  &-KBLocalizations {
+    background-color: @el-kblocalizations-bg;
+    border: 1px solid @el-kblocalizations-bg;
+    color: @el-kblocalizations-text;
+
+    a {
+      color: @el-kblocalizations-text;
+    }
+  }
+
+  &-KBRevisions {
+    background-color: @el-kbrevisions-bg;
+    border: 1px solid @el-kbrevisions-bg;
+    color: @el-kbrevisions-text;
+
+    a {
+      color: @el-kbrevisions-text;
+    }
+  }
+
+  &-Leads {
+    background-color: @el-leads-bg;
+    border: 1px solid @el-leads-bg;
+    color: @el-leads-text;
+
+    a {
+      color: @el-leads-text;
+    }
+  }
+
+  &-Meetings {
+    background-color: @el-meetings-bg;
+    border: 1px solid @el-meetings-bg;
+    color: @el-meetings-text;
+
+    a {
+      color: @el-meetings-text;
+    }
+  }
+
+  &-Messages {
+    background-color: @el-messages-bg;
+    border: 1px solid @el-messages-bg;
+    color: @el-messages-text;
+
+    a {
+      color: @el-messages-text;
+    }
+  }
+
+  &-Notes {
+    background-color: @el-notes-bg;
+    border: 1px solid @el-notes-bg;
+    color: @el-notes-text;
+
+    a {
+      color: @el-notes-text;
+    }
+  }
+
+  &-Opportunities {
+    background-color: @el-opportunities-bg;
+    border: 1px solid @el-opportunities-bg;
+    color: @el-opportunities-text;
+
+    a {
+      color: @el-opportunities-text;
+    }
+  }
+
+  &-pmse_Business_Rules,
+  &-pmse_Emails_Templates,
+  &-pmse_Inbox,
+  &-pmse_Project {
+    background-color: @el-pmse-bg;
+    border: 1px solid @el-pmse-bg;
+    color: @el-pmse-text;
+
+    a {
+      color: @el-pmse-text;
+    }
+  }
+
+  &-Products {
+    background-color: @el-products-bg;
+    border: 1px solid @el-products-bg;
+    color: @el-products-text;
+
+    a {
+      color: @el-products-text;
+    }
+  }
+
+  &-ProductTemplates {
+    background-color: @el-pc-bg;
+    border: 1px solid @el-pc-bg;
+    color: @el-pc-text;
+
+    a {
+      color: @el-pc-text;
+    }
+  }
+
+  &-Prospects {
+    background-color: @el-prospects-bg;
+    border: 1px solid @el-prospects-bg;
+    color: @el-prospects-text;
+
+    a {
+      color: @el-prospects-text;
+    }
+  }
+
+  &-ProspectLists {
+    background-color: @el-prospectlists-bg;
+    border: 1px solid @el-prospectlists-bg;
+    color: @el-prospectlists-text;
+
+    a {
+      color: @el-prospectlists-text;
+    }
+  }
+
+  &-PurchasedLineItems {
+    background-color: @el-pli-bg;
+    border: 1px solid @el-pli-bg;
+    color: @el-pli-text;
+
+    a {
+      color: @el-pli-text;
+    }
+  }
+
+  &-Purchases {
+    background-color: @el-purchases-bg;
+    border: 1px solid @el-purchases-bg;
+    color: @el-purchases-text;
+
+    a {
+      color: @el-purchases-text;
+    }
+  }
+
+  &-Quotas {
+    background-color: @el-quotas-bg;
+    border: 1px solid @el-quotas-bg;
+    color: @el-quotas-text;
+
+    a {
+      color: @el-quotas-text;
+    }
+  }
+
+  &-Quotes {
+    background-color: @el-quotes-bg;
+    border: 1px solid @el-quotes-bg;
+    color: @el-quotes-text;
+
+    a {
+      color: @el-quotes-text;
+    }
+  }
+
+  &-Reports {
+    background-color: @el-reports-bg;
+    border: 1px solid @el-reports-bg;
+    color: @el-reports-text;
+
+    a {
+      color: @el-reports-text;
+    }
+  }
+
+  &-RevenueLineItems {
+    background-color: @el-rli-bg;
+    border: 1px solid @el-rli-bg;
+    color: @el-rli-text;
+
+    a {
+      color: @el-rli-text;
+    }
+  }
+
+  &-Shifts {
+    background-color: @el-shifts-bg;
+    border: 1px solid @el-shifts-bg;
+    color: @el-shifts-text;
+
+    a {
+      color: @el-shifts-text;
+    }
+  }
+
+  &-ShiftExceptions {
+    background-color: @el-shiftexceptions-bg;
+    border: 1px solid @el-shiftexceptions-bg;
+    color: @el-shiftexceptions-text;
+
+    a {
+      color: @el-shiftexceptions-text;
+    }
+  }
+
+  &-Tags {
+    background-color: @el-tags-bg;
+    border: 1px solid @el-tags-bg;
+    color: @el-tags-text;
+
+    a {
+      color: @el-tags-text;
+    }
+  }
+
+  &-Tasks {
+    background-color: @el-tasks-bg;
+    border: 1px solid @el-tasks-bg;
+    color: @el-tasks-text;
+
+    a {
+      color: @el-tasks-text;
+    }
+  }
+
+  &-Employees,
+  &-Users {
+    background-color: @el-users-bg;
+    border: 1px solid @el-users-bg;
+    color: @el-users-text;
+
+    a {
+      color: @el-users-text;
+    }
+  }
+
+  &-DataPrivacy {
+    background-color: @el-dataprivacy-bg;
+    border: 1px solid @el-dataprivacy-bg;
+    color: @el-dataprivacy-text;
+
+    a {
+      color: @el-dataprivacy-text;
+    }
+  }
+}
+
+// had to move &-dark-text out because a > .label was overriding
+a .label-dark-text {
+  color: @color-gray-900;
+}
+
+/* Disabled: no box-shadow*/
+.disabled .label-module.label,
+.disabled .label-module-sm.label,
+.disabled .label-module-mini.label {
+  box-shadow: none;
+}
+
+// TODO consider moving to Tailwind
+
+.label-module,
+.label-module-md,
+.label-module-sm,
+.label-module-mini {
+  display: inline-flex;
+
+  /* override */
+  border-radius: @labelBorderRadius;
+  text-align: center;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+
+  &.sicon:empty {
+    display: inline-flex;
+  }
+}

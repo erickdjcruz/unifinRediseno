@@ -1,0 +1,124 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="modal rounded-md" data-content="report-details-modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent p-0">
+                <button type="button" class="close" data-bs-dismiss="modal">
+                    <i class="sicon sicon-close p-1 mr-2"></i>
+                </button>
+                <h4 class="modal-title font-semibold text-base text-[--text-color] ml-4 mt-1 mb-1">{{str "LBL_REPORT_DETAILS" module}}</h4>
+            </div>
+            {{#if this.reportDetails}}
+                <div class="row-fluid report-modal-height overflow-y-auto">
+                    <div class="span6 break-words">
+                        <div class="mt-4 mr-2 ml-4 mb-4">
+                            <div class="flex flex-col">
+                                <span class="mb-2 font-semibold text-[--text-color]">{{str "LBL_LIST_REPORT_NAME" module}}</span>
+                                <span class="text-[--text-color]">{{this.reportDetails.reportName}}</span>
+                            </div>
+                            <br>
+                            <div class="flex flex-col">
+                                <span class="mb-2 font-semibold text-[--text-color]">{{str "LBL_REPORT_ATT_MODULES" module}}</span>
+                                {{#each this.reportDetails.modules}}
+                                    <span class="text-[--text-color]">{{this}}</span>
+                                {{/each}}
+                            </div>
+                            <br>
+                            <div class="flex flex-col">
+                                <span class="mb-2 font-semibold text-[--text-color]">{{str "LBL_DISPLAY_COLUMNS" module}}</span>
+                                {{#if this.reportDetails.displayColumns}}
+                                    <span class="text-[--text-color]">{{this.reportDetails.displayColumns}}</span>
+                                {{else}}
+                                    <span class="text-[--text-color]">{{str "LBL_NONE_STRING" module}}</span>
+                                {{/if}}
+                            </div>
+                            <br>
+                            <div class="flex flex-col">
+                                <span class="mb-2 font-semibold text-[--text-color]">{{str "LBL_GROUP_BY" module}}</span>
+                                {{#if this.reportDetails.groupBy}}
+                                    {{#each this.reportDetails.groupBy}}
+                                        <span class="text-[--text-color]">{{this}}</span>
+                                    {{/each}}
+                                {{else}}
+                                    <span class="text-[--text-color]">{{str "LBL_NONE_STRING" module}}</span>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6 break-words">
+                        <div class="mt-4 mr-4 ml-2 mb-4">
+                            <div class="flex flex-col">
+                                <span class="mb-2 font-semibold text-[--text-color]">{{str "LBL_REPORT__ATT_TYPE" module}}</span>
+                                {{#if this.reportDetails.type}}
+                                    <span class="text-[--text-color]">{{this.reportDetails.type}}</span>
+                                {{else}}
+                                    <span class="text-[--text-color]">{{str "LBL_NONE_STRING" module}}</span>
+                                {{/if}}
+                            </div>
+                            <br>
+                            <div class="flex flex-col">
+                                <span class="mb-2 font-semibold text-[--text-color]">{{str "LNK_REPORT_SCHEDULES" module}}</span>
+                                {{#if this.reportDetails.reportSchedules}}
+                                    {{#each this.reportDetails.reportSchedules}}
+                                        <span class="text-[--text-color]">{{this.name}} > {{this.next_run}}</span>
+                                    {{/each}}
+                                {{else}}
+                                    <span class="text-[--text-color]">{{str "LBL_NONE_STRING" module}}</span>
+                                {{/if}}
+                            </div>
+                            <br>
+                            <div class="flex flex-col">
+                                <span class="mb-2 font-semibold text-[--text-color]">{{str "LBL_TEAM" module}}</span>
+                                {{#if this.reportDetails.teams}}
+                                    {{#each this.reportDetails.teams}}
+                                        <span class="text-[--text-color]">{{this}}</span>
+                                    {{/each}}
+                                {{else}}
+                                    <span class="text-[--text-color]">{{str "LBL_NONE_STRING" module}}</span>
+                                {{/if}}
+                            </div>
+                            <br>
+                            <div class="flex flex-col">
+                                <span class="mb-2 font-semibold text-[--text-color]">{{str "LBL_OWNER" module}}</span>
+                                {{#if this.reportDetails.assignedUser}}
+                                    <span class="text-[--text-color]">{{this.reportDetails.assignedUser}}</span>
+                                {{else}}
+                                    <span class="text-[--text-color]">{{str "LBL_NONE_STRING" module}}</span>
+                                {{/if}}
+                            </div>
+                            <br>
+                            <div class="flex flex-col">
+                                <span class="mb-2 font-semibold text-[--text-color]">{{str "LBL_SUMMARY_COLUMNS" module}}</span>
+                                {{#if this.reportDetails.summaryColumns}}
+                                    {{#each this.reportDetails.summaryColumns}}
+                                        <span class="text-[--text-color]">{{this}}</span>
+                                    {{/each}}
+                                {{else}}
+                                    <span class="text-[--text-color]">{{str "LBL_NONE_STRING" module}}</span>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="modal-body report-modal-height p-0">
+                    <div class="report-loading-screen-overlay" data-widget="report-loading" data-type="detail-modal">
+                    <i class="sicon sicon-refresh sicon-is-spinning report-loading-icon"></i>
+                    <h4 class="report-loading-label">{{str "LBL_LOADING"}}</h4>
+                </div>
+            {{/if}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,942 @@
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+.actionbuttons.btn {
+  vertical-align: middle;
+  border: 1px solid @transparent;
+  font-size: 12px;
+  display: inline-flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 18px;
+  min-width: 18px;
+  font-weight: 600;
+}
+
+.record .actionbuttons.btn,
+.record .actionbtn-toggle.btn {
+  margin-top: -6px;
+  margin-bottom: 8px;
+}
+
+.preview-data .actionbuttons.btn,
+.preview-data .actionbtn-toggle.btn {
+  margin-top: 5px;
+}
+
+.record .btn-group.actions ul.dropdown-menu {
+  margin-top: -8px;
+}
+
+.actionbuttons.btn.actionbuttons-dropdown {
+  min-width: 12px;
+  min-height: 12px;
+  height: 12px;
+  max-height: 12px;
+  padding: 7px;
+}
+
+.actionbuttons.btn.btn-large {
+  font-size: 18px;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+.actionbuttons.btn.btn-large i.sicon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+
+.actionbuttons.actionbuttons-button.btn.btn-mini {
+  .btn-mini;
+}
+
+.actionbuttons.btn:not(.btn-mini) {
+  column-gap: 7px;
+}
+
+.actionbuttons.btn.btn-primary {
+  &:not(.btn-large):not(.btn-mini):not(.actionbuttons-dropdown) {
+    padding: 4px 6px;
+  }
+}
+
+.btn.dropdown-toggle.actionbtn-toggle.btn-primary {
+  &:not(.actionbtn-toggle) {
+    padding: 4px 6px;
+    display: inline-block;
+  }
+
+  > span.sicon {
+    margin-top: -3px;
+  }
+}
+
+.headerpane .btn-toolbar .actionbuttons.btn.btn-large {
+  margin-top: -5px;
+  margin-bottom: -5px;
+}
+
+.actionbuttons-dropdown.btn,
+.actionbuttons-buttonGroup.btn {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.actionbuttons-ellipsis {
+  display: inline-block;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 18px;
+}
+
+.actionbuttons.actionbuttons-button.btn i.sicon,
+.actionbuttons-dropdown.btn i.sicon,
+.actionbuttons-buttonGroup.btn i.sicon {
+  color: @white;
+  vertical-align: middle;
+  visibility: visible;
+}
+
+.btn.dropdown-toggle.actionbtn-toggle {
+  border: 1px solid @transparent;
+}
+
+.btn.dropdown-toggle.actionbtn-toggle span.sicon {
+  vertical-align: middle;
+  color: @sicon-color;
+}
+
+.btn.btn-primary.dropdown-toggle.actionbtn-toggle span.sicon {
+  color: @white;
+}
+
+.actionbuttons.btn.btn-secondary,
+.actionbtn-toggle.btn.btn-secondary,
+.headerpane .btn-toolbar .actionbuttons.btn.btn-secondary:not(.btn-primary),
+.headerpane .btn-toolbar .actionbtn-toggle.btn.btn-secondary:not(.btn-primary) {
+  background-color: @white;
+  color: @black;
+
+  &:not(.disabled):not(.active) > i.sicon {
+    color: @sicon-color;
+  }
+
+  > i.sicon {
+    color: @sicon-color;
+  }
+
+  &.btn-group {
+    border-radius: 3px;
+  }
+
+  &:hover {
+    box-shadow: inset 0 0 10px @gray40, inset 0 0 1px @gray30;
+  }
+
+  &:active {
+    box-shadow: inset 0 3px 7px @gray50, inset 0 0 1px @gray30;
+  }
+
+  &[disabled] {
+    color: @gray70;
+    box-shadow: inset 0 0 1px @gray30;
+  }
+}
+
+.actionbuttons.btn.btn-highViz,
+.actionbtn-toggle.btn.btn-highViz,
+.headerpane .btn-toolbar .actionbuttons.btn.btn-highViz:not(.btn-primary),
+.headerpane .btn-toolbar .actionbtn-toggle.btn.btn-highViz:not(.btn-primary) {
+  background: @black;
+  color: @white;
+
+  &:not(.disabled):not(.active) > i.sicon {
+    color: @white;
+  }
+
+  &.btn-group {
+    border-radius: 3px;
+  }
+
+  > i.sicon {
+    color: @white;
+  }
+
+  &:hover {
+    &.btn-group {
+      border-radius: 3px;
+    }
+
+    background: @black;
+    border: 1px solid @white;
+    box-shadow: inset 0 0 10px @white;
+    color: @white;
+  }
+
+  &:active {
+    &.btn-group {
+      border-radius: 3px;
+    }
+
+    background: @black;
+    box-shadow: inset 0 3px 7px @gray40;
+    color: @white;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    color: @gray70;
+  }
+}
+
+.teriary-fct(
+  @bkColor,
+  @className
+) {
+  .actionbuttons.btn.btn-@{className},
+  .actionbtn-toggle.btn.btn-@{className},
+  .headerpane .btn-toolbar .actionbuttons.btn.btn-@{className}:not(.btn-primary),
+  .headerpane .btn-toolbar .actionbtn-toggle.btn.btn-@{className}:not(.btn-primary) {
+    background: @bkColor;
+    color: @black;
+
+    &:not(.disabled):not(.active) > i.sicon {
+      color: @black;
+    }
+
+    &.btn-group {
+      border-radius: 3px;
+    }
+
+    > i.sicon {
+      color: @black;
+    }
+
+    &:hover {
+      &.btn-group {
+        border-radius: 3px;
+      }
+
+      background: @bkColor;
+      color: @black;
+      opacity: 0.7;
+    }
+
+    &:active {
+      &.btn-group {
+        border-radius: 3px;
+      }
+
+      background: @bkColor;
+      box-shadow: inset 0 3px 7px @gray60;
+      color: @black;
+    }
+
+    &[disabled] {
+      &.btn-group {
+        border-radius: 3px;
+      }
+
+      opacity: 0.5;
+      color: @black;
+    }
+  }
+}
+
+@classOcean: ~"ocean";
+@classPacific: ~"pacific";
+@classTeal: ~"teal";
+@classGreen: ~"green";
+@classArmy: ~"army";
+@classYellow: ~"yellow";
+@classOrange: ~"orange";
+@classRed: ~"red";
+@classCoral: ~"coral";
+@classPink: ~"pink";
+@classPurple: ~"purple";
+
+.teriary-fct(
+  @ocean,
+  @classOcean
+);
+
+.teriary-fct(
+  @pacific,
+  @classPacific
+);
+
+.teriary-fct(
+  @teal,
+  @classTeal
+);
+
+.teriary-fct(
+  @green,
+  @classGreen
+);
+
+.teriary-fct(
+  @army,
+  @classArmy
+);
+
+.teriary-fct(
+  @yellow,
+  @classYellow
+);
+
+.teriary-fct(
+  @orange,
+  @classOrange
+);
+
+.teriary-fct(
+  @red,
+  @classRed
+);
+
+.teriary-fct(
+  @coral,
+  @classCoral
+);
+
+.teriary-fct(
+  @pink,
+  @classPink
+);
+
+.teriary-fct(
+  @purple,
+  @classPurple
+);
+
+.ab-admin-select-icon ul li:hover {
+  i.sicon {
+    color: @white;
+  }
+}
+
+.ab-admin-select-icon ul li {
+  i.sicon {
+    margin-left: -3px;
+    margin-right: 3px;
+  }
+}
+
+.ab-admin-action-selector.record,
+.ab-admin-action-view.record {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.ab-admin-action-view div[data-container="fields"] {
+  margin-bottom: 14px;
+}
+
+.ab-admin-action-view div[data-container="preset-fields"] {
+  margin-bottom: 14px;
+}
+
+.ab-admin-action-selector.record .record-cell {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.ab-admin-action-view.record .record-cell {
+  margin-left: 0;
+  padding-left: 0;
+  margin-bottom: 5px;
+}
+
+.ab-admin-button-properties .record-cell {
+  margin-bottom: 5px;
+}
+
+.ab-admin-action-selector.record .hidden,
+.ab-admin-action-view.record .hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.actionbutton-wrapper .ab-dropdown-item-limit {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 140px;
+  overflow: hidden;
+  min-height: 18px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.actionbuttons.ab-dropdown-item-limit i.sicon,
+.actionbutton-wrapper .ab-dropdown-item-limit i.sicon {
+  margin-top: -2px;
+}
+
+.actionbutton-wrapper .dropdown-menu {
+  min-width: auto;
+}
+
+.ab-admin-tabs .li.tab.tab-badgeable {
+  border-bottom: @borderWidget;
+}
+
+.ab-admin-tabs.content-tabs .nav.nav-tabs .tab.active {
+  border-right: 0;
+  height: 32px;
+}
+
+.ab-admin-action-container {
+  margin-left: 0;
+  margin-bottom: 10px;
+  border-left: @borderWidget;
+  border-right: @borderWidget;
+}
+
+.ab-admin-action-header {
+  background-color: @headerpaneBackground;
+  display: inline-flex;
+  text-align: left;
+  align-items: center;
+  width: 100%;
+  height: 42px;
+}
+
+.ab-admin-action-title {
+  background-color: @headerpaneBackground;
+  border: @borderWidget;
+  display: inline-flex;
+  text-align: left;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+}
+
+.ab-admin-action-title h1 {
+  font-size: 14px;
+  width: 100%;
+  text-decoration: none;
+  color: @textColor;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.ab-admin-action-button-strip {
+  margin-right: 10px;
+  width: 8%;
+  text-align: end;
+  min-width: 70px;
+}
+
+.ab-admin-action-button-strip .sicon {
+  margin-top: 2px;
+}
+
+.nav.nav-tabs.ab-admin-side-tabs.ab-admin-no-border-top {
+  border-top: 0;
+}
+
+.ab-admin-order {
+  width: 100px;
+}
+
+.span6.record-cell.edit.ab-admin-display-setting,
+.span12.record-cell.edit.ab-admin-display-setting {
+  margin-bottom: 0;
+}
+
+.ab-admin-action-button-strip a.btn:first-child {
+  margin-right: 0;
+}
+
+.ab-admin-action-button-strip a.btn:last-child {
+  margin-left: 0;
+}
+
+.ab-admin-action {
+  width: 100%;
+  padding-bottom: 24px;
+  border-bottom: @borderWidget;
+}
+
+.ab-admin-action.collapse {
+  padding-bottom: 0;
+}
+
+.ab-admin-main-left-pane .ab-admin-button-properties {
+  padding: 5px 5px 0;
+  border-left: @borderWidget;
+  border-right: @borderWidget;
+  border-bottom: @borderWidget;
+  border-top: @borderWidget;
+  margin-bottom: 10px;
+}
+
+.ab-admin-button-properties .btn-invisible {
+  margin-left: 0;
+}
+
+.row-fluid .ab-admin-button-properties [class*="span"] {
+  margin-left: 0;
+}
+
+.ab-admin-main-left-pane {
+  border-top: hidden;
+  width: 98%;
+  margin-left: 12px;
+}
+
+.ab-admin-tabs {
+  width: 98%;
+  margin-left: 12px;
+  background-color: white;
+  margin-top: 12px;
+}
+
+.content-tabs.ab-admin-tabs .nav.nav-tabs {
+  padding-left: 0;
+  height: 39px;
+  border-top: 0;
+  border-bottom: 0;
+  background-color: var(--primary-content-background);
+}
+
+.record.tab-layout .content-tabs.ab-admin-tabs .nav.nav-tabs .tab.tab-badgeable .tab-title {
+  padding-left: 0;
+  margin-right: 0;
+  display: inline-block;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.content-tabs.ab-admin-tabs .ab-admin-side-tabs li {
+  min-width: 50%;
+  padding: 0;
+  margin: 0;
+}
+
+.ab-admin-side-pane {
+  margin-left: 12px;
+  width: 98%;
+  border: 0;
+}
+
+.ab-admin-side-pane-part {
+  width: 98%;
+  border: @borderWidget;
+  background: @contentBackground;
+  border-top: 0;
+}
+
+.ab-admin-side-pane-part.ab-admin-side-container {
+  height: 90%;
+  position: absolute;
+}
+
+.ab-admin-side-pane-part.ab-admin-side-preview {
+  border-bottom: 0;
+  width: 100%;
+
+  .actionbuttons.btn {
+    margin-left: 0;
+  }
+}
+
+.ab-admin-display-setting .ab-admin-button-property .span1.record-link-wrapper {
+  width: 14px;
+}
+
+.ab-admin-display-setting .ab-admin-button-property .record-label-wrapper {
+  float: left;
+}
+
+.ab-admin-side-tabs li.tab.tab-badgeable .tab-title {
+  margin-right: 0;
+  text-align: center;
+}
+
+.dashboard .record .content-tabs.ab-admin-tabs .ab-admin-side-tabs .tab {
+  text-align: center;
+}
+
+.content-tabs.ab-admin-tabs .nav.nav-tabs .tab.active a {
+  padding-bottom: 0.25rem;
+}
+
+.dashboard .record .content-tabs.ab-admin-tabs .ab-admin-side-tabs .tab.active a {
+  margin-top: 0;
+  margin-left: 0;
+}
+
+.content-tabs.ab-admin-tabs .nav.nav-tabs .tab a {
+  min-width: 122px;
+  padding: 6px 6px 6px 8px;
+}
+
+.content-tabs.ab-admin-tabs .nav.nav-tabs .tab a .ab-remove-tab {
+  display: none;
+  padding: 0;
+}
+
+.content-tabs.ab-admin-tabs .nav.nav-tabs .tab a:hover .ab-remove-tab {
+  display: block;
+}
+
+.content-tabs.ab-admin-tabs .nav.nav-tabs.ab-admin-no-border-top .tab a {
+  margin-top: -1px;
+}
+
+.content-tabs.ab-admin-tabs .nav.nav-tabs .tab.ab-tab-add a {
+  padding: 11px;
+  width: 14px;
+  max-width: 14px;
+  min-width: 14px;
+  height: 20px;
+}
+
+.content-tabs.ab-admin-tabs .nav.nav-tabs .tab button[data-action="remove-tab"] {
+  margin-top: 9px;
+}
+
+.ab-column-config {
+  align-items: center;
+  margin-left: 0;
+  margin-bottom: 10px;
+}
+
+.ab-config-column .record-label {
+  text-align: right;
+  align-content: center;
+  display: inline-grid;
+}
+
+.ab-config-column .ab-config-checkbox {
+  margin-left: 5px;
+  display: grid;
+  align-items: center;
+}
+
+.ab-config-column .ab-config-select2 {
+  margin-left: 5px;
+}
+
+.ab-config-column .ab-config-formula {
+  align-items: center;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+
+.ab-column-config p {
+  margin-top: 5px;
+}
+
+.ab-config-column-stretch {
+  width: 86%;
+  margin-left: 8%;
+}
+
+.ab-parent-field {
+  margin-right: 1%;
+  margin-top: 10px;
+  min-height: 110px;
+  border: @borderWidget;
+  height: auto;
+  display: flow-root;
+}
+
+.ab-parent-field .ab-parent-field-name {
+  background-color: @headerpaneBackground;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.ab-parent-field .ab-parent-field-name a.btn {
+  margin-left: 0;
+  padding: 1px;
+  float: right;
+  margin-top: -2px;
+}
+
+.ab-parent-field .ab-parent-field-name a.btn i {
+  font-size: 10px;
+  vertical-align: middle;
+}
+
+.ab-parent-field .ab-parent-field-container {
+  margin-left: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.ab-parent-field .ab-parent-field-container .record-label {
+  text-align: right;
+  align-content: center;
+  display: inline-grid;
+  min-width: 109px;
+}
+
+.ab-parent-field .ab-parent-field-container .span9 {
+  margin-left: 5px;
+  align-items: center;
+}
+
+.ab-parent-field .ab-parent-field-container .span9 div[data-container="fields"] {
+  margin-left: 0;
+}
+
+.ab-parent-field-wrapper {
+  margin-left: 0;
+}
+
+.row-fluid .ab-parent-field-wrapper[class*="span"] {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.ab-update-field {
+  margin-right: 1%;
+  margin-top: 10px;
+  min-height: 110px;
+  border: @borderWidget;
+  height: auto;
+  display: flow-root;
+}
+
+.ab-update-field .ab-update-field-name {
+  background-color: @headerpaneBackground;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.ab-update-field .ab-update-field-name a.btn {
+  margin-left: 0;
+  padding: 1px;
+  float: right;
+  margin-top: -2px;
+}
+
+.ab-update-field .ab-update-field-name a.btn i {
+  font-size: 10px;
+  vertical-align: middle;
+}
+
+.ab-update-field .ab-update-field-wrapper {
+  padding: 5px;
+  width: 97%;
+  margin-left: 0;
+}
+
+.ab-update-field .record-cell .record-label-wrapper .record-label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  padding-right: 0;
+}
+
+.row-fluid .ab-update-field-wrapper[class*="span"] {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.actionbuttons i {
+  padding-right: 1px;
+}
+
+.btn.actionButtonLoading {
+  width: 64px;
+  z-index: inherit;
+  height: 16px;
+  background-color: @gray20;
+  color: @gray60;
+  border-color: @gray30;
+  background-image: none;
+}
+
+.btn.actionButtonLoading.actionButtonDisabled {
+  cursor: not-allowed;
+  margin-left: 0;
+  margin-right: 8px;
+  opacity: 1;
+  background-color: @inputDisabledBackground;
+  border: @borderWidget;
+}
+
+.omni-console .omni-detail .btn-group.actions .dropdown-menu {
+  left: auto;
+  right: auto;
+}
+
+.omni-console .omni-detail .omni-summary-cell .omni-cell a.actionbuttons-button.btn {
+  margin-bottom: 5px;
+}
+
+.btn.actionButtonLoading i.actionButtonLoading {
+  color: @gray60;
+}
+
+.btn.actionbtn-toggle {
+  margin-left: 0;
+  width: auto;
+}
+
+.btn.actionbtn-toggle ul.dropdown-menu {
+  left: 0;
+}
+
+.record .btn-group.actions > ul.dropdown-menu,
+.preview-data .btn-group.actions > ul.dropdown-menu,
+.ab-admin-preview-container ul.dropdown-menu {
+  right: auto;
+  left: 0;
+  margin-left: 0;
+}
+
+.ab-admin-preview-container {
+  padding-top: 20px;
+}
+
+div.formula-builder {
+  margin-bottom: 0;
+  border: @borderWidget;
+  padding: 5px;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+div.formula-builder > div {
+  margin-bottom: 3px;
+  width: 100%;
+}
+
+div.formula-builder div.main-action-bar {
+  align-items: center;
+  width: 100%;
+  margin-left: 0;
+  margin-bottom: 2px;
+  display: inline-flex;
+}
+
+div.formula-builder div.main-action-bar a[data-select="functions"],
+div.formula-builder div.main-action-bar .select-functions {
+  width: 30%;
+  max-width: 30%;
+}
+
+div.formula-builder div.main-action-bar a[data-select="fields"],
+div.formula-builder div.main-action-bar .select-fields {
+  width: 30%;
+  max-width: 30%;
+  margin-left: 5px;
+}
+
+div.formula-builder div.main-action-bar a[data-action="related"] {
+  width: 20%;
+  max-width: 20%;
+  margin-left: 5px;
+}
+
+div.formula-builder div.main-action-bar a[data-action="rollup"] {
+  width: 20%;
+  max-width: 20%;
+  margin-left: 5px;
+}
+
+div.formula-builder div.related-action-bar {
+  display: inline-flex;
+  width: 100%;
+  margin-left: 0;
+  margin-bottom: 2px;
+}
+
+div.formula-builder div.related-action-bar a[data-select="related-module"],
+div.formula-builder div.related-action-bar .select-related-module {
+  width: 45%;
+  max-width: 45%;
+}
+
+div.formula-builder div.related-action-bar a[data-select="related-fields"],
+div.formula-builder div.related-action-bar .select-related-fields {
+  margin-left: 1%;
+  width: 45%;
+  max-width: 45%;
+}
+
+div.formula-builder div.related-action-bar a[data-action="add-related"] {
+  margin-left: 1%;
+  width: 7%;
+  max-width: 7%;
+}
+
+div.formula-builder div.rollup-action-bar {
+  display: inline-flex;
+  width: 100%;
+  margin-left: 0;
+}
+
+div.formula-builder div.rollup-action-bar a[data-select="rollup-module"],
+div.formula-builder div.rollup-action-bar .select-rollup-module {
+  width: 29%;
+  max-width: 29%;
+}
+
+div.formula-builder div.rollup-action-bar a[data-select="rollup-fields"],
+div.formula-builder div.rollup-action-bar .select-rollup-fields {
+  margin-left: 1%;
+  width: 29%;
+  max-width: 29%;
+}
+
+div.formula-builder div.rollup-action-bar a[data-select="rollup-function"],
+div.formula-builder div.rollup-action-bar .select-rollup-function {
+  margin-left: 1%;
+  width: 29%;
+  max-width: 29%;
+}
+
+div.formula-builder div.rollup-action-bar a[data-action="add-rollup"] {
+  margin-left: 1%;
+  width: 7%;
+  max-width: 7%;
+}
+
+div.formula-builder div.formula-editor {
+  min-height: 60px;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+div.formula-builder.formula-invalid {
+  background-color: @lightRed;
+  border-color: @darkRed;
+}
+
+div.formula-builder div.related-action-bar.hidden,
+div.formula-builder div.rollup-action-bar.hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.sidebar-content .dashboard .actionbutton-headerpane {
+  padding: 0;
+}
+
+.dashboard .headerpane {
+  .action-button-wrapper {
+    white-space: nowrap;
+    align-items: center;
+  }
+}

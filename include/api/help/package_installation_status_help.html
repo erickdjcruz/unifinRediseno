@@ -1,0 +1,132 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Returns an installation status of a package installing by the Module Loader.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Id</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            An uploaded package ID
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Error</th>
+        <th>ErrorPage</th>
+        <th>Message</th>
+        <th>CurrentStep</th>
+        <th>TotalSteps</th>
+        <th>IsDone</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            An error description
+        </td>
+        <td>
+            Boolean. True means - redirect to an error page fetched by an installation request.
+        </td>
+        <td>
+            A progress message list. Contains some messages about a current progress step.
+        </td>
+        <td>
+            Integer. Current progress step.
+        </td>
+        <td>
+            Integer. Total progress steps.
+        </td>
+        <td>
+            Boolean. True means that installation progress finished correctly.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+{
+   "error":"",
+   "error_page":false,
+   "message":[
+      "Rebuilding ActionViewMap...",
+      "Rebuilding ActionFileMap...",
+      "Rebuilding ActionReMap...",
+      "Rebuilding Administration...",
+      "Rebuilding Dependencies...",
+      "Rebuilding EntryPointRegistry...",
+      "Rebuilding Extensions...",
+      "Rebuilding FileAccessControlMap...",
+      "Rebuilding Layoutdefs...",
+      "Rebuilding GlobalLinks...",
+      "Rebuilding LogicHooks...",
+      "Rebuilding TinyMCE...",
+      "Rebuilding Menus...",
+      "Rebuilding Include...",
+      "Rebuilding ScheduledTasks...",
+      "Rebuilding ScheduledTasks...",
+      "Rebuilding UserPage...",
+      "Rebuilding Utils...",
+      "Rebuilding Vardefs...",
+      "Rebuilding JSGroupings...",
+      "Rebuilding WirelessModuleRegistry...",
+      "Rebuilding WirelessLayoutdefs...",
+      "Rebuilding TableDictionary...",
+      "Rebuilding metadata for clients...",
+      "Rebuilding Console...",
+      "Rebuilding Platforms...",
+      "Rebuilding Platforms...",
+      "Installing Bean : WSYS_WCFUQueue",
+      "Installing Bean : WSYS_WCFUConfigs",
+      "Installing Bean : WSYS_WCFULogs"
+   ],
+   "current_step":19,
+   "total_steps":19,
+   "is_done":false,
+   "is_staged":true
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added packages/installation-status endpoint
+        </td>
+    </tr>
+    </tbody>
+</table>

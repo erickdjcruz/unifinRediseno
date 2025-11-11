@@ -1,0 +1,26 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#each icon}}
+    {{#if module}}
+        {{moduleLabel module 'sm' class="align-middle mr-0.5" title=(getModuleName module plural=true)}}
+    {{else}}
+        {{#if multipleLabel}}
+            <span class="label non-module-label"
+                  aria-label="{{str 'LBL_GLOBAL_SEARCH_MODULE_FILTER'}}" title="{{multipleLabel}}">
+                {{multipleLabel}}
+            </span>
+        {{else}}
+            <span class="label non-module-label" aria-label="{{str 'LBL_GLOBAL_SEARCH_MODULE_FILTER'}}" title="{{str 'LBL_MODULE_ALL'}}">{{str 'LBL_MODULE_ALL'}}</span>
+        {{/if}}
+    {{/if}}
+{{/each}}

@@ -1,0 +1,42 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="headerpane bg-[--primary-content-background] box-border fixed table">
+    <h1>
+        <div class="record-cell">
+            <span class="module-title">{{str meta.label this.module}}</span>
+        </div>
+        <div class="pull-right dropdown flex">
+            <div class="pt-3 text-xs font-normal flex">
+                {{#each meta.language_field}}
+                    <span class="pt-1.5 pr-1.5">{{str label this.module}}:</span>
+                    {{field ../this model=../model template=template}}
+                {{/each}}
+            </div>
+            <div class="btn-toolbar">
+                {{#each meta.buttons}}
+                    {{field ../this}}
+                {{/each}}
+            </div>
+        </div>
+    </h1>
+</div>
+<div>
+    <table class="table table-striped dataTable module-names-and-icons">
+        <thead>
+            {{partial 'header' this view=this}}
+        </thead>
+        <tbody>
+            {{partial 'row' this view=this collection=this.collection}}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,26 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="inherit-width flex flex-col h-full overflow-hidden chart-main">
+    <div class="w-full flex justify-center bold hidden pt-4" id="custom-title"></div>
+    <div id="custom-legend" class="w-full pt-4 hidden"></div>
+    <div class="w-full h-full overflow-auto flex py-2.5" id="chart-wrapper-container">
+        <div id="chart_{{cid}}_wrapper" class="h-full w-full overflow-hidden" data-content="chart">
+            <canvas dir="{{langDirection}}" id="chart_{{cid}}" class="sc-chart"></canvas>
+        </div>
+    </div>
+</div>
+<div class="block-footer hide" data-content="nodata">{{str "LBL_NO_DATA_AVAILABLE"}}</div>
+
+<div class="sc-print sc-{{chartType}} sc-print-chart">
+    <canvas id="chart_{{cid}}_print" class="sc-chart" width="1000" height="1000"></canvas>
+</div>

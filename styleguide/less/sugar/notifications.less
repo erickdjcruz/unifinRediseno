@@ -1,0 +1,206 @@
+/* NOTIFICATIONS
+  ----------------*/
+.navbar ul.nav.megamenu li.dropdown.notification-list {
+  .dropdown-toggle {
+    text-align: center;
+    box-shadow: none;
+
+    &:not(.btn-notification) {
+      background: @gray70;
+      color: @white;
+    }
+
+    .notification-num {
+      min-width: 0.75rem;
+      max-width: 1.125rem;
+      top: -0.25rem;
+      left: 1.25rem;
+    }
+  }
+
+  .sicon-bell-lg-line {
+    color: @white;
+  }
+
+  .btn-group.open {
+    .dropdown-menu {
+      width: 400px;
+
+      ul {
+        li {
+          &.read {
+            background: @gray20;
+
+            a,
+            a:hover {
+              color: @gray30;
+            }
+
+            a .label {
+              background-color: @gray20;
+            }
+          }
+
+          a {
+            display: flex;
+            align-items: center;
+            text-indent: inherit;
+
+            // Fixes weird formatting for notification rows
+            &.row-fluid {
+              [class*="span"] {
+                min-height: auto;
+              }
+            }
+
+            .label {
+              min-width: 50px;
+              text-align: center;
+              margin-right: 10px;
+              cursor: inherit;
+            }
+
+            time {
+              font-size: @fontSizeSmall;
+              text-align: right;
+              padding-right: 14px;
+              white-space: normal;
+              padding-top: 3px;
+              line-height: 1.25em;
+              display: table;
+
+              .relativetime {
+                display: table-cell;
+                vertical-align: middle;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+ul.notification-list {
+  border-top: 2px solid @borderColor;
+  margin: 0;
+
+  li {
+    list-style: none;
+    line-height: 34px;
+    padding: 0 16px;
+
+    &:not(:last-child) {
+      border-bottom: @borderWidget;
+    }
+
+    .ellipsis_inline {
+      display: inline-block !important;
+    }
+
+    .date {
+      margin-right: 28px;
+    }
+
+    .rowaction {
+      position: absolute;
+      right: 18px;
+    }
+
+    .label {
+      min-width: 50px;
+      text-align: center;
+      margin-right: 10px;
+    }
+
+    span.raw {
+      &.level {
+        position: absolute;
+        margin-top: 9px;
+      }
+
+      &.name {
+        position: relative;
+        line-height: normal;
+        padding-top: 10px;
+        margin-left: 70px;
+
+        .ellipsis_inline {
+          width: 42%;
+          width: calc(~"100% - 225px");
+          line-height: normal;
+          padding-top: 10px;
+          cursor: pointer;
+        }
+      }
+
+      &.expanded.name {
+        .ellipsis_inline {
+          white-space: normal;
+          cursor: default;
+        }
+      }
+    }
+  }
+}
+
+.preview-pane {
+  .detail,
+  .preview {
+    .label.ellipsis_inline {
+      display: inline-block;
+    }
+  }
+}
+
+[data-action="toggle"].label {
+  cursor: pointer;
+}
+
+/* NEW SKIN START */
+
+.navbar ul.nav.megamenu li.dropdown.notification-list {
+  .dropdown-toggle {
+    /* override */
+    border-radius: 24px;
+
+    /* override with variable */
+    min-width: @sizeButton;
+    min-height: @sizeButton;
+  }
+
+  .btn-group {
+    &.open {
+      .dropdown-toggle.btn-notification {
+        &,
+        &:active {
+          .buttonBackground(@btnNotificationBackground, @btnNotificationBackgroundHighlight, @white, none);
+        }
+      }
+
+      .dropdown-menu {
+        ul {
+          li {
+            a {
+              time {
+                /* override */
+                color: initial;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .dropdown-toggle.btn-notification:active {
+      .buttonBackground(@btnNotificationBackground, @btnNotificationBackgroundHighlight, @white, none);
+    }
+  }
+
+  &:hover button.dropdown-toggle {
+    /* override */
+    color: @white;
+  }
+}
+
+/* NEW SKIN END */

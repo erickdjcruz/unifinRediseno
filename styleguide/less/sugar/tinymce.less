@@ -1,0 +1,69 @@
+body {
+  .tox:not(.tox-tinymce-inline) {
+    border: solid 1px @borderColor;
+    border-radius: 2px;
+
+    .tox-editor-header {
+      background: @primaryContentBackground;
+      box-shadow: @borderColor 0 8px 0 -6px;
+
+      .tox-toolbar {
+        background-color: @primaryContentBackground;
+
+        .tox-toolbar__group {
+          padding: 0 4px;
+
+          .tox-tbtn {
+            &:not(.tox-tbtn--select) {
+              margin: 0;
+              width: 26px;
+            }
+
+            svg {
+              height: auto;
+              width: auto;
+            }
+          }
+        }
+      }
+    }
+
+    .tox-menu {
+      background: @primaryContentBackground;
+
+      .tox-collection__item--enabled {
+        background: @primaryContentBackground;
+      }
+    }
+  }
+
+  .tox {
+    .tox-dialog {
+      background: @primaryContentBackground;
+
+      .tox-dialog__header,
+      .tox-dialog__footer {
+        background: none;
+      }
+    }
+
+    .tox-listboxfield .tox-listbox--select,
+    .tox-textarea,
+    .tox-textarea-wrap .tox-textarea:focus,
+    .tox-textfield,
+    .tox-toolbar-textfield,
+    .tox-custom-editor:focus-within,
+    .tox-listboxfield .tox-listbox--select:focus,
+    .tox-textarea-wrap:focus-within,
+    .tox-textarea:focus,
+    .tox-textfield:focus {
+      background: none;
+    }
+  }
+
+  &.sugar-light-theme {
+    .tox .tox-tbtn svg {
+      fill: rgb(89, 89, 89);
+    }
+  }
+}

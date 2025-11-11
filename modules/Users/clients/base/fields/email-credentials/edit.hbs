@@ -1,0 +1,50 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if credentials.mail_smtpserver}}
+    <div class="text-xs py-1">{{str 'LBL_MAIL_SMTPSERVER' module}}</div>
+    <div>{{credentials.mail_smtpserver}}</div>
+{{/if}}
+{{#eq credentials.mail_authtype 'oauth2'}}
+    {{#if credentials.authorized_account}}
+        <div class="text-xs py-1">{{str 'LBL_MAIL_AUTHORIZED_ACCOUNT' module}}</div>
+        <div>{{credentials.authorized_account}}</div>
+    {{/if}}
+    {{#if connectorsLoaded}}
+        <button class="btn btn-primary authorize inline-block my-1">{{str 'LBL_EMAIL_AUTHORIZE'}}</button>
+    {{/if}}
+{{else}}
+    <div class="text-xs py-1">{{str 'LBL_MAIL_SMTPUSER' module}}</div>
+    <input type="text" value="{{credentials.mail_smtpuser}}" data-name="mail_smtpuser">
+    <div class="text-xs py-1">{{str 'LBL_MAIL_SMTPPASS' module}}</div>
+    {{#if credentials.mail_smtppass_change}}
+        <input type="password" value="{{credentials.mail_smtppass}}" data-name="mail_smtppass">
+    {{else}}
+        <button class="change-password btn my-1">{{str 'LBL_CHANGE_SMTP_PASSWORD' module}}</button>
+    {{/if}}
+{{/eq}}
+{{!-- {{#if isAdmin}} --}}
+    <button class="btn btn-primary test-email my-1">{{str 'LBL_EMAIL_TEST_OUTBOUND_SETTINGS' module}}</button>
+    <div class="test-email-dialog z-[1000] bg-[--secondary-content-background] p-[15px] rounded hide fixed w-[17.5rem] h-[7.5rem] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rotate-0 skew-x-0 skew-y-0 scale-100">
+        <div>
+            {{str 'LBL_EMAIL_SETTINGS_FROM_TO_EMAIL_ADDR'}}
+        </div>
+        <div class="mt-[15px]">
+            <input type="text" class="test-address" name="test_address">
+        </div>
+        <div class="flex flex-row justify-end mt-[15px] gap-[10px]">
+            <button class="btn test-email-cancel">{{str 'LBL_CANCEL_BUTTON_LABEL'}}</button>
+            <button class="btn btn-primary test-email-send">{{str 'LBL_EMAIL_SEND'}}</button>
+        </div>
+    </div>
+{{!-- {{/if}} --}}
+{{#unless hideHelp}}{{#if def.help}}<p class="help-block">{{str def.help module}}</p>{{/if}}{{/unless}}

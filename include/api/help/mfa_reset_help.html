@@ -1,0 +1,47 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Reset Multi-factor Authentication for the current user.
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint resets Multi-factor Authentication for the current user in IDM mode if Multi-factor Authentication has been enabled for the SugarCRM instance.
+</span>
+
+<h2>Request</h2>
+<code class="codesample">
+    PUT /mfa/reset
+</code>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+{}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_13
+        </td>
+        <td>
+            Added <code>/mfa/reset</code> PUT endpoint.
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,18 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="{{#if data.runtime}}advanced-condition border border-[--border-color] flex items-center h-[2.1875rem] rounded{{else}}advanced-condition-locked flex items-center{{/if}} ml-{{data.column}} mt-5 mr-4" id="{{data.elementId}}">
+    {{#unless data.runtime}}
+        <i class="sicon sicon-lock ml-2" data-widget="non-runtime-filter" rel="tooltip"></i>
+    {{/unless}}
+    <h5 class="ml-2 two-rows-clamped-text {{#unless data.runtime}}disabled-advanced-condition{{/unless}}" id="{{data.tooltipId}}" rel="tooltip">{{#sanitize}}{{{data.value}}}{{/sanitize}}</h5>
+</div>

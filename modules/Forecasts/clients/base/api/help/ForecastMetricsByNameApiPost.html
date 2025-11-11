@@ -1,0 +1,107 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+    <span class="lead">
+        Forecast Named Metrics
+    </span>
+
+<h2>Summary</h2>
+    <span class="lead">
+        Returns named metrics data for Forecasts-related modules
+    </span>
+
+<h2>Request Example</h2>
+    <span class="lead">
+        {InstanceURL}/rest/v11_20/Forecasts/metrics/named
+    </span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Metric(s) name</th>
+        <th>Time period</th>
+        <th>Type</th>
+        <th>User ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>array</td>
+        <td>string</td>
+        <td>string</td>
+        <td>string</td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Metric(s) name</th>
+            <th>Type</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>string</td>
+            <td>string</td>
+            <td>string</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "user_id": "67aa9afe-ba92-11ec-b8e3-acde48001122",
+    "type": "Direct",
+    "time_period": "4c420ef0-d9c7-11ed-bfa7-0242ac150006",
+    "metrics": [
+        "pct_won_commitment",
+        "forecast_gap_coverage"
+    ]
+}
+</pre>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+{
+    "pct_won_quota":
+        {
+            "type": "ratio",
+            "value": 0
+        },
+    "forecast_gap_coverage":
+        {
+            "type": "ratio",
+            "value": 0
+        }
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Version</th>
+            <th>Change</th>
+        </tr>
+        <tr>
+            <td>v13_1</td>
+            <td>Added <code>/Forecasts/metrics/named</code> POST endpoint.</td>
+        </tr>
+    </thead>
+</table>

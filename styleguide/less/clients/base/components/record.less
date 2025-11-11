@@ -1,0 +1,1097 @@
+//main record edit
+.record {
+  clear: both;
+  padding: 13px 13px 0;
+
+  .wide {
+    width: 100%;
+  }
+
+  .normal {
+    font-size: @recordViewFieldFontSize;
+    font-weight: 400;
+    width: 100%;
+  }
+
+  .togglePasswordFields {
+    padding: 2px 0 0 7px;
+    display: inline-block;
+  }
+
+  .record-save-btns-bar {
+    margin-right: 8px;
+  }
+
+  .row-fluid.toggle {
+    margin-bottom: 16px;
+  }
+
+  .nodata {
+    padding: 5px 7px;
+  }
+
+  #recordTab {
+    font-size: 0;
+    white-space: nowrap;
+
+    & > .tab {
+      font-size: 11px;
+    }
+
+    & > .dropdown.open > a {
+      background-color: @color-gray-200;
+    }
+
+    li.hidden {
+      display: none;
+    }
+  }
+
+  .record-cell {
+    display: inline-block;
+    min-height: 1px;
+  }
+
+  :focus {
+    outline: none;
+  }
+
+  ::-moz-focus-inner {
+    border: 0;
+  }
+
+  .record-cell {
+    .record-edit-link-wrapper {
+      width: 9vw;
+    }
+  }
+
+  .drawer-content .main-pane & {
+    margin-top: 40px;
+
+    .fieldset-field:last-child {
+      max-width: inherit !important;
+    }
+  }
+
+  .record-panel {
+    .btn-link {
+      cursor: pointer;
+
+      &.more {
+        display: none;
+      }
+    }
+
+    &.folded {
+      .record-panel-content {
+        display: none;
+      }
+
+      .btn-link {
+        &.more {
+          display: block;
+        }
+
+        &.less {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.record-cell {
+  position: relative;
+  height: 100%;
+
+  &[data-type="hidden"] {
+    display: none;
+  }
+
+  &.vis_action_hidden {
+    & > .normal {
+      & > .detail,
+      & > .edit {
+        display: none;
+      }
+    }
+
+    .record-label {
+      display: none;
+    }
+  }
+
+  &.vis_action_hidden:first-of-type:last-of-type {
+    display: none;
+  }
+
+  .record-label {
+    color: @labelColor;
+    margin-left: 7px;
+  }
+
+  .normal {
+    > span {
+      display: block;
+      min-height: 28px;
+      box-sizing: border-box;
+    }
+
+    > .erased,
+    > .detail {
+      padding: 5px 7px;
+
+      a,
+      button,
+      input,
+      iframe,
+      .btn {
+        position: relative;
+        z-index: 1;
+      }
+    }
+
+    > .detail {
+      input[type=checkbox] {
+        z-index: 0;
+      }
+    }
+
+    > .disabled:not(.edit) {
+      padding: 5px 7px;
+    }
+
+    > .edit {
+      position: relative;
+    }
+  }
+
+  .detail > span.detail {
+    display: inline-flex;
+    margin-right: 5px;
+  }
+
+  .create {
+    .ellipsis_inline {
+      padding-top: 4px;
+    }
+  }
+
+  .ellipsis_inline {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    input[type="text"] {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .edit .control-group {
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  .disabled {
+    input[type="text"],
+    textarea,
+    .uneditable-input {
+      color: @gray70;
+    }
+  }
+
+  .nopadding {
+    padding-left: 0;
+  }
+
+  .input-append {
+    input[type="text"],
+    textarea,
+    .uneditable-input {
+      vertical-align: middle;
+    }
+
+    .add-on {
+      z-index: 1;
+    }
+  }
+
+  .input-append input[type="text"][disabled] + .add-on,
+  .input-append input[type="password"][disabled] + .add-on,
+  .input-append textarea[disabled] + .add-on {
+    background-color: @inputDisabledBackground;
+  }
+
+  input[type="text"]:not(.select2-input),
+  input[type="password"],
+  textarea,
+  .uneditable-input {
+    position: relative;
+    width: 100%;
+    min-height: 28px;
+    box-sizing: border-box;
+    font-size: @recordViewFieldFontSize;
+    font-weight: 400;
+    z-index: 1;
+
+    &:focus {
+      z-index: 2;
+    }
+
+    &:not([disabled]):not([readonly]) {
+      color: @textColor;
+    }
+
+    &[rel=colorpicker] {
+      width: 122px;
+    }
+  }
+
+  &[data-type="change-password"] {
+    [type="password"] {
+      border-radius: 0;
+
+      &:first-of-type {
+        z-index: 2;
+        border-top-left-radius: @inputBorderRadius;
+        border-top-right-radius: @inputBorderRadius;
+      }
+
+      &:not(:first-of-type) {
+        margin-top: -1px;
+      }
+
+      &:last-of-type {
+        border-bottom-left-radius: @inputBorderRadius;
+        border-bottom-right-radius: @inputBorderRadius;
+      }
+    }
+  }
+
+  &[data-type="textarea"] {
+    .normal > span {
+      width: 100%;
+      word-wrap: break-word;
+    }
+
+    .detail .toggle-text {
+      display: block;
+      margin-left: 0;
+    }
+  }
+
+  &[data-type="label"] {
+    .ellipsis_inline {
+      padding: 5px 7px;
+    }
+  }
+
+  &[data-type="fullname"] {
+    .index {
+      display: table;
+
+      > .detail,
+      > .edit {
+        display: table-row;
+
+        .record-cell {
+          display: table-cell;
+        }
+      }
+    }
+
+    span[data-type="enum"] {
+      width: 20%;
+    }
+
+    span[data-type="text"] {
+      width: 40%;
+
+      .record-label {
+        left: 7px;
+      }
+
+      input[type="text"] {
+        margin: 0;
+      }
+    }
+
+    &.edit {
+      padding-left: 5px;
+    }
+  }
+
+  &[data-type="email"] {
+    .detail {
+      line-height: 20px;
+    }
+  }
+
+  &[data-type="teamset"] {
+    .detail .control-group {
+      label {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &[data-type="bool"] {
+    label {
+      margin: 0;
+    }
+
+    .input-append.error .add-on {
+      left: 1px;
+    }
+  }
+
+  &[data-type="radioenum"] {
+    p {
+      margin: 0;
+
+      &.help-block {
+        margin-left: 7px;
+      }
+    }
+
+    label,
+    .add-on {
+      display: inline-block;
+      margin: 0;
+    }
+
+    .add-on {
+      left: 10px;
+      font-size: @baseFontSize;
+      position: relative;
+    }
+
+    .error .add-on {
+      .sicon {
+        color: @errorText;
+      }
+    }
+  }
+
+  &[data-type="readonly"] {
+    .normal > .edit {
+      padding: 5px 7px;
+    }
+  }
+
+  input[type="radio"],
+  input[type="checkbox"],
+  input[type="image"] {
+    display: inline-block;
+    margin: 2px 6px 0 0;
+    vertical-align: baseline;
+  }
+
+  .edit,
+  .create {
+    input[type="radio"],
+    input[type="checkbox"],
+    input[type="image"] {
+      margin: 7px 7px 4px;
+    }
+  }
+
+  &[data-type="language"],
+  &[data-type="enum"],
+  &[data-type="tags"],
+  &[data-type="relate"] {
+    .normal > span {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &[data-type="language"],
+  &[data-type="enum"],
+  &[data-type="relate"],
+  &[data-type="parent"],
+  &[data-type="teamset"] {
+    .input-append.error {
+      .add-on.error-tooltip {
+        position: absolute;
+        right: 17px;
+        left: auto;
+        background: transparent;
+      }
+    }
+  }
+
+  &[data-type="date"] {
+    input[type="text"] {
+      width: 100%;
+    }
+  }
+
+  .date.datetime {
+    .datepicker {
+      min-width: 0;
+      width: 50%;
+      width: calc(~"55% - 4px");
+    }
+
+    .ui-timepicker-input {
+      min-width: 0;
+      width: 40%;
+      width: calc(~"45% - 4px");
+    }
+  }
+
+  &[data-name="address"],
+  &[data-name="shipping_address"],
+  &[data-name="alt_address"],
+  &[data-name="altaddress"] {
+    .address.edit > .fieldset-field:nth-last-of-type(2) input {
+      border-bottom-left-radius: @baseBorderRadius;
+      border-bottom-right-radius: @baseBorderRadius;
+    }
+
+    .edit label {
+      padding: 4px 0 0;
+      margin-bottom: 0;
+    }
+  }
+
+  &[data-name="duration"] {
+    flex: 2;
+
+    &.edit .record-label-wrapper > div[data-name="duration"] {
+      margin-top: 10px;
+    }
+
+    .record-link-wrapper {
+      width: 100%;
+
+      span[data-fieldname="duration"] > span {
+        display: flex;
+        flex-direction: row;
+
+        div[data-type="label"]:first-child {
+          color: @labelColor;
+          font-size: 12px;
+        }
+
+        > div[data-name="duration"] {
+          padding: 7px;
+        }
+      }
+    }
+  }
+
+  &[data-name="repeat_type"] {
+    flex: 0.8;
+    align-self: flex-end;
+  }
+
+  &[data-name="recurrence"] .record-link-wrapper {
+    width: 100%;
+
+    .fieldset-inline.edit {
+      display: flex;
+
+      > div {
+        flex: 1;
+      }
+    }
+
+    .fieldset-inline.detail > div.fieldset-field {
+      display: inline-block;
+      width: auto;
+      max-width: fit-content;
+    }
+  }
+
+  &[data-type="favorite"] {
+    display: none;
+  }
+
+  &[data-type="file"] {
+    input[type="file"] {
+      padding: 5px 6px 3px 0;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .add-on {
+      margin-top: 0;
+    }
+
+    .detail .file-field {
+      margin-bottom: 6px;
+    }
+
+    .edit .file-field {
+      line-height: 1px;
+
+      .square-pill {
+        padding-right: 24px;
+
+        &.no-delete {
+          padding-right: 6px;
+        }
+      }
+    }
+  }
+
+  &[data-type="currency"] {
+    .normal > .detail {
+      padding: 3px 7px;
+    }
+  }
+
+  &[data-type="participants"] {
+    .normal > .detail {
+      padding: 0;
+    }
+  }
+
+  &:not([data-type="recipients"]):not([data-type="email-recipients"]) {
+    .select2-container {
+      &.select2-container-disabled {
+        opacity: 0.35;
+
+        .select2-choice {
+          cursor: not-allowed;
+
+          .select2-arrow {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  &[data-type="htmleditable_tinymce"] {
+    .normal > .detail {
+      padding-left: 7px;
+    }
+  }
+  //TODO: bring over KB .record-cell styles
+}
+
+.reccurrences-tag-values {
+  margin: 2px 0 1px 4px;
+  font-size: 11px;
+  line-height: 13px;
+  border-radius: 11px;
+  background-color: @color-gray-800;
+  color: @color-white;
+}
+
+.row-fluid.panel_body:first-child {
+  display: flex;
+}
+
+input[name="date_start_date"],
+input[name="date_end_date"],
+input[name="date_start_time"],
+input[name="date_end_time"] {
+  text-overflow: ellipsis;
+  padding-right: 14px;
+}
+
+.record-edit-link-wrapper,
+.record-lock-link-wrapper {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 0;
+
+  .record-edit-link,
+  .record-lock-link {
+    display: none;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin-left: 0;
+    text-decoration: none;
+    cursor: default;
+
+    &.btn-invisible:hover {
+      border: 1px solid transparent;
+      background: none;
+    }
+
+    .sicon-edit,
+    .sicon-lock {
+      left: -7px;
+      top: 0;
+      font-size: 12px;
+      position: absolute;
+      color: @sicon-color;
+    }
+  }
+}
+
+.record-lock-link-wrapper {
+  .record-lock-link {
+    &.record-lock-link-on {
+      display: inline-block;
+    }
+  }
+
+  .btn {
+    &.record-lock-link-on {
+      .sicon {
+        display: inline-block;
+      }
+    }
+
+    .sicon {
+      display: none;
+    }
+  }
+}
+
+.record-cell:not(.edit):hover {
+  .record-edit-link,
+  .record-lock-link {
+    display: inline-block;
+  }
+
+  .btn {
+    .sicon {
+      display: inline-block;
+    }
+  }
+}
+
+.record-cell.edit {
+  .record-edit-link-wrapper {
+    display: none;
+  }
+}
+
+//show more-less control
+.show-hide-toggle {
+  padding: 0 20px 6px 13px;
+  margin-top: -9px;
+  clear: both;
+  box-sizing: border-box;
+}
+
+/* Special treatment for the address fields */
+.record-cell {
+  .address_street,
+  .address_country,
+  .address_misc_block /* miscelaneous class for more complex/international address formats */ {
+    width: 100%;
+    clear: both;
+  }
+
+  :not(.edit) {
+    &.address_city {
+      div::after {
+        content: ",";
+        margin-left: -4px;
+      }
+    }
+  }
+
+  .address_city {
+    .ellipsis_inline:empty::after {
+      content: "";
+    }
+  }
+}
+
+/* Record Subpanel Header Styling */
+.record-panel {
+  .record-panel-header-container {
+    display: flex;
+    justify-content: flex-start;
+    width: auto;
+    border-top: @borderWidget;
+    cursor: pointer;
+    font-size: @fontSizePanelHeader;
+    font-weight: 600;
+    text-transform: uppercase;
+    height: @panelHeaderHeight;
+
+    .record-panel-header {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+
+      .record-panel-arrow {
+        margin-left: 0;
+        margin-right: 8px;
+        padding: 0;
+      }
+
+      .record-panel-label {
+        color: var(--link-color);
+      }
+    }
+
+    &.panel-inactive:hover {
+      background-color: @primaryContentHoverBackground;
+    }
+  }
+
+  .record-panel-content {
+    padding: 13px;
+    box-sizing: border-box;
+  }
+
+  &[data-panelname=access_tab_user_role_panel] {
+    .record-panel-content {
+      padding-left: 0;
+      padding-right: 0;
+
+      .detail {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+
+  &.panel-border-none {
+    .record-panel-header-container {
+      border: none;
+    }
+  }
+}
+
+// in create view, add a bottom border to the last panel so user knows it can be expanded
+.record-create {
+  .tab-pane > .record-panel:last-of-type {
+    border-bottom: @borderWidget;
+  }
+
+  .record-panel:last-of-type {
+    border-bottom: @borderWidget;
+  }
+}
+
+// for Product dropdowns in RLI subpanel in Opps Create view
+.create-subpanel {
+  .select2-container.select2-container-disabled {
+    opacity: 0.35;
+
+    .select2-choice {
+      cursor: not-allowed;
+
+      .select2-arrow {
+        display: none;
+      }
+    }
+  }
+}
+
+/* NEW SKIN START */
+
+.record-cell {
+  .record-label {
+    display: flex;
+    align-items: center;
+    font-size: @baseFontSize;
+    line-height: @baseFontSize + 2;
+    margin-bottom: 3px;
+  }
+
+  .pipeline-metrics & {
+    input[type="text"] {
+      color: rgba(51, 51, 51, 0.5);
+    }
+  }
+}
+
+.record-cell {
+  &.label-pill {
+    .record-label {
+      border: 1px dashed @borderColor;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 1px 8px;
+      width: max-content;
+      margin-bottom: 12px;
+
+      .label-plus {
+        margin-right: 2px;
+      }
+
+      &:hover {
+        border-color: @borderColorFocus;
+        color: @textColorHover;
+        background-color: @recordLabelPillHoverBackgroundColor;
+
+        .label-plus {
+          color: @sicon-hover-color;
+        }
+      }
+    }
+
+    [data-wrapper="edit"] {
+      display: none;
+    }
+  }
+
+  &:not(.label-pill) {
+    .label-plus {
+      display: none;
+    }
+  }
+
+  .normal {
+    &[data-fieldname="date_entered_by"],
+    &[data-fieldname="date_modified_by"] {
+      > .fieldset-inline {
+        display: flex;
+
+        .fieldset-field {
+          &[data-type="datetimecombo"] {
+            overflow: hidden;
+          }
+
+          &[data-type="relate"]:last-child {
+            width: auto;
+            max-width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.labels-on-side {
+  .record-label {
+    max-width: 100%;
+    float: right;
+    box-sizing: border-box;
+    margin: 4px 0 0;
+    padding: 2px 8px;
+    border: 1px solid transparent;
+
+    // We want our label on the left in rtl text
+    html.rtl & {
+      float: left;
+    }
+
+    .record-cell.label-pill & {
+      margin: 4px 0 0;
+    }
+
+    .sicon-sugar-predict {
+      margin-right: 3px;
+      margin-bottom: 2px;
+      color: @purple;
+    }
+  }
+
+  .record-link-wrapper {
+    display: flex;
+    flex-flow: row;
+    margin-left: @labelOnSideGutterWidth;
+
+    html.rtl & {
+      margin-right: @labelOnSideGutterWidth;
+      margin-left: 0;
+    }
+  }
+
+  &.label-pill {
+    margin: 0;
+  }
+
+  .normal {
+    > .detail,
+    > .erased,
+    > .edit {
+      display: inline-block;
+      width: inherit;
+    }
+
+    > .detail,
+    > .erased {
+      margin-bottom: 0;
+    }
+  }
+
+  .fieldset-inline .record-label {
+    display: block;
+    float: initial;
+    line-height: @baseFontSize;
+    margin: 0 0 3px 7px;
+    padding: 0;
+    border: none;
+
+    .record-label-symbol {
+      margin-right: 2px;
+    }
+
+    .fieldset-field {
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.row-fluid > .record-cell {
+  float: left;
+
+  &:not(.filler-cell) {
+    margin-bottom: 8px;
+  }
+
+  html.rtl & {
+    float: right;
+  }
+
+  &:not(:first-child) {
+    margin-left: @fluidGridGutterWidth;
+
+    html.rtl & {
+      margin-right: @fluidGridGutterWidth;
+      margin-left: 0;
+    }
+  }
+}
+
+.color-box {
+  display: flex;
+
+  .color-preview {
+    background: @gray20;
+    border: @borderWidget;
+    border-radius: 2px;
+    box-sizing: border-box;
+    height: 28px;
+    margin-left: 10px;
+    width: 80px;
+  }
+}
+
+// override default grid values for labels-on-side
+.spanInputLabelX (@index) when (@index > 0) {
+  @labelViewPortWidth: @columnViewPortWidth * @index + 2;
+
+  .labels-on-side > .record-label-wrapper.span@{index} { width: @labelViewPortWidth - 3; }
+
+  .labels-on-side {
+    //used adjacent sibling combinator in order to fill up the extra whitespace in the record-cell
+    .record-label-wrapper.span@{index} + .record-link-wrapper {
+      width: calc(~"100% - @{labelViewPortWidth}");
+    }
+  }
+
+  @media (min-width: 640px) {
+    @labelViewPortWidth: @columnViewPortWidth * @index + 2;
+
+    .labels-on-side {
+      .record-label-wrapper.span@{index} + .record-link-wrapper {
+        width: calc(~"100% - @{labelViewPortWidth}");
+      }
+    }
+  }
+
+  @media (min-width: 1024px) {
+    @labelViewPortWidth: @columnViewPortWidth * @index + 1;
+
+    .labels-on-side {
+      .record-label-wrapper.span@{index} + .record-link-wrapper {
+        width: calc(~"100% - @{labelViewPortWidth}");
+      }
+    }
+  }
+
+  @media (min-width: 1280px) {
+    @labelViewPortWidth: @columnViewPortWidth * @index;
+
+    .labels-on-side {
+      .record-label-wrapper.span@{index} + .record-link-wrapper {
+        width: calc(~"100% - @{labelViewPortWidth}");
+      }
+    }
+  }
+
+  .spanInputLabelX(@index - 1);
+}
+
+.spanInputLabelX (@gridColumns);
+
+@media screen and (max-width: 1369px) {
+  .record {
+    .labels-on-side {
+      &.empty-label .record-label-wrapper {
+        width: 0;
+      }
+
+      .record-edit-link-wrapper {
+        width: 108px;
+      }
+    }
+
+    .record-cell {
+      &:not(.label-pill) .record-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &[data-type="fieldset"] .labels-on-side.empty-label {
+        .record-link-wrapper {
+          margin-left: 0;
+        }
+
+        .sicon-edit {
+          margin-left: -10px;
+        }
+      }
+    }
+
+    .record-link-wrapper {
+      max-width: 100%;
+    }
+
+    .record-label {
+      max-width: 100%;
+    }
+
+    .fieldset-field .record-label {
+      max-width: 100px;
+    }
+  }
+}
+
+@media screen and (max-width: 940px) {
+  .record {
+    .record-link-wrapper .edit .control-group.email {
+      padding-right: 0;
+
+      .btn-toolbar {
+        display: inline-flex;
+        margin: 0;
+        min-height: 28px;
+        position: relative;
+      }
+    }
+
+    .record-cell[data-name="repeat_type"] {
+      width: 100%;
+      margin-left: 0;
+
+      .labels-on-side .record-link-wrapper {
+        max-width: 80px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 517px) {
+  .record .record-cell {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+}
+
+/* NEW SKIN END */

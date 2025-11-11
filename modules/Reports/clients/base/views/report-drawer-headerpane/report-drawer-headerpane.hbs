@@ -1,0 +1,30 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="flex flex-row py-2 pr-2">
+    <h1 class="flex items-center flex-grow self-center">
+        {{#each meta.fields}}
+            <span class="record-cell" data-type="{{type}}" data-name="{{name}}">
+                <span class="table-cell-wrapper">
+                    <span class="index" data-fieldname="{{name}}" data-index="">
+                        {{field ../this model=../this.model}}
+                    </span>
+                </span>
+            </span>
+        {{/each}}
+    </h1>
+    <div class="chart-tooltip-wrapper pr-2 self-center" rel="tooltip" data-placement="bottom" data-original-title="{{str 'LBL_REFRESH_REPORT_RESULTS' module}}">
+        <button class="btn report-visibility-button" data-action="refresh-widget" data-original-title="{{str 'LBL_REFRESH_REPORT_RESULTS' module}}">
+            <i class="sicon sicon sicon-refresh-lg"></i>
+        </button>
+    </div>
+</div>

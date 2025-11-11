@@ -1,0 +1,2 @@
+(function(app){app.events.on('app:init',function(){app.plugins.register('Prettify',['layout','view'],{_scriptReady:false,_pageReady:false,onAttach:function(component,plugin){this.on('init',function(){var self=this;if(window.prettyPrint){this._scriptReady=true;return;}
+$.getScript('styleguide/content/js/google-code-prettify/prettify.js',function(){self._scriptReady=true;if(self._pageReady){prettyPrint();}});},null,component);this.on('render',function(){this._pageReady=true;if(this._scriptReady){prettyPrint();}},null,component);}});});})(SUGAR.App);

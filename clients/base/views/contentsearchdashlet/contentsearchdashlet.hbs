@@ -1,0 +1,34 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+<div class="contentsearchdashlet {{#unless enabled}}hide{{/unless}}">
+    {{#if caseDeflection}}
+        <div class='record-cell'>
+            <p class='contentsearchdashlet-text'>
+                {{greeting}}
+            </p>
+            <input type='text' data-action='search' placeholder="{{str 'LBL_BASIC_QUICK_SEARCH'}}">
+        </div>
+    {{else}}
+        {{#if canCreateCase}}
+            <div>
+                <p class='contentsearchdashlet-text'>{{str 'LBL_CONTENT_SEARCH_DASHLET_DISABLED'}}</p>
+                <input type='button' value="{{str 'LBL_CREATE_CASE'}}" class='btn btn-primary' data-action='create-case'>
+            </div>
+        {{else}}
+            <p class='contentsearchdashlet-text'>
+                {{greeting}}
+            </p>
+        {{/if}}
+    {{/if}}
+</div>

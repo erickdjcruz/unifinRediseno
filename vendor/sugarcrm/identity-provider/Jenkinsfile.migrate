@@ -1,0 +1,98 @@
+// Declarative Pipeline Syntax
+
+idmImages = [:]
+changedFiles = ''
+
+pipeline {
+  agent {
+    node {
+      label 'docker'
+    }
+  }
+
+  environment {
+    IDM_REVISION_SHORT = env.GIT_COMMIT.take(7)
+  }
+
+  stages {
+    stage('Build Setup') {
+      steps {
+        script {
+          if (env.CHANGE_TARGET) {
+            changedFiles = valueFromSh("git diff --name-only --diff-filter=ACMRTUXB origin/${env.CHANGE_TARGET} HEAD | tr '\n' ' '")
+            echo "Files Changed: ${changedFiles}"
+          }
+        }
+      }
+    }
+
+    stage('Create Images') {
+      steps {
+        script {
+          createIdmImage('php74')
+        }
+      }
+    }
+
+    stage('Code-Standards Check') {
+      steps {
+        script {
+          if (changedFiles?.trim()) {
+            echo 'Running code-style on minimum supported version of PHP (7.1)'
+            sh """
+              docker run --rm -i ${idmImages['php74']} /bin/bash -c \
+              'vendor/bin/php-cs-fixer fix \
+              --config=.php_cs.dist --diff --dry-run --verbose --using-cache=no \
+              --path-mode=intersection ${changedFiles}'
+            """
+          }
+          else {
+            echo "Nothing to check--no files changed."
+          }
+        }
+      }
+    }
+
+    stage('Unit Tests') {
+      steps {
+        script {
+          runIdmPhpUnitSuite('php74')
+        }
+      }
+    }
+
+  }
+}
+
+// Creates IdentityProvider image based on given platform (matches Dockerfile extension by platform)
+def createIdmImage(platform) {
+  // def image = "registry.sugarcrm.net/identity-provider/idm:${env.IDM_REVISION_SHORT}_${platform}"
+  def imageUrl = "idm-identity-provider-ci:${env.IDM_REVISION_SHORT}_${platform}"
+  def dockerFile = "Dockerfile.${platform}"
+
+  buildDockerImage(imageUrl, dockerFile)
+  idmImages[platform] = imageUrl
+}
+
+def buildDockerImage(imageUrl, dockerFile) {
+  sh "docker build --pull -t ${imageUrl} -f ${dockerFile} ."
+}
+
+// Runs PHPUnit tests suite in container based on particular image
+def runIdmPhpUnitSuite(platform) {
+  sh """
+    docker run --rm -i ${idmImages[platform]} /bin/bash -c "./ci.sh && vendor/bin/phpunit --testsuite 'Unit Tests'"
+  """
+}
+
+// Run bash script and return its result
+def valueFromSh(command) {
+  def filename = "cmd-${UUID.randomUUID()}"
+  sh """
+    ${command} > ${filename}
+  """
+  def value = readFile(filename).trim()
+  sh "rm ${filename}"
+  return value
+}
+

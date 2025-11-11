@@ -1,0 +1,32 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="total-amount ellipsis_inline mr-4" id="total-kanban-{{headerID}}">
+    {{#if isCurrency}}
+        {{#if userPreferredCurrencyId}}
+            <div class="text-3xl py-1 ellipsis_inline" title="{{headerTotalPreferred}}">
+                {{headerTotalPreferred}}
+            </div>
+            <div class="text-2xl ellipsis_inline" title="{{headerTotal}}">
+                {{headerTotal}}
+            </div>
+        {{else}}
+            <div class="text-3xl py-1 ellipsis_inline" title="{{headerTotal}}">
+                {{headerTotal}}
+            </div>
+        {{/if}}
+    {{else}}
+        <div class="text-4xl py-1 ellipsis_inline" title="{{headerTotal}}">
+            {{headerTotal}}
+        </div>
+    {{/if}}
+</div>

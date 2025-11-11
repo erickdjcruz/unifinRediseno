@@ -1,0 +1,71 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    [ADMIN] PackageManager lists packages
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    Lists all packages in the system.
+</span>
+<h3>Response</h3>
+<pre class="pre-scrollable">
+    <pre class="pre-scrollable">
+{
+    "packages": [
+        {
+            "name": "project_P3",
+            "version": "1580885734",
+            "type": "module",
+            "published_date": "2020-02-06 12:51:17",
+            "description": "",
+            "uninstallable": true,
+            "file_install": "cd590eb069a73b2eeb6c107776fd60dc",
+            "file": "cd590eb069a73b2eeb6c107776fd60dc",
+            "enabled": "ENABLED",
+            "id": "66172e0e-48df-11ea-9f1f-acde48001122",
+            "installed": true
+        },
+        {
+            "name": "project_P1",
+            "version": 1580885419,
+            "published_date": "2020-02-05 06:50:19",
+            "description": "None",
+            "uninstallable": "Yes",
+            "type": "Module",
+            "file": "0ef4dd8b237f4358bdb246a744eb2b38",
+            "file_install": "5d4b4614421586fd2111714abf622392",
+            "unFile": "5d4b4614421586fd2111714abf622392",
+            "installed": false
+        }
+    ]
+}
+    </pre>
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11.8
+        </td>
+        <td>
+            Added <code>/Administration/packages/</code> GET endpoint.
+        </td>
+    </tr>
+</table>

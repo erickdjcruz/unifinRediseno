@@ -1,0 +1,104 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    An API to run a saved report and export the result.
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint will export the result of a saved report in one of the following formats: pdf, base64, csv, and json ('rows and columns' reports only).
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            record
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            ID of a saved report
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    <tr>
+        <td>
+            export_type
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            Format of exported data. It can be one of the following formats: pdf, base64, csv, and json (it's currently only abailable for 'rows and columns' reports). 
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+GET /rest/v11/Reports/:id/json
+</pre>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+[
+    {
+        "Contact ID":"fa300a0e-0ad1-b322-9601-512d0983c19a",
+        "First Name":"Dale",
+        "Last Name":"Arvizu",
+        "Email Address":"vegan.sugar.support@example.co.uk",
+        "Account Name":"DD Furniture Inc"
+    },
+    {
+        "Contact ID":"71c773ce-980e-11eb-8f85-f45c898a3ce7",
+        "First Name":"Isis",
+        "Last Name":"Arvizu",
+        "Email Address":"im38@example.info",
+        "Account Name":"J.K.M. Corp (HA)"
+    },
+]
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11.13
+        </td>
+        <td>
+            Added csv and json formats.
+        </td>
+    </tr>
+</table>

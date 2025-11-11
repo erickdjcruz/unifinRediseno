@@ -1,0 +1,56 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="omni-detail-wrapper">
+    <div class="omni-detail-content omni-detail-title sticky">
+        <div class="omni-detail-title-text font-bold">
+            {{#if summaryTitle}}
+                {{summaryTitle}}
+            {{else}}
+                {{str 'LBL_OMNICHANNEL_CONFIG_SUMMARY'}}
+            {{/if}}
+        </div>
+
+        <div class="loading ml-1 text-[--label-color]">
+            - <span></span>
+            <i class="l1 m-0">.</i>
+            <i class="l2 m-0">.</i>
+            <i class="l3 m-0">.</i>
+        </div>
+    </div>
+
+    <div class="omni-detail-content">
+        <div class="omni-summary-cell">
+        {{#each summaryFields}}
+            <div class="omni-cell">
+                <div class="omni-label">{{str this.label}}</div>
+                {{field ../this model=../model template='edit'}}
+            </div>
+        {{/each}}
+        </div>
+    </div>
+
+    <div class="omni-detail-content">
+        <div class="omni-summary-cell">
+            {{#each meta.fields}}
+                <div class="record-cell omni-cell">
+                    <div class="omni-label">{{str label ../currentContactModule}}</div>
+                    {{#if this.readonly}}
+                        {{field ../../this model=../../model template='detail'}}
+                    {{else}}
+                        {{field ../../this model=../../model template='edit'}}
+                    {{/if}}
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>

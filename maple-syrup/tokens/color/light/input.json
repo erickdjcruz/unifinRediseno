@@ -1,0 +1,13 @@
+{
+  "color": {
+    "light": {
+      "input": {
+        "base": { "value": "{color.white.value}" },
+        "disabled": { "value": "{color.gray.200.value}" },
+        "searchbar": {
+          "base": { "value": "{color.gray.200.value}" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class='search-group'>
+  <input type='text' class='calendars-search' placeholder="{{str 'LBL_CALENDAR_SEARCH_INPUT_PLACEHOLDER' 'Calendar'}}">
+  <i class='sicon sicon-search'></i>
+</div>
+<ul class='calendars-list'>
+  {{partial 'items.calendars' this items=this.items name=this.name}}
+</ul>

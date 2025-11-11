@@ -1,0 +1,50 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<style>
+    .portal-chat-header {
+        background-color: {{styles.awsHeaderBackgroundColor}};
+    }
+    .portal-chat-header h4 {
+        color: {{styles.awsHeaderTitleColor}};
+    }
+    .portal-chat-header span {
+        color: {{styles.awsHeaderSubtitleColor}};
+    }
+    .portal-chat-footer span {
+        color: {{styles.awsFooterTitleColor}};
+    }
+    .portal-chat-footer #end-portal-chat {
+        width: {{styles.awsEndChatButtonWidth}}px;
+        height: {{styles.awsEndChatButtonHeight}}px;
+        color: {{styles.awsEndChatButtonTextColor}};
+        background-color: {{styles.awsEndChatButtonFill}};
+    }
+    #portal-chat-widget div[direction='Incoming'] {
+        color: {{styles.awsMessageTextColor}};
+        background-color: {{styles.awsMessageAgentBubbleColor}};
+    }
+    #portal-chat-widget div[direction='Incoming']::after {
+        border-bottom-color: {{styles.awsMessageAgentBubbleColor}};
+    }
+    #portal-chat-widget div[direction='Outgoing'] {
+        color: {{styles.awsMessageTextColor}};
+        background-color: {{styles.awsMessageCustomerBubbleColor}};
+    }
+    #portal-chat-widget div[direction='Outgoing']::after {
+        border-bottom-color: {{styles.awsMessageCustomerBubbleColor}};
+    }
+</style>
+<div class='cpp-loader-container'>
+    <div class='ccp-loader'></div>
+</div>
+<div id='portal-chat-widget'></div>

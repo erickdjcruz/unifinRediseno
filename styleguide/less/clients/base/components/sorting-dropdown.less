@@ -1,0 +1,33 @@
+.sorting-dropdown {
+  .sorting-dropdown-select {
+    .select2-choice {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  .sorting-dropdown-arrow {
+    border: @borderWidget;
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 4px 8px;
+    cursor: pointer;
+
+    .sicon {
+      color: @sicon-active-color;
+    }
+  }
+
+  .sorting-dropdown-arrow.disabled {
+    .sicon {
+      color: #b8bcbe;
+    }
+  }
+
+  .sorting-dropdown-arrow:not(.disabled):hover {
+    .sicon {
+      color: var(--sicon-hover-color);
+    }
+  }
+}

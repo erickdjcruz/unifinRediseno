@@ -1,0 +1,50 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if collection.dataFetched}}
+    {{#if ../collection.length}}
+        {{#notEq pagesCount "-1"}}
+            <div class="list-pagination" aria-label="page-navigation">
+                <div class="pagination-items">
+                    <button data-action="paginate-prev" class="btn paginate-prev{{#eq page '1'}} disabled{{/eq}}">
+                        <i class="sicon sicon-chevron-left"></i>
+                    </button>
+
+                    <input class="current-page" value="{{page}}" {{#eq pagesCount 1}}disabled{{/eq}}
+                           data-action="paginate-input" data-focus-expect="{{pageInputFocusExpect}}" />
+
+                    <span>{{str 'LBL_LIST_PAGINATION_OF'}}</span>
+                    {{#if pagesCount}}
+                        <span>{{pagesCount}}</span>
+                    {{else}}
+                        {{#if isLoadingCount}}
+                            <span class="loading-count">{{str 'LBL_LOADING'}}</span>
+                        {{else}}
+                            <button class="btn page-count" name='page-count' rel="tooltip"
+                                    title="{{str 'LBL_GET_PAGE_COUNT_TOOLTIP'}}">
+                                ...
+                            </button>
+                        {{/if}}
+                    {{/if}}
+
+                    <button data-action="paginate-next" class="btn paginate-next{{#eq page pagesCount}} disabled{{/eq}}">
+                        <i class="sicon sicon-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        {{/notEq}}
+    {{/if}}
+{{else}}
+    <div class="block-footer">
+        {{loading 'LBL_ALERT_TITLE_LOADING'}}
+    </div>
+{{/if}}

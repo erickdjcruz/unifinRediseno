@@ -1,0 +1,95 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#each meta.panels}}
+    <div class="multi-line-list-loader h-full w-full">
+        {{#if ../metric}}
+            {{#if ../../collection.length}}
+                <table class="table table-striped dataTable multi-line-table{{#if ../../../hasFrozenColumn}} sticky-first-column{{/if}}">
+                    <thead>
+                    <tr>
+                        {{#each ../../../leftColumns}}
+                            <th class="left-column h-7 left-0 min-w-[2.375rem] sticky z-[12]"></th>
+                        {{/each}}
+                        {{#each fields}}
+                            <th class="{{#if widthClass}} {{widthClass}}{{/if}}"
+                                {{#if styles}} style="{{styles}}"{{/if}}
+                                {{#if name}} data-fieldname="{{name}}"{{/if}}>
+                                {{#if labelValue}}
+                                    <span>{{labelValue}}</span>
+                                {{else}}
+                                    <span>{{str label ../../../../../module}}</span>
+                                {{/if}}
+                            </th>
+                        {{/each}}
+                        <th class="edit-th"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each ../../../collection.models}}
+                        <tr class="multi-line-row single" data-id={{this.id}}>
+                            {{#each ../../../../leftColumns}}
+                                <td class='left-column border-t border-[--border-color] focus-within:z-[11] h-11 left-0 sticky'>
+                                    {{field ../../../../../this model=../this template=../../../../../viewName}}
+                                </td>
+                            {{/each}}
+                            {{#each ../fields}}
+                                <td class="subfields{{#if align}} {{align}}{{/if}}">
+                                    {{#each subfields}}
+                                        <div class="subfield {{#if @index}}stylesGray{{else}}{{#eq name 'date_closed'}}stylesSemiBold{{/eq}}{{/if}}"{{#if name}} data-fieldname="{{name}}"{{/if}} data-type="{{type}}">
+                                            {{field ../../../../../../this model=../../this template=../../../../../../viewName}}
+                                        </div>
+                                    {{/each}}
+                                </td>
+                            {{/each}}
+
+                            {{#if hasEditAccess}}
+                                <td class="edit-td sticky right-0">
+                                    <div class="flex flex-row items-center absolute h-full top-0 right-0 pr-1.5">
+                                        <div class="btn-group detail flex flex-row items-center rounded-full shadow-lg bg-[--dashlet-background]">
+                                            <button type="button" class="btn btn-invisible" data-action="edit-list-row">
+                                                <i class="sicon sicon-edit"></i>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group edit flex flex-row items-center rounded-full shadow-lg bg-[--dashlet-background] w-15 h-7.5">
+                                            <button type="button" class="btn btn-invisible pr-0" data-action="cancel-list-row">
+                                                <i class="sicon sicon-close"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-invisible pl-0" data-action="save-list-row">
+                                                <i class="sicon sicon-check-circle"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            {{/if}}
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            {{else}}
+                <div class="block-footer">
+                    <em>{{str "LBL_LISTVIEW_NO_RECORDS" this.module}}</em>
+                </div>
+            {{/if}}
+        {{else}}
+            <div class="multi-line-list-loader-footer h-full w-full">
+                <div class="data-skeleton-loader h-full w-full"></div>
+            </div>
+        {{/if}}
+    </div>
+{{/each}}
+
+{{#unless hasModuleAccess}}
+    <div class="block-footer">
+        <em>{{str "EXCEPTION_NOT_AUTHORIZED_TO_DATA" this.module}}</em>
+    </div>
+{{/unless}}

@@ -1,0 +1,44 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="modal rounded-md" id="report_export_modal" data-content="report-export-modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent p-0">
+                <button type="button" class="close" data-bs-dismiss="modal"><i class="sicon sicon-close p-1 mr-2"></i></button>
+                <h4 class="modal-title font-semibold text-base ml-4">{{str "LBL_EXPORT_AS" module}}</h4>
+            </div>
+            <div class="modal-body !p-0">
+                 <div class="detail-content">
+                    <div class="flex row-fluid report-active-hover export-pdf hover:cursor-pointer hover:bg-[--tab-background-hover-color]">
+                        <div class="span2">
+                            <span class="sicon sicon-pdf-file-xxl report-copy-modal-icon mt-0 mb-1.5 text-center text-7xl w-full"></span>
+                        </div>
+                        <div class="span10 report-copy-modal-text">
+                                <p class="pdf font-semibold text-base">{{str "LBL_EXPORT_TO_PDF" module}}</p>
+                                <p>{{str "LBL_PDF_DESCRIPTION" module}}</p>
+                        </div>
+                    </div>
+                    <div class="row-fluid flex report-active-hover export-csv hover:cursor-pointer hover:bg-[--tab-background-hover-color]">
+                        <div class="span2">
+                            <span class="sicon sicon-csv-file-xxl report-copy-modal-icon mt-0 mb-1.5 text-center text-7xl w-full"></span>
+                        </div>
+                        <div class="span10 report-copy-modal-text">
+                                <p class="csv font-semibold text-base">{{str "LBL_EXPORT_TO_CSV" module}}</p>
+                                <p>{{str "LBL_CSV_DESCRIPTION" module}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

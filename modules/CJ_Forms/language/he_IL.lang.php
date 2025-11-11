@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'פירוט של פעולות Smart Guide ב-Sugar',
+    'LBL_MODULE_TITLE' => 'פעולת Smart Guide ב-Sugar',
+    'LBL_HOMEPAGE_TITLE' => 'פעולות Smart Guide שלי ב-Sugar',
+    'LNK_NEW_RECORD' => 'פעולת Smart Guide חדשה ב-Sugar',
+    'LNK_VIEW_RECORDS' => 'תצוגה של פעולות Smart Guide ב-Sugar',
+    'LNK_CJ_FORM_LIST' => 'תצוגה של פעולות Smart Guide ב-Sugar',
+    'LNK_LIST' => 'פעולות Smart Guide ב-Sugar',
+    'LBL_SEARCH_FORM_TITLE' => 'חיפוש של פעולת Smart Guide ב-Sugar',
+    'LBL_MODULE_NAME' => 'פעולות Smart Guide ב-Sugar',
+    'LBL_MODULE_NAME_SINGULAR' => 'פעולת Smart Guide ב-Sugar',
+    'LBL_TRIGGER_EVENT' => 'אירוע טריגר',
+    'LBL_ACTION_TYPE' => 'סוג פעולה',
+    'LBL_PARENT_MODULE' => 'מודול הורה',
+    'LBL_RELATIONSHIP' => 'קשר גומלין',
+    'LBL_ACTIVITY_TEMPLATE' => 'תבנית פעילות',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'תבנית מדריך חכם/שלב/פעילות',
+    'LBL_ACTIVE' => 'פעיל',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'תבנית הפעילות %s כבר כוללת פעולת Sugar עם אירוע הטריגר %s. יש מגבלה של פעולת Sugar פעילה אחת לכל סוג של אירוע טריגר עבור כל שלב או פעילות ב-Smart Guide נתון.',
+    'LBL_RECORDVIEW_PANEL4' => 'אכלוס שדות',
+    'LBL_POPULATE_FIELDS' => 'אכלוס שדות',
+    'LBL_ADD_FIELD' => 'הוסף שדה',
+    'LBL_REMOVE_FIELD' => 'הסר שדה',
+    'LBL_FIELD_NAME' => 'שם שדה',
+    'LBL_FIELD_VALUE' => 'ערך שדה',
+    'LBL_FIELD_NOT_AVAILABLE' => 'השדה לא זמין לתצוגת רשימה.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'סוג טריגר פעולה',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'לא נמצאה רשומה קשורה',
+    'LBL_IGNORE_ERRORS' => 'התעלם משגיאות',
+    'LBL_NO_DISPLAY_FIELDS' => 'אין שדות להצגה.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'שדה קישור של תבנית פעילות',
+    'LBL_STAGE_TEMPLATE_LINK' => 'שדה קישור של תבנית שלב',
+    'LBL_EMAIL_TEMPLATES' => 'תבנית דואר אלקטרוני',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'בחר כתובת דוא"ל של הנמען',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'שדות דוא"ל',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'סמל תצוגה',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'תבנית של מדריך חכם/שלב/פעילות',
+    'LBL_ACTIVITY_MODULE' => 'מודול פעילות',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'תבנית Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'בחירת טריגר תבנית Smart Guide',
+    'LBL_MAIN_TRIGGER_TYPE' => 'סוג טריגר',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'בחירת סוג טריגר',
+    'LBL_MODULE_TRIGGER' => 'טריגר מודול',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'בחירת טריגר מודול',
+    'LBL_FIELD_TRIGGER' => 'טריגר שדה',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'בחירת יעד Smart Guide',
+    'LBL_CJ_TARGET' => 'יעד Smart Guide',
+    'LBL_CJ_ACTION' => 'פעולת Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'בחירת פעולת Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'טריגר',
+    'LBL_TRIGGER_DESCRIPTION' => 'השדות הבאים נועדו לבחירת סוג הטריגר והתנאים שיפעילו את הטריגר.',
+    'LBL_TARGET_ACTION_TITLE' => 'מטרה ופעולה',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'בשדות הבאים אפשר לבחור איפה ואילו פעולות יתרחשו כשהטריגר מופעל.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'בחירת שלב Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'בחירת פעילויות Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'בחירת פעילות Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'בחירת פעולה של פעילויות שלב',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'בחירת פעולה של פעילויות Smart Guide',
+];

@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'รายการ Smart Guide การดำเนินการ Sugar',
+    'LBL_MODULE_TITLE' => 'Smart Guide การดำเนินการ Sugar',
+    'LBL_HOMEPAGE_TITLE' => 'Smart Guide การดำเนินการ Sugar ของฉัน',
+    'LNK_NEW_RECORD' => 'Smart Guide การดำเนินการ Sugar ใหม่',
+    'LNK_VIEW_RECORDS' => 'มุมมอง Smart Guide การดำเนินการ Sugar',
+    'LNK_CJ_FORM_LIST' => 'มุมมอง Smart Guide การดำเนินการ Sugar',
+    'LNK_LIST' => 'Smart Guide การดำเนินการ Sugar',
+    'LBL_SEARCH_FORM_TITLE' => 'ค้นหา Smart Guide การดำเนินการ Sugar',
+    'LBL_MODULE_NAME' => 'Smart Guide การดำเนินการ Sugar',
+    'LBL_MODULE_NAME_SINGULAR' => 'Smart Guide การดำเนินการ Sugar',
+    'LBL_TRIGGER_EVENT' => 'ทริกเกอร์เหตุการณ์',
+    'LBL_ACTION_TYPE' => 'ประเภทการดำเนินการ',
+    'LBL_PARENT_MODULE' => 'โมดูลหลัก',
+    'LBL_RELATIONSHIP' => 'ความสัมพันธ์',
+    'LBL_ACTIVITY_TEMPLATE' => 'เทมเพลตกิจกรรม',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'คู่มืออัจฉริยะ /ขั้นตอน/เทมเพลตกิจกรรม',
+    'LBL_ACTIVE' => 'ทำงานอยู่',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => '%s เทมเพลทกิจกรรมมี Sugar Action อยู่แล้วโดยใช้เหตุการณ์ทริกเกอร์ %s เหตุการณ์ มีการจํากัดการดําเนินการ Sugar ที่ใช้งานอยู่หนึ่งรายการต่อประเภทเหตุการณ์ทริกเกอร์สําหรับแต่ละขั้นตอนหรือกิจกรรมในคู่มืออัจฉริยะ',
+    'LBL_RECORDVIEW_PANEL4' => 'เติมข้อมูลในฟิลด์',
+    'LBL_POPULATE_FIELDS' => 'เติมข้อมูลในฟิลด์',
+    'LBL_ADD_FIELD' => 'เพิ่มฟิลด์',
+    'LBL_REMOVE_FIELD' => 'นำฟิลด์ออก',
+    'LBL_FIELD_NAME' => 'ชื่อฟิลด์',
+    'LBL_FIELD_VALUE' => 'ค่าฟิลด์',
+    'LBL_FIELD_NOT_AVAILABLE' => 'ฟิลด์นี้ไม่พร้อมใช้งานสําหรับมุมมองรายการ',
+    'LBL_ACTION_TRIGGER_TYPE' => 'ประเภททริกเกอร์การกระทำ',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'ไม่พบเรกคอร์ดที่เกี่ยวข้อง',
+    'LBL_IGNORE_ERRORS' => 'เพิกเฉยต่อข้อผิดพลาด',
+    'LBL_NO_DISPLAY_FIELDS' => 'ไม่มีฟิลด์ให้แสดง',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'ฟิลด์ลิงก์เทมเพลทกิจกรรรม',
+    'LBL_STAGE_TEMPLATE_LINK' => 'ฟิลด์เชื่อมขั้นตอนเทมเพลต',
+    'LBL_EMAIL_TEMPLATES' => 'เทมเพลทอีเมล',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'เลือกที่อยูอีเมล "ถึง"',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'ฟิลด์อีเมล',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'ไอคอนแสดง',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'คู่มืออัจฉริยะ /ขั้นตอน/เทมเพลตกิจกรรม',
+    'LBL_ACTIVITY_MODULE' => 'โมดูลกิจกรรม',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Smart Guide เทมเพลต',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'เลือก Smart Guide เทมเพลตทริกเกอร์',
+    'LBL_MAIN_TRIGGER_TYPE' => 'ประเภททริกเกอร์',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'เลือกประเภททริกเกอร์',
+    'LBL_MODULE_TRIGGER' => 'ทริกเกอร์โมดูล',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'เลือกโมดูลทริกเกอร์',
+    'LBL_FIELD_TRIGGER' => 'ทริกเกอร์ฟิลด์',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'เลือก Smart Guide เป้าหมาย',
+    'LBL_CJ_TARGET' => 'Smart Guide เป้าหมาย',
+    'LBL_CJ_ACTION' => 'Smart Guide การดำเนินการ',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'เลือก Smart Guide การดำเนินการ',
+    'LBL_TRIGGER_TITLE' => 'ทริกเกอร์',
+    'LBL_TRIGGER_DESCRIPTION' => 'ใช้ฟิลด์ด้านล่างเพื่อเลือกประเภททริกเกอร์และเงื่อนไขที่จะเปิดใช้งานทริกเกอร์',
+    'LBL_TARGET_ACTION_TITLE' => 'เป้าหมายและการดําเนินการ',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'ใช้ฟิลด์ด้านล่างเพื่อเลือกตําแหน่งและการดําเนินการที่จะเกิดขึ้นเมื่อเปิดใช้งานทริกเกอร์',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'เลือก Smart Guide ขั้นตอน',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'เลือก Smart Guide กิจกรรม',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'เลือก Smart Guide กิจกรรม',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'เลือก ขั้นตอนการดำเนินการกิจกรรม',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'เลือก Smart Guide การดำเนินการกิจกรรม',
+];

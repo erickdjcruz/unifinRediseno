@@ -1,0 +1,127 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Retrieve my calendars and others calendars
+</span>
+
+<h2>Request</h2>
+<code class="codesample">
+    POST /Calendar/calendars
+</code>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the list of calendars:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                calendarFilter
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Indicate the type of calendar (my_calendars/other_calendars)
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                calendarType
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The location of calendars (e.g: main)
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                layout
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Calendar Layout (e.g: calendar-main-scheduler)
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                recordModule
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The record module
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                viewSource
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The calendar source (e.g: calendar-main-panel)
+            </td>
+        </tr>
+
+
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+{
+    calendarFilter: "my_calendars"
+    calendarType: "main"
+    layout: "calendar-main-scheduler"
+    recordModule: "Calendar"
+    viewSource: "calendar-main-panel"
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/Calendar/modules</code> POST endpoint.
+        </td>
+    </tr>
+</table>

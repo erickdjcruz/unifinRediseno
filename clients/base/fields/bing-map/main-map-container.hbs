@@ -1,0 +1,31 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="map-container-inherit" data-container="map-container">
+    <div class="map-to-email-button" data-action="map-share"  rel="tooltip" data-original-title="{{str 'LBL_MAPS_EMAIL_LINK'}}" data-bs-placement="bottom">
+        <i class="sicon sicon-email"></i>
+    </div>
+    <div class="map-to-pdf-button" data-action="map-to-pdf"  rel="tooltip" data-original-title="{{str 'LBL_MAPS_SAVE_PDF_TOOLTIP'}}" data-bs-placement="bottom">
+        <i class="sicon sicon-download"></i>
+    </div>
+    <div class="map-expand-button" data-action="map-expand" rel="tooltip" data-original-title="{{str 'LBL_MAPS_EXPAND_TOOLTIP'}}" data-bs-placement="bottom">
+        <i class="sicon sicon-expand-right"></i>
+    </div>
+    <div class="map-close-button" data-action="map-close"  rel="tooltip" data-original-title="{{str 'LBL_MAPS_CLOSE_TOOLTIP'}}" data-bs-placement="bottom">
+        <i class="sicon sicon-close"></i>
+    </div>
+</div>
+<div class="map-driving-directions sugar-light-theme" data-container="driving-directions"></div>
+<div class="map-loading-screen-overlay" data-widget="map-loading">
+    <i class="sicon sicon-refresh sicon-is-spinning map-loading-icon"></i>
+    <h4 class="map-loading-label">{{str "LBL_LOADING"}}</h4>
+</div>

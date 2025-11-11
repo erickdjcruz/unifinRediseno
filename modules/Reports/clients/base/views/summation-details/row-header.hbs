@@ -1,0 +1,42 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<tr class="flex-list-row-header sticky top-0 z-30">
+    {{#each view._fields.visible}}
+        <th class="reports-row-header-padding relative sortable sorting{{#eq ../view.orderBy.field name}}_{{../../view.orderBy.direction}}{{/eq}} orderBy{{name}} {{#if widthClass}}{{widthClass}}{{/if}}
+            {{#if ../view.isFirstColumnFreezed}}{{#if @first}} sticky{{#eq ../../../view.leftColumns.length 0}} left-0{{else}} stick-first{{/eq}}{{/if}}{{/if}} z-10"
+            data-tablekey="{{column_key}}"
+            {{#if styles}} style="{{styles}}"{{/if}}
+            {{#if name}} data-fieldname="{{name}}" data-realname="{{rname}}"{{/if}} data-orderby="{{orderBy}}">
+
+            <div class="sortable-row-header-container p-2">
+                <span class="sortable-row-header-column-name">
+                    {{#if icon}}
+                        <i class="{{buildIcon icon.type}}" rel="tooltip"  title="{{str icon.tooltip ../../view.module}}"></i>
+                    {{/if}}
+                    {{#if labelValue}}
+                        {{labelValue}}
+                    {{else}}
+                        {{str vname module}}
+                    {{/if}}
+                </span>
+                <span class="sortable-row-header-arrows data-table-top">
+                    <i class="sicon sicon-arrow-up"></i>
+                    <i class="sicon sicon-arrow-down"></i>
+                </span>
+            </div>
+        </th>
+    {{/each}}
+    {{#each view.rightColumns}}
+        <td class="smd-rc">&nbsp;</td>
+    {{/each}}
+</tr>

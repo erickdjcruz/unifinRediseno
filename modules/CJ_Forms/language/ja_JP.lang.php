@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Smart Guide Sugarアクションをリストアップ',
+    'LBL_MODULE_TITLE' => 'Smart Guide Sugarアクション',
+    'LBL_HOMEPAGE_TITLE' => 'マイSmart Guide Sugarアクション',
+    'LNK_NEW_RECORD' => '新規Smart Guide Sugarアクション',
+    'LNK_VIEW_RECORDS' => 'Smart Guide Sugarアクションを表示',
+    'LNK_CJ_FORM_LIST' => 'Smart Guide Sugarアクションを表示',
+    'LNK_LIST' => 'Smart Guide Sugarアクション',
+    'LBL_SEARCH_FORM_TITLE' => 'Smart Guide Sugarアクションを検索',
+    'LBL_MODULE_NAME' => 'Smart Guide Sugarアクション',
+    'LBL_MODULE_NAME_SINGULAR' => 'Smart Guide Sugarアクション',
+    'LBL_TRIGGER_EVENT' => 'トリガーイベント',
+    'LBL_ACTION_TYPE' => 'アクションタイプ',
+    'LBL_PARENT_MODULE' => '親モジュール',
+    'LBL_RELATIONSHIP' => '関連',
+    'LBL_ACTIVITY_TEMPLATE' => 'アクティビティテンプレート',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'スマートガイド/ステージ/アクティビティテンプレート',
+    'LBL_ACTIVE' => 'アクティブ',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => '%sアクティビティテンプレートには、%sトリガーイベントを使用したSugarアクションがすでにあります。Smart Guideの各ステージまたはアクティビティには、トリガーイベントタイプごとのアクティブなSugarアクションは1つまでという制限があります。',
+    'LBL_RECORDVIEW_PANEL4' => 'フィールドを入力',
+    'LBL_POPULATE_FIELDS' => 'フィールドを入力',
+    'LBL_ADD_FIELD' => 'フィールドを追加',
+    'LBL_REMOVE_FIELD' => 'フィールドを削除',
+    'LBL_FIELD_NAME' => 'フィールド名',
+    'LBL_FIELD_VALUE' => 'フィールド値',
+    'LBL_FIELD_NOT_AVAILABLE' => 'このフィールドはリストビューでは使用できません。',
+    'LBL_ACTION_TRIGGER_TYPE' => 'アクショントリガータイプ',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => '関連レコードが見つかりませんでした',
+    'LBL_IGNORE_ERRORS' => 'エラーを無視',
+    'LBL_NO_DISPLAY_FIELDS' => '表示するフィールドはありません。',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'アクティビティテンプレートリンクフィールド',
+    'LBL_STAGE_TEMPLATE_LINK' => 'ステージテンプレートリンクフィールド',
+    'LBL_EMAIL_TEMPLATES' => 'メールテンプレート',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => '「宛先」メールアドレスを選択',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'メールフィールド',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'アイコンを表示',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'スマートガイド/ステージ/アクティビティテンプレート',
+    'LBL_ACTIVITY_MODULE' => 'アクティビティモジュール',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Smart Guideテンプレート',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Smart Guideテンプレートを選択',
+    'LBL_MAIN_TRIGGER_TYPE' => 'トリガータイプ',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'トリガータイプを選択',
+    'LBL_MODULE_TRIGGER' => 'モジュールのトリガー',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'モジュールトリガーを選択',
+    'LBL_FIELD_TRIGGER' => 'フィールドのトリガー',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Smart Guideターゲットを選択',
+    'LBL_CJ_TARGET' => 'Smart Guideターゲット',
+    'LBL_CJ_ACTION' => 'Smart Guideアクション',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Smart Guideアクションを選択',
+    'LBL_TRIGGER_TITLE' => 'トリガー',
+    'LBL_TRIGGER_DESCRIPTION' => '以下のフィールドを使用すると、トリガーのタイプとトリガーを有効化する条件を選択できます。',
+    'LBL_TARGET_ACTION_TITLE' => 'ターゲットおよびアクション',
+    'LBL_TARGET_ACTION_DESCRIPTION' => '以下のフィールドを使用すると、トリガーが有効化されたときに発生する場所とアクションを選択できます。',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Smart Guideステージを選択',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Smart Guideアクティビティを選択',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Smart Guideアクティビティを選択',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'ステージアクティビティアクションを選択',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Smart Guideアクティビティのアクションを選択',
+];

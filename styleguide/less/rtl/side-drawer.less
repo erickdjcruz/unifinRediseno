@@ -1,0 +1,27 @@
+#side-drawer {
+  .drawer-content {
+    .main-pane.span8 {
+      right: @sidebarNavWidth;
+      width: 40vw;
+      position: relative;
+    }
+
+    .main-pane.span12 {
+      right: @sidebarNavWidth;
+      width: inherit;
+    }
+  }
+
+  .drawer-tabs .nav-tabs {
+    position: relative;
+    right: @sidebarNavWidth;
+  }
+
+  .dashboard-grid {
+    right: @sidebarNavWidth;
+  }
+
+  .sidebar-content .headerpane .record-cell {
+    right: 2rem;
+  }
+}

@@ -1,0 +1,51 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="record">
+    <div class="row-fluid">
+        <div class="row-fluid">
+            <div class="span6 record-cell">
+                <span>
+                    <div class="ellipsis_inline record-label">
+                            <span class="text-overflow">{{str "LBL_MAPS_UNIT_TYPE_TITLE" module}}</span>
+                    </div>
+                    <span class="normal">
+                        <span>
+                            <select class="select2 inherit-width" data-fieldname="unit-type" data-placeholder="{{str 'LBL_MAPS_UNIT_PLACEHOLDER'}}">
+                                {{#each _select2Data.unitType }}
+                                        <option value={{@key}}>{{str this ../module}}</option>
+                                {{/each}}
+                            </select>
+                        </span>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="span12 record-cell">
+            <span>
+                <div class="ellipsis_inline record-label">
+                        <span class="text-overflow">{{str "LBL_MAPS_ADD_NEW_MODULE_TO_GEOCODE" module}}</span>
+                </div>
+                <span class="normal">
+                    <span>
+                        <a class="inherit-width" data-fieldname="add-new-module" data-placeholder="{{str 'LBL_MAPS_SELECT_NEW_MODULE_TO_GEOCODE' module}}"></a>
+                    </span>
+                </span>
+            </span>
+        </div>
+    </div>
+    <div>
+        <div class="maps-missing-modules">{{str "LBL_MAPS_NO_ENABLED_MODULES" module}}</div>
+        <div class="subpanels-layout" data-container="modules-widgets-container">
+        </div>
+    </div>
+</div>

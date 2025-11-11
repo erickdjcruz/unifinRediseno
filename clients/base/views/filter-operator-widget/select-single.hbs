@@ -1,0 +1,21 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="flex flex-row items-center m-2 ml-2.5 mr-2.5">
+    <select class="runtime-filter-select w-full" data-fieldname="select-single">
+        {{#each data._users}}
+            <option value="{{@key}}" {{#eq ../data._inputValue @key}}selected{{/eq}}>
+                {{this}}
+            </option>
+        {{/each}}
+    </select>
+</div>

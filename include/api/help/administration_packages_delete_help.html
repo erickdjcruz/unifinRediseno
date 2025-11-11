@@ -1,0 +1,48 @@
+
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    [ADMIN] PackageManager delete a package
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    Delete the specified package. Package 'unFile' hash must be provided.
+    Package 'unFile' hash could be found <a onclick="openLongHelp('0a1e2025e64616cc2ef5ca2d8b7a2f05');">in staging package list</a>.
+</span>
+<h3>Response</h3>
+Returns http status 200 OK if request is successful.
+Otherwise returns http status 4xx with errors.
+<pre class="pre-scrollable">
+{
+    "error": "delete_package_error",
+    "error_message": "Could not find package file."
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11.8
+        </td>
+        <td>
+            Added <code>/Administration/packages/:unFile</code> DELETE endpoint.
+        </td>
+    </tr>
+</table>

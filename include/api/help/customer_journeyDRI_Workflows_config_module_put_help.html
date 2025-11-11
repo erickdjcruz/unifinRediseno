@@ -1,0 +1,112 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2 xmlns="http://www.w3.org/1999/html">Overview</h2>
+<span class="lead">
+    Saves the config for enabled modules of Customer Journey
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This request will saves the config for enabled modules of Customer Journey
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                enabled_modules
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                Module names which needs to be enabled
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "enabled_modules": [
+        "Documents",
+        "Products",
+    ],
+}
+</pre>
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the following fields:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                Anonymous
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                Contains lanable, missing and custom modules
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">{
+    [
+        "enabled_modules" => [
+            "Accounts",
+            "opportunities",
+            "Cases",
+            "Contacts",
+            "Leads",
+        ],
+        "missing_modules" => [
+            "modules" => [
+                "Notes",
+            ],
+            "module_loader_link" => "https://test-12-2-0-ent.msqa.sugarcrm.com//#bwc/index.php?module=Administration&action=UpgradeWizard&view=module",
+        ],
+        "custom_modules" => [
+            "modules" => [
+                "MyProducts",
+            ],
+            "module_loader_link" => "https://test-12-2-0-ent.msqa.sugarcrm.com//#bwc/index.php?module=Administration&action=UpgradeWizard&view=module",
+        ],
+    ]
+}</pre>

@@ -1,0 +1,128 @@
+.cd-radio-buttons {
+  position: absolute;
+  right: 68px;
+  top: 2px;
+}
+
+.cd-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cd-connection {
+  text-align: center;
+  font-size: 25px;
+}
+
+.cd-warning {
+  font-size: 35px;
+}
+
+.docMergeToHeader {
+  padding-left: 10px;
+  color: @gray70;
+}
+
+.docMergeToDocuSign a {
+  padding-left: 15px;
+}
+
+.docMergeToWEP a {
+  padding-left: 15px;
+}
+
+.docMergeToPDF a {
+  padding-left: 15px;
+}
+
+.btn.newFolder,
+.btn.uploadFile,
+.btn.refreshPath {
+  border-radius: 3px;
+  margin-left: 0;
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 1;
+
+    &:hover {
+      border-color: @gray30;
+    }
+
+    &.active {
+      background-color: @color-transparent;
+    }
+
+    i {
+      color: @gray50;
+    }
+
+    .tooltip-inner {
+      max-width: 270px;
+      width: 220px;
+    }
+  }
+}
+
+.sugar-dark-theme {
+  .btn.newFolder.disabled,
+  .btn.uploadFile.disabled {
+    &:hover {
+      border-color: @color-dark-border-base;
+    }
+
+    &.active {
+      background-color: @color-transparent;
+    }
+
+    i {
+      color: @color-dark-border-base;
+    }
+  }
+}
+
+.table.table-striped.dataTable {
+  tbody {
+    .folder,
+    .file,
+    .site {
+      vertical-align: middle;
+    }
+  }
+}
+
+.kebab-actions {
+  li {
+    &[role=menuitem] {
+      .disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+div[type='cloud-drive'] .popover {
+  border: @borderWidget;
+  background-color: @primaryContentBackground;
+  padding: 2px;
+}
+
+div[type='cloud-drive'] .popover-header {
+  background-color: @primaryContentBackground;
+  border-bottom: 1px solid @hrBorder;
+  border-radius: 2px 2px 0 0;
+  font-size: 13px;
+  color: @textColor;
+  margin-top: 0;
+  padding: 8px 14px;
+  line-height: 18px;
+}
+
+div[type='cloud-drive'] .popover-body {
+  padding: 16px;
+  border-radius: 0 0 2px 2px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 600px;
+  background-color: @primaryContentBackground;
+}

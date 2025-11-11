@@ -1,0 +1,3 @@
+(function resourcesLoader(app){function loadjscssfile(filename,filetype){let fileref;if(filetype==='js'){fileref=document.createElement('script');fileref.setAttribute('type','text/javascript');fileref.setAttribute('src',filename);}else if(filetype==='css'){fileref=document.createElement('link');fileref.setAttribute('rel','stylesheet');fileref.setAttribute('type','text/css');fileref.setAttribute('href',filename);}
+if(typeof fileref!=='undefined'){$('head').append(fileref);}}
+loadjscssfile('include/javascript/kendo/kendo.office365.min.css','css');})(SUGAR.App);

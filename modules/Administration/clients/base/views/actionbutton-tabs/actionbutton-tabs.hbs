@@ -1,0 +1,46 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="record tab-layout">
+    <div class="content-tabs ab-admin-tabs">
+        <ul class="nav nav-tabs">
+            {{#each _uiButtons}}
+                <li class="tab tab-badgeable {{#if active}}active{{/if}}" data-bs-toggle="tab">
+                    <a
+                        class="ellipsis_inline"
+                        data-index="{{orderNumber}}"
+                        data-original-title="{{properties.label}}"
+                        data-tabId="{{buttonId}}"
+                    >
+                        <span class="tab-title">{{properties.label}}</span>
+                        <button
+                            type="button"
+                            class="btn btn-invisible pull pull-right ab-remove-tab"
+                            rel="tooltip"
+                            title="{{str 'LBL_REMOVE'}}"
+                            aria-label="{{str 'LBL_REMOVE'}}"
+                            data-bs-placement="bottom"
+                            aria-pressed="false"
+                            data-action="remove-tab"
+                            data-id="{{buttonId}}"
+                        >
+                            <i class="sicon sicon-close"></i>
+                        </button>
+                    </a>
+                </li>
+            {{/each}}
+            <li class="tab ab-tab-add">
+                <a data-action="add" rel="tooltip" title="{{str 'LBL_ACTIONBUTTON_ADD'}}" aria-label="{{str 'LBL_ACTIONBUTTON_ADD'}}"><b class="sicon sicon-plus"></b></a>
+            </li>
+        </ul>
+    </div>
+</div>

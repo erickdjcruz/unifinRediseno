@@ -1,0 +1,485 @@
+// Setting widths for filter row fields
+.console-config .row-fluid div {
+  min-width: 120px;
+  display: inline-block;
+}
+
+.console-config .row-fluid .filter-selector div {
+  width: 100%;
+}
+
+// Hiding filter row fields
+.console-config .row-fluid .hide {
+  display: none;
+}
+
+// Hides "From/To" labels of values from "between" operators to save space
+.console-config .row-fluid .add-on {
+  display: none;
+}
+
+// Fixes issue with select2 fields automatically opening a search dropdown on creation
+.console-config .filter-selector .select2-drop {
+  display: none;
+}
+
+// Setting proper alignments of filter row fields
+.console-config .row-fluid .filter-actions.btn-group {
+  width: auto;
+  vertical-align: top;
+}
+
+.console-config .row-fluid .span4 {
+  margin-left: 0;
+  float: none;
+  vertical-align: top;
+}
+
+.console-config-fields .bordered {
+  border: 1px solid @gray60;
+  cursor: pointer;
+  padding: 5px;
+  color: @blue;
+  border-radius: 5px;
+}
+
+.console-config-fields {
+  & * .fieldset-field {
+    width: 50%;
+  }
+}
+
+.multi-line-list-view {
+  overflow: auto;
+  flex: 1;
+
+  .edit-th {
+    min-width: 70px;
+  }
+
+  .tr-inline-edit {
+    .left-column {
+      z-index: 10;
+
+      .fieldset {
+        padding: 0;
+      }
+    }
+
+    .edit-td {
+      min-width: 70px;
+    }
+
+    .subfields .subfield {
+      margin-bottom: 0.5rem;
+
+      .datetime {
+        display: flex;
+        gap: 4px;
+      }
+    }
+
+    div[data-fieldname="case_number"] .ellipsis_inline {
+      font-size: @fontSizeMedium;
+    }
+  }
+
+  &.console-preview {
+    .multi-line-table {
+      border: @borderWidget;
+      width: 30%;
+
+      th,
+      td {
+        vertical-align: middle;
+        font-weight: normal;
+        line-height: 16px;
+        padding: 6px 4px 6px 14px;
+      }
+
+      tbody tr:not(:last-child) {
+        border-bottom: @borderWidget;
+      }
+
+      .cell-bar--long,
+      .cell-bar--short {
+        border-radius: 4px;
+        height: 10px;
+        margin: 6px 0;
+        background-color: @configPillBackground;
+      }
+
+      .cell-bar--long {
+        width: 120px;
+      }
+
+      .cell-bar--short {
+        width: 80px;
+      }
+    }
+  }
+}
+
+.agent_workbench_dashboard,
+.console_dashboard {
+  .kpi-metrics {
+    display: flex;
+    min-height: 61px;
+    background-color: @btnBackground;
+
+    .kpi-metrics-tabs {
+      width: ~'calc(100% - 24px)';
+      height: 100%;
+      display: flex;
+
+      .metric-tabs {
+        display: flex;
+
+        .hidden {
+          display: none;
+        }
+
+        .empty-metric-ribbon {
+          font-weight: 400;
+          font-family: 'Inter';
+
+          p.line-1 {
+            font-size: 1.25rem;
+            line-height: 1.375rem;
+            margin: 0.5625em 0 0;
+          }
+
+          p.line-2 {
+            font-size: 0.875rem;
+            line-height: 1.063rem;
+            margin: 0.0625rem 0 0.625rem;
+          }
+        }
+
+        .module-list .megamenu {
+          > .dropdown {
+            &.more {
+              .btn-group {
+                .dropdown-toggle {
+                  color: @consoleMetricTabDropdownColor;
+                }
+              }
+            }
+          }
+        }
+
+        .dropdown-menu {
+          top: 190px;
+          max-height: ~"calc(100% - 235px)";
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+          border: @dropdownBorderWidget;
+          box-shadow: @boxShadowLg;
+        }
+
+        .kpi-metric {
+          display: inline-block;
+          width: 180px;
+
+          &.metric-loader {
+            background: @forecastsSkeletonLoader no-repeat center center;
+
+            * {
+              visibility: hidden;
+            }
+          }
+
+          .kpi-metric-tab {
+            display: inline-block;
+            width: 164px;
+            height: 57px;
+
+            .kpi-metric-tab-content {
+              display: inline-block;
+              padding: 12px 12px 0;
+              width: 160px;
+              text-align: center;
+
+              .kpi-metric-label {
+                display: inline-block;
+                width: 160px;
+                font-size: 12px;
+                color: var(--metric-label);
+
+                &.active {
+                  color: @activeTabBorderColor;
+                }
+              }
+
+              .kpi-metric-badge-color-0 {
+                font-weight: 200;
+                color: @darkPink;
+                background-color: @lightRed;
+              }
+
+              .kpi-metric-badge-color-1 {
+                font-weight: 200;
+                color: @darkOrange;
+                background-color: @lightOrange;
+              }
+
+              .kpi-metric-badge-color-2 {
+                font-weight: 200;
+                color: @gray70;
+                background-color: @gray30;
+              }
+
+              .kpi-metric-badges {
+                display: inline-block;
+                vertical-align: top;
+
+                .badge {
+                  margin: 0 2px;
+                  padding: 0 4px;
+                  line-height: 16px;
+                  min-width: 10px;
+                  text-align: center;
+                }
+              }
+            }
+
+            .kpi-metric-number-row {
+              padding-left: 12px;
+              padding-right: 12px;
+              width: 160px;
+              font-size: 16px;
+              font-weight: 600;
+              color: var(--metric-value);
+              text-align: center;
+
+              &.active {
+                color: @activeTabBorderColor;
+              }
+            }
+          }
+
+          &.active {
+            border-bottom-width: 4px;
+            border-color: @activeTabBorderColor;
+          }
+
+          &:hover:not(.active) {
+            cursor: pointer;
+          }
+
+          &:hover {
+            .btn-group {
+              .btn {
+                visibility: visible;
+              }
+            }
+          }
+
+          .btn-group {
+            margin: 12px 0 0;
+            vertical-align: top;
+
+            .btn {
+              visibility: hidden;
+              padding: 0;
+              border: 0;
+              outline: none;
+              box-shadow: none;
+              background: none;
+            }
+          }
+
+          .dropdown-menu {
+            left: -147px;
+            top: 48px;
+            max-height: initial;
+            border-radius: 0 0 6px 6px;
+            border: @dropdownBorderWidget;
+            box-shadow: @boxShadowLg;
+          }
+        }
+
+        .metric-loader {
+          .skeleton-loader {
+            background: @forecastsSkeletonLoader no-repeat center center;
+            width: 164px;
+            height: 57px;
+
+            * {
+              visibility: hidden;
+            }
+          }
+        }
+      }
+    }
+
+    .kpi-metrics-tools {
+      .btn-group {
+        margin: 12px 12px 0 0;
+
+        .btn {
+          visibility: hidden;
+          padding: 0;
+          border: 0;
+          outline: none;
+          vertical-align: initial;
+          box-shadow: none;
+          background: none;
+        }
+
+        .dropdown-menu {
+          border-radius: 0 0 6px 6px;
+          top: 49px;
+        }
+      }
+    }
+
+    &:hover {
+      .kpi-metrics-tools {
+        .btn-group {
+          .btn {
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+
+  .multi-line-list-view {
+    background: @multiLineBackground;
+    flex: inherit;
+    height: calc(~'100% - 176px');
+
+    .multi-line-list-loader,
+    .multi-line-list-loader-footer {
+      .data-skeleton-loader {
+        background: @dataSkeletonLoader @primaryContentBackground;
+        background-repeat: round;
+
+        * {
+          visibility: hidden;
+        }
+      }
+    }
+
+    .rc-handle-container {
+      z-index: 13;
+    }
+
+    .dataTable {
+      &.table-striped.sticky-first-column {
+        thead {
+          tr {
+            th[data-fieldname]:not(.stick-left) {
+              &:nth-child(2) {
+                // TODO Move to Tailwind eventually
+                position: sticky;
+                left: @multiLineFirstColumnLeft;
+                z-index: 10;
+              }
+            }
+          }
+        }
+
+        tbody {
+          tr {
+            td:nth-child(2) {
+              // TODO Move to Tailwind eventually
+              position: sticky;
+              left: @multiLineFirstColumnLeft;
+              z-index: 10;
+              overflow: visible;
+            }
+          }
+        }
+      }
+    }
+
+    td.left-column .fieldset.btn-group {
+      // TODO Move to Tailwind eventually
+      position: static;
+    }
+
+    tbody .left-column {
+      .dropdown-menu {
+        left: 9px;
+        top: 34px;
+      }
+
+      .dropup {
+        .dropdown-menu {
+          top: auto;
+        }
+      }
+    }
+
+    &.data-loader {
+      background: @dataSkeletonLoader space @primaryContentBackground;
+
+      * {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+.console-config-instructions {
+  background-color: @secondaryContentBackground;
+  color: @infoText;
+  padding: 20px;
+
+  ul {
+    margin-left: 15px;
+    margin-bottom: 0;
+
+    li.unstyled {
+      list-style: none;
+    }
+  }
+
+  a {
+    text-decoration: underline;
+    font-weight: bold;
+    color: @infoText;
+  }
+}
+
+.metric-config-instructions {
+  background-color: @secondaryContentBackground;
+  margin: 20px 19px;
+  padding: 15px 10px 10px;
+  color: @infoText;
+
+  .restore-defaults-btn {
+    text-decoration: underline;
+
+    &:hover {
+      color: inherit;
+    }
+  }
+}
+
+.Metrics-config {
+  .nav-tabs > li > a:focus {
+    outline: none;
+  }
+
+  .edit-disabled {
+    cursor: default !important;
+    pointer-events: none;
+  }
+}
+
+.metric-tab-name {
+  font-size: @fontSizeMini;
+  color: @gray70;
+  line-height: @fontSizeMini + 2;
+  align-items: center;
+  margin-bottom: 3px;
+  margin-left: 0;
+}
+
+.metric-tab-enum {
+  display: flex;
+  min-width: 180px;
+}

@@ -1,0 +1,39 @@
+/**********
+* Globe
+*/
+.sc-chart-globe {
+  svg {
+    pointer-events: all;
+  }
+
+  .sc-chart-background {
+    fill: @gray80;
+  }
+
+  .sphere {
+    fill: @slate;
+    stroke: @slate;
+    stroke-width: 1px;
+  }
+
+  .graticule {
+    fill: none;
+    stroke: @gray70;
+    stroke-width: 0.5px;
+    stroke-opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .countries {
+    fill: @gray60;
+  }
+
+  .countries path {
+    stroke: @white;
+  }
+
+  .states path {
+    fill: @gray20;
+    stroke: @white;
+  }
+}

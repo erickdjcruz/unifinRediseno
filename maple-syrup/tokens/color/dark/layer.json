@@ -1,0 +1,45 @@
+{
+  "color": {
+    "dark": {
+      "layer": {
+        "content": {
+          "base": { "value": "{color.gray.950.value}" },
+          "hover": { "value": "{color.gray.980.value}" },
+          "loading": { "value": "{color.gray.950.value}" }
+        },
+        "dashlet": {
+          "base": { "value": "{color.black.value}" },
+          "hover": { "value": "{color.gray.950.value}" }
+        },
+        "headerpane": {
+          "base": { "value": "{color.gray.950.value}" },
+          "side-toggle": { "value": "{color.gray.800.value}" },
+          "side-toggle-hover": { "value": "{color.gray.900.value}" }
+        },
+        "navbar": { "value": "{color.black.value}" },
+        "primary-content": {
+          "base": { "value": "{color.black.value}" },
+          "active": { "value": "{color.gray.950.value}" },
+          "accent": { "value": "{color.gray.900.value}" },
+          "hover": { "value": "{color.blue.800.value}" },
+          "hover-background": { "value": "{color.blue.800.value}" },
+          "hover-striped": { "value": "{color.gray.800.value}" }
+        },
+        "secondary-content": {
+          "base": { "value": "{color.gray.900.value}" }
+        },
+        "separator": {
+          "sidebar-nav-group": { "value": "rgba(214, 238, 255, 0.8)" }
+        },
+        "sidebar-nav": {
+          "base": { "value": "{color.blue.400.value}" },
+          "hover": { "value": "{color.blue.600.value}" }
+        },
+        "subpanel": {
+          "base": { "value": "{color.gray.900.value}" },
+          "hover": { "value": "{color.gray.980.value}" }
+        }
+      }
+    }
+  }
+}

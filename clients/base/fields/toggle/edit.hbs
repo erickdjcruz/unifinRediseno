@@ -1,0 +1,28 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+<div class='widget-container inline-block'>
+    <div class='clearfix-wrapper flex flex-wrap pt-1'>
+        <div class='{{this.css_class}}'>
+            <label class="flex flex-wrap justify-between mr-1 {{#eq value false}}font-bold{{/eq}}" id='cj-widget-config-toggle-label-left'> {{str def.label_right module}}</label>
+        </div>
+            <div class='clearfix-wrapper flex flex-wrap justify-between'>
+                <label class='dri-workflow-toggle-switch h-6 inline-block relative w-12'>
+                    <input name='{{name}}' type='checkbox'{{#eq value true}} checked{{/eq}}>
+                    <span class='slider round'></span>
+                </label>
+            </div>
+        <label id='cj-widget-config-toggle-label-right'{{#eq value true}}class="font-bold"{{/eq}}> {{str def.label_left module}}</label>
+    </div>
+</div>
+<p class="help-block">{{str def.help module}}</p>

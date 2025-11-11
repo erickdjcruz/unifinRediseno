@@ -1,0 +1,51 @@
+{
+  "color": {
+    "light": {
+      "text": {
+        "base": { "value": "{color.gray.900.value}" },
+        "button": {
+          "primary": {
+            "base": { "value": "{color.white.value}" },
+            "hover": { "value": "{color.light.text.button.primary.base}" },
+            "active": { "value": "{color.light.text.button.primary.base}" },
+            /*"disabled": { "value": "TODO" }*/
+          },
+          "secondary": {
+            "base": { "value": "{color.gray.700.value}" },
+            "hover": { "value": "{color.gray.900.value}" },
+            "disabled": { "value": "{color.gray.700.value}" },
+            "inset": { "value": "{color.gray.400.value}" }
+          },
+          "tertiary": {
+            "disabled": { "value": "{color.gray.600.value}" }
+          }
+        },
+        "disabled": { "value": "{color.gray.700.value}" },
+        "dropdown": {
+          "link": {
+            "hover": { "value": "{color.blue.600.value}" }
+          }
+        },
+        "hover": { "value": "{color.gray.950.value}" },
+        "inverse": { "value": "{color.gray.300.value}" },
+        "inform": { "value": "{color.ocean.400.value}" },
+        "info": { "value": "{color.ocean.600.value}" },
+        "light": { "value": "{color.gray.700.value}" },
+        "link": {
+          "base": { "value": "{color.blue.400.value}" },
+          "hover": { "value": "{color.blue.600.value}" },
+          "active": { "value": "{color.white.value}" }
+        },
+        "label": {
+          "base": { "value": "{color.gray.700.value}" },
+          "metric": { "value": "{color.gray.700.value}" },
+          "metric-value": { "value": "{color.gray.800.value}" }
+        },
+        "pill": {
+          "base": { "value": "{color.light.text.base.value}" },
+          "config": { "value": "{color.blue.600.value}" }
+        }
+      }
+    }
+  }
+}

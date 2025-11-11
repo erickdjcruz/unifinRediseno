@@ -1,0 +1,45 @@
+{{!
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+}}
+{{#if collection.length}}
+    <table class="table table-striped dataTable">
+        <thead>
+        <tr>
+            {{#each collection.displayedFields}}
+                <th class="relative {{#isSortable ../../module this}}sorting sorting_{{#eq ../../../collection.orderBy.field ../name}}{{../../../collection.orderBy.direction}}{{/eq}} orderBy{{name}}{{/isSortable}}{{#if widthClass}} {{widthClass}}{{/if}}"
+                    data-fieldname="{{name}}" data-orderby="{{orderBy}}">
+                    <span>{{str vname ../module}}</span>
+                </th>
+            {{/each}}
+        </tr>
+        </thead>
+        <tbody>
+        {{#each collection.models}}
+            <tr class="single"{{#if id}} data-id="{{id}}"{{/if}}>
+                {{#each ../collection.displayedFields}}
+                    <td{{#if align}} class="{{align}}"{{/if}}{{#if name}} data-fieldname="{{name}}"{{/if}}>
+                        {{field ../../this model=../this template='list'}}
+                    </td>
+                {{/each}}
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <div class="block-footer">
+        {{#if collection.dataFetched}}
+            {{str "LBL_NO_DATA_AVAILABLE" this.module}}
+        {{else}}
+            {{str "LBL_LOADING" this.module}}
+        {{/if}}
+    </div>
+{{/if}}

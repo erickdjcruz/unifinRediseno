@@ -1,0 +1,30 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if display}}
+<div class='headerpane bg-[--primary-content-background] box-border fixed table'>
+    <h1>
+        <span class='record-cell' data-type="{{type}}" data-name="{{name}}">
+            <span class='detail'>
+                <div class='ellipsis_inline'>
+                    {{str 'LBL_DASHBOARD_CONFIG'}}
+                </div>
+            </span>
+        </span>
+        <div class='btn-toolbar'>
+            {{#each meta.buttons}}
+                {{field ../this model=../this.model template="detail"}}
+            {{/each}}
+        </div>
+    </h1>
+</div>
+{{/if}}

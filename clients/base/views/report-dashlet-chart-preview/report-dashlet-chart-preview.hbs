@@ -1,0 +1,56 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<h1 class="mx-4 mt-4 mb-6">{{str "LBL_REPORTS_DASHLET_CHART_PREVIEW"}}</h1>
+<div class="dashlet-container h-full rounded-md mx-4 mb-4 p-0 shadow hover:shadow-lg transition-shadow bg-[--dashlet-background] hover:bg-[--dashlet-background-hover]">
+    <div class="dashlet h-full flex flex-col relative p-0 mb-0 border-none">
+        <div class="dashlet-header flex flex-row items-center m-0.75">
+            <h4 class="dashlet-title flex-grow m-0 ml-1.5 overflow-hidden">{{_dashletTitle}}</h4>
+        </div>
+        <div class="dashlet-content flex-grow scroll">
+            <div class="btn-group p-2">
+                <button class="btn active">
+                    <i class="sicon sicon-add-dashlet-lg"></i>
+                </button>
+                <button class="btn">
+                    <i class="sicon sicon-data-table"></i>
+                </button>
+                <button class="btn">
+                    <i class="sicon sicon-filter"></i>
+                </button>
+            </div>
+            <div class="mt-2 nav-tabs mb-2"></div>
+            <div class="chart-preview-body" data-container="previewBody">
+                {{#if _showTotal}}
+                    <div class="chart-total-skeleton-loader mt-2 mb-3"></div>
+                {{/if}}
+                {{#if _showLegend}}
+                    <div class="legend-skeleton-loader mb-3"></div>
+                {{/if}}
+                <div class="chart-preview-container">
+                    {{#if _useLabels}}
+                        {{#if _showXLabel}}
+                            <div class="y-label-skeleton-loader span1"></div>
+                        {{/if}}
+                    {{/if}}
+
+                    <div class="ml-0 mb-2 {{_chartType}} chart-container-dashlet {{#if _useLabels}}{{#if _showXLabel}}span11{{else}}span12{{/if}}{{else}}span12{{/if}}"></div>
+                </div>
+                {{#if _useLabels}}
+                    {{#if _showYLabel}}
+                        <div class="ml-20 x-label-skeleton-loader span12 mb-2"></div>
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+/* UTILITIES
+  ----------------*/
+
+// Quick floats
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
+}
+
+// Toggling content
+// TODO fix
+.hide {
+  display: none;
+}
+
+// For Bootstrap Affix plugin
+// TODO look at removing in favour of Tailwind `fixed`.
+.affix {
+  position: fixed;
+}
+
+// A small mixin to be used for selected tab elements, such as megamenu and dashboard navs.
+.active-tab {
+  border-color: var(--active-tab-border-color);
+  border-bottom-width: 4px;
+
+  a > .count:not(.label-important),
+  a > .module-name,
+  a > .tab-title,
+  .btn {
+    color: var(--active-tab-border-color);
+
+    .sicon:not(.sicon-bell-lg-line) {
+      color: var(--active-tab-border-color);
+    }
+  }
+
+  &:hover {
+    background-color: var(--tab-background-hover-color);
+  }
+}
+
+// Freeze first column in list view
+.stick-first {
+  left: @firstColumnLeft;
+  z-index: 10;
+}
+
+.stick-first.no-border::after {
+  display: none;
+}
+
+// Sugar Stack logo background
+.background-image-stack {
+  background-image: @stackBackground;
+  background-repeat: no-repeat;
+  background-position: right top;
+}
+

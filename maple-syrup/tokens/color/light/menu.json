@@ -1,0 +1,23 @@
+{
+  "color": {
+    "light": {
+      "menu": {
+        "dropdown": {
+          "base": { "value": "{color.white.value}" },
+          "disabled": { "value": "{color.gray.300.value}" },
+          "link": {
+            "active": { "value": "{color.blue.400.value}" },
+            "hover": { "value": "{color.blue.100.value}" }
+          },
+          "submenu": {
+            "base": { "value": "{color.gray.200.value}" }
+          }
+        },
+        "select2": {
+          "base": { "value": "{color.gray.100.value}" },
+          "hover": { "value": "{color.gray.200.value}" }
+        }
+      }
+    }
+  }
+}

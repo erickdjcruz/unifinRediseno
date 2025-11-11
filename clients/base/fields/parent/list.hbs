@@ -1,0 +1,34 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="relate-field-container">
+    {{#if href}}
+        {{#if value}}
+            <div class="ellipsis_inline">
+                <span class="parent_avatar"></span>
+                <a href="{{href}}" rel="tooltip" data-bs-placement="bottom" class="{{module}}"
+                   title="{{#unless value}}{{#if def.placeholder}}{{str def.placeholder this.model.module}}{{/if}}{{/unless}}{{value}}"
+                   data-link-target="{{linkTarget}}" data-module="{{module}}" data-model-id="{{modelId}}"
+                >
+                    {{value}}
+                </a>
+            </div>
+            {{partial 'focus-icon' this this}}
+        {{/if}}
+    {{else}}
+        <span class="ellipsis_inline" data-bs-placement="bottom"
+            title="{{#unless value}}{{#if def.placeholder}}{{str def.placeholder this.model.module}}{{/if}}{{/unless}}{{value}}"
+        >
+            {{value}}
+        </span>
+    {{/if}}
+</div>

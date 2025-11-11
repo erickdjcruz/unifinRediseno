@@ -1,0 +1,26 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+<div class="accordion-heading" data-bs-toggle="collapse" data-bs-target="[data-container=notificationOptions]"
+    aria-expanded="false" aria-controls="[data-container=notificationOptions]">
+    <a id='{{name}}Title' class="accordion-toggle"></a>
+</div>
+<div class="in bs-collapse collapse show" data-container="notificationOptions">
+    {{#each services}}
+        <label class="notificationsToggleOption">
+            <input type="radio" id={{id}} name="{{name}}" value="true">
+            <span>{{title}}</span>
+        </label>
+        <br/>
+    {{/each}}
+</div>

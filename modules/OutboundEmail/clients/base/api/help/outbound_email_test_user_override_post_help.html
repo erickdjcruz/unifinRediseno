@@ -1,0 +1,212 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Send a test email over SMTP with a User's system override OutboundEmail configuration
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint will use the configuration that is currently stored for the
+    given User's system override email account, but allows for optional
+    parameters to be passed in to override certain values for testing.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                user_id
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                The ID of the User whose configuration is being tested
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                to_address
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                The recipient email address to use in the test email
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                from_address
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                The From email address to use in the test email. Defaults to the
+                User's primary email address
+            </td>
+            <td>
+                False
+            </td>
+        </tr>
+        <tr>
+            <td>
+                name
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                The sender's name to use in the test email headers. Defaults to the
+                existing saved User's name
+            </td>
+            <td>
+                False
+            </td>
+        </tr>
+        <tr>
+            <td>
+                mail_smtpuser
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                The username to use in SMTP server authentication credentials
+                during the test. Defaults to the existing saved username
+            </td>
+            <td>
+                False
+            </td>
+        </tr>
+        <tr>
+            <td>
+                mail_smtppass
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                The password to use in SMTP server authentication credentials
+                during the test. Only used when the system email account is configured
+                to use basic authentication. Defaults to the existing saved password
+            </td>
+            <td>
+                False
+            </td>
+        </tr>
+        <tr>
+            <td>
+                eapm_id
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                The ID of the EAPM record to use in SMTP server authentication
+                credentials. Only used when the system email account is configured
+                to use OAuth2 authentication. Defaults to the existing saved EAPM ID
+            </td>
+            <td>
+                False
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h3>Request</h3>
+<pre class="pre-scrollable">
+{
+  "user_id": "3924dbae-9556-11ee-8de4-acde48001122",
+  "name": "Test User",
+  "from_address": "testFrom@example.com",
+  "to_address": "testTo@example.com",
+  "mail_smtpuser": "testuser@gmail.com",
+  "eapm_id": "ce17d082-95f0-11ee-af40-acde48001122"
+}
+</pre>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            status
+        </td>
+        <td>
+            Boolean
+        </td>
+        <td>
+            True if the test email was successfully sent, false otherwise
+        </td>
+    </tr>
+    <tr>
+        <td>
+            errorMessage
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            An error message associated with the test email if a failure occurred
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+{
+  "status": false,
+  "errorMessage": "Error:The outbound mail server selected for the mail account you are using is invalid.  Check the settings or select a different mail server for the mail account."
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11.23
+        </td>
+        <td>
+            Added <code>/OutboundEmail/testUserOverride</code> POST endpoint.
+        </td>
+    </tr>
+</table>

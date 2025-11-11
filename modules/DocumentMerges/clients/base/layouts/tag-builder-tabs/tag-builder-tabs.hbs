@@ -1,0 +1,46 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+<div class="tabbable dm-tag-builder-tabs">
+    <ul class="nav nav-tabs dm-tag-builder-tab-list">
+        <li class="active" data-bs-toggle="tab" data-bs-target="#tab1">
+            <a>{{str 'LBL_TAG_BUILDER_FIELDS' module}}</a>
+        </li>
+        <li data-bs-toggle="tab" data-bs-target="#tab2">
+            <a>{{str 'LBL_DIRECTIVES' module}}</a>
+        </li>
+        <li data-bs-toggle="tab" data-bs-target="#tab3">
+            <a>{{str 'LBL_FORMULA_BUILDER' module}}</a>
+        </li>
+        <li class="dm-float-right">
+            <i class="sicon sicon-help dm-help-icon"
+                rel="tooltip"
+                title="{{str 'LBL_DOCUMENT_MERGE_HELP_DOC' module}}"
+                onclick="App.utils.DocumentMerge.openHelpDocumentation('DocMerge')">
+            </i>
+        </li>
+    </ul>
+    <div class="tab-content dm-tag-builder-tab-content">
+        <div class="tab-pane active" id="tab1">
+            {{component this "tag-builder-relationships"}}
+            {{component this "tag-builder-fields"}}
+            {{component this "tag-builder-options"}}
+        </div>
+        <div class="tab-pane" id="tab2">
+            {{component this "tag-builder-directives"}}
+        </div>
+        <div class="tab-pane" id="tab3">
+            {{component this "tag-builder-formulas"}}
+        </div>
+    </div>
+</div>

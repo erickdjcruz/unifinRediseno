@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<psalm
+        errorLevel="4"
+        useDocblockTypes="false"
+        ensureArrayIntOffsetsExist="true"
+        ensureArrayStringOffsetsExist="true"
+        skipChecksOnUnresolvableIncludes="true"
+        reportMixedIssues="false"
+        allowStringToStandInForClass="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        autoloader="include/psalm/autoload.php"
+        errorBaseline="baseline.xml"
+>
+    <projectFiles>
+        <directory name="." />
+        <ignoreFiles>
+            <directory name="cache" />
+            <directory name="examples" />
+            <directory name="features" />
+            <directory name="gulp" />
+            <directory name="sidecar" />
+            <directory name="tests" />
+            <directory name="upload" />
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+    <globals>
+        <var name="$GLOBALS" type="array{log: LoggerManager, db: DBManager, dictionary: array&lt;string, array&gt;, app_list_strings: array&lt;string, string|array&gt;}" />
+    </globals>
+</psalm>

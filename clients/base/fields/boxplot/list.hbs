@@ -1,0 +1,27 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div>
+    <div class="left-whisker"></div>
+    <hr class="horizontal-line"/>
+    <div class="right-whisker"></div>
+    <hr data-bs-placement="top" data-original-title="{{str 'LBL_BEST'}}: {{bestCase}}
+{{str 'LBL_LIKELY'}}: {{likely}}
+{{str 'LBL_WORST'}}: {{worstCase}}"
+        rel="tooltip" class="box-plot" style="margin-left: {{boxStart}}%; width: {{boxWidth}}%"/>
+    <div data-bs-placement="top" data-original-title="{{str 'LBL_BEST'}}: {{bestCase}}
+{{str 'LBL_LIKELY'}}: {{likely}}
+{{str 'LBL_WORST'}}: {{worstCase}}"
+         rel="tooltip" class="median-line" style="margin-left: {{likelyPercent}}%"></div>
+    <span class="sicon sicon-caret-up box-plot-caret" style="margin-left: {{caretPos}}%"></span>
+    <div class="likely-value" style="margin-left: {{amountPos}}%">{{likelyRound}}</div>
+</div>

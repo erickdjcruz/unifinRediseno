@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Acties Sugar Smart Guide tonen',
+    'LBL_MODULE_TITLE' => 'Actie Sugar Smart Guide',
+    'LBL_HOMEPAGE_TITLE' => 'Acties mijn Sugar Smart Guide',
+    'LNK_NEW_RECORD' => 'Actie mijn Sugar Smart Guide',
+    'LNK_VIEW_RECORDS' => 'Acties Sugar Smart Guide bekijken',
+    'LNK_CJ_FORM_LIST' => 'Acties Sugar Smart Guide bekijken',
+    'LNK_LIST' => 'Acties Sugar Smart Guide',
+    'LBL_SEARCH_FORM_TITLE' => 'Actie Sugar Smart Guide zoeken',
+    'LBL_MODULE_NAME' => 'Acties Sugar Smart Guide',
+    'LBL_MODULE_NAME_SINGULAR' => 'Actie Sugar Smart Guide',
+    'LBL_TRIGGER_EVENT' => 'Triggergebeurtenis',
+    'LBL_ACTION_TYPE' => 'Actietype',
+    'LBL_PARENT_MODULE' => 'Bovenliggende module',
+    'LBL_RELATIONSHIP' => 'Relatie',
+    'LBL_ACTIVITY_TEMPLATE' => 'Activiteitssjabloon',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Sjabloon van slimme gids/fase/activiteit',
+    'LBL_ACTIVE' => 'Actief',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'De %s Activiteitensjabloon heeft al een Sugar-actie met behulp van de %s trigger-gebeurtenis. Er is een limiet van één actieve Sugar-actie per type triggergebeurtenis voor elke fase of activiteit in een Smart Guide.',
+    'LBL_RECORDVIEW_PANEL4' => 'Velden invullen',
+    'LBL_POPULATE_FIELDS' => 'Velden invullen',
+    'LBL_ADD_FIELD' => 'Veld toevoegen',
+    'LBL_REMOVE_FIELD' => 'Veld verwijderen',
+    'LBL_FIELD_NAME' => 'Veldnaam',
+    'LBL_FIELD_VALUE' => 'Veldwaarde',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Dit veld is niet beschikbaar voor lijstweergave.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Type actietrigger',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Kan gerelateerde record niet vinden',
+    'LBL_IGNORE_ERRORS' => 'Fouten negeren',
+    'LBL_NO_DISPLAY_FIELDS' => 'Er zijn geen velden om weer te geven.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Koppelingsveld van activiteitssjabloon',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Koppelingsveld van fasesjabloon',
+    'LBL_EMAIL_TEMPLATES' => 'E-mailsjabloon',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Selecteer e-mailadres &#39;Aan&#39;',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'E-mailvelden',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Icoon weergeven',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Sjabloon van slimme gids/fase/activiteit',
+    'LBL_ACTIVITY_MODULE' => 'Activiteitsmodule',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Smart Guide-sjabloon',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Trigger Smart Guide-sjabloon selecteren',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Type trigger',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Type activatie selecteren',
+    'LBL_MODULE_TRIGGER' => 'Module trigger',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Trigger module selecteren',
+    'LBL_FIELD_TRIGGER' => 'Veldtrigger',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Doel slimme gids selecteren',
+    'LBL_CJ_TARGET' => 'Doel Smart Guide',
+    'LBL_CJ_ACTION' => 'Actie Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Actie slimme gids selecteren',
+    'LBL_TRIGGER_TITLE' => 'Trigger',
+    'LBL_TRIGGER_DESCRIPTION' => 'Gebruik de onderstaande velden om het type trigger en de voorwaarden te selecteren die de trigger activeren.',
+    'LBL_TARGET_ACTION_TITLE' => 'Doel en actie',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Gebruik de onderstaande velden om te selecteren waar en welke acties zullen plaatsvinden wanneer de trigger wordt geactiveerd.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Fase slimme gids selecteren',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Activiteiten slimme gids selecteren',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Activiteit slimme gids selecteren',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Actie fase-activiteiten selecteren',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Actie activiteiten slimme gids selecteren',
+];

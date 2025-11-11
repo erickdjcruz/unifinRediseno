@@ -1,0 +1,73 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Get modules with Calendar Configurations
+</span>
+
+<h2>Request</h2>
+<code class="codesample">
+    GET /Calendar/modules
+</code>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the following fields:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                modules
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                The list of modules
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+{
+    modules: ['Calls', 'Meetings', 'Tasks']
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/Calendar/modules</code> GET endpoint.
+        </td>
+    </tr>
+</table>

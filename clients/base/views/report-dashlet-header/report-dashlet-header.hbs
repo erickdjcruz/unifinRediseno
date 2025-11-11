@@ -1,0 +1,26 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="btn-group p-2" data-toggle="buttons-radio">
+    {{#if _hasChart}}
+        <button class="report-dashlet-tab btn active" rel="tooltip" data-bs-placement="bottom" data-original-title="{{str 'LBL_REPORTS_DASHLET_CHART'}}" data-name="chart" data-type="button">
+            <i class="sicon sicon-add-dashlet-lg"></i>
+        </button>
+    {{/if}}
+    <button class="report-dashlet-tab btn {{#unless _hasChart}}active{{/unless}}" rel="tooltip" data-bs-placement="bottom" data-original-title="{{str 'LBL_REPORTS_DASHLET_DATATABLE'}}" data-name="list" data-type="button">
+        <i class="sicon sicon-data-table"></i>
+    </button>
+    <button class="report-dashlet-tab btn" rel="tooltip" data-bs-placement="bottom" data-original-title="{{str 'LBL_REPORTS_DASHLET_RUNTIME_FILTERS'}}" data-name="filters" data-type="button">
+        <i class="sicon sicon-filter"></i>
+    </button>
+</div>
+<div class="nav-tabs mt-0.5" data-name="report-dashlet-tab-divider"></div>

@@ -1,0 +1,285 @@
+/* JSTREE
+  ----------------*/
+
+/* Custom Sugar styles for jQuery jstree plugin */
+.jstree,
+.jstree-sugar.tree-component {
+  padding: 5px 8px;
+
+  ul,
+  li {
+    display: block;
+    padding: 0;
+    list-style-type: none;
+
+    &.jstree-open > ul {
+      display: block;
+    }
+
+    &.jstree-closed > ul {
+      display: none;
+    }
+  }
+
+  > ul > li {
+    margin-left: 0;
+    padding: 1px 0;
+
+    &:nth-last-child(1) {
+      border-bottom: none;
+    }
+  }
+
+  li > a {
+    display: inline-block;
+    line-height: 16px;
+    height: 16px;
+    white-space: nowrap;
+    text-decoration: none;
+    padding: 1px 2px;
+    margin: 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    > .jstree-icon {
+      margin-right: 3px;
+    }
+
+    &.btn-group {
+      padding-right: 6px;
+    }
+  }
+
+  ins {
+    margin-right: 5px;
+
+    &::before {
+      display: inline-block;
+      font-family: 'SugarIcons';
+      font-weight: normal;
+      font-style: normal;
+      height: 12px;
+      margin: 0;
+      padding: 0;
+      width: 12px;
+      vertical-align: top;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    &.jstree-icon::before {
+      content: @sicon-user;
+    }
+  }
+
+  li {
+    &.jstree-last {
+      background: transparent;
+    }
+
+    &.jstree-leaf {
+      ins {
+        &.leaf::before {
+          content: @sicon-document;
+        }
+      }
+    }
+
+    &.jstree-open,
+    &.jstree-closed,
+    &.jstree-leaf {
+      input {
+        &.jstree-rename-input {
+          top: 6px !important;
+          left: 34px !important;
+          padding-left: 5px !important;
+        }
+      }
+
+      > a > ins {
+        display: none;
+      }
+    }
+
+    &.jstree-open > ins::before {
+      content: @sicon-folder-open;
+    }
+
+    &.jstree-closed > ins::before {
+      content: @sicon-folder;
+    }
+
+    &.jstree-leaf > ins::before {
+      content: @sicon-folder-line;
+    }
+
+    &.jstree-leaf.parent > ins::before {
+      content: @sicon-arrow-up;
+    }
+
+    &.jstree-closed,
+    &.jstree-open {
+      & > ins:hover {
+        cursor: pointer;
+      }
+    }
+
+    a {
+      &.btn {
+        &.jstree-contextmenu,
+        &.jstree-addnode {
+          padding: 4px;
+        }
+      }
+    }
+  }
+
+  a.jstree-loading .jstree-icon {
+    background: url("@{baseUrl}/img/throbber.gif") center center no-repeat !important;
+  }
+
+  .jstree-search {
+    color: @ocean;
+    font-style: italic;
+  }
+
+  .jstree-no-dots {
+    li,
+    .jstree-leaf > ins {
+      background: transparent;
+    }
+
+    .jstree-open > ins {
+      background-position: -18px 0;
+    }
+
+    .jstree-closed > ins {
+      background-position: 0 0;
+    }
+  }
+
+  .jstree-no-icons {
+    a .jstree-icon {
+      display: none;
+    }
+
+    .jstree-checkbox {
+      display: inline-block;
+    }
+  }
+
+  .jstree-no-checkboxes .jstree-checkbox {
+    display: none !important;
+  }
+
+  .jstree-checked > a > .jstree-checkbox {
+    background-position: -38px -19px;
+  }
+
+  .jstree-checked > a > .jstree-checkbox:hover {
+    background-position: -38px -37px;
+  }
+
+  .jstree-unchecked > a > .jstree-checkbox {
+    background-position: -2px -19px;
+  }
+
+  .jstree-unchecked > a > .jstree-checkbox:hover {
+    background-position: -2px -37px;
+  }
+
+  .jstree-undetermined > a > .jstree-checkbox {
+    background-position: -20px -19px;
+  }
+
+  .jstree-undetermined > a > .jstree-checkbox:hover {
+    background-position: -20px -37px;
+  }
+
+  .jstree-locked a {
+    color: @gray60;
+    cursor: default;
+  }
+}
+
+.dashlet-options .dropdown-menu .jstree.jstree-sugar {
+  padding: 0;
+
+  ul.list li {
+    padding: 0;
+    text-indent: 4px;
+
+    & > a {
+      padding: 10px 0;
+    }
+
+    &.jstree-leaf > a {
+      padding: 5px 0;
+    }
+  }
+}
+
+#jstree-marker.jstree-sugar {
+  background: url("@{baseUrl}/img/.png") -41px -57px no-repeat !important;
+  text-indent: -100px;
+}
+
+#vakata-dragged.jstree-sugar ins {
+  background: transparent;
+}
+
+#vakata-dragged.jstree-sugar .jstree-ok {
+  background: url("@{baseUrl}/img/.png") -2px -53px no-repeat !important;
+}
+
+#vakata-dragged.jstree-sugar .jstree-invalid {
+  background: url("@{baseUrl}/img/.png") -18px -53px no-repeat !important;
+}
+
+#vakata-contextmenu.jstree-sugar-context,
+#vakata-contextmenu.jstree-sugar-context li ul {
+  background: @gray20;
+  border: @borderWidget;
+  -moz-box-shadow: 1px 1px 2px @gray60;
+  -webkit-box-shadow: 1px 1px 2px @gray60;
+  box-shadow: 1px 1px 2px @gray60;
+}
+
+#vakata-contextmenu.jstree-sugar-context a {
+  color: @black;
+}
+
+#vakata-contextmenu.jstree-sugar-context a:hover,
+#vakata-contextmenu.jstree-sugar-context .vakata-hover > a {
+  padding: 0 5px;
+  background: @gray20;
+  border: 1px solid @blue;
+  color: @black;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+
+#vakata-contextmenu.jstree-sugar-context {
+  li.jstree-contextmenu-disabled {
+    a,
+    a:hover {
+      color: @gray60;
+      background: @transparent;
+      border: 0;
+      padding: 1px 4px;
+    }
+  }
+}
+
+#vakata-contextmenu.jstree-sugar-context li.vakata-separator {
+  background: @white;
+  border-top: @borderWidget;
+  margin: 0;
+}
+
+#vakata-contextmenu.jstree-sugar-context li ul {
+  margin-left: -4px;
+}
+

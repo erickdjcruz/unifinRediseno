@@ -1,0 +1,28 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="report-filters-container overflow-y-auto overflow-x-hidden h-full" data-type="{{_targetField.type}}">
+    <div class="collapsed-widget">
+        <div class="reports-runtime-widget mb-3">
+            <div class="runtime-filter-toolbar dashlet-runtime-filter pt-1 pb-1 flex flex-row items-center p-1.25 ui-draggable-handle" data-tooltip="filter-summary" rel="tooltip" data-action="dashlet-filter-widget">
+                <i class="sicon sicon-check-circle-line-lg" data-container="dashboard-filter-checked-icon"></i>
+                <h5 data-toggle="dashlet" class="runtime-filter-title flex-grow m-0 ml-1.5">
+                    {{#if _hasAccess}}
+                        {{_targetFieldModule}} > <b>{{str _targetField.vname _targetModule}}</b>
+                    {{else}}
+                        {{str "LBL_NO_FIELD_PERMISSION_TO_FILTER"}}
+                    {{/if}}
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>

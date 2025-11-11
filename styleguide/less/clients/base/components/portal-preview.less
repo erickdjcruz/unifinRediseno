@@ -1,0 +1,78 @@
+.portal-preview {
+  .navbar {
+    .nav-collapse {
+      display: flex;
+      width: 100% !important;
+    }
+  }
+
+  .navbar-fixed-top,
+  .contentsearch-container,
+  .block-footer {
+    pointer-events: none;
+  }
+
+  .navbar-fixed-top {
+    top: 51px;
+    position: absolute;
+  }
+
+  &.main-pane {
+    overflow-x: hidden;
+    top: 0;
+  }
+
+  .dashboard {
+    top: 96px;
+
+    .dashlet-content,
+    .block-footer {
+      display: none;
+    }
+
+    .dfab {
+      right: calc(~"34.042553198% + 21px");
+
+      &.top {
+        top: 195px;
+      }
+    }
+
+    .portal-home-dashboard {
+      padding: 20px 0;
+    }
+  }
+
+  .module-list .megamenu > .dropdown[data-module="Home"] .btn-group.home {
+    width: auto;
+    display: flex;
+    max-width: 200px;
+
+    .cube {
+      padding: 0;
+
+      img {
+        max-width: 200px;
+        width: auto;
+        height: auto;
+        max-height: 22px;
+        filter: none;
+      }
+    }
+
+    .dropdown-toggle {
+      display: none;
+    }
+  }
+
+  .headerpane {
+    background: @navbarBackgroundAccent;
+    width: 100%;
+    position: static;
+  }
+
+  .navbar-inner {
+    background: @previewHeaderBackground;
+    border-bottom: 1px solid @borderColor;
+  }
+}

@@ -1,0 +1,97 @@
+div.opportunity-metrics-wrapper {
+  padding: 0;
+
+  .nv-chart {
+    height: 250px;
+    min-width: 250px;
+  }
+
+  .opportunity-metrics-chart,
+  .nv-chart {
+    .won {
+      fill: @color-green-400;
+    }
+
+    .lost {
+      fill: @color-red-400;
+    }
+
+    .active {
+      fill: @color-ocean-400;
+    }
+  }
+}
+
+div.opportunity-metric {
+  text-align: right;
+  text-align: center;
+  width: 33%;
+  position: relative;
+  border-top: @borderWidgetLight;
+  border-right: @borderWidgetLight;
+  float: left;
+  padding: 20px 0 10px;
+  box-sizing: border-box;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  span.label {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    padding: 3px;
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    margin-left: -14px;
+    line-height: 22px;
+    border: none;
+
+    &.won {
+      background-color: @color-green-200;
+      color: @color-green-600;
+    }
+
+    &.lost {
+      background-color: @color-red-200;
+      color: @color-red-600;
+    }
+
+    &.active {
+      background-color: @color-ocean-200;
+      color: @color-ocean-600;
+    }
+  }
+
+  div.opportunity-metric-description {
+    span {
+      float: none;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 10px;
+      text-align: center;
+      text-shadow: 0 1px 0 @gray80;
+      margin-right: 3px !important;
+    }
+  }
+
+  div.deal-amount-metric {
+    font-size: 16px;
+    font-weight: bold;
+    box-sizing: border-box;
+
+    &.won {
+      color: @color-green-600;
+    }
+
+    &.lost {
+      color: @color-red-600;
+    }
+
+    &.active {
+      color: @color-ocean-600;
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="headerpane bg-[--primary-content-background] box-border !fixed table w-[calc(100%-3.75rem)]">
+    <h1>
+        <span class="record-cell">{{str 'LBL_HINT_CONFIG_FIELD_SELECTOR'}}</span>
+    </h1>
+</div>
+
+<div class="field-search-bar">
+    <input type="text" placeholder="{{str 'LBL_SEARCH'}}" class="searchbox-field">
+</div>
+
+<h2 class='fieldSeparationTitle'>{{str 'LBL_HINT_ENRICHED_FIELD_SUBTITLE'}}</h2>
+
+<p class="subHeaderNote">{{str 'LBL_HINT_ENRICHED_FIELD_SUBTITLE_NOTE'}}</p>
+
+<h1 style="margin-top: 25px;" name="subHeaderTitle1-rightpanel">
+    <span class="span4 record-cell" style="font-size: 12px;">
+        <strong style="margin-left: 8%;">{{str 'LBL_HINT_CONFIG_FIELD_NAME'}}</strong>
+    </span>
+    <span class="span4 record-cell" style="font-size: 12px;"><strong>{{str 'LBL_HINT_CONFIG_ENRICH_FIELD'}}</strong></span>
+    <span class="span4 record-cell" style="font-size: 12px;"><strong>{{str 'LBL_HINT_CONFIG_FIELD_SHOW1'}}</strong></span>
+</h1>
+
+<p name="showNoMessageField1" style="text-align: center; margin-top: 54px;"></p>
+
+<div style="margin-top:60px;">
+    <div class="row-fluid2" id="hint-drawer-field-container" style="margin-left:10px !important;">
+        {{#each enrichHintFields}}
+            <div class="span12 record-cell edit" name="{{this.name}}-rightpanel" style="margin-left:5px !important;">
+                <span class="span4 record-cell">{{str this.label}}{{#if this.hintOnlyField}}*{{/if}}</span>
+                <span class="span4 record-cell">
+                <label class="form-check-label" for="defaultCheck1">
+                    <input style="margin-left: 15%;" class="form-check-input fieldSelectorForEnrich field-container-{{this.name}}"
+                           type="checkbox" value="" data-field="{{this.name}}" id="{{this.name}}"
+                           {{#if this.disabled}}disabled{{/if}} >
+                </label>
+                </span>
+                <span class="span4 record-cell">
+                    {{#unless this.hideCheckbox}}
+                        <label class="form-check-label" for="defaultCheck1">
+                            <input style="margin-left: 15%;" class="form-check-input fieldSelector field-container-show{{this.name}}"
+                                   type="checkbox" value="" data-field="{{this.name}}" id="{{this.name}}"
+                                   {{#if this.disabled}}disabled{{/if}} >
+                        </label>
+                    {{/unless}}
+                </span>
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+<hr class = "separationLine"/>
+
+<h2 class='fieldSeparationTitle'style="margin-top: 10px">{{str 'LBL_HINT_ADDITIONAL_FIELD_SUBTITLE'}}</h2>
+
+<p class="subHeaderNote">{{str 'LBL_HINT_ADDITIONAL_FIELD_SUBTITLE_NOTE'}}</p>
+
+<h1 style="margin-top: 25px;" name="subHeaderTitle2-rightpanel">
+    <span class="span8 record-cell" style="font-size: 12px;">
+        <strong style="margin-left: 4%;">{{str 'LBL_HINT_CONFIG_FIELD_NAME'}}</strong>
+    </span>
+    <span class="span4 record-cell" style="font-size: 12px;">
+        <strong style="margin-left: -6%;">{{str 'LBL_HINT_CONFIG_FIELD_SHOW2'}}</strong>
+    </span>
+</h1>
+
+<p name="showNoMessageField2" style="text-align: center; margin-top: 54px;"></p>
+
+<div style="margin-top:60px;">
+    <div class="row-fluid2" id="hint-drawer-field-container" style="margin-left:10px !important;">
+        {{#each availableFields}}
+            <div class="span12 record-cell edit" name="{{this.name}}-rightpanel" style="margin-left:5px !important;">
+                <span class="span8 record-cell">{{str this.label}}</span>
+                <span class="span4 record-cell">
+                        <label class="form-check-label" for="defaultCheck1">
+                            <input style="margin-left: 15%;" class="form-check-input fieldSelector field-container-show{{this.name}}"
+                                   type="checkbox" value="" data-field="{{this.name}}" id="{{this.name}}"
+                                   {{#if this.disabled}}disabled{{/if}} >
+                        </label>
+                </span>
+            </div>
+        {{/each}}
+    </div>
+</div>

@@ -1,0 +1,264 @@
+/* ALERTS
+  ----------------*/
+
+// Base alert styles
+
+div.alert { /* rules here do not apply to alert in a list view (<table>) header */
+  box-sizing: border-box;
+  border: 1px solid @alertBorderColor;
+
+  .indicator {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: inherit;
+    width: 48px;
+
+    i {
+      display: block;
+      top: calc(~"50% - 15px");
+    }
+  }
+
+  .copy-clipboard-info {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    align-items: top;
+    justify-content: center;
+    position: relative;
+    height: inherit;
+    width: 48px;
+
+    i {
+      display: block;
+      top: calc(~"50% - 15px");
+    }
+  }
+}
+
+.alert {
+  position: relative;
+  height: auto;
+  min-height: 58px;
+  text-shadow: none;
+  padding: 0;
+  font-size: @alertFontSize;
+  z-index: 0;
+
+  &:not(.alert-process) {
+    &::before {
+      content: "";
+      height: 100%;
+      position: absolute;
+      background-image: @stackBackground;
+      background-repeat: no-repeat;
+      background-size: 150px;
+      background-position: right top;
+      width: 100%;
+      z-index: -1;
+    }
+
+    > * {
+      z-index: 1;
+    }
+  }
+
+  &.closeable {
+    padding-right: 40px;
+  }
+
+  .text {
+    height: inherit;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-x: hidden;
+  }
+}
+
+// Adjust close link position
+.alert .close {
+  right: 10px;
+  top: 10px;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: normal;
+  text-shadow: none;
+  color: @sicon-color;
+  position: absolute;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
+// Alternate styles
+// ----------------
+
+.alert-success,
+.alert-error,
+.alert-danger,
+.alert-info,
+.alert-warning {
+  width: 418px;
+}
+
+.alert-success,
+.alert-success .alert-heading {
+  .indicator {
+    i {
+      color: @alertSuccess;
+    }
+  }
+}
+
+.alert-danger,
+.alert-error,
+.alert-danger .alert-heading,
+.alert-error .alert-heading {
+  .indicator {
+    i {
+      color: @alertError;
+    }
+  }
+}
+
+.alert-success a,
+.alert-danger a,
+.alert-error a,
+.alert-info a,
+.alert-sucess .alert-heading a,
+.alert-danger .alert-heading a,
+.alert-error .alert-heading a,
+.alert-info .alert-heading a {
+  font-weight: 500;
+}
+
+.alert-warning,
+.alert-warning .alert-heading {
+  .indicator {
+    i {
+      color: @alertWarning;
+    }
+  }
+}
+
+.alert-info,
+.alert-info .alert-heading {
+  .indicator {
+    i {
+      color: @alertInfo;
+    }
+  }
+}
+
+// Block alerts
+// ------------------------
+
+.alert-top {
+  position: fixed;
+  top: 31px;
+  height: 0;
+  width: 100%;
+  z-index: 1060;
+  text-align: center;
+
+  & > div {
+    display: table;
+    margin: auto;
+  }
+}
+
+.alert-top .alert {
+  text-align: left;
+  margin-top: 0;
+}
+
+.alert a.btn {
+  margin-top: 6px;
+}
+
+.alert.modal {
+  display: none;
+}
+
+// Confirmation Alerts
+// ------------------------
+
+// Disable whole screen
+.alert-page-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1059;
+}
+
+// Alert itself
+.alert-confirmation {
+  position: fixed;
+  top: 36px;
+  left: 0;
+  right: 0;
+  z-index: 1080;
+
+  .alert {
+    .text {
+      padding-right: 1rem;
+    }
+  }
+}
+
+// Loading indicator Alert
+// ------------------------
+.alert.alert-process {
+  min-height: 0;
+  height: 48px;
+  line-height: 46px;
+  padding: 0 40px;
+  color: @textColorLight;
+  border-color: @loadingBorder;
+  background-color: @loadingBackground;
+}
+
+.field-alert-warning {
+  padding: 5px 7px;
+  margin: 0 7px 14px -7px;
+}
+
+// Information Flags
+// ------------------------
+.flag {
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+/* NEW SKIN START */
+
+.alert {
+  /* override */
+  font-family: inherit;
+}
+
+/* NEW SKIN END */
+
+.alert-confirmation {
+  .alert-info,
+  .alert-info .alert-heading {
+    .copy-clipboard-info {
+      i {
+        color: @alertInfo;
+      }
+    }
+
+    a {
+      font-weight: 700;
+    }
+  }
+}

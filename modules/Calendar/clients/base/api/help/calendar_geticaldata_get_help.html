@@ -1,0 +1,115 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Get calendar events as iCal
+</span>
+
+<h2>Request</h2>
+<code class="codesample">
+    GET /Calendar/getICalData
+</code>
+
+<h2>Request Arguments</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                key
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The publish key
+            </td>
+        </tr>
+        <tr>
+            <td>
+                calendarConfigurationUID
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The UID where calendars configurations are stored in the database
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be a string containing the events in iCals format.
+</span>
+
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    calendarConfigurationUID: "546fcdb6-f11d-11eb-83b3-0242ac140004"
+    key: "c056558a-e941-11eb-basa-0242ac140005"
+}
+</pre>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+    BEGIN:VCALENDAR
+    VERSION:2.0
+    METHOD:PUBLISH
+    X-WR-CALNAME: Administrator (SugarCRM)
+    PRODID:-//SugarCRM//SugarCRM Calendar//EN
+    BEGIN:VTIMEZONE
+    TZID:UTC
+    X-LIC-LOCATION:UTC
+    END:VTIMEZONE
+    CALSCALE:GREGORIAN
+    BEGIN:VEVENT
+    SUMMARY:c 8
+    DTSTART;TZID=UTC:20210801T210000
+    DTEND;TZID=UTC:20210804T210000
+    DTSTAMP:20210730T100300Z
+    DESCRIPTION:c 8
+    URL;VALUE=URI:http://172.18.0.6/sugar/ent/sugarcrm/#Calls/0039195c-edee-11e
+        b-86eb-0242ac140005
+    UID:748d88a6-f11d-11eb-8ce4-0242ac140005
+    END:VEVENT
+    DTSTAMP:20210730T100300Z
+    END:VCALENDAR
+
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/Calendar/getICalData</code> GET endpoint.
+        </td>
+    </tr>
+</table>

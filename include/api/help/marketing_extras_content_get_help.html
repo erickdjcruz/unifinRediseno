@@ -1,0 +1,113 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+
+<h2>Overview</h2>
+<span class="lead">
+    Returns the SugarCRM marketing content URL that is managed by the marketing team.
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This API attempts to reach SugarCRM's marketing content URL. If the service is unreachable, a URL for the static content is returned.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            selected_language
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            Code for the desired marketing content language. (Eg. <em>"en_us"</em>, <em>"fr_FR"</em>).
+            Providing a certain language code does not guarantee that content returned will be in the provided language.
+            If an invalid language is specified, will assume <em>"en_us"</em>.
+        </td>
+        <td>
+            False. It uses the configured language if this parameter is missing. Defaults to <em>"en_us"</em>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            static
+        </td>
+        <td>
+            Boolean
+        </td>
+        <td>
+            If set to true, return URL for static marketing content. Defaults to false.
+        </td>
+        <td>
+            False. If this parameter is missing, the API defaults to the dynamic content url.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            url
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            URL suitable for embedding in an iFrame that links to marketing content from SugarCRM.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">"https://www.sugarcrm.com/product-login-page-service/"</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            v11.9
+        </td>
+        <td>
+            Added <code>/login/marketingContentUrl</code> GET endpoint.
+        </td>
+    </tr>
+    </tbody>
+</table>

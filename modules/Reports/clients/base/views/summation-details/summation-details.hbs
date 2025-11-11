@@ -1,0 +1,43 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#each meta.panels}}
+    <div class="flex-list-view-container h-full">
+        <div class="flex-list-view-content h-full overflow-auto relative">
+            <div class="no-data-available hidden">
+                {{str "LBL_NO_DATA_AVAILABLE"}}
+            </div>
+            {{#eq ../reportComplexity ../complexities.high}}
+                <div class="m-2 items-center flex flex-col">
+                    <div class="cmpx-report-info mt-6 font-bold text-center">{{str "LBL_REPORTS_EXPORT_MESSAGE_TO_LARGE" "Reports"}}</div>
+                    <div class="cmpx-report-info text-center">{{#eq ../../exportAccess true}}{{str "LBL_REPORTS_EXPORT_TO_CSV_MESSAGE" "Reports"}}{{else}}{{str "LBL_EXPORT_RESTRICTION_LARGE_REPORTS_MESSAGE" "Reports"}}{{/eq}}</div>
+                    {{#eq ../../exportAccess true}}
+                        <div class="mt-3"><button class="btn btn-primary export-csv-btn" data-action="export-csv">{{str "LBL_EXPORT_AS_CSV" "Reports"}}</button></div>
+                    {{/eq}}
+                </div>
+            {{/eq}}
+
+            {{#eq ../reportComplexity ../complexities.medium}}
+                <div class="m-2 items-center flex flex-col simplified-message">
+                    <div class="cmpx-report-info mt-6 font-bold text-center">{{#eq ../../exportAccess true}}{{str "LBL_SIMPLIFIED_REPORT_INFO" "Reports"}}{{else}}{{str "LBL_EXPORT_RESTRICTION_SIMPLIFIED_REPORT_INFO" "Reports"}}{{/eq}}</div>
+                    <div class="cmpx-report-info text-center">{{#eq ../../exportAccess true}}{{str "LBL_SIMPLIFIED_REPORT_INFO_2" "Reports"}}{{else}}{{str "LBL_EXPORT_RESTRICTION_SIMPLIFIED_REPORT_INFO_2" "Reports"}}{{/eq}}</div>
+                    <div class="m-2 items-center flex flex-row">
+                        {{#eq ../../exportAccess true}}
+                            <a class="btn btn-primary export-csv-btn" data-action="export-csv">{{str "LBL_EXPORT_AS_CSV" "Reports"}}</a>
+                        {{/eq}}
+                        <a class="btn btn-primary show-simplified-btn" data-action="show-simplified">{{str "LBL_VIEW_SIMPLIFIED_TABLE" "Reports"}}</a>
+                    </div>
+                </div>
+            {{/eq}}
+        </div>
+    </div>
+{{/each}}

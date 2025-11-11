@@ -1,0 +1,59 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="row-fluid ml-5">
+    <h3>{{str 'LBL_PATHS_FOR_RECORD_VIEW' module}}</h3>
+    {{#eq driveType 'sharepoint'}}
+    <h5>{{str 'LBL_SELECT_PATHS_RECORD_VIEW_HELPER' module}}</h5>
+    {{/eq}}
+</div>
+<div class="row-fluid ml-5">
+    <div class="span3">{{str 'LBL_MODULE'}}</div>
+    <div class="span3">{{str 'LBL_DEFAULT_STARTING_PATH' module}}</div>
+    {{#includes variablePathEnabled driveType}}
+        <div class="span3">{{str 'LBL_FIELDS_VARIABLE' module}}</div>
+    {{/includes}}
+</div>
+{{#each paths}}
+    <div class="row-fluid ml-5 mb-2.5 path" data-isshared="{{is_shared}}" data-folderid="{{folder_id}}"
+        data-currentpath="{{path}}" {{#if drive_id}}data-driveid="{{drive_id}}"{{/if}}>
+        <div class="span3">
+            <select class="moduleList w-full">
+                <option></option>
+                {{#each ../modules}}
+                    <option value="{{@key}}" {{#eq @key ../path_module}}selected{{/eq}}>{{getModuleName @key plural=true}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="span3 mr-1.5">
+            <input {{#includes ../variablePathDisabled ../driveType}} readonly {{/includes}} class="w-full recordPath" value="{{pathDisplay}}">
+        </div>
+        <div class="span6">
+            {{#includes ../variablePathEnabled ../driveType}}
+                <div class="fieldList select2 w-1/2">
+                </div>
+                <button class="btn addField ml-0.5">
+                    <i class="sicon sicon-plus"></i>
+                </button>
+            {{/includes}}
+            <button class="btn selectPath ml-0.5" data-id="{{id}}">{{str 'LBL_SELECT_PATH' ../module}}</button>
+            {{#includes ../variablePathEnabled ../driveType}}
+                <button class="btn savePath ml-0.5" data-id="{{id}}">
+                    <i class="sicon sicon-check" data-id="{{id}}"></i>
+                </button>
+            {{/includes}}
+            <button class="btn removePath ml-0.5" data-id="{{id}}">
+                <i class="sicon sicon-remove" data-id="{{id}}"></i>
+            </button>
+        </div>
+    </div>
+{{/each}}

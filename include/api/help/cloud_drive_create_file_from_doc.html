@@ -1,0 +1,74 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+
+<h2>Overview</h2>
+<span class="lead">
+    Create a file on the cloud.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>documentId</td>
+        <td>String</td>
+        <td>The id of the document to upload</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>cloud_service_type</td>
+        <td>String</td>
+        <td>The type of the service</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>path</td>
+        <td>String</td>
+        <td>The path to upload</td>
+        <td>Yes</td>
+    </tr>
+    </tbody>
+</table>
+
+</pre>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+[
+    'status' => 'success'
+]
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_18
+        </td>
+        <td>
+            Added <code>/CloudDrive/document</code> POST endpoint.
+        </td>
+    </tr>
+</table>

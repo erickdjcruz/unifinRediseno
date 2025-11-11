@@ -1,0 +1,6 @@
+(function(app){app.augment('CJFieldHelper',{_hideField:function(field,callback){if(!field){return;}
+field.def=field.def||{};field.def.readonly=true;field._hide();this._hideFieldLabel(field);if(_.isFunction(callback)){callback();}},_hideFieldLabel:function(field){if(!field){return;}
+let firstParent=field.$el.parents(`div[data-name="${field.name}"]`).eq(0);if(firstParent.length>=1){firstParent.find('.record-label').removeClass('ellipsis_inline').addClass('hide').hide();}},_showFieldLabel:function(field){if(!field){return;}
+let firstParent=field.$el.parents(`div[data-name="${field.name}"]`).eq(0);if(firstParent.length>=1){firstParent.find('.record-label').removeClass('hide').addClass('ellipsis_inline').show();}},_showField:function(field){if(!field){return;}
+field.def=field.def||{};field.def.readonly=false;field._show();let action='detail';if(field.view&&(field.view.createMode||_.isEqual(field.view.currentState,'create')||_.isEqual(field.view.currentState,'edit'))){action='edit';}
+field.setMode(action);this._showFieldLabel(field);},_enableOrDisableField:function(field,enableOrDisable){if(field){field.readonly=enableOrDisable;field.setDisabled(enableOrDisable);}},},true);})(SUGAR.App);

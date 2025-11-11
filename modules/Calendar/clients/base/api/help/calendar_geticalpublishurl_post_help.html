@@ -1,0 +1,94 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Add calendar configurations in the database and returns the url where the calendar can be consumed
+</span>
+
+<h2>Request</h2>
+<code class="codesample">
+    POST /Calendar/getICalPublishUrl
+</code>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                calendarConfigurations
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                The list of calendar configurations that needs to be stored in the database for later use
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be a string containing the URL of the calendar.
+</span>
+
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+[
+    {
+        "id": "f75a25c6-eeb8-11eb-abe8-0242ac140005",
+        "calendarId": "f75a25c6-eeb8-11eb-abe8-0242ac140005",
+        "userId": "1",
+        "teamId": ""
+    },
+    {
+        "id": "49cfb786-ef8a-11eb-a8a5-0242ac140005",
+        "calendarId": "49cfb786-ef8a-11eb-a8a5-0242ac140005",
+        "userId": "1",
+        "teamId": ""
+    },
+]
+</pre>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+"http://sugarcrm-instance/rest/v11_13/Calendar/getICalData?type=ics&user_id=1&key=c05655aa-e341-11ab-b16a-0242ac140005&calendarsUID=d530f23c-f11e-11eb-8515-0242ac140005"
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/Calendar/getICalPublishUrl</code> POST endpoint.
+        </td>
+    </tr>
+</table>

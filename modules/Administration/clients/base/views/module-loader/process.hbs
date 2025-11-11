@@ -1,0 +1,58 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+<div class="alert-page-overlay"></div>
+
+<div class="alert alert-info alert-block rounded-md shadow-lg bg-[--alert-background]" style="margin-left:-209px;position:fixed;z-index:1060;">
+    <div style="flex:max-content;position:relative;width:100%;" class="text-center pt-5">
+        <div class="indicator" style="width:100%;height:60px;position:absolute;z-index:-1;"></div>
+        <span class="text loading loading-admin">
+            <span id="ml-installing-lbl">
+                <strong>{{str "LBL_ML_PACKAGE_INSTALLING" "Administration"}}</strong>
+                <i class="l1">&#46;</i>
+                <i class="l2">&#46;</i>
+                <i class="l3">&#46;</i>
+            </span>
+            <span id="ml-installing-success-lbl" style="display:none">
+                <strong>{{str "LBL_ML_INSTALLATION_SUCCESSFUL" "Administration"}}</strong>
+            </span>
+            <span id="ml-installing-error-lbl" style="display:none">
+                <strong>{{str "LBL_ML_INSTALLATION_ERROR" "Administration"}}</strong>
+            </span>
+        </span>
+
+        <div style="padding:0 10px">
+            <h5>0%</h5>
+            <div class="progress"><div class="bar" style="width:0%;"></div></div>
+
+            <div style="margin:20px 0 10px;" class="text-left">
+                <a href="#"
+                    onclick="return (function(e) {
+                            el = $(e).parent().find('pre');
+                            el.toggle();
+                            el.scrollTop(function() { return this.scrollHeight; });
+                            $(e).parent().find('i').toggleClass('sicon-chevron-down').toggleClass('sicon-chevron-up');
+                            return false;
+                        })(this)">Display Log</a>
+                <i class="sicon sicon-chevron-down"></i>
+                <pre style="max-height:150px;overflow:auto;display:none;margin-top:20px;word-break:break-word;"></pre>
+            </div>
+        </div>
+        <button class="indicator"
+            style="width: 100%;border:0 none;height:36px;font-weight:bold;color:#717171;display:none"
+            onclick="return (function(e) {
+                            $(e).closest('.alert').parent().remove();
+                            return false;
+                        })(this)">Close</button>
+    </div>
+</div>

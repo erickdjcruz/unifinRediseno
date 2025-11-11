@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Lista Sugar-åtgärder i Smart Guide',
+    'LBL_MODULE_TITLE' => 'Sugar-åtgärd i Smart Guide',
+    'LBL_HOMEPAGE_TITLE' => 'Mina Sugar-åtgärder i Smart Guide',
+    'LNK_NEW_RECORD' => 'Ny Sugar-åtgärd i Smart Guide',
+    'LNK_VIEW_RECORDS' => 'Visa Sugar-åtgärder i Smart Guide',
+    'LNK_CJ_FORM_LIST' => 'Visa Sugar-åtgärder i Smart Guide',
+    'LNK_LIST' => 'Sugar-åtgärder i Smart Guide',
+    'LBL_SEARCH_FORM_TITLE' => 'Sök Sugar-åtgärd i Smart Guide',
+    'LBL_MODULE_NAME' => 'Sugar-åtgärder i Smart Guide',
+    'LBL_MODULE_NAME_SINGULAR' => 'Sugar-åtgärd i Smart Guide',
+    'LBL_TRIGGER_EVENT' => 'Utlösande händelse',
+    'LBL_ACTION_TYPE' => 'Typ av åtgärd',
+    'LBL_PARENT_MODULE' => 'Överordnad modul',
+    'LBL_RELATIONSHIP' => 'Förhållande',
+    'LBL_ACTIVITY_TEMPLATE' => 'Mall för aktivitet',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Smart Guide/Etapp/Aktivitetsmall',
+    'LBL_ACTIVE' => 'Aktiv',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'Aktivitetsmallen %s har redan en Sugar-åtgärd som använder utlösarhändelsen %s. Det finns en gräns på en aktiv Sugar-åtgärd per typ av utlösarhändelse för varje etapp eller aktivitet i en Smart Guide.',
+    'LBL_RECORDVIEW_PANEL4' => 'Fylla i fält',
+    'LBL_POPULATE_FIELDS' => 'Fylla i fält',
+    'LBL_ADD_FIELD' => 'Lägg till fält',
+    'LBL_REMOVE_FIELD' => 'Ta bort fält',
+    'LBL_FIELD_NAME' => 'Fältnamn',
+    'LBL_FIELD_VALUE' => 'Fältvärde',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Det här fältet är inte tillgängligt för listvy.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Typ av åtgärdsutlösare',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Det gick inte att hitta relaterat register',
+    'LBL_IGNORE_ERRORS' => 'Ignorera fel',
+    'LBL_NO_DISPLAY_FIELDS' => 'Det finns inga fält att visa.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Länkfält för aktivitetsmall',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Länkfält för etappmall',
+    'LBL_EMAIL_TEMPLATES' => 'Mall för e-post',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Välj "Till" e-postadress',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'E-post fält',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Visa ikon',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Smart Guide/Etapp/Aktivitetsmall',
+    'LBL_ACTIVITY_MODULE' => 'Aktivitetsmodul',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Smart Guide-mall',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Välj utlösare för Smart Guide-mall',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Utlösartyp',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Välj utlösartyp',
+    'LBL_MODULE_TRIGGER' => 'Modulutlösare',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Välj modulutlösare',
+    'LBL_FIELD_TRIGGER' => 'Fältutlösare',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Välj Smart Guide-mål',
+    'LBL_CJ_TARGET' => 'Smart Guide-mål',
+    'LBL_CJ_ACTION' => 'Smart Guide-åtgärd',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Välj Smart Guide-åtgärd',
+    'LBL_TRIGGER_TITLE' => 'Utlösare',
+    'LBL_TRIGGER_DESCRIPTION' => 'Använd fälten nedan för att välja utlösartyp och de villkor som ska aktivera utlösaren.',
+    'LBL_TARGET_ACTION_TITLE' => 'Mål och åtgärd',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Använd fälten nedan för att välja plats och vilka åtgärder som ska inträffa när utlösaren aktiveras.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Välj Smart Guide-etapp',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Välj Smart Guide-aktiviteter',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Välj Smart Guide-aktivitet',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Välj åtgärd för etappaktiviteter',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Välj åtgärd för Smart Guide-aktiviteter',
+];

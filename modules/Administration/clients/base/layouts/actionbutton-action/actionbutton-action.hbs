@@ -1,0 +1,56 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="ab-admin-action-container">
+    <div class="ab-admin-action-header">
+        <a class="btn btn-invisible ab-admin-action-title" type="button"
+           data-bs-toggle="collapse" data-bs-target="div[data-id='{{_actionId}}']"
+            aria-expanded="true" aria-controls="{{_actionId}}">
+            <h1>{{str "LBL_ACTIONBUTTON_ACTION"}}</h1>
+        </a>
+        <div class="ab-admin-action-button-strip">
+            <a class="btn btn-default" data-action="add" rel="tooltip" data-bs-placement="top" aria-label="{{str 'LBL_ACTIONBUTTON_ADD_ACTION'}}" data-original-title="{{str 'LBL_ACTIONBUTTON_ADD_ACTION'}}">
+                <i class="sicon sicon-plus"></i>
+            </a>
+            <a class="btn btn-default" data-action="remove" rel="tooltip" data-bs-placement="top" aria-label="{{str 'LBL_ACTIONBUTTON_REMOVE_ACTION'}}" data-original-title="{{str 'LBL_ACTIONBUTTON_REMOVE_ACTION'}}">
+                <i class="sicon sicon-minus"></i>
+            </a>
+        </div>
+    </div>
+    <div class="in bs-collapse collapse ab-admin-action show" data-id="{{_actionId}}">
+        <div class="ab-admin-action-selector record">
+            <div class="span6 record-cell edit" data-type="text">
+                <div class="labels-on-side">
+                    <div class="span2 record-label-wrapper">
+                        <div class="record-label">
+                            {{str _actions.label}}
+                        </div>
+                    </div>
+                    <div class="span4 record-link-wrapper">
+                        <span class="normal index">
+                            <span class="edit">
+                                <select class="inherit-width {{_actions.id}}" data-id="{{_actions.id}}" {{#if _actions.disabled}}disabled{{/if}}>
+                                    {{#each _actions.options}}
+                                        <option value="{{@key}}" {{#eq ../_actions.value @key}}selected{{/eq}}>
+                                            {{str this}}
+                                        </option>
+                                    {{/each}}
+                                </select>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span12 ab-admin-action-view record"></div>
+    </div>
+</div>

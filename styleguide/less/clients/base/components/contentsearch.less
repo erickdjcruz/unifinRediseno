@@ -1,0 +1,104 @@
+// Content search dashlet
+.dashboard {
+  .contentsearch-container {
+    // Ensure the contentsearch dashlet is as tall as a 6-row tall dashlet
+    height: @dashboardRowHeight * 6 + @dashboardVerticalMargin * 5;
+    min-height: 300px;
+    box-sizing: border-box;
+    padding: 70px 0 0;
+    background-image: url('../../../../../styleguide/assets/img/portal-search-background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.contentsearchdashlet {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: fade(@white, 95%);
+  border-radius: 10px;
+
+  .record-cell {
+    position: static;
+  }
+
+  input {
+    min-width: 540px;
+  }
+
+  .btn-primary {
+    margin-left: 0;
+  }
+
+  #portal & {
+    .record-cell {
+      position: relative;
+
+      .contentsearch-dropdown {
+        box-sizing: border-box;
+        max-width: 600px;
+        min-width: 540px;
+      }
+    }
+  }
+}
+
+.contentsearchdashlet-text {
+  margin: 0 0 13px;
+  font-size: @fontSizeExtraLarge;
+  color: @gray90;
+}
+
+.contentsearch-dropdown {
+  position: absolute;
+  z-index: @zindexPopover;
+  display: none; // none by default, but block on "open"
+  margin: 1px 0 0; // override default ul
+  list-style: none;
+  background-color: @dropdownBackground;
+  background-clip: padding-box;
+  max-width: 539px;
+  width: 100%;
+
+  li.search-result {
+    min-height: 0;
+    border-bottom: none;
+
+    .search-result-description {
+      display: inline-block;
+      max-height: 40px;
+      line-height: 13px;
+      overflow: hidden;
+    }
+  }
+}
+
+.contentsearch-results {
+  li.no-results {
+    margin: 10px;
+  }
+
+  button.btn {
+    margin: 0;
+    padding: 0 0 5px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+}
+
+.contentsearch-footer {
+  border-top: 1px solid fade(@black, 10%);
+  background-color: @dropdownLinkBackgroundHover;
+  text-align: center;
+
+  span {
+    color: @darkBlue;
+    font-weight: bold;
+    vertical-align: middle;
+  }
+
+  .btn {
+    font-weight: bold;
+  }
+}

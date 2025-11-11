@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Lister les actions Sugar du Smart Guide',
+    'LBL_MODULE_TITLE' => 'Action Sugar du Smart Guide',
+    'LBL_HOMEPAGE_TITLE' => 'Mes actions Sugar du Smart Guide',
+    'LNK_NEW_RECORD' => 'Nouvelle action Sugar du Smart Guide',
+    'LNK_VIEW_RECORDS' => 'Afficher les actions Sugar du Smart Guide',
+    'LNK_CJ_FORM_LIST' => 'Afficher les actions Sugar du Smart Guide',
+    'LNK_LIST' => 'Actions Sugar du Smart Guide',
+    'LBL_SEARCH_FORM_TITLE' => 'Rechercher une action Sugar du Smart Guide',
+    'LBL_MODULE_NAME' => 'Actions Sugar du Smart Guide',
+    'LBL_MODULE_NAME_SINGULAR' => 'Action Sugar du Smart Guide',
+    'LBL_TRIGGER_EVENT' => 'Évènement déclencheur',
+    'LBL_ACTION_TYPE' => 'Type d&#39;action',
+    'LBL_PARENT_MODULE' => 'Module parent',
+    'LBL_RELATIONSHIP' => 'Relation',
+    'LBL_ACTIVITY_TEMPLATE' => 'Modèle d&#39;activité',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Modèle d&#39;activité/d&#39;étape/de guide intelligent',
+    'LBL_ACTIVE' => 'Actif',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'Le modèle d&#39;activité %s a déjà une action Sugar utilisant l&#39;événement déclencheur %s. Il y a une limite d&#39;une action Sugar active par type d&#39;événement déclencheur pour chaque étape ou activité dans un Smart Guide.',
+    'LBL_RECORDVIEW_PANEL4' => 'Remplir les champs',
+    'LBL_POPULATE_FIELDS' => 'Remplir les champs',
+    'LBL_ADD_FIELD' => 'Ajouter un champ',
+    'LBL_REMOVE_FIELD' => 'Supprimer ce champ',
+    'LBL_FIELD_NAME' => 'Nom du champ',
+    'LBL_FIELD_VALUE' => 'Valeur du champ',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Ce champ n&#39;est pas disponible pour la vue liste.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Type de déclencheur d’action',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Impossible de trouver l’enregistrement associé',
+    'LBL_IGNORE_ERRORS' => 'Ignorer les erreurs',
+    'LBL_NO_DISPLAY_FIELDS' => 'Il n’y a pas de champs à afficher.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Champ de lien du modèle d’activité',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Champ de lien du modèle d’étape',
+    'LBL_EMAIL_TEMPLATES' => 'Modèle d&#39;email',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Sélectionnez l’adresse e-mail « À »',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'Champs d&#39;e-mail',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Afficher l&#39;icône',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Modèle d&#39;activité/d&#39;étape/de guide intelligent',
+    'LBL_ACTIVITY_MODULE' => 'Module d’activité',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Modèles du Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Sélectionnez le déclencheur de Modèles du Smart Guide',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Type de déclencheur',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Sélectionnez le type de déclencheur',
+    'LBL_MODULE_TRIGGER' => 'Déclencheur de module',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Sélectionnez le déclencheur de module',
+    'LBL_FIELD_TRIGGER' => 'Déclencheur de champ',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Sélectionnez la cible du Smart Guide',
+    'LBL_CJ_TARGET' => 'Cible du Smart Guide',
+    'LBL_CJ_ACTION' => 'Action du Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Sélectionnez l&#39;action du Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'Déclencheur',
+    'LBL_TRIGGER_DESCRIPTION' => 'Utilisez les champs ci-dessous pour sélectionner le type de déclencheur et les conditions qui activeront le déclencheur.',
+    'LBL_TARGET_ACTION_TITLE' => 'Cible et action',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Utilisez les champs ci-dessous pour sélectionner quelles actions se produiront où lorsque le déclencheur est activé.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Sélectionnez l&#39;étape du guide intelligent',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Sélectionnez les Activités du Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Sélectionner l&#39;Activité du Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Sélectionner l&#39;action d&#39;Activités de l&#39;étape',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Sélectionnez l&#39;action d&#39;Activités du Smart Guide',
+];

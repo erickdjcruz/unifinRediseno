@@ -1,0 +1,31 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<style id="hide-mc-iframe-loading" type="text/css">
+    #marketing-content {
+        visibility: hidden !important;
+    }
+</style>
+
+<script type="text/javascript">
+    function showMarketingContentIframe() {
+        // Remove style that's hiding the iframe while it's loading
+        let helperStyle = window.parent.document.getElementById('hide-mc-iframe-loading');
+        if (helperStyle) {
+            helperStyle.remove();
+        }
+    }
+</script>
+
+<div class="iframe-container">
+    <iframe title="Marketing Content" id="marketing-content" scrolling="no" onload="showMarketingContentIframe()"></iframe>
+</div>

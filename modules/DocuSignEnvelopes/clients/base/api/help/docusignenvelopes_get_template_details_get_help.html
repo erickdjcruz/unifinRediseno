@@ -1,0 +1,122 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Fetch template details
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint will return the details about a template
+</span>
+
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            template
+        </td>
+        <td>
+            Array
+        </td>
+        <td>
+            Templates list
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Request</h3>
+<pre class="pre-scrollable">
+    {
+        "template":{
+           "id":"b5eaad38-4a82-4fbe-8006-df0b88849a69",
+           "value":"Project Agreement",
+           "name":"Project Agreement",
+           "_module":"DocuSignEnvelopes"
+        }
+     }
+</pre>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            Templates
+        </td>
+        <td>
+            Array
+        </td>
+        <td>
+            Templates list
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+    {
+        "id":"b5eaad38-4a82-4fbe-8006-df0b88849a69",
+        "name":"Project Agreement",
+        "roles":[
+           {
+              "name":"signer1",
+              "routing_order":"1"
+           },
+           {
+              "name":"signer2",
+              "routing_order":"2"
+           },
+           {
+              "name":"inperson",
+              "routing_order":"3"
+           }
+        ],
+        "predefined_recipients":[
+        ]
+     }
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_18
+        </td>
+        <td>
+            Added <code>/DocuSign/getTemplateDetails</code> GET endpoint.
+        </td>
+    </tr>
+</table>

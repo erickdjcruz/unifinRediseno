@@ -1,0 +1,60 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="content-body">
+            {{#eq type "collection"}}
+                {{partial "collection" ../this ../this}}
+            {{/eq}}
+            {{#eq type "multienum"}}
+                {{partial "multienum" ../this ../this}}
+            {{/eq}}
+            {{#eq type "datetime"}}
+                {{partial "date" ../this ../this}}
+            {{/eq}}
+            {{#eq type "date"}}
+                {{partial "date" ../this ../this}}
+            {{/eq}}
+            {{#eq type "datetimecombo"}}
+                {{partial "date" ../this ../this}}
+            {{/eq}}
+            {{#eq type "bool"}}
+                {{partial "bool" ../this ../this}}
+            {{/eq}}
+            {{#eq type "string"}}
+                {{partial "string" ../this ../this}}
+            {{/eq}}
+            {{#eq type "relate"}}
+                {{partial "relate" ../this ../this}}
+            {{/eq}}
+            {{#eq type "image"}}
+                {{partial "image" ../this ../this}}
+            {{/eq}}
+            {{#eq type "url"}}
+                {{partial "url" ../this ../this}}
+            {{/eq}}
+            {{partial "table" this this}}
+        </div>
+    </div>
+    <div class="span12 dm-tag-builder-options-row">
+        <div class="dm-tag-builder-buttons">
+            <button type="button" class="btn btn-default" name="back">{{str 'LBL_BACK'}}</button>
+            {{#eq type "collection"}}
+                <button type="button" class="btn btn-primary" data-clipboard="enabled" data-clipboard-target=".tableAssistant" name="copyTable">{{str 'LBL_DOCUMENT_MERGE_COPY_AS_TABLE' module}}</button>
+            {{/eq}}
+            <button type="button" class="btn btn-primary" data-clipboard="enabled" data-clipboard-target=".preview"
+                name="copy">{{str 'LBL_DOCUMENT_MERGE_COPY_TO_CLIPBOARD' module}}</button>
+        </div>
+    </div>
+</div>

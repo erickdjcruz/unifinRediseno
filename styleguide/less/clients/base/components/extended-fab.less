@@ -1,0 +1,26 @@
+.extended-fab {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  height: 24px;
+  min-width: 24px;
+  line-height: 24px;
+  border-radius: 24px;
+  text-align: center;
+
+  .fab-container {
+    cursor: pointer;
+    outline: none;
+
+    .fab-label {
+      display: none;
+      padding-left: 12px;
+    }
+  }
+
+  .fab-container:hover {
+    .fab-label {
+      display: inline-block;
+    }
+  }
+}

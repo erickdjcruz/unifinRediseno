@@ -1,0 +1,2 @@
+(function register(app){app.events.on('app:init',function init(){function BoolOperator(def){this.def=def;};BoolOperator.prototype.getUpdatedInput=function(callback){let _inputValue=_.first(this.def._filterData.input_name0);if(!_inputValue){_inputValue='yes';this.def._filterData.input_name0=[_inputValue];}
+callback({properties:{_inputType:'enum-single',_inputData:{yes:'yes',no:'no'},_inputValue,},});};app.filterOperators=app.filterOperators||{};app.filterOperators=_.extend(app.filterOperators,{BoolOperator:BoolOperator});});})(SUGAR.App);

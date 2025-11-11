@@ -1,0 +1,80 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="tab-pane active in">
+    <div class="row-fluid">
+        <div class="padded" data-type="title">
+            <h4 class="font-bold">{{this.options.widgetModule}} {{str 'LBL_MAPS_MODULE_MAPPINGS' module}}</h4>
+        </div>
+    <div class="subpanel subpanel-header">
+        <div>
+            {{moduleLabel options.widgetModule 'sm' class='pull-left'}}
+            <h4 class="pull-left">{{options.widgetModule}}</h4>
+        </div>
+        <div class="subpanel-controls btn-toolbar pull-right">
+            <span class="pull-right maps-small-margin-right">
+                <span class="small">
+                    <a class="rowaction btn" rel="tooltip" data-action="reset-default" data-bs-placement="bottom" title="{{str 'LBL_MAPS_RESET_DEFAULT' module}}">
+                        <i class="sicon sicon-refresh"></i>
+                    </a>
+                </span>
+                <span class="small">
+                    <a class="rowaction btn" rel="tooltip" data-action="add-column" data-bs-placement="bottom" title="{{str 'LBL_MAPS_ADD_COLUMN' module}}">
+                        <i class="sicon sicon-plus"></i>
+                    </a>
+                </span>
+            </span>
+        </div>
+    </div>
+    <div class="flex-list-view">
+        <div class="flex-list-view-content h-full overflow-auto relative">
+            <div style="min-width: 100%;">
+                <table class="table table-striped dataTable reorderable-columns overflow-auto">
+                    <thead>
+                        <tr>
+                            {{#each _fields.all}}
+                                <th class="maps-config-th-min-width" data-fieldname="{{name}}">
+                                    <div class="sortable-row-header-container p-2 record-cell">
+                                        <span data-draggable="true" class="record-edit-link-wrapper">
+                                        </span>
+                                        <div class="th-droppable-placeholder ui-droppable" data-droppableindex="{{position}}"></div>
+                                        <h5 class="maps-input-label" data-fieldname="{{name}}">
+                                            {{label}}
+                                        </h5>
+                                        {{#notEq ../this._fields.all.length "1"}}
+                                            <a data-action="remove-column" data-fieldname="{{name}}">
+                                                <i class="sicon sicon-close"></i>
+                                            </a>
+                                        {{/notEq}}
+                                    </div>
+                                </th>
+                            {{/each}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {{#each _fields.all}}
+                                <td class="maps-table-tbody-td">
+                                    <select class="field_map_select" data-type="{{name}}" data-fieldname="{{name}}-select">
+                                        {{#each ../_moduleFields}}
+                                            <option value="{{this}}">{{this}}</option>
+                                        {{/each}}
+                                    </select>
+                                </td>
+                            {{/each}}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

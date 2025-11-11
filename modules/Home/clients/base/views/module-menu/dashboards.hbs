@@ -1,0 +1,28 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#each collection.models}}
+    <li class="megamenu-dropdown-item-container {{#eq id ../active.id}}active{{/eq}}">
+        <a class="megamenu-dropdown-item" data-name="{{fieldValue this 'name'}}" tabindex="-1"
+           href="#{{buildRoute model=this}}" data-route="#{{buildRoute model=this}}" rel="tooltip"
+        >
+            {{#if this.attributes.default_dashboard}}
+                <i class="sicon sicon-dashboard-default"></i>
+            {{else}}
+                <i class="sicon sicon-dashboard"></i>
+            {{/if}}
+            <span class="ellipsis_inline">
+                {{fieldValue this 'name'}}
+            </span>
+        </a>
+    </li>
+{{/each}}

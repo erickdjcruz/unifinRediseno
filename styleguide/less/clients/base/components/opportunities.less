@@ -1,0 +1,52 @@
+[data-type=opportunities-conditional-fieldset] {
+  .fieldset.detail {
+    margin-bottom: 11px;
+
+    input[type=checkbox] {
+      margin-right: 7px;
+    }
+  }
+
+  .opportunities_cascade_condition::after {
+    color: @gray70;
+    font-size: @baseFontSize;
+  }
+}
+
+.cascade-label {
+  font-size: @baseFontSize;
+  white-space: normal;
+  float: initial;
+  padding: 0;
+}
+
+.flex-list-view-content,
+.multi-line-list-view {
+  .select2-container.select2-container-disabled .select2-choice {
+    cursor: not-allowed;
+    color: @placeholderText;
+    background: @inputDisabledBackground;
+    border: @borderWidget;
+
+    .select2-arrow {
+      display: none;
+    }
+  }
+}
+
+.cascade-label-wrapper {
+  padding-left: 5px;
+
+  .multi-line-list-view & {
+    padding-left: 0;
+  }
+
+  input[type=checkbox] {
+    display: inline-block;
+    margin: 0 1px 2px 0;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+}

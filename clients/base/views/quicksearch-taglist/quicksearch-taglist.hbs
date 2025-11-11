@@ -1,0 +1,35 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if dropdownList}}
+    <div class="flex pull-right tag-group-wrapper">
+        <div class="btn btn-invisible tag-dropdown justify-between min-w-[2.5rem] p-2">
+            <span class="label multiple-tag-label bg-[--content-background] border-none cursor-pointer font-normal leading-2 px-1 py-1.5 text-[--text-color] top-0" aria-label="{{str 'LBL_GLOBAL_SEARCH_MODULE_FILTER'}}" title="{{../dropdownName}}">{{../dropdownName}}</span>
+            <div class="tag-dropdown-button btn btn-invisible align-top mt-0 ml-0 p-0" track="click:globalsearch-dropdown">
+                <i class="sicon sicon-chevron-down"></i>
+            </div>
+        </div>
+        <ul class="dropdown-menu border-0 dark:border border-[--dropdown-border-widget] rounded-md shadow-xl tag-dropdown-list fixed left-auto mx-0 overflow-y-auto right-auto top-11 w-[12.5rem]">
+            {{#each selectedTags}}
+                <li class="tag-name menu-item cursor-pointer" id={{id}} tag-name="{{name}}">
+                    <i class="{{buildIcon 'sicon-check'}}"></i>
+                    <span class="ellipsis_inline" data-bs-placement="bottom" title="{{name}}">{{name}}</span>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+{{else}}
+    {{#each selectedTags}}
+        {{partial 'tag' ../this this}}
+    {{/each}}
+{{/if}}
+

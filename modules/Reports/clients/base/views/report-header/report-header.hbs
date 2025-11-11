@@ -1,0 +1,28 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="headerpane report-header bg-[--subheader-content-background] border-b border-[--border-color] box-border sticky table w-full">
+    <h1>
+        {{#each meta.panels}}
+            {{#each fields}}
+                <span class="record-cell" data-type="{{type}}" data-name="{{name}}">
+                    {{field ../../this model=../../this.model template=../../this.action}}
+                </span>
+            {{/each}}
+            <div class="report-header-padding btn-toolbar pull-right">
+                {{#each buttons}}
+                    {{field ../../this}}
+                {{/each}}
+            </div>
+        {{/each}}
+    </h1>
+</div>

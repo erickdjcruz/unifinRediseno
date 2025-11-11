@@ -1,0 +1,80 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="record">
+    {{#if this.availableModulesLoaded}}
+        <div class="row-fluid">
+            <div class="span6 record-cell">
+                <span>
+                    <div class="ellipsis_inline record-label">
+                            <span class="text-overflow">{{str "LBL_MAPS_LOGGER_LOG_TYPE" module}}</span>
+                    </div>
+                    <span class="normal">
+                        <span class="m-2 ml-2.5 mr-2.5">
+                            <select class="select2 inherit-width" data-fieldname="logger-level" data-placeholder="{{str 'LBL_MAPS_LOGGER_LOG_LEVEL'}}">
+                                {{#each _select2Data.logLevel }}
+                                        <option value={{@key}}>{{str this ../module}}</option>
+                                {{/each}}
+                            </select>
+                        </span>
+                    </span>
+                </span>
+            </div>
+            <div class="span12 record-cell">
+                <span>
+                    <div class="ellipsis_inline record-label">
+                        <span class="text-overflow">{{str "LBL_MAPS_LOGGER_START_DATE" module}}</span>
+                    </div>
+                    <span class="normal">
+                        <span>
+                            <div class="flex flex-row items-center m-2 ml-2.5 mr-2.5">
+                                <div class="input-append date mr-2.5">
+                                    <div class="date-wrapper">
+                                        <input type="text" data-type="date" data-fieldname="logger-startdate" class="datepicker" value="{{this.model.attributes.maps_loggerStartdate}}">
+                                        <span class="add-on" data-icon="calendar">
+                                            <i class="sicon sicon-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div>
+            <div class="span12 record-cell">
+                <span>
+                    <div class="record-cell ellipsis_inline record-label">
+                        <span class="text-overflow">{{str "LBL_MAPS_LOGGER_ENABLE_MODULES_FOR_LOG" module}}</span>
+                    </div>
+                </span>
+                <div class="hide maps-missing-modules p-5 pt-10">{{str "LBL_MAPS_NO_ENABLED_MODULES" module}}</div>
+                <div class="subpanels-layout" data-container="modules-widgets-container">
+                    {{#each this.model.attributes.maps_enabled_modules}}
+                        {{#if @first}}
+                            {{partial 'maps-logger-module-widget' ../../this moduleName=../this checked=true}}
+                        {{else}}
+                            {{partial 'maps-logger-module-widget' ../../this moduleName=../this}}
+                        {{/if}}
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    {{else}}
+        <div class="modal-body report-modal-height p-0 static">
+            <div class="report-loading-screen-overlay" data-widget="report-loading">
+            <i class="sicon sicon-refresh sicon-is-spinning report-loading-icon"></i>
+            <h4 class="report-loading-label">{{str "LBL_LOADING"}}</h4>
+        </div>
+    {{/if}}
+</div>

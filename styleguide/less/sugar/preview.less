@@ -1,0 +1,446 @@
+/* PREVIEW
+  ----------------*/
+
+.preview-pane {
+  .preview-headerbar {
+    width: calc(~"34vw - 1px");
+    position: fixed;
+    right: 0;
+    border-left: @borderWidget;
+    z-index: 1002;
+
+    h1 {
+      float: left;
+      font-size: @fontSizeHeaderTitle;
+      font-weight: 600;
+      max-width: 50%;
+    }
+
+    .preview-edit-btn {
+      margin: 12px 0 0;
+      padding: 7px;
+    }
+
+    .btn-toolbar {
+      padding-left: 0;
+    }
+  }
+}
+
+.preview-data {
+  margin: 0 7px;
+
+  .field-row {
+    &.hide,
+    &.vis_action_hidden {
+      display: none;
+    }
+
+    .field-label {
+      font-size: 11px;
+      color: @labelColor;
+    }
+
+    .field-value {
+      position: relative;
+      width: 100%;
+
+      &.no-label {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .record-cell {
+    &.edit {
+      .fieldset-field + .fieldset-field {
+        margin-top: -1px;
+      }
+
+      .fieldset-field .record-label {
+        display: none;
+      }
+
+      label {
+        color: @labelColor;
+      }
+    }
+
+    .field-value {
+      > .detail {
+        padding: 5px 7px;
+        display: block;
+
+        &.fieldset-inline .ellipsis_inline {
+          padding: 0;
+        }
+      }
+
+      > .nodata {
+        padding: 5px 7px;
+        display: block;
+      }
+
+      &[data-type="badge"] {
+        margin-top: 7px;
+      }
+    }
+
+    input[type="text"]:not(.select2-input),
+    input[type="password"],
+    textarea,
+    .uneditable-input {
+      font-size: 12px;
+    }
+
+    // Normal record-cell overrides
+
+    &[data-type="textarea"] {
+      span {
+        word-wrap: break-word;
+      }
+    }
+
+    &[data-type="badge"],
+    &[data-type="badge-select"],
+    &[data-type="event-status"] {
+      .detail {
+        padding: 3px 0 0 7px;
+      }
+    }
+
+    &[data-type="avatar"] {
+      &.edit {
+        margin-bottom: 10px;
+      }
+
+      .image_field.image_edit {
+        top: 0;
+        left: 5px;
+      }
+    }
+
+    &[data-type="fullname"] {
+      &.edit {
+        padding-left: 0;
+      }
+    }
+
+    &[data-type="participants"] {
+      > .detail {
+        padding: 0;
+      }
+
+      .participants {
+        width: 100%;
+
+        .row {
+          margin-left: 0;
+          display: block;
+
+          .cell:nth-child(2) {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    &[data-name="date_entered_by"] {
+      margin-bottom: 0;
+    }
+
+    &[data-type="parent"] {
+      > .edit {
+        padding: 5px 7px;
+        display: block;
+      }
+    }
+
+    &[data-type="html"],
+    &[data-type="bool"],
+    &[data-type="text"],
+    &[data-type="int"] {
+      > .nodata {
+        padding: 5px 7px;
+        display: block;
+      }
+    }
+
+    &[data-type="status"] {
+      .detail {
+        padding: 3px 7px 0;
+      }
+    }
+
+    &[data-type="attachments"] {
+      .detail {
+        padding: 0;
+      }
+
+      .select2-container {
+        float: none;
+
+        .select2-choices {
+          background-color: @transparent;
+          border: none;
+        }
+      }
+    }
+  }
+
+  .dashlet {
+    .dashlet-content {
+      :not(.tab-pane) { /* necessary to not affect empty dashlet tab with string "No data available." */
+        > .block-footer {
+          text-align: left;
+
+          .btn.more {
+            padding: 0;
+          }
+
+          .loading {
+            margin: 1px 0 0;
+          }
+        }
+      }
+    }
+  }
+
+  .more,
+  .less {
+    padding-right: 0;
+  }
+}
+
+/* NEW SKIN START */
+
+.preview-pane {
+  .preview-headerbar {
+    /* override */
+    top: @headerNavHeight;
+    height: 51px;
+
+    h1 {
+      /* override */
+      margin: 15px 0 9px 20px;
+    }
+
+    .btn-toolbar {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 15px;
+    }
+  }
+}
+
+.drawer.active {
+  .preview-pane {
+    .preview-headerbar {
+      top: 0;
+    }
+  }
+}
+
+.banner-shifted {
+  .preview-pane {
+    .preview-headerbar {
+      /* override */
+      top: 45px + @bannerHeight;
+    }
+  }
+}
+
+.preview-data {
+  /* override */
+  padding: 14px 15px 14px 16px;
+  margin: 60px 16px 24px 14px;
+
+  &.block {
+    background: @primaryContentBackground;
+  }
+
+  .process-design + div + div {
+    padding-left: 40px;
+  }
+
+  .field-row {
+    /* override */
+    display: block;
+
+    /* additive */
+    &:not(:first-child) {
+      border-top: @borderWidget;
+    }
+
+    .field-label {
+      /* additive*/
+      display: block;
+      width: 100%;
+      text-align: left;
+      height: 17px;
+      padding: 0;
+      margin-top: 7px;
+
+      /* override */
+      font-size: @previewLabelFontSize;
+
+      .sicon-sugar-predict {
+        margin-right: 3px;
+        margin-bottom: 2px;
+        color: @purple;
+      }
+    }
+
+    .field-label.hide {
+      display: none;
+    }
+
+    .field-value {
+      /* override */
+      max-width: initial;
+      margin: 0;
+
+      /* additive */
+      font-size: @previewValueFontSize;
+      min-height: 19px;
+      margin-bottom: 7px;
+
+      > .detail {
+        /* override */
+        padding: 0;
+
+        .htmleditable {
+          float: none;
+        }
+      }
+    }
+  }
+}
+
+/* HACKS START */
+
+/*
+Temporary hacks
+These will be removed with completion of ticket https://sugarcrm.atlassian.net/browse/SC-5144
+*/
+
+.preview-pane {
+  .preview-data {
+    .field-label {
+      &[data-name=picture] {
+        display: none !important;
+      }
+    }
+
+    .field-value {
+      &[data-name=picture] {
+        position: absolute;
+        top: 2px;
+        left: 0;
+
+        .label,
+        .image_field .image_preview {
+          width: 32px;
+          height: 32px;
+        }
+
+        .image_field {
+          .image_preview {
+            /* additive */
+            border-radius: 50%;
+            overflow: hidden;
+
+            img {
+              /* override */
+              width: inherit !important;
+              height: inherit !important;
+            }
+          }
+        }
+      }
+    }
+
+    .field-label,
+    .field-value {
+      &[data-name=name],
+      &[data-name=full_name] {
+        > span:not(.hide) {
+          display: inline-block;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .field-row:nth-child(2) {
+    border-top: 0;
+    margin-left: 40px;
+
+    .field-label {
+      margin-top: 0;
+    }
+  }
+
+  .field-row {
+    &.picture-data {
+      margin-left: 0;
+    }
+  }
+
+  .show-hide-toggle {
+    display: block;
+    margin-top: 0 !important;
+
+    > button {
+      padding-left: 0;
+    }
+  }
+}
+
+/* HACKS END */
+
+/* NEW SKIN END */
+
+.side,
+.sidebar-content {
+  .tabbable:not(.hide-tabs) {
+    .preview-pane-tabs.nav-tabs {
+      margin-top: 55px;
+      margin-left: 16px;
+
+      .nav-item {
+        border: none;
+        margin: 0;
+        padding: 13px 14px;
+
+        &.active {
+          border-bottom: 3px @PrimaryButton solid;
+        }
+      }
+
+      .nav-item:first-child {
+        margin-left: 0;
+      }
+
+      .nav-item.border-right {
+        border-right: none;
+      }
+
+      .active a {
+        color: @PrimaryButton;
+      }
+
+      .preview-data {
+        margin-top: 1rem;
+      }
+    }
+
+    &.preview-active {
+      .preview-data {
+        margin-top: 1rem;
+      }
+    }
+  }
+}

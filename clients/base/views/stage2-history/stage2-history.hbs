@@ -1,0 +1,56 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class='hint-preview-history rounded-b-md'>
+{{#if isHintRequestLoading}}
+    <div class='loading'> <span> {{str 'LBL_HINT_LOADING'}} </span></div>
+{{else}}
+{{#if collection.dataFetched}}
+<ul class='unstyled hint-preview-history-list'>
+    {{#each collection.models}}
+        <li class='hint-preview-history-item flex item {{this.attributes._icon}}{{#if attributes._highlight}} highlight{{/if}}'>
+            <div class="iconContainer rounded-b-md">
+                <i class='label-module label-module-size-sm label-module-color-ocean sicon sicon-{{this.attributes._icon}}'></i>
+            </div>
+
+            <div class="historyContainer ml-2.5 overflow-hidden">
+                <span class='ellipsis_inline mt-2 mb-2' title="{{this.attributes.name}}">
+                    <a href="{{this.attributes._link}}">{{this.attributes.name}}</a>
+                </span>
+
+                <span class='hint-preview-history-item-status font-semibold'>
+                        {{toUpperCase this.attributes.status}}
+                </span>
+
+                <div class='details' title="{{this.attributes.description}}">
+                    {{#if this.attributes.description}}
+                        <span class='hint-preview-history-item-description ellipsis_inline mt-1 mb-1'>
+                            {{this.attributes.description}}
+                        </span>
+                    {{/if}}
+                </div>
+
+                <span class='hint-preview-history-item-date' title="{{attributes._date_record}}">
+                    {{relativeTime attributes._date_record class='date'}}
+                </span>
+            </div>
+        </li>
+    {{/each}}
+    {{#unless collection.models}}
+        <li class='hint-preview-history-item flex item'>
+            <span class="no-history p-2">{{str 'LBL_HINT_HISTORY_NONE'}}</span>
+        </li>
+    {{/unless}}
+</ul>
+{{/if}}
+{{/if}}
+</div>

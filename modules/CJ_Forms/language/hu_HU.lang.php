@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Smart Guide Sugar-műveletek listázása',
+    'LBL_MODULE_TITLE' => 'Smart Guide Sugar-művelet',
+    'LBL_HOMEPAGE_TITLE' => 'Saját Smart Guide Sugar-műveletek',
+    'LNK_NEW_RECORD' => 'Új Smart Guide Sugar-művelet',
+    'LNK_VIEW_RECORDS' => 'Smart Guide Sugar-műveletek megtekintése',
+    'LNK_CJ_FORM_LIST' => 'Smart Guide Sugar-műveletek megtekintése',
+    'LNK_LIST' => 'Smart Guide Sugar-műveletek',
+    'LBL_SEARCH_FORM_TITLE' => 'Smart Guide Sugar-művelet keresése',
+    'LBL_MODULE_NAME' => 'Smart Guide Sugar-műveletek',
+    'LBL_MODULE_NAME_SINGULAR' => 'Smart Guide Sugar-művelet',
+    'LBL_TRIGGER_EVENT' => 'Kiváltó esemény',
+    'LBL_ACTION_TYPE' => 'Művelet típusa',
+    'LBL_PARENT_MODULE' => 'Szülő modul',
+    'LBL_RELATIONSHIP' => 'Kapcsolat',
+    'LBL_ACTIVITY_TEMPLATE' => 'Tevékenységsablon',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Smart Guide/szint/tevékenységsablon',
+    'LBL_ACTIVE' => 'Aktív',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'A(z) %s tevékenységsablonhoz már tartozik egy Sugar tevékenység, amely a következő eseményindítót használja: %s. A Smart Guide tartalmazt egy korlátozást, miszerint csak egy aktív Sugar tevékenység tartozhat minden eseményindítóghoz minden szint vagy esemény esetén.',
+    'LBL_RECORDVIEW_PANEL4' => 'Mezők kitöltése',
+    'LBL_POPULATE_FIELDS' => 'Mezők kitöltése',
+    'LBL_ADD_FIELD' => 'Mező hozzáadása',
+    'LBL_REMOVE_FIELD' => 'Mező törlése',
+    'LBL_FIELD_NAME' => 'Mező neve',
+    'LBL_FIELD_VALUE' => 'Mező értéke',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Ez a mező listanézetben nem érhető el.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'A művelet kiváltó eseményének típusa',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Nem található a kapcsolódó rekord',
+    'LBL_IGNORE_ERRORS' => 'Hibák figyelmen kívül hagyása',
+    'LBL_NO_DISPLAY_FIELDS' => 'Nincsenek megjelenítendő mezők.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Tevékenységsablon csatolási mezője',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Szakaszsablon csatolási mezője',
+    'LBL_EMAIL_TEMPLATES' => 'E-mail sablon',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Válassza ki a címzett e-mail címeket',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'E-mail mezők',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Kijelző ikon',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Smart Guide/szint/tevékenységsablon',
+    'LBL_ACTIVITY_MODULE' => 'Tevékenység modul',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Smart Guide sablon',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Smart Guide sablon kiváltó okának kiválasztása',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Indító típusa',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Kiváltó ok típusának kiválasztása',
+    'LBL_MODULE_TRIGGER' => 'Modulindító',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Modulindító kiválasztása',
+    'LBL_FIELD_TRIGGER' => 'Mezőindító',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Smart Guide céljának kiválasztása',
+    'LBL_CJ_TARGET' => 'Smart Guide cél',
+    'LBL_CJ_ACTION' => 'Smart Guide tevékenység',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Smart Guide tevékenység kiválasztása',
+    'LBL_TRIGGER_TITLE' => 'Indító',
+    'LBL_TRIGGER_DESCRIPTION' => 'Az alábbi mezők segítségével kiválaszthatja az eseményindító típusát és az eseményindítót aktiváló feltételeket.',
+    'LBL_TARGET_ACTION_TITLE' => 'Cél és cselekvés',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Az alábbi mezők segítségével kiválaszthatja, hogy hol és milyen műveletek történjenek az eseményindító aktiválásakor.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Smart Guide szint kiválasztása',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Smart Guide tevékenységek kiválasztása',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Smart Guide tevékenység kiválasztása',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Szint tevékenység kiválasztása',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Smart Guide tevékenység kiválasztása',
+];

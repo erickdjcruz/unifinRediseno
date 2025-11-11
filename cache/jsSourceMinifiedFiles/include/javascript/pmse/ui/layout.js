@@ -1,0 +1,1 @@
+var PMSE=PMSE||{};PMSE.Layout=function(options){PMSE.Base.call(this,options);PMSE.Layout.prototype.initObject.call(this,options);};PMSE.Layout.prototype=new PMSE.Base();PMSE.Layout.prototype.type='PMSE.Layout';PMSE.Layout.prototype.family='PMSE.Layout';PMSE.Layout.prototype.initObject=function(options){};

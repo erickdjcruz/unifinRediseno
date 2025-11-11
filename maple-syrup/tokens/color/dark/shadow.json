@@ -1,0 +1,10 @@
+{
+  "color": {
+    "dark": {
+      "shadow": {
+        "base": { "value": "{color.gray.980.value}" },
+        "hover": { "value": "{color.gray.980.value}" }
+      }
+    }
+  }
+}

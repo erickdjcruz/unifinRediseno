@@ -1,0 +1,928 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    An API to retrieve filtered records from a saved report for sidecar.
+</span>
+
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint will return a list of records from a saved report filtered by an expression.
+</span>
+
+<h2>Request Parameters</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            &lt;record&gt;
+        </td>
+        <td>
+            &lt;string&gt;
+        </td>
+        <td>
+            Report record ID.
+        </td>
+        <td>
+            True.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            &lt;reportType&gt;
+        </td>
+        <td>
+            &lt;string&gt;
+        </td>
+        <td>
+            Report Type.
+        </td>
+        <td>
+            True.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            &lt;orderBy&gt;
+        </td>
+        <td>
+            &lt;string&gt;
+        </td>
+        <td>
+            Order report by field.
+        </td>
+        <td>
+            False.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            &lt;runtimeFilters&gt;
+        </td>
+        <td>
+            &lt;Array&gt;
+        </td>
+        <td>
+            Runtime filter definition.
+        </td>
+        <td>
+            False.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            &lt;offset&gt;
+        </td>
+        <td>
+            &lt;Integer&gt;
+        </td>
+        <td>
+            The number of records to skip over before records are returned. Default is 0
+        </td>
+        <td>
+            False.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            &lt;maxNum&gt;
+        </td>
+        <td>
+            Integer
+        </td>
+        <td>
+            A maximum number of records to return. Default is 50.
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<h3>Request Example</h3>
+<h3>Report Type: Rows and Columns</h3>
+<pre class="pre-scrollable">
+{
+    "record": "83913064-bea7-11ee-9d94-095590d26ca4",
+    "reportType": "tabular",
+    runtimeFilters: {
+        "Filter_1":{
+            "0":{
+                "name": "date_due",
+                "table_key": "self",
+                "qualifier_name": "tp_this_year",
+                "runtime": 1,
+                "input_name0": "",
+                "input_name1": "",
+                "input_name2": "",
+                "input_name3": ""
+            },
+            "operator":"AND"
+        }
+    }
+}
+</pre>
+
+<h3>Output Example</h3>
+<pre class="pre-scrollable">
+    header: (18) [
+        0: {
+            comment: "The Sugar object to which the call is related",
+            dbType: "varchar",
+            group: "parent_name",
+            len: "255",
+            module: "Tasks",
+            name: "parent_type",
+            options: "parent_type_display",
+            real_table: "tasks",
+            rep_rel_name: "parent_type_0",
+            required: false,
+            table_alias: "tasks",
+            type: "parent_type",
+            vname: "LBL_PARENT_NAME"
+        },
+        .....,
+        17: {…}
+    ],
+    nextOffset: 50,
+    orderBy: [
+        0: [
+            name: "amount",
+            sort_dir: "a",
+            type: "currency"
+        ],
+    ],
+    records: (50) [
+      0: [
+        0: {type: 'parent_type', module: 'Tasks', name: 'parent_type', value: 'Accounts'},
+        1: {type: 'date', module: 'Tasks', name: 'date_test_c', value: ''},
+        2: {type: 'id', module: 'Tasks', name: 'id', value: '3af8cb6a-b665-11ec-8168-0242ac140008'},
+        3: {type: 'datetimecombo', module: 'Tasks', name: 'date_due', value: '2022-10-11T16:45:00+00:00'},
+        4: {type: 'name', module: 'Tasks', name: 'name', id: '3af8cb6a-b665-11ec-8168-0242ac140008', value: 'Send local user group information'},
+        5: {type: 'enum', module: 'Tasks', name: 'status', value: 'Completed'},
+        6: {type: 'enum', module: 'Tasks', name: 'priority', value: 'Medium'},
+        7: {type: 'fullname', module: 'Users', name: 'full_name', id: 'seed_sarah_id', value: 'Sarah Smith'},
+        8: {type: 'name', module: 'Accounts', name: 'name', id: '32b8e1f6-b665-11ec-bff3-0242ac140008', value: 'Pullman Cart Company'},
+        9: {type: 'name', module: 'Opportunities', name: 'name', id: '', value: ''},
+        10: {type: 'relate', module: 'Accounts', name: 'gigel_c', id: null, value: null, …},
+        11: {type: 'relate', module: 'Accounts', name: 'gigel_c', id: null, value: null, …},
+        12: {type: 'currency', module: 'Opportunities', name: 'amount', value: '$350.17'},
+        13: {type: 'varchar', module: 'Tasks', name: 'address_city_c', value: ''},
+        14: {type: 'varchar', module: 'Tasks', name: 'address_country_c', value: ''},
+        15: {type: 'bool', module: 'Tasks', name: 'checkbox_c', value: false},
+        16: {type: 'multienum', module: 'Tasks', name: 'multiselect_c', value: ''},
+        17: {type: 'datetime', module: 'Teams', name: 'date_entered', value: '2022-04-07T11:23:20+00:00'},
+      ],
+      ....
+      49: {...}
+    ],
+    totalCount: 86,
+    totalPages: 2
+</pre>
+
+<h3>Report Type: Summary Details</h3>
+<pre class="pre-scrollable">
+{
+    "record": "709cced2-d10a-11ec-84c7-0242ac140008",
+    "reportType": "detailed_summary",
+    "orderBy": [
+    {
+      "table_key": "self:date_closed",
+      "sort_dir": "d",
+      "label": "LBL_NAME"
+    }]
+}
+</pre>
+
+<h3>Output Example</h3>
+<pre class="pre-scrollable">{
+    "header":[
+       {
+          "name":"date_entered",
+          "vname":"LBL_DATE_ENTERED",
+          "type":"datetime",
+          "required":true,
+          "studio":{
+             "editview":false,
+             "quickcreate":false,
+             "wirelesseditview":false
+          },
+          "readonly":true,
+          "calculation_visible":true,
+          "module":"Users",
+          "real_table":"users",
+          "rep_rel_name":"date_entered_0",
+          "table_alias":"l1",
+          "column_key":"Teams:users:date_entered"
+       },
+       {
+          "name":"full_name",
+          "vname":"LBL_NAME",
+          "type":"fullname",
+          "fields":[
+             "first_name",
+             "last_name"
+          ],
+          "source":"non-db",
+          "sort_on":"last_name",
+          "sort_on2":"first_name",
+          "db_concat_fields":[
+             "first_name",
+             "last_name"
+          ],
+          "len":"510",
+          "studio":{
+             "formula":false
+          },
+          "idm_mode_disabled":true,
+          "module":"Users",
+          "real_table":"users",
+          "rep_rel_name":"full_name_0",
+          "table_alias":"l1",
+          "column_key":"Teams:users:full_name"
+       },
+       {
+          "name":"title",
+          "vname":"LBL_TITLE",
+          "type":"varchar",
+          "len":"50",
+          "idm_mode_disabled":true,
+          "calculation_visible":true,
+          "module":"Users",
+          "real_table":"users",
+          "rep_rel_name":"title_0",
+          "table_alias":"l1",
+          "column_key":"Teams:users:title"
+       },
+       {
+          "name":"department",
+          "vname":"LBL_DEPARTMENT",
+          "type":"varchar",
+          "len":"50",
+          "idm_mode_disabled":true,
+          "calculation_visible":true,
+          "module":"Users",
+          "real_table":"users",
+          "rep_rel_name":"department_0",
+          "table_alias":"l1",
+          "column_key":"Teams:users:department"
+       },
+       {
+          "name":"full_name",
+          "vname":"LBL_NAME",
+          "type":"fullname",
+          "fields":[
+             "first_name",
+             "last_name"
+          ],
+          "source":"non-db",
+          "sort_on":"last_name",
+          "sort_on2":"first_name",
+          "db_concat_fields":[
+             "first_name",
+             "last_name"
+          ],
+          "len":"510",
+          "studio":{
+             "formula":false
+          },
+          "idm_mode_disabled":true,
+          "module":"Users",
+          "real_table":"users",
+          "rep_rel_name":"full_name_0",
+          "table_alias":"l2",
+          "column_key":"Teams:users:reports_to_link:full_name"
+       }
+    ],
+    "grandTotal":[
+       {
+          "type":"int",
+          "name":"count",
+          "vname":"Count",
+          "value":"2"
+       }
+    ],
+    "groups":{
+       "Administrator":{
+          "count":1,
+          "dataStructure":{
+             "records":[
+                [
+                   {
+                      "type":"datetime",
+                      "module":"Users",
+                      "name":"date_entered",
+                      "value":"2022-04-07T11:23:20+00:00"
+                   },
+                   {
+                      "type":"fullname",
+                      "module":"Users",
+                      "name":"full_name",
+                      "id":"1",
+                      "value":"Administrator"
+                   },
+                   {
+                      "type":"varchar",
+                      "module":"Users",
+                      "name":"title",
+                      "value":"Administrator"
+                   },
+                   {
+                      "type":"varchar",
+                      "module":"Users",
+                      "name":"department",
+                      "value":""
+                   },
+                   {
+                      "type":"fullname",
+                      "module":"Users",
+                      "name":"full_name",
+                      "id":"",
+                      "value":""
+                   }
+                ]
+             ],
+             "header":"Count = 1"
+          },
+          "id":"Administrator",
+          "key":"Primary Team Name",
+          "orderNo":0
+       },
+       "Global":{
+          "count":1,
+          "dataStructure":{
+             "records":[
+                [
+                   {
+                      "type":"datetime",
+                      "module":"Users",
+                      "name":"date_entered",
+                      "value":"2022-04-07T11:23:20+00:00"
+                   },
+                   {
+                      "type":"fullname",
+                      "module":"Users",
+                      "name":"full_name",
+                      "id":"1",
+                      "value":"Administrator"
+                   },
+                   {
+                      "type":"varchar",
+                      "module":"Users",
+                      "name":"title",
+                      "value":"Administrator"
+                   },
+                   {
+                      "type":"varchar",
+                      "module":"Users",
+                      "name":"department",
+                      "value":""
+                   },
+                   {
+                      "type":"fullname",
+                      "module":"Users",
+                      "name":"full_name",
+                      "id":"",
+                      "value":""
+                   }
+                ]
+             ],
+             "header":"Count = 1"
+          },
+          "id":"Global",
+          "key":"Primary Team Name",
+          "orderNo":1
+       }
+    }
+ }
+</pre>
+
+<h3>Report Type: Summary</h3>
+<pre class="pre-scrollable">
+{
+    "record": "812bca7c-bea8-11ee-9d94-095590d26ca4",
+    "reportType": "summary",
+}
+</pre>
+
+<h3>Output Example</h3>
+<pre class="pre-scrollable">{
+    "records":[
+       [
+          {
+             "type":"datetime",
+             "module":"Opportunities",
+             "name":"date_entered",
+             "value":"2022-04-07T11:23:20+00:00"
+          },
+          {
+             "type":"id",
+             "module":"Contacts",
+             "name":"account_id_c",
+             "value":""
+          },
+          {
+             "type":"name",
+             "module":"Opportunities",
+             "name":"name",
+             "id":"5113a938-b665-11ec-9e01-0242ac140008",
+             "value":"Overhead & Underfoot Ltd. - 245 Units"
+          },
+          {
+             "type":"username",
+             "module":"Users",
+             "name":"user_name",
+             "id":"",
+             "value":"max"
+          },
+          {
+             "type":"id",
+             "module":"Opportunities",
+             "name":"id",
+             "value":"5113a938-b665-11ec-9e01-0242ac140008"
+          },
+          ...
+          {
+             "type":"int",
+             "name":"count",
+             "vname":"Count",
+             "value":"1"
+          },
+          {
+             "type":"float",
+             "module":"Opportunities",
+             "name":"closed_won_revenue_line_items",
+             "value":"0.00"
+          },
+          {
+             "type":"currency",
+             "module":"Opportunities",
+             "name":"best_case",
+             "value":"$73,623.95"
+          }
+        ],
+        ...
+    ],
+    "orderBy":[
+       {
+          "sort_dir":"d",
+          "name":"amount",
+          "type":null
+       }
+    ],
+    "header":[
+       {
+          "name":"date_entered",
+          "vname":"Quarter: Date Created",
+          "type":"datetime",
+          "group":"created_by_name",
+          "comment":"Date record created",
+          "enable_range_search":true,
+          "options":"date_range_search_dom",
+          "studio":{
+             "portaleditview":false
+          },
+          "duplicate_on_record_copy":"no",
+          "readonly":true,
+          "massupdate":false,
+          "full_text_search":{
+             "enabled":true,
+             "searchable":false
+          },
+          "module":"Opportunities",
+          "real_table":"opportunities",
+          "rep_rel_name":"date_entered_0",
+          "table_alias":"opportunities",
+          "column_key":"self:date_entered",
+          "isvNameTranslated":true
+       },
+       {
+          "labelValue":"relate test",
+          "dependency":"",
+          "required_formula":"",
+          "readonly_formula":"",
+          "required":false,
+          "readonly":false,
+          "source":"non-db",
+          "name":"relate_test_c",
+          "vname":"LBL_RELATE_TEST",
+          "type":"relate",
+          "massupdate":true,
+          "hidemassupdate":false,
+          "no_default":false,
+          "comments":"",
+          "help":"",
+          "importable":"true",
+          "duplicate_merge":"enabled",
+          "duplicate_merge_dom_value":1,
+          "audited":false,
+          "reportable":true,
+          "unified_search":false,
+          "merge_filter":"disabled",
+          "pii":false,
+          "calculated":false,
+          "len":255,
+          "size":"20",
+          "id_name":"account_id_c",
+          "ext2":"Accounts",
+          "module":"Contacts",
+          "rname":"name",
+          "quicksearch":"enabled",
+          "studio":"visible",
+          "id":"4209cd8e-ba69-11ec-9d1a-0242ac140008",
+          "custom_module":"Contacts",
+          "real_table":"contacts_cstm",
+          "secondary_table":"accounts",
+          "rep_rel_name":"relate_test_c_1",
+          "table_alias":"l5_cstm",
+          "column_key":"Opportunities:contacts:relate_test_c",
+          "isvNameTranslated":false
+       },
+       {
+          "name":"name",
+          "vname":"Opportunity Name",
+          "type":"name",
+          "dbType":"varchar",
+          "len":"255",
+          "unified_search":true,
+          "full_text_search":{
+             "enabled":true,
+             "searchable":true,
+             "boost":1.65
+          },
+          "comment":"Name of the opportunity",
+          "merge_filter":"selected",
+          "importable":"required",
+          "required":true,
+          "module":"Opportunities",
+          "real_table":"opportunities",
+          "rep_rel_name":"name_0",
+          "table_alias":"opportunities",
+          "column_key":"self:name",
+          "isvNameTranslated":true
+       },
+       ...
+       {
+          "name":"best_case",
+          "vname":"SUM: Best",
+          "dbType":"currency",
+          "type":"currency",
+          "len":"26,6",
+          "audited":false,
+          "related_fields":[
+             "currency_id",
+             "base_rate"
+          ],
+          "convertToBase":true,
+          "showTransactionalAmount":true,
+          "massupdate":false,
+          "hidemassupdate":false,
+          "duplicate_merge":"enabled",
+          "duplicate_merge_dom_value":1,
+          "merge_filter":"disabled",
+          "calculated":true,
+          "formula":"rollupConditionalSum($revenuelineitems, \"best_case\", \"sales_stage\", forecastSalesStages(true, false))",
+          "enforced":true,
+          "readonly":true,
+          "enable_range_search":false,
+          "module":"Opportunities",
+          "real_table":"opportunities",
+          "rep_rel_name":"best_case_0",
+          "table_alias":"opportunities",
+          "column_key":"self:best_case",
+          "isvNameTranslated":true
+       }
+    ],
+    "grandTotal":[
+       {
+          "type":"currency",
+          "module":"Opportunities",
+          "name":"amount",
+          "value":"$1,339,402.11",
+          "vname":"LBL_LIKELY"
+       },
+       {
+          "type":"int",
+          "name":"count",
+          "vname":"Count",
+          "value":"39"
+       },
+       {
+          "type":"int",
+          "name":"count",
+          "vname":"Count",
+          "value":"39"
+       },
+       {
+          "type":"int",
+          "name":"count",
+          "vname":"Count",
+          "value":"86"
+       },
+       {
+          "type":"float",
+          "module":"Opportunities",
+          "name":"closed_won_revenue_line_items",
+          "value":"2.00",
+          "vname":"LBL_CLOSED_WON_RLIS"
+       },
+       {
+          "type":"currency",
+          "module":"Opportunities",
+          "name":"best_case",
+          "value":"$1,550,904.33",
+          "vname":"LBL_BEST"
+       }
+    ]
+ }
+</pre>
+<h3>Report Type: Matrix</h3>
+<pre class="pre-scrollable">
+{
+    "record": "709cced2-d10a-11ec-84c7-0242ac140008",
+    "reportType": "Matrix",
+}
+</pre>
+
+<h3>Output Example</h3>
+<pre class="pre-scrollable">
+    {
+        "grandTotalBottom":{
+           "Total":{
+              "SUM: Best":"$94,020.00",
+              "AVG: Best":"$1,918.78",
+              "LBL_COUNT_LC":49
+           },
+           "chris":{
+              "Total":{
+                 "SUM: Best":"$18,585.73",
+                 "AVG: Best":"$2,655.10",
+                 "LBL_COUNT_LC":7
+              },
+              "":{
+                 "SUM: Best":"$617.00",
+                 "AVG: Best":"$617.00",
+                 "LBL_COUNT_LC":"1"
+              },
+              "Existing Business":{
+                 "SUM: Best":"$12,922.72",
+                 "AVG: Best":"$3,230.68",
+                 "LBL_COUNT_LC":"4"
+              },
+              "New Business":{
+                 "SUM: Best":"$5,046.01",
+                 "AVG: Best":"$2,523.01",
+                 "LBL_COUNT_LC":2
+              }
+           },
+           ...
+           "will":{
+              "Total":{
+                 "SUM: Best":"$13,509.60",
+                 "AVG: Best":"$2,251.60",
+                 "LBL_COUNT_LC":6
+              },
+              "Existing Business":{
+                 "SUM: Best":"$10,293.10",
+                 "AVG: Best":"$3,431.03",
+                 "LBL_COUNT_LC":3
+              },
+              "New Business":{
+                 "SUM: Best":"$2,069.00",
+                 "AVG: Best":"$2,069.00",
+                 "LBL_COUNT_LC":"1"
+              },
+              "":{
+                 "SUM: Best":"$1,147.50",
+                 "AVG: Best":"$573.75",
+                 "LBL_COUNT_LC":"2"
+              }
+           },
+           "Quarter: Expected Close Date":"Grand Total"
+        },
+        "grandTotalBottomFormatted":{
+           "Total":{
+              "SUM: Best":"$94,020.00",
+              "AVG: Best":"$1,918.78",
+              "LBL_COUNT_LC":49
+           },
+           "chris":{
+              "Total":{
+                 "SUM: Best":"$18,585.73",
+                 "AVG: Best":"$2,655.10",
+                 "LBL_COUNT_LC":7
+              },
+              "":{
+                 "SUM: Best":"$617.00",
+                 "AVG: Best":"$617.00",
+                 "LBL_COUNT_LC":"1"
+              },
+              "Existing Business":{
+                 "SUM: Best":"$12,922.72",
+                 "AVG: Best":"$3,230.68",
+                 "LBL_COUNT_LC":"4"
+              },
+              "New Business":{
+                 "SUM: Best":"$5,046.01",
+                 "AVG: Best":"$2,523.01",
+                 "LBL_COUNT_LC":2
+              }
+           },
+           ...
+           "will":{
+              "Total":{
+                 "SUM: Best":"$13,509.60",
+                 "AVG: Best":"$2,251.60",
+                 "LBL_COUNT_LC":6
+              },
+              "Existing Business":{
+                 "SUM: Best":"$10,293.10",
+                 "AVG: Best":"$3,431.03",
+                 "LBL_COUNT_LC":3
+              },
+              "New Business":{
+                 "SUM: Best":"$2,069.00",
+                 "AVG: Best":"$2,069.00",
+                 "LBL_COUNT_LC":"1"
+              },
+              "":{
+                 "SUM: Best":"$1,147.50",
+                 "AVG: Best":"$573.75",
+                 "LBL_COUNT_LC":"2"
+              }
+           },
+           "Quarter: Expected Close Date":"Grand Total"
+        },
+        "header":[
+           [
+              "Quarter: Expected Close Date",
+              "User Name",
+              "Grand Total"
+           ],
+           [
+              "chris",
+              "jim",
+              "max",
+              "sally",
+              "sarah",
+              "will"
+           ],
+           [
+              "Type"
+           ],
+           [
+              "",
+              "Existing Business",
+              "New Business"
+           ]
+        ],
+        "legend":[
+           "SUM: Best",
+           "AVG: Best"
+        ],
+        "layoutType":"1x2",
+        "data":[
+           {
+              "Quarter: Expected Close Date":"Q1 2022",
+              "chris":{
+                 "":{
+                    "SUM: Best":"$617.00",
+                    "AVG: Best":"$617.00",
+                    "LBL_COUNT_LC":"1"
+                 },
+                 "Existing Business":{
+                    "SUM: Best":"$12,922.72",
+                    "AVG: Best":"$3,230.68",
+                    "LBL_COUNT_LC":"4"
+                 },
+                 "New Business":{
+                    "SUM: Best":"$4,445.56",
+                    "AVG: Best":"$4,445.56",
+                    "LBL_COUNT_LC":"1"
+                 },
+                 "Total":{
+                    "SUM: Best":"$17,985.28",
+                    "AVG: Best":"$2,997.55",
+                    "LBL_COUNT_LC":6
+                 }
+              },
+              ...
+              "will":{
+                 "Existing Business":{
+                    "SUM: Best":"$2,742.00",
+                    "AVG: Best":"$2,742.00",
+                    "LBL_COUNT_LC":"1"
+                 },
+                 "New Business":{
+                    "SUM: Best":"$2,069.00",
+                    "AVG: Best":"$2,069.00",
+                    "LBL_COUNT_LC":"1"
+                 },
+                 "Total":{
+                    "SUM: Best":"$4,811.00",
+                    "AVG: Best":"$2,405.50",
+                    "LBL_COUNT_LC":2
+                 }
+              },
+              "Total":{
+                 "":{
+                    "SUM: Best":"$22,837.78",
+                    "AVG: Best":"$2,076.16",
+                    "LBL_COUNT_LC":11
+                 },
+                 "Total":{
+                    "SUM: Best":"$72,323.40",
+                    "AVG: Best":"$2,260.11",
+                    "LBL_COUNT_LC":32
+                 },
+                 "Existing Business":{
+                    "SUM: Best":"$32,980.52",
+                    "AVG: Best":"$2,355.75",
+                    "LBL_COUNT_LC":14
+                 },
+                 "New Business":{
+                    "SUM: Best":"$16,505.10",
+                    "AVG: Best":"$2,357.87",
+                    "LBL_COUNT_LC":7
+                 }
+              }
+           },
+           {
+              "Quarter: Expected Close Date":"Q2 2022",
+              "chris":{
+                 "New Business":{
+                    "SUM: Best":"$600.45",
+                    "AVG: Best":"$600.45",
+                    "LBL_COUNT_LC":"1"
+                 },
+                 "Total":{
+                    "SUM: Best":"$600.45",
+                    "AVG: Best":"$600.45",
+                    "LBL_COUNT_LC":"1"
+                 }
+              },
+              ...
+              "will":{
+                 "":{
+                    "SUM: Best":"$1,147.50",
+                    "AVG: Best":"$573.75",
+                    "LBL_COUNT_LC":"2"
+                 },
+                 "Existing Business":{
+                    "SUM: Best":"$7,551.10",
+                    "AVG: Best":"$3,775.55",
+                    "LBL_COUNT_LC":"2"
+                 },
+                 "Total":{
+                    "SUM: Best":"$8,698.60",
+                    "AVG: Best":"$2,174.65",
+                    "LBL_COUNT_LC":4
+                 }
+              },
+              "Total":{
+                 "New Business":{
+                    "SUM: Best":"$10,440.32",
+                    "AVG: Best":"$1,160.04",
+                    "LBL_COUNT_LC":9
+                 },
+                 "Total":{
+                    "SUM: Best":"$21,696.60",
+                    "AVG: Best":"$1,276.27",
+                    "LBL_COUNT_LC":17
+                 },
+                 "":{
+                    "SUM: Best":"$2,289.46",
+                    "AVG: Best":"$572.37",
+                    "LBL_COUNT_LC":4
+                 },
+                 "Existing Business":{
+                    "SUM: Best":"$8,966.82",
+                    "AVG: Best":"$2,241.71",
+                    "LBL_COUNT_LC":4
+                 }
+              }
+           }
+        ]
+     }
+</pre>

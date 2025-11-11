@@ -1,0 +1,33 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+<div class="alert-page-overlay"></div>
+
+<div class="alert alert-info alert-block rounded-md shadow-lg bg-[--alert-background]" style="margin-left:-209px;position:fixed;z-index:1060;">
+    <div style="flex:max-content;position:relative;width:100%;" class="text-center pt-5">
+        <div class="indicator" style="width:100%;height:60px;position:absolute;z-index:-1;"></div>
+        <span class="text loading loading-admin">
+            <span>
+                <strong>{{str "LBL_QUICK_REPAIR_AND_REBUILD_PROCESSING" "Administration"}}</strong>
+                <i class="l1">&#46;</i>
+                <i class="l2">&#46;</i>
+                <i class="l3">&#46;</i>
+            </span>
+        </span>
+
+        <div id="qrr-progress" style="padding: 0 10px 33px 10px">
+            <h5>0%</h5>
+            <div class="progress"><div class="bar" style="width:0%;margin-bottom: 20px"></div></div>
+        </div>
+    </div>
+</div>

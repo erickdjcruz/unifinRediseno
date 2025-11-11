@@ -1,0 +1,9 @@
+(function(app){app.augment('tooltip',{_$currentTip:null,init:function(){if(Modernizr.touch){this._disable();return;}
+this._enable();},_onShow:function(event){if(event&&event.namespace!=='bs.tooltip'){return;}
+var target=event.target;var $target=$(target).first();let isChildEllipsed=false;if(target.children.length>0&&target.querySelectorAll(':scope > .text-overflow')){let ellipsedChild=target.querySelectorAll(':scope > .text-overflow').item(0);if(ellipsedChild){isChildEllipsed=ellipsedChild.offsetWidth<ellipsedChild.scrollWidth;}}
+var showTooltip=($target.attr('rel')==='tooltip'||target.offsetWidth<target.scrollWidth||isChildEllipsed);if(!showTooltip){event.preventDefault();}},_saveTip:function(event){if(event.namespace!=='bs.tooltip'){return;}
+var $target=$(event.target);this._$currentTip=$.fn.tooltip.Constructor.getInstance($target);$target.on('remove',this.clear);},_disable:function(){var $html=$('html');if(typeof $html.tooltip!=='function'){return;}
+$html.tooltip('dispose');$html.off('.tooltip');if(!this._tooltip){this._tooltip=$.fn.tooltip;}
+$.fn.tooltip=function(){return this;};},_enable:function(){$.fn.tooltip=this._tooltip||$.fn.tooltip;var $html=$('html');if(typeof $html.tooltip!=='function'){return;}
+$html.tooltip({selector:'.ellipsis_inline, [rel=tooltip]',container:'body',trigger:'hover',title:(el)=>{return $(el).attr('data-original-title');},html:true,});_.bindAll(this,'_saveTip','clear');$html.on('show.bs.tooltip',this._onShow);$html.on('shown.bs.tooltip',this._saveTip);$html.on('click.tooltip',this.clear);},clear:function(){if(this._$currentTip&&this._$currentTip._element){this._$currentTip.dispose();}
+const tooltipEl=$('body > .tooltip');tooltipEl.tooltip('hide');tooltipEl.remove();}});})(SUGAR.App);

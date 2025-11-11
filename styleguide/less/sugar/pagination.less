@@ -1,0 +1,121 @@
+/* PAGINATION
+  ----------------*/
+.pagination {
+  padding: 10px;
+
+  ul {
+    box-shadow: none;
+  }
+
+  nav {
+    padding: 5px;
+    margin: 0;
+  }
+
+  //List items containing pagination elements
+  .pagination-li {
+    display: inline-block;
+
+    .left-ellipsis-icon,
+    .right-ellipsis-icon {
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+    }
+
+    //Anchor tag containing chevron spans
+    .paginate-aria-button {
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 12px;
+      width: 40%;
+      background-color: @btnBackgroundHighlight;
+      color: @btnPrimaryBackground;
+      text-decoration: none;
+      transition: 400ms ease;
+
+      &:hover {
+        background-color: @btnSecondaryBackgroundHover;
+      }
+
+      &:active {
+        background-color: @btnSecondaryBackgroundActive;
+      }
+
+      &.disabled {
+        background-color: @btnSecondaryBackgroundDisabled;
+      }
+
+      //Chevron spans
+      .previous-fav,
+      .next-fav {
+        color: @btnPrimaryBackground;
+        width: 8px;
+        font-size: smaller;
+
+        &:hover {
+          background-color: @gray20;
+          color: @btnPrimaryBackground;
+        }
+
+        &:active {
+          background-color: @btnSecondaryBackgroundActive;
+          color: @night;
+        }
+
+        &.disabled {
+          color: @gray80;
+          background-color: @btnSecondaryBackgroundDisabled;
+        }
+      }
+    }
+
+    //Previous button
+    .nav-previous {
+      padding: 3px 6px;
+      border: 1px solid @gray20;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    //Next button
+    .nav-next {
+      padding: 3px 6px;
+      border: 1px solid @gray20;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+
+    //override the default .btn class properties
+    .btn.active {
+      background-color: @btnPrimaryBackgroundHighlight !important;
+      color: @white !important;
+      border-radius: 5px;
+    }
+
+    //Numbered buttons to paginate
+    .paginate-num-button {
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 12px;
+      border: none;
+      width: 40%;
+      color: @gray90;
+      background-color: @bodyBackground;
+      padding: 6px 8px;
+      text-decoration: none;
+      transition: 400ms ease;
+
+      &:hover {
+        color: @gray90;
+        background-color: @gray20;
+        border-radius: 5px;
+      }
+
+      &.disabled {
+        background-color: @gray80;
+        color: @white;
+        border-radius: 5px;
+      }
+    }
+  }
+}

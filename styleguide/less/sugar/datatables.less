@@ -1,0 +1,1423 @@
+/* DATATABLES
+  ----------------*/
+.table-cell {
+  &.full-width {
+    width: 100%;
+  }
+}
+
+.dataTable {
+  margin: 0;
+  clear: both;
+  width: 100%;
+
+  .dashablerecord &,
+  .multi-line-list-view & {
+    tr {
+      td.edit-td {
+        padding-left: 0;
+        padding-right: 0;
+        z-index: 10;
+      }
+
+      &:not(.tr-inline-edit) {
+        td.edit-td .btn-group.edit {
+          display: none;
+        }
+
+        &:not(:hover) {
+          td.edit-td .btn-group.detail {
+            display: none;
+          }
+        }
+      }
+
+      &.tr-inline-edit {
+        td {
+          background-color: var(--dropdown-link-background-hover);
+
+          &.edit-td .btn-group.detail {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  /* ---------
+  TABLE HEADER CELL (specific) */
+  th {
+    line-height: 26px;
+    min-width: @cell-medium;
+    max-width: @cell-large;
+    font-size: @fontSizeSmall;
+    color: @textColor;
+
+    &.cell-xxsmall {
+      min-width: @cell-xxsmall;
+      max-width: @cell-xxsmall;
+    }
+
+    &.cell-xsmall {
+      min-width: @cell-xsmall;
+      max-width: @cell-xsmall;
+    }
+
+    &.cell-small {
+      min-width: @cell-small;
+      max-width: @cell-small;
+    }
+
+    &.cell-medium {
+      min-width: @cell-medium;
+      max-width: @cell-medium;
+    }
+
+    &.cell-large {
+      min-width: @cell-large;
+      max-width: @cell-large;
+    }
+
+    &.cell-xlarge {
+      min-width: @cell-xlarge;
+      max-width: @cell-xlarge;
+    }
+
+    &.cell-xxlarge {
+      min-width: @cell-xxlarge;
+      max-width: @cell-xxlarge;
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+
+    &.nosort.select-all {
+      padding: 0;
+
+      .btn-group {
+        position: absolute;
+        top: 0;
+        //centering checkbox in btn-group
+        > .btn:first-child {
+          padding-top: 7px;
+          padding-bottom: 1px;
+        }
+      }
+    }
+
+    &.alert.alert-warning {
+      background-color: @tabBackgroundHoverColor;
+      border-bottom: none;
+      border-left: none;
+      max-height: none;
+      min-height: auto;
+      position: static;
+      box-shadow: none;
+
+      > div {
+        > span {
+          font-size: @baseFontSize;
+          display: table-cell;
+          line-height: 16px;
+          vertical-align: middle;
+          padding: 4px 8px;
+        }
+      }
+
+      .btn-link:hover {
+        background-color: @tabBackgroundHoverColor;
+      }
+    }
+
+    > span,
+    .sortable-row-header-column-name {
+      display: inline-block;
+      width: 100%;
+      overflow-x: hidden;
+      white-space: nowrap;
+      vertical-align: middle;
+      text-overflow: ellipsis;
+    }
+
+    .dropdown-menu {
+      text-align: left;
+      overflow-y: auto;
+      max-height: 50vh;
+    }
+
+    .btn input {
+      line-height: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  /* ---------
+  TABLE BODY CELL (specific) */
+  td {
+    height: 28px;
+    max-width: 21px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+
+    &:last-child {
+      border-right: 0;
+    }
+
+    &[data-type="currency"] {
+      min-width: 155px !important;
+      max-width: 100% !important;
+
+      .nodata,
+      .list {
+        width: 100%;
+        text-align: right;
+        box-sizing: border-box;
+      }
+    }
+
+    &[data-type="bool"] {
+      text-align: center;
+
+      .list {
+        overflow-y: hidden;
+      }
+    }
+
+    &[data-type*="datetimecombo"] {
+      input[type="text"] {
+        min-width: 0;
+        z-index: 0;
+      }
+
+      input[type="text"].datepicker {
+        width: 50%;
+        width: calc(~"55% - 3px");
+        min-width: 0;
+      }
+
+      input[type="text"].ui-timepicker-input {
+        width: 40%;
+        width: calc(~"45% - 3px");
+        margin-left: -16px;
+        min-width: 0;
+      }
+    }
+
+    > span:not(.overflow-visible):not(.label-module) {
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      width: 100%;
+      display: inline-block;
+      white-space: nowrap;
+      vertical-align: middle;
+
+      &.pill {
+        // overrule the width: 100% above
+        width: inherit;
+      }
+    }
+
+    .btn-toolbar {
+      margin: -5px 0 -10px;
+    }
+
+    .select2-addon {
+      input[type="text"] {
+        width: 95%;
+        width: calc(~"100% - 80px");
+      }
+
+      .input-append {
+        input[type="text"] {
+          width: 100%;
+        }
+      }
+    }
+
+    .list .add-on {
+      display: inline-block;
+      vertical-align: middle;
+      padding-right: 2px;
+    }
+
+    .list .add-on + .ellipsis_inline {
+      display: inline-block !important;
+      vertical-align: middle;
+    }
+
+    .help-block {
+      display: none;
+    }
+
+    span.longtext {
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    input[type="text"] {
+      min-height: 28px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 4px 6px;
+
+      &:focus {
+        z-index: 0;
+      }
+    }
+
+    input[type=radio] {
+      border: 0;
+      margin: 4px 6px 4px 0;
+    }
+
+    .datepicker {
+      z-index: initial;
+    }
+  }
+
+  /* ---------
+  TABLE FOOTER */
+  tfoot {
+    tr {
+      border-top: 2px solid @borderColor;
+    }
+
+    th {
+      white-space: normal;
+      word-break: break-all;
+    }
+
+    td {
+      font-weight: bold;
+    }
+
+    tr:first-child {
+      td {
+        border-top: 2px solid @gray70;
+
+        .fieldset {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+
+    tr.overall th {
+      font-weight: bold;
+    }
+  }
+
+  /* ---------
+  TABLE ROW (specific) */
+  tbody tr {
+    //for preview
+    &.highlighted {
+      &.current {
+        td {
+          background: @dropdownLinkBackgroundHover;
+        }
+      }
+    }
+
+    &.highlight-row {
+      td {
+        background: @tableRowHover;
+      }
+    }
+
+    &.selected td:first-child::before {
+      content: " ";
+      position: absolute;
+      z-index: 11;
+      background: @red;
+      height: 36px;
+      margin-top: -18px;
+      width: 4px;
+      left: 0;
+    }
+    //inline editing
+    &.tr-inline-edit {
+      td {
+        overflow: visible;
+        padding: 4px;
+        background: @dropdownLinkBackgroundHover;
+        font-size: 0;
+
+        .sicon-star-outline,
+        .sicon-star-fill {
+          display: none;
+        }
+
+        .ui-timepicker-wrapper,
+        .ellipsis_inline,
+        .select2-container {
+          font-size: @baseFontSize;
+        }
+
+        &:first-child {
+          .btn {
+            margin-left: 0;
+          }
+
+          > span.edit {
+            .btn {
+              max-width: 56px;
+              padding-left: 0;
+              padding-right: 0;
+            }
+          }
+        }
+
+        &:last-child {
+          .btn {
+            margin-left: 0;
+            box-sizing: border-box;
+          }
+
+          > span.edit {
+            z-index: 2;
+
+            .btn {
+              max-width: 56px;
+            }
+          }
+        }
+
+        &[data-type="textarea"] {
+          textarea {
+            width: calc(~"100% - 12px");
+            max-width: calc(~"100% - 12px");
+            height: 18px;
+            margin: 0;
+          }
+        }
+
+        &[data-type="fullname"] {
+          min-width: 288px;
+          max-width: 288px !important;
+          box-sizing: content-box;
+          height: 28px;
+
+          span.edit-cell {
+            display: inline-block;
+          }
+
+          .edit-cell[data-type="enum"] {
+            width: 80px;
+          }
+
+          .edit-cell[data-type="text"] {
+            width: 100px;
+            margin-left: 4px;
+          }
+
+          & > .fieldset {
+            display: flex;
+            flex-direction: row;
+          }
+        }
+
+        &[data-type="relate"] {
+          min-width: 150px;
+          max-width: 150px !important;
+        }
+
+        &[data-type="tag"] {
+          min-width: 200px;
+          max-width: 200px;
+
+          .edit > .select2-container > .select2-choices {
+            max-height: 22px;
+            min-height: 22px;
+            overflow-y: scroll;
+          }
+        }
+
+        &[data-type="date"] {
+          min-width: 108px;
+          max-width: 108px !important;
+
+          input[type="text"] {
+            width: 100%;
+          }
+        }
+
+        &[data-type*="datetimecombo"] {
+          min-width: 180px;
+          max-width: 180px !important;
+        }
+
+        &[data-type="currency"] {
+          min-width: 185px !important;
+          max-width: 185px !important;
+        }
+
+        &[data-type="parent"] {
+          min-width: 200px;
+          max-width: 200px !important;
+        }
+
+        &[data-type="file"] {
+          min-width: 200px;
+          max-width: 200px;
+
+          input[type="file"] {
+            width: 192px;
+            padding: 5px 0;
+            box-sizing: border-box;
+          }
+
+          .edit .file-field {
+            line-height: 1px;
+          }
+        }
+
+        &[data-type="enum"] {
+          min-width: 150px;
+          max-width: 150px;
+
+          .select2-container.select2-dropdown-open {
+            min-width: 82px;
+          }
+
+          .select2-container-multi.select2-choices-pills-close .select2-search-choice div {
+            text-overflow: ellipsis;
+            max-width: 116px;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+
+          .select2-container-disabled .select2-choice {
+            color: @gray70;
+            cursor: not-allowed;
+
+            .select2-arrow {
+              display: none;
+            }
+          }
+        }
+
+        &[data-type="tags"] {
+          min-width: 150px;
+
+          .select2-container-multi.select2-choices-pills-close {
+            position: relative !important;
+            top: 0;
+          }
+        }
+
+        &[data-type="teamset"] {
+          font-size: @baseFontSize;
+          padding-left: 8px;
+          padding-right: 8px;
+        }
+
+        > span {
+          &.nodata,
+          &.list {
+            padding: 0 4px;
+            display: inline-block;
+            vertical-align: middle;
+          }
+        }
+
+        > .edit .select2-container-multi {
+          position: absolute;
+          top: -15px;
+        }
+
+        > *:not(.overflow-visible) {
+          overflow: visible;
+        }
+
+        .input-append.date {
+          margin-bottom: 0;
+        }
+
+        input[type="text"] {
+          width: 100%;
+          min-width: 82px;
+          font-size: @baseFontSize;
+        }
+      }
+    }
+  }
+}
+
+//Search and Select lists
+.search-and-select.dataTable thead {
+  tr {
+    th {
+      .sortable-row-header-container {
+        .sortable-row-header-arrows {
+          right: -8px;
+        }
+      }
+    }
+  }
+
+  tr:hover {
+    td {
+      background-color: @dropdownLinkBackgroundHover;
+    }
+  }
+}
+
+/* --------
+List Layout Styling */
+.flex-records-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ---------
+FLEXLIST GENERIC */
+.flex-list-view {
+  position: relative;
+  border-top: @borderWidget;
+  border-bottom: @borderWidget;
+
+  .flex-list-view-content {
+    overflow-x: auto;
+
+    .dataTable {
+      max-width: none;
+    }
+
+    .no-data-available {
+      line-height: 38px;
+      text-align: center;
+    }
+  }
+
+  /*LEFT AND RIGHT ACTIONS*/
+  &.left-actions .dataTable th:first-child,
+  &.left-actions .dataTable td:first-child,
+  &.right-actions .dataTable th:last-child,
+  &.right-actions .dataTable td:last-child {
+    text-align: center;
+    overflow-x: visible;
+
+    &.open {
+      z-index: 999;
+    }
+
+    // TODO clean up
+
+    .dropdown,
+    > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      background-color: inherit;
+
+      &.open {
+        z-index: 999;
+      }
+
+      .btn.btn-invisible {
+        &.active {
+          background-color: transparent !important;
+        }
+      }
+    }
+  }
+
+  &.left-actions .dataTable th:first-child,
+  &.right-actions .dataTable th:last-child {
+    .dropdown,
+    > span {
+      top: 0;
+      padding: 7px;
+    }
+
+    .btn.checkall {
+      padding: 7px;
+      line-height: 0;
+      height: 12px;
+    }
+  }
+
+  &.left-actions .dataTable td:first-child,
+  &.right-actions .dataTable td:last-child {
+    > span {
+      .fieldset-field {
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      .btn {
+        &:focus {
+          outline: none;
+        }
+
+        &:hover {
+          box-shadow: none;
+        }
+
+        &.active {
+          background: none;
+
+          .sicon {
+            color: @sicon-color;
+          }
+        }
+      }
+
+      > .list:first-child {
+        background-color: inherit;
+        display: inline-block;
+        white-space: nowrap;
+      }
+
+      .btn-group > .list + .btn {
+        margin-left: -1px;
+      }
+    }
+    // row action buttons
+    .actions {
+      // merge duplicates
+      > input[type=checkbox] {
+        margin: 8px;
+      }
+
+      .dropdown-menu {
+        text-align: left;
+        margin-top: -2px;
+        left: 0;
+        right: auto;
+      }
+    }
+  }
+
+  /*LEFT ACTIONS ONLY*/
+  &.left-actions .dataTable {
+    th,
+    td {
+      &:first-child {
+        width: 55px;
+        min-width: 55px;
+
+        .dropdown,
+        > span {
+          width: 55px;
+        }
+      }
+    }
+
+    td:first-child {
+      // row action buttons
+      .actions {
+        .dropdown-menu {
+          left: 0;
+          right: auto;
+        }
+      }
+    }
+  }
+
+  /*RIGHT ACTIONS ONLY*/
+  &.right-actions .dataTable {
+    th {
+      &:last-child {
+        width: 70px;
+        min-width: 70px;
+
+        .dropdown {
+          width: 54px;
+        }
+      }
+    }
+
+    td:last-child {
+      width: 54px;
+      min-width: 54px;
+
+      // row action buttons
+      .actions {
+        .dropdown-menu {
+          left: auto;
+          right: 0;
+        }
+      }
+
+      .dropdown {
+        width: 54px;
+      }
+    }
+  }
+
+  /*ADD SHADOW TO LEFT ACTION COLUMN*/
+  &.left-actions.scroll-width .dataTable {
+    th:first-child {
+      .dropdown,
+      > span {
+        z-index: 11;
+
+        &.open {
+          z-index: 999;
+        }
+      }
+    }
+
+    td:first-child {
+      > span {
+        z-index: 10;
+
+        &.open {
+          z-index: 999;
+        }
+      }
+    }
+  }
+
+  /* LEFT AND RIGHT ACTION COLUMNS WITHOUT TABLE SCROLL */
+  &[class$="-actions"]:not(.scroll-width) {
+    .flex-list-view-content {
+      overflow-x: visible;
+    }
+  }
+
+  /*DUPLICATES*/
+  .dataTable.duplicates {
+    tr {
+      color: @duplicateTableRowColor;
+
+      &:not(.current):not(.tr-inline-edit):not(.highlighted):hover {
+        td {
+          background-color: @duplicateTableRowBackground;
+        }
+      }
+
+      td {
+        border-bottom: inherit;
+      }
+    }
+
+    th {
+      border-right-color: lighten(@warningBorder, 5%);
+
+      &:first-child {
+        .btn.checkall:only-child {
+          margin-left: 0;
+        }
+      }
+    }
+
+    tbody > tr > td {
+      background-color: @duplicateTableRowBackground;
+    }
+
+    /*create record dup check*/
+    &.duplicates-selectedit {
+      th,
+      td {
+        &:first-child {
+          padding-left: 20px;
+          max-width: 116px;
+        }
+
+        &:last-child {
+          width: 123px;
+          min-width: 123px;
+          max-width: 123px;
+          padding-left: 4px;
+        }
+      }
+
+      th:last-child {
+        .dropdown {
+          width: 119px;
+        }
+
+        .dropdown-menu {
+          right: 52px;
+        }
+      }
+
+      td:last-child {
+        > .list {
+          width: 125px;
+          padding-left: 2px;
+        }
+        // row action buttons
+        .fieldset-field .btn {
+          max-width: 80px;
+        }
+      }
+    }
+  }
+
+  /*FORECASTS WORKSHEETS*/
+  &.forecast-worksheet .dataTable,
+  &.forecast-manager-worksheet .dataTable {
+    tbody tr:last-child {
+      td:last-child > span {
+        padding-bottom: 3px;
+      }
+    }
+
+    td {
+      &[data-type="currency"] {
+        min-width: 115px !important;
+        box-sizing: border-box;
+      }
+
+      &.editableColumn {
+        padding: 0 2px;
+        min-width: 92px;
+        box-sizing: border-box;
+
+        span.list,
+        span.edit {
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        span.list {
+          padding: 4px 8px 4px 14px;
+        }
+
+        span.isEditable.edit {
+          padding: 4px 1px 4px 7px;
+        }
+
+        span.isEditable:hover {
+          overflow: visible;
+
+          .edit-icon {
+            position: absolute;
+            left: -2px;
+            top: 7px;
+          }
+        }
+
+        .clickToEdit.active span.edit {
+          display: inline-block;
+        }
+      }
+
+      &:last-child > .list > .list:first-child {
+        width: 28px;
+        right: 22px;
+      }
+    }
+  }
+
+  /*FORECASTS SALES REP WORKSHEET*/
+  &.forecast-worksheet .dataTable {
+    th,
+    td {
+      &:first-child {
+        padding-left: 14px;
+      }
+    }
+
+    td.editableColumn.commit_stage_field:first-child {
+      max-width: 80px;
+      padding-left: 6px;
+
+      > span.list {
+        padding-left: 10px;
+        -ms-overflow-style: none;
+      }
+
+      > span.edit {
+        padding-left: 1px;
+      }
+    }
+
+    tr.included td {
+      font-weight: bold;
+
+      &.commit_stage_field {
+        > span.list::before {
+          width: 6px;
+          background-color: @blue;
+          position: absolute;
+          height: 30px;
+          left: -1px;
+          content: "";
+          top: -2px;
+        }
+
+        > span:hover::before {
+          display: none;
+        }
+      }
+    }
+  }
+
+  /*FORECASTS MANAGER WORKSHEET*/
+  &.forecast-manager-worksheet .dataTable {
+    tr[name$="_commit_history"] td:first-child:last-child {
+      padding: 0;
+      height: auto;
+      background-color: @secondaryContentBackground;
+
+      .sicon-arrow-down::before {
+        color: @red;
+      }
+
+      .sicon-arrow-up::before {
+        color: @green;
+      }
+
+      .list {
+        position: relative;
+        color: @textColor;
+        text-align: left;
+        padding: 10px 20px;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        border: none;
+        box-sizing: border-box;
+
+        .relativetime {
+          color: @labelColor;
+          margin-left: 8px;
+        }
+      }
+    }
+
+    th:last-child .dropdown {
+      top: 1px;
+    }
+  }
+}
+
+// multi line list view
+.multi-line-list-view .left-column {
+  min-width: @multiLineFirstColumnLeft;
+  width: 30px;
+}
+
+/*.main-pane.span12 .flex-list-view.right-actions.scroll-width .dataTable {
+  td:last-child > span,
+  th:last-child > span {
+    width: 55px;
+  }
+}*/
+
+.touch .flex-list-view {
+  &.no-touch-scrolling .flex-list-view-content {
+    -webkit-overflow-scrolling: auto;
+  }
+
+  /*Fix rendering of scrolled absolute spans on iPad*/
+  &.left-actions.scroll-width .dataTable {
+    th:first-child,
+    td:first-child {
+      > span {
+        transform: translate3d(0, 0, 0);
+      }
+    }
+  }
+
+  &.right-actions.scroll-width .dataTable {
+    th:last-child,
+    th:last-child {
+      .dropdown {
+        transform: translate3d(0, 0, 0);
+      }
+    }
+  }
+}
+
+//from twitter-bootstrap/datatables.less
+.dataTable {
+  th {
+    > div.sortable-row-header-container {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      align-items: center;
+
+      .sicon-sugar-predict {
+        margin-right: 3px;
+        margin-bottom: 2px;
+        color: @purple;
+      }
+
+      .sortable-row-header-column-name {
+        margin-right: 12px;
+
+        .sicon-sugar-predict {
+          margin-right: 3px;
+          margin-bottom: 2px;
+          color: @purple;
+        }
+      }
+
+      .sortable-row-header-arrows {
+        display: flex;
+        font-size: 12px;
+        position: absolute;
+        right: 0;
+
+        .sicon {
+          display: none;
+          color: @gray50;
+        }
+      }
+    }
+
+    &.sorting {
+      cursor: pointer;
+
+      .ui-draggable {
+        width: 100%;
+      }
+
+      &:hover {
+        .sortable-row-header-container {
+          .ui-draggable {
+            padding-right: 12px;
+          }
+
+          .sortable-row-header-arrows {
+            .sicon-arrow-down {
+              display: inline;
+              color: @gray50;
+            }
+          }
+        }
+      }
+
+      &_asc,
+      &_desc {
+        cursor: pointer;
+        background-color: @tableRowHover;
+
+        &:hover {
+          span,
+          .sortable-row-header-container .sortable-row-header-arrows .sicon {
+            color: @sicon-hover-color;
+          }
+        }
+
+        span,
+        .sortable-row-header-container .sortable-row-header-arrows .sicon {
+          color: @sicon-active-color;
+          position: relative;
+        }
+
+        span {
+          font-weight: bold;
+        }
+
+        &_disabled {
+          cursor: default;
+
+          .sortable-row-header-container .sortable-row-header-arrows .sicon {
+            color: @gray50;
+          }
+        }
+      }
+
+      &_asc {
+        .sortingArrowBehavior(up, down);
+      }
+
+      &_desc {
+        .sortingArrowBehavior(down, up);
+      }
+    }
+  }
+}
+
+.dataTable th:active {
+  outline: none;
+}
+
+.cell-xxsmall {
+  min-width: @cell-xxsmall;
+  max-width: @cell-xxsmall;
+}
+
+.cell-xsmall {
+  min-width: @cell-xsmall;
+  max-width: @cell-xsmall;
+}
+
+.cell-small {
+  min-width: @cell-small;
+  max-width: @cell-small;
+}
+
+.cell-medium {
+  min-width: @cell-medium;
+  max-width: @cell-medium;
+}
+
+.cell-large {
+  min-width: @cell-large;
+  max-width: @cell-large;
+}
+
+.cell-xlarge {
+  min-width: @cell-xlarge;
+  max-width: @cell-xlarge;
+}
+
+.cell-xxlarge {
+  min-width: @cell-xxlarge;
+  max-width: @cell-xxlarge;
+}
+
+[data-type=phone] .gc-cs-link { /*UIUX-1270*/
+  color: inherit;
+}
+
+.touch .flex-list-view.right-actions .dataTable {
+  th:last-child > span,
+  th:first-child > *,
+  th:last-child > .dropdown { /*UIUX-1760*/
+    height: 30px;
+  }
+
+  td:last-child > * { /*SC-3006*/
+    -webkit-transform: translateZ(0);
+  }
+}
+
+span.email-has-attachments {
+  float: right;
+}
+
+/* NEW SKIN START */
+
+.dataTable {
+  /* ---------
+  TABLE ROW (specific) */
+  tbody tr {
+    /* new variable */
+    border-top: @borderWidget;
+
+    //for preview
+    &.highlighted {
+      &.current {
+        td {
+          /* new variable */
+          background-color: @tableRowHover;
+        }
+      }
+    }
+  }
+
+  &.table-striped {
+    thead {
+      th.stick-left > span {
+        border-right: none;
+      }
+    }
+  }
+}
+
+/* ---------
+FLEXLIST GENERIC */
+.flex-list-view {
+  /*ADD SHADOW TO RIGHT ACTION COLUMN*/
+  &.right-actions.scroll-width .dataTable {
+    td {
+      &:last-child {
+        .dropdown {
+          /* override */
+          border-left: @borderWidget;
+        }
+      }
+    }
+  }
+
+  th:last-child.morecol.nosort {
+    > .dropdown {
+      > .dropdown-toggle,
+      > .btn.btn-invisible {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+/* NEW SKIN END */
+
+div.audit-email {
+  /* Firefox doesn't like this div inheriting white-space from .dataTable td > span:not(.overflow-visible) */
+  white-space: initial;
+
+  div.ellipsis_inline {
+    display: inline-block !important;
+    width: calc(~"100% - 16px");
+
+    & + a {
+      float: right;
+      margin-top: 2px;
+
+      i {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+/* Multi-line-list */
+.dataTable.multi-line-table {
+  th {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 2px 4px;
+    background-color: @multiLineBackground;
+  }
+
+  td {
+    &.subfields {
+      font-size: 13px;
+      vertical-align: top;
+      padding: 2px;
+      overflow: hidden;
+
+      .subfield {
+        padding: 2px;
+
+        .label {
+          border: none;
+          line-height: 16px;
+          font-size: 13px;
+
+          &.expired {
+            color: @darkRed;
+            background-color: @lightRed;
+          }
+
+          &.soon-expired {
+            color: @darkOrange;
+            background-color: @lightOrange;
+          }
+        }
+      }
+    }
+  }
+}
+
+.stylesGray {
+  color: @gray70;
+}
+
+.stylesSemiBold {
+  font-weight: 600;
+}
+
+// Override for current list and dashablerecord list dashlet setup
+.dashlet-content {
+  .frozen-list-headers {
+    // dashable record list
+    .dashablerecord.dashlet-unordered-list {
+      height: 100%;
+
+      & :not(.tab1) ~ .tab-content {
+        height: calc(~'100% - 34px');
+      }
+
+      .tab-content {
+        height: 100%;
+
+        .tab-pane.active {
+          height: 100%;
+        }
+      }
+    }
+
+    // dashlet list view
+    &.list-view {
+      border-top: 1px solid @borderColor;
+      position: relative;
+    }
+
+    .dataTable {
+      background-color: transparent;
+
+      thead {
+        tr {
+          box-shadow: inset 0 1px 0 @borderColor, inset 0 -2px 0 @borderColor;
+        }
+      }
+
+      th.sorting {
+        background-color: var(--dashlet-background);
+      }
+
+      tr > td {
+        background-color: transparent;
+      }
+    }
+  }
+
+  .sticky-first-column {
+    &.list-view,
+    .dashablerecord.dashlet-unordered-list,
+    &.dashlet-console-list {
+      table.dataTable {
+        thead {
+          tr {
+            th:first-child {
+              // TODO Move to Tailwind eventually
+              position: sticky;
+              left: 0;
+              z-index: 12;
+            }
+          }
+        }
+
+        tbody {
+          tr {
+            td:first-child {
+              // TODO Move to Tailwind eventually
+              position: sticky;
+              background-color: var(--dashlet-background);
+              left: 0;
+              z-index: 12;
+            }
+
+            &.edit {
+              td:first-child {
+                background-color: var(--dropdown-link-background-hover);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ---------------
+Mixins for datatables
+----------------*/
+// Responbible for showing revealing an up/down arrow based on how the table is being sorted
+.sortingArrowBehavior (@activeArrow, @hiddenArrow) {
+  .sortable-row-header-container > .sortable-row-header-arrows {
+    .sicon-arrow {
+      &-@{activeArrow} {
+        display: inline;
+        color: @sicon-active-color;
+      }
+
+      &-@{hiddenArrow} {
+        display: none;
+      }
+    }
+  }
+}

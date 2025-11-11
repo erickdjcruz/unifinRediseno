@@ -1,0 +1,51 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+<div class="filters-skeleton-loader hidden h-full min-h-[6.25rem] w-full"></div>
+<div class="flex flex-col items-center h-full w-full dashboard-filters-edit-container">
+    <div class="flex flex-row ml-1.5 w-full">
+        <h4 class="flex-grow pl-2 font-bold">
+            {{str "LBL_DASHBOARD_FILTERS" module}}
+        </h4>
+        <div class="btn-toolbar pl-0 pr-2 mt-1">
+            <span class="dashlet-toolbar">
+                <a rel="tooltip" data-bs-placement="left" aria-label="{{str "LBL_ADD_FILTER" module}}" data-panelaction="createNewGroup" class="btn btn-invisible" data-original-title="{{str "LBL_ADD_FILTER" module}}" tabindex="-1">
+                    <i class="sicon sicon-plus"></i>
+                </a>
+            </span>
+        </div>
+    </div>
+    <div class="flex flex-col items-center w-30 mt-2.5" data-container="add-filter-container">
+        <div class="text-center max-width-5" data-container="no-filter-container">
+            <h5 class="w-25">{{str "LBL_NO_DASHBOARD_FILTER" module}}</h5>
+        </div>
+        <div class="flex flex-row items-center mt-2 apply-button-container" data-container="add-container">
+            <button class="ml-0 btn btn-primary apply-filters-btn text-sm w-full" type="button" data-panelaction="createNewGroup">
+                {{str "LBL_ADD_FILTER" module}}
+            </button>
+        </div>
+    </div>
+    <div class="report-filters-container overflow-y-auto w-full" data-container="group-filters-container">
+</div>

@@ -1,0 +1,28 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+
+$mod_strings['LBL_TEMPLATE_ID'] = 'ID';
+$mod_strings['LBL_FILENAME'] = 'Шаблон';
+$mod_strings['LBL_FILE_EXTENSION'] = 'Расширение';
+$mod_strings['LBL_MIME'] = 'Mime-тип';
+$mod_strings['LNK_NEW_RECORD'] = 'Создать шаблон документа';
+$mod_strings['LNK_LIST'] = 'Просмотреть шаблоны документов';
+$mod_strings['LBL_MODULE_NAME'] = 'Шаблоны документов';
+$mod_strings['LBL_MODULE_TITLE'] = 'Шаблоны документов';
+$mod_strings['LBL_MODULE_NAME_SINGULAR'] = 'Шаблон документов';
+$mod_strings['LBL_TEMPLATE_MODULE'] = 'Модуль шаблона';
+$mod_strings['LBL_USE_REVISIONS'] = 'Использовать редакции';
+$mod_strings['LBL_LABEL_MERGING'] = 'Объединение меток';
+$mod_strings['LBL_PREFIX'] = 'Префикс';
+$mod_strings['LBL_POSTFIX'] = 'Суффикс';
+$mod_strings['LBL_ERROR_WRONG_EXTENSION'] = 'Расширение файла не поддерживается';
+$mod_strings['LBL_DM_TYPE'] = 'Тип';

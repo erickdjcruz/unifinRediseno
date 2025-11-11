@@ -1,0 +1,2 @@
+(function(){var JSON=YAHOO.lang.JSON;SUGAR.quickCompose={};SUGAR.quickCompose=function(){return{parentPanel:null,init:function(o){var app=parent.SUGAR.App;var view=app.controller.layout.getComponent('bwc');if(view){view.openComposeEmailDrawer(o.composePackage||{});}
+return false;}};}();})();

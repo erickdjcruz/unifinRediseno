@@ -1,0 +1,310 @@
+/* FORECAST
+  ----------------*/
+
+.control-group.datefilter {
+  .controls {
+    margin: 0;
+  }
+
+  select {
+    width: 350px;
+  }
+}
+
+.control-group.filter {
+  .indicator {
+    cursor: pointer;
+  }
+}
+
+.show_custom_bucketsFields {
+  .noUiSliderEnds {
+    width: 240px;
+
+    .noUiSlider {
+      width: 240px;
+    }
+  }
+
+  #plhExclude,
+  #plhCustomWithoutProbability {
+    input[disabled="disabled"] {
+      visibility: hidden;
+    }
+  }
+
+  #plhCustomProbabilityRanges {
+    div.clearfix {
+      & > div:not(:last-child) {
+        margin-top: 35px;
+      }
+    }
+  }
+
+  #plhCustomWithoutProbability {
+    margin-bottom: 8px;
+
+    div.clearfix {
+      & > div {
+        margin-top: 15px;
+      }
+    }
+  }
+
+  #plhCustomWithoutProbability,
+  #plhCustomProbabilityRanges {
+    div.clearfix {
+      div.btn_group {
+        float: left;
+        margin-top: 32px;
+      }
+    }
+  }
+}
+
+.forecast-details {
+  margin: 0;
+
+  .row-fluid {
+    padding: 10px;
+    border-bottom: @borderWidgetLight;
+    box-sizing: border-box;
+
+    &:not(:last-child) {
+      line-height: 28px;
+    }
+
+    &.deficitRow {
+      background-color: @primaryContentBackground;
+      border-top: @borderWidgetLight;
+      font-weight: 600;
+
+      &.font-green {
+        color: @green;
+      }
+
+      &.font-red {
+        color: @red;
+      }
+    }
+
+    &:last-child {
+      background-color: @primaryContentBackgroundAccent;
+
+      div[class*="span"] {
+        padding: 0 5px;
+        line-height: 18px;
+
+        &:first-child {
+          padding-left: 0;
+        }
+
+        &:last-child {
+          padding-right: 0;
+        }
+
+        > div:last-child {
+          font-size: @fontSizeSmall;
+          line-height: @fontSizeSmall + 5;
+          padding: 8px;
+          margin-top: 4px;
+          color: @white;
+          border-radius: @baseBorderRadius;
+        }
+      }
+    }
+
+    .forecast_details_label {
+      font-size: @fontSizeSmall;
+    }
+
+    .forecast_details_amount {
+      font-size: @fontSizeMedium;
+    }
+  }
+}
+
+#sales-stage-text {
+  p {
+    font-size: 15px;
+  }
+
+  label {
+    cursor: default;
+  }
+}
+
+.commit_stage_field > * {
+  overflow-y: hidden;
+}
+
+#config-accordion.Forecasts-config {
+  .accordion-inner {
+    padding: 10px 20px;
+  }
+}
+
+.forecast-value {
+  .text-xs {
+    margin-right: 1rem;
+  }
+}
+
+.forecast-value-input {
+  .clickToEdit {
+    span.edit-icon {
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+  }
+}
+
+.quarter-picker {
+  .controls {
+    .select2-choice {
+      border: 0 none;
+      background-color: transparent;
+    }
+  }
+
+  .select2-loading {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.forecast-metrics {
+  .forecast-metrics-container {
+    max-width: 95%;
+  }
+
+  .forecast-metrics {
+    padding: 0 1rem;
+
+    .forecast-metric {
+      min-width: 45px;
+      max-width: 125px;
+      min-height: 40px;
+
+      .metric-badge {
+        line-height: 0.75rem;
+        color: var(--metric-label);
+      }
+
+      .metric-row {
+        span {
+          &:nth-child(1) {
+            max-width: 125px;
+          }
+
+          &:nth-child(2) {
+            overflow: hidden;
+          }
+        }
+      }
+
+      &:not(.active) {
+        .text-base {
+          color: var(--metric-value);
+        }
+
+        .text-xs {
+          color: var(--metric-label);
+        }
+      }
+
+      .alt-currency {
+        color: @textColor;
+        border-radius: @baseBorderRadius;
+      }
+
+      &:hover:not(.active) {
+        background-color: @tabBackgroundHoverColor;
+        cursor: pointer;
+      }
+
+      &.active {
+        color: @activeTabBorderColor;
+        .active-tab();
+      }
+    }
+  }
+
+  .metrics-help-modal {
+    background: @stackBackground right top/200px no-repeat @primaryContentBackground;
+    width: 350px;
+    height: 315px;
+
+    .popover-content {
+      .popover-body {
+        height: 250px;
+      }
+    }
+  }
+}
+
+.forecasts-main {
+  height: auto;
+
+  .headerpane.listheaderpane {
+    height: auto;
+    min-height: auto;
+    padding-bottom: 0.625rem;
+  }
+
+  .tabbable {
+    .tab-content {
+      flex: 1 1 auto;
+
+      .tab-pane {
+        height: 100%;
+
+        .controls.has-refresh.btn-group-fit.controls-two {
+          padding-right: 2.125rem;
+
+          .filter-view {
+            margin-right: 0;
+
+            .table-cell {
+              padding-left: 0.25rem;
+              padding-right: 0.25rem;
+            }
+          }
+
+          .btn-group.refresh {
+            right: 0;
+
+            .filter-refresh-button {
+              height: 1.625rem;
+
+              .sicon-refresh {
+                line-height: 0.625rem;
+              }
+            }
+          }
+        }
+
+        &:first-child {
+          @media (max-width: 1320px) {
+            .forecast-metrics {
+              min-width: 77px;
+            }
+          }
+        }
+
+        .main-content {
+          flex: 1 1 auto;
+        }
+      }
+    }
+  }
+}
+
+.metric-skeleton-loader {
+  background: @forecastsSkeletonLoader no-repeat center center;
+
+  * {
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,1 @@
+(function(app){app.user=_.extend(app.user);app.user.isSupportPortalUser=function(){return this.get('type')==='support_portal';};})(SUGAR.App);

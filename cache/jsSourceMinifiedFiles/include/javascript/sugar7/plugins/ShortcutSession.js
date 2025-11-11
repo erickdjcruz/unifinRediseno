@@ -1,0 +1,1 @@
+(function(app){app.events.on('app:init',function(){var getShortcutList=function(layout){return layout.options.meta.shortcuts||layout.shortcuts;};app.plugins.register('ShortcutSession',['layout'],{onAttach:function(){var shortcutList=getShortcutList(this);if(!_.isEmpty(shortcutList)){app.shortcuts.createSession(shortcutList,this);}}});});})(SUGAR.App);

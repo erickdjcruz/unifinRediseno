@@ -1,0 +1,218 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2 xmlns="http://www.w3.org/1999/html">Overview</h2>
+<span class="lead">
+    Retrieve metadata needed by the Formula Builder field
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    The request will return all the fields, related fields, related modules, functions help
+    and rollup fields of a given module
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                module
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Sugar Module.
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                allowRestricted
+            </td>
+            <td>
+                Boolean
+            </td>
+            <td>
+                Retrieve all fields or filter out denied fields
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "allowRestricted": false,
+    "module": "Accounts"
+}
+</pre>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the following fields:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                fields
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                List of fields
+            </td>
+        </tr>
+        <tr>
+            <td>
+                relateFields
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                List of relate fields
+            </td>
+        </tr>
+        <tr>
+            <td>
+                relateModules
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                List of related modules
+            </td>
+        </tr>
+        <tr>
+            <td>
+                help
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                List of functions help
+            </td>
+        </tr>
+        <tr>
+            <td>
+                rollupFields
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                List of rollup fields
+            </td>
+        </tr>
+        <tr>
+            <td>
+                fieldsTypes
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                List of field name/field type tuples
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">{
+    "fields": {
+        "name": "name",
+        "date_entered": "date_entered",
+        "date_modified": "date_modified",
+        "description": "description"
+         ...
+    },
+    "relateFields": {
+        "Activities (Activity Stream)":{
+            "name": "name",
+            "date_entered": "date_entered",
+            "date_modified": "date_modified",
+            "description": "description"
+        },
+        ...
+    },
+    "relateModules": {
+        created_by_link": "Users (Created by User)",
+        "modified_user_link" :"Users (Modified by User)",
+        "activities": "Activities (Activity Stream)"
+        ...
+    },
+    "help":{
+        "hourOfDay": "\u003Cb\u003EhourOfDay(Date d)\u003C\/b\u003E\u003Cbr\/\u003EReturns the hour of the day (24 hour format) of a given date\/time.\u003Cbr\u003E\n ",
+        "time": "\u003Cb\u003Etime(String s)\u003C\/b\u003E\u003Cbr\/\u003EReturns \u003Ci\u003Es\u003C\/i\u003E as a time value.\u003Cbr\u003E\n ",
+    },
+    "rollupFields": {
+        "Opportunities (Opportunity)": {
+            "best_case": "Best Case",
+            "amount": "Amount",
+             ...
+        },
+        ...
+    },
+    "fieldsTypes": {
+        "name": ["name","string"],
+        "date_entered": ["date_entered","date"],
+        "date_modified": ["date_modified","date"],
+        "description": ["description","string"],
+        "created_by_link": ["created_by_link","relate"]
+        ...
+    }
+}</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_13
+        </td>
+        <td>
+            Added <code>/formulaBuilder/meta</code> POST endpoint.
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,129 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2 xmlns="http://www.w3.org/1999/html">Overview</h2>
+<span class="lead">
+    Start Smart Guide template on parent module
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This request will start Smart Guide template on parent module
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                module
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Parent module of Smart Guide Template
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                record
+            </td>
+            <td>
+                Object
+            </td>
+            <td>
+                Object containing id of the parent module
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                template_id
+            </td>
+            <td>
+                Object
+            </td>
+            <td>
+                Templated Id
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "module": "DRI_Workflows",
+    "record": {
+        "id": "e00ce644-2ce5-11ed-8ea1-0242ac120006",
+    },
+    "template_id": {
+        "template_id": "1f1a0ae4-18a8-11ed-bc6c-b2805c40fe0c",
+    }
+}
+</pre>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the following fields:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                N/A
+            </td>
+            <td>
+                SugarBean
+            </td>
+            <td>
+                Journey bean
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">{
+    [
+        "id" => "e00ce644-2ce5-11ed-8ea1-0242ac120006",
+        "name" => "Test",
+        "state" => "in_progress",
+        "progress" => 0.41,
+    ]
+}</pre>

@@ -1,0 +1,66 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="accordion-heading active">
+        <span class="pull-left step-circle pipeline-step-circle">
+            <span>2</span>
+            <i class="sicon sicon-lg sicon-check-circle-lg"></i>
+        </span>
+    <h4>{{str "LBL_PIPELINE_MODULE_SETTINGS" this.module}}</h4>
+</div>
+
+<div class="accordion-inner">
+    <div id="tabs" class="">
+        {{#if collection.length}}
+            <div class="items-center py-5">
+                <div>
+                    <span class="normal">
+                        {{str 'LBL_MODULE_SELECTION' module}}
+                    </span>
+                </div>
+                <div>
+                    <select class="module-selection">
+                        {{#each collection.models}}
+                            <option value="{{attributes.enabled_module}}"{{#if attributes.selectedModule}} selected{{/if}}>{{getModuleName attributes.enabled_module plural=true}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            {{#each activeModule}}
+                    <div id="{{attributes.enabled_module}}" class="pipeline-fields ui-tabs-panel ui-corner-bottom ui-widget-content">
+                        {{#each ../meta.customizedFields}}
+                            <div class="row-fluid">
+                                {{#each this}}
+                                    <div class="{{#if span}}span{{span}}{{/if}} record-cell">
+                                        {{#if label}}
+                                            <div class="record-label pipeline-record-label" data-name="{{name}}">
+                                                <h5>
+                                                    {{str label ../../../../this.module}}
+                                                </h5>
+                                            </div>
+                                        {{/if}}
+                                        <span class="normal">
+                                            {{field ../../../../this model=../../this template="edit"}}
+                                        </span>
+                                    </div>
+                                {{/each }}
+                            </div>
+                        {{/each }}
+                    </div>
+            {{/each}}
+        {{else}}
+            <div class="block-footer">
+                {{str 'LBL_PIPELINE_CONFIG_NO_DATA' this.module}}
+            </div>
+        {{/if}}
+    </div>
+</div>

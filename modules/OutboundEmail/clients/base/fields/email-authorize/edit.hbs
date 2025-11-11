@@ -1,0 +1,14 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if authWarning}}<p class="warning-block p-2.5 block">{{{authWarning}}}</p>{{/if}}
+{{#if authButton}}<span><button type="button" class="btn btn-primary auth-block m-0{{#eq authButton 'disabled'}} disabled{{/eq}}" data-bs-placement="bottom">{{str 'LBL_EMAIL_AUTHORIZE' this.module}}</button></span>{{/if}}

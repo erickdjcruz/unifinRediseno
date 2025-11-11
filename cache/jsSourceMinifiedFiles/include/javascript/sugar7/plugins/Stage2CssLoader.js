@@ -1,0 +1,3 @@
+(function(app){app.events.on('app:init',function(){var plugin={onAttach:function(){this.loadCss();},loadCss:function(cssFiles){var $previouslyAdded;_.each(cssFiles||this.css,function(file){var $link;if(!this.isCssLoaded(file)){if(file.indexOf('.css')===-1){file=file+'.css';}
+$link=$('<link>',{href:'themes/basehint/'+file,type:'text/css',rel:'stylesheet'});if($previouslyAdded){$previouslyAdded.after($link);}else{$link.prependTo(document.head);}
+$previouslyAdded=$link;}},this);},isCssLoaded:function(href){return!!_.find(document.styleSheets,function(style){return style.href&&(style.href.indexOf(href)!==-1);});}};app.plugins.register('Stage2CssLoader',['layout','view','field'],plugin);});})(SUGAR.App);

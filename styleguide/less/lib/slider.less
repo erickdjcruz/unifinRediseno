@@ -1,0 +1,39 @@
+.noUiSlider         {
+    width:              400px;
+    border:             @borderWidget;
+    height:             8px;
+    background:         @white;
+}
+.noUi-midBar        {
+    height:             8px;
+    z-index:            0;
+    background-color:   @pacific;
+}
+.noUi-handle > div  {
+    z-index:            5;
+    width:              16px;
+    height:             16px;
+    position:           absolute;
+    top:                -5px;
+    left:               -8px;
+    border:             @borderWidget;
+    background:         @white;
+}
+.noUi-handle > div:hover,
+.noUi-activeHandle  {
+    background:         @ocean !important;
+    border-color:       @pacific !important;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2){
+
+    .noUi-handle > div {
+
+        height:             32px;
+        width:              32px;
+        top:                -13px;
+        left:               -16px;
+
+    }
+
+}

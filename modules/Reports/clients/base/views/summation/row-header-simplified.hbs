@@ -1,0 +1,52 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<tr class="flex-list-row-header bg-[--content-background] sticky top-0 z-30">
+    {{#each view.leftColumns}}
+        <th class="left-0 sticky stick-left z-20" {{#if name}} data-fieldname="{{name}}"{{/if}}>
+            {{field ../view template="list-header"}}
+        </th>
+    {{/each}}
+    {{#each view._fields.visible}}
+        <th data-tablekey="{{table_key}}" class="text-left pl-1 {{#if module}}{{#isSortable ../module ../this}}{{#if ../../../view._isDetail}}sorting{{/if}}{{#eq ../../../view.orderBy.field ../name}}_{{../../../../view.orderBy.direction}}{{/eq}} orderBy{{../name}} {{/isSortable}}{{/if}}{{#if widthClass}} {{widthClass}}{{/if}}"
+            {{#if styles}} style="{{styles}}"{{/if}}
+            {{#if name}} data-fieldname="{{name}}" data-realname="{{rname}}" data-columnfct="{{column_function}}" data-groupfct="{{group_function}}" {{/if}} data-orderby="{{orderBy}}">
+
+            <div class="sortable-row-header-container p-2">
+                <span class="sortable-row-header-column-name cursor-pointer hover:underline">
+                    {{#if icon}}
+                         <i class="{{buildIcon icon.type}}" rel="tooltip"  title="{{str icon.tooltip ../../view.module}} "></i>
+                    {{/if}}
+
+                    {{#if custom_module}}
+                        {{str vname custom_module}}
+                    {{else}}
+                        {{str vname module}}
+                    {{/if}}
+                </span>
+
+                {{#if ../view._isDetail}}
+                    <span class="sortable-row-header-arrows data-table-top">
+                        <i class="sicon sicon-arrow-up {{#eq ../../view.orderBy.field ../name}}{{#eq ../../../view.orderBy.direction 'asc'}}text-[--text-color] font-bold{{/eq}}{{/eq}}"></i>
+                        <i class="sicon sicon-arrow-down {{#eq ../../view.orderBy.field ../name}}{{#eq ../../../view.orderBy.direction 'desc'}}text-[--text-color] font-bold{{/eq}}{{/eq}}"></i>
+                    </span>
+                {{/if}}
+            </div>
+        </th>
+    {{/each}}
+</tr>
+<tr>
+    <th data-target="alert-container" class="alert alert-warning hide" {{#if ../colSpan}} colspan="{{../../colSpan}}" {{else}} colspan="100%"{{/if}}>
+        <div class="alert-list-contents flex hover:bg-[--tab-background-hover-color] items-center justify-center left-0 mt-0 p-2.5 sticky top-0 w-screen" data-target="alert">
+        </div>
+    </th>
+</tr>

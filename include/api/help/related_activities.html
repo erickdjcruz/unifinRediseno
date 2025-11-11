@@ -1,0 +1,265 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Related Activities
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint will return related activity records for a specific record.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            module_list
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            A list of modules from the valid modules [Tasks, Calls, Emails, Notes, Meetings] that need to be included.
+            <br>
+            Example: <code>Meetings,Calls,Emails,Notes</code>
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            order_by
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            How to sort the returned records, in a comma delimited list with the direction appended to the column name after a colon.
+            Example: <code>name:DESC,account_type:DESC,date_modified:ASC</code>
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            max_num
+        </td>
+        <td>
+            String
+        </td>
+        <td>
+            A maximum number of records to return. Default is 20.
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            offset
+        </td>
+        <td>
+            Integer
+        </td>
+        <td>
+            The number of records to skip over before records are returned. Default is 0.
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            deleted
+        </td>
+        <td>
+            Boolean
+        </td>
+        <td>
+            Boolean to show deleted records in the result set. Default is false.
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            alias_fields
+        </td>
+        <td>
+            Array
+        </td>
+        <td>
+            A list of field aliases from the valid modules [Tasks, Calls, Emails, Notes, Meetings] that need to be fetched. These field aliases can also be used in 'order_by'.
+            Example: <code>{ 'record_date': { 'Calls': 'date_start', 'Emails': 'date_sent' } }</code>
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    <tr>
+        <td>
+            add_create_record
+        </td>
+        <td>
+            Integer
+        </td>
+        <td>
+            This option can be used to add Create activities to the response. Default is 0.
+        </td>
+        <td>
+            False
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Request</h3>
+<pre class="pre-scrollable">
+{
+}
+</pre>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            next_offset
+        </td>
+        <td>
+            Integer
+        </td>
+        <td>
+            Displays the next offset for retrieval of additional results. -1 will be returned when there are no more
+            records.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            records
+        </td>
+        <td>
+            Array
+        </td>
+        <td>
+            An array of results containing matched records.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+{
+next_offset":-1,
+   "records":[
+      {
+         "id":"2f9abe52-f03f-11e9-858c-3c15c2d57622",
+         "name":"test call",
+         "date_entered":"2019-10-16T11:02:57-07:00",
+         "date_modified":"2019-10-16T11:02:57-07:00",
+         "description":"",
+         "date_start":"2019-10-25T11:30:00-07:00",
+         "status":"Planned",
+         "contact_name":"",
+         "contacts":{
+            "name":"",
+            "id":"",
+            "_acl":{
+               "fields":[
+
+               ],
+               "_hash":"654d337e0e912edaa00dbb0fb3dc3c17"
+            }
+         },
+         "contact_id":"",
+         "locked_fields":[
+
+         ],
+         "assigned_user_id":"1",
+         "assigned_user_name":"Administrator",
+         "assigned_user_link":{
+            "full_name":"Administrator",
+            "id":"1",
+            "_acl":{
+               "fields":{
+                  "pwd_last_changed":{
+                     "write":"no",
+                     "create":"no"
+                  },
+                  "last_login":{
+                     "write":"no",
+                     "create":"no"
+                  }
+               },
+               "delete":"no",
+               "_hash":"08b99a97c2e8d792f7a44d8882b5af6d"
+            }
+         },
+         "_acl":{
+            "fields":{
+
+            }
+         },
+         "_module":"Calls",
+         "moduleNameSingular":"Call",
+         "moduleName":"Calls"
+      },
+   ]
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11.7
+        </td>
+        <td>
+            Added <code>/<module>/:record/link/related_activities</code> GET endpoint.
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top;">
+            v11.23
+        </td>
+        <td>
+            Added <code>/<module>/:record/related_activities</code> POST endpoint. <br />
+            <code>/<module>/:record/related_activities</code> GET endpoint was marked as deprecated.
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,42 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+
+$mod_strings = [
+    'LBL_MODULE_NAME' => 'Smjene',
+    'LBL_MODULE_NAME_SINGULAR' => 'Smjena',
+    'LBL_TIMEZONE' => 'Vremenska zona',
+    'LNK_NEW_SHIFT' => 'Stvori smjenu',
+    'LNK_VIEW_SHIFTS' => 'Prikaži smjene',
+    'LBL_USERS_SUBPANEL_TITLE' => 'Korisnici u trenutačnoj smjeni',
+    'LBL_SHIFT_USERS_TITLE' => 'Korisnici',
+    'LBL_SHIFT_EXCEPTION' => 'Iznimke za smjene',
+    'LBL_RECORD_SHIFT_HOURS_PANEL_HEADER' => 'Dani',
+    'LBL_RECORD_SHIFT_CARD_PANEL_HEADER' => 'Posjetnica',
+    'LNK_NEW_SHIFT_EXCEPTION' => 'Stvori iznimku za smjenu',
+    'LNK_VIEW_SHIFT_EXCEPTIONS' => 'Prikaži iznimke za smjene',
+    'LBL_DASHLET_SHIFT_EXCEPTIONS_NAME' => 'Moje iznimke za smjene',
+    'LBL_SHIFTS_LIST_DASHBOARD' => 'Nadzorna ploča za popis smjena',
+    'LBL_SUNDAY' => 'Nedjelja',
+    'LBL_MONDAY' => 'Ponedjeljak',
+    'LBL_TUESDAY' => 'Utorak',
+    'LBL_WEDNESDAY' => 'Srijeda',
+    'LBL_THURSDAY' => 'Četvrtak',
+    'LBL_FRIDAY' => 'Petak',
+    'LBL_SATURDAY' => 'Subota',
+    'LBL_START_TIME' => 'Vrijeme početka',
+    'LBL_END_TIME' => 'Vrijeme završetka',
+
+    'LBL_SHIFTS_FOCUS_DRAWER_DASHBOARD' => 'Ladica fokusa za smjene',
+
+    'LBL_SHIFT_RECORD_DASHBOARD' => 'Nadzorna ploča za zapise o smjenama',
+    'LBL_MY_SHIFTS' => 'Moje smjene',
+];

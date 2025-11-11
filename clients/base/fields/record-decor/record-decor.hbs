@@ -1,0 +1,73 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#each actualFieldsMeta}}
+    {{#if this.labelsOnTop}}
+        {{#unless dismiss_label}}
+            <div class="ellipsis_inline record-label" data-bs-placement="top" data-original-title="{{str label ../../../module}}" title="{{str label ../../../module}}" data-name="{{name}}">
+                {{#if label}}
+                    <i class="sicon sicon-plus-sm label-plus"></i>
+                    <span class="text-overflow">{{str label ../../../../module}}</span>
+                {{/if}}
+            </div>
+        {{/unless}}
+        {{#if name}}
+            <span class="normal{{#if css}} {{css}}{{/if}} index{{index}}" data-fieldname="{{name}}" data-index="{{index}}">
+                {{field ../../../view model=../../../model template=../../../view.action parent=../../../this}}
+            </span>
+        {{/if}}
+        {{#unless ../../../view.createMode}}
+            <span class="record-edit-link-wrapper {{#has name ../../../view.noEditFields}}hide{{/has}}" data-name="{{name}}" data-wrapper="edit">
+                <a class="record-edit-link btn btn-invisible" data-type="{{type}}" data-name="{{name}}"><i class="sicon sicon-edit"></i></a>
+            </span>
+
+            <span class="record-lock-link-wrapper hide" data-name="{{name}}">
+                <a class="record-lock-link btn btn-invisible" data-type="{{type}}" data-name="{{name}}">
+                    <i class="sicon sicon-lock" rel="tooltip" data-original-title="{{str 'LBL_LOCKED_FIELD_RECORD_VIEW_TOOLTIP'}}" data-bs-placement="right"></i>
+                </a>
+            </span>
+        {{/unless}}
+    {{else}}
+        <div class="labels-on-side{{#if show_child_labels}} empty-label{{/if}}">
+            {{#unless dismiss_label}}
+                <div class="record-label-wrapper span{{labelSpan}} relative z-[1]">
+                    <div class="ellipsis_inline record-label" data-bs-placement="bottom" data-original-title="{{str label ../../../module}}" title="{{str label ../../../module}}" data-name="{{name}}">
+                        {{#if label}}
+                            <i class="sicon sicon-plus-sm label-plus"></i>
+                            {{#if icon}}
+                                <i class="{{buildIcon icon.type}}" rel="tooltip"  title="{{str icon.tooltip ../../../../../module}} "></i>
+                            {{/if}}
+                            <span class="text-overflow">{{str label ../../../../module}}</span>
+                        {{/if}}
+                    </div>
+                </div>
+            {{/unless}}
+            <div class="record-link-wrapper span{{span}}">
+                {{#if name}}
+                    <span class="normal{{#if css}} {{css}}{{/if}} index{{index}}" data-fieldname="{{name}}" data-index="{{index}}">
+                        {{field ../../../view model=../../../model template=../../../view.action parent=../../../this}}
+                    </span>
+                {{/if}}
+            </div>
+            {{#unless ../../../view.createMode}}
+                <span class="record-edit-link-wrapper {{#has name ../../../view.noEditFields}}hide{{/has}}" data-name="{{name}}" data-wrapper="edit">
+                    <a class="record-edit-link btn btn-invisible" data-type="{{type}}" data-name="{{name}}"><i class="sicon sicon-edit"></i></a>
+                </span>
+                <span class="record-lock-link-wrapper hide" data-name="{{name}}">
+                    <a class="record-lock-link btn btn-invisible" data-type="{{type}}" data-name="{{name}}">
+                        <i class="sicon sicon-lock" rel="tooltip" data-original-title="{{str 'LBL_LOCKED_FIELD_RECORD_VIEW_TOOLTIP'}}" data-bs-placement="right"></i>
+                    </a>
+                </span>
+            {{/unless}}
+        </div>
+    {{/if}}
+{{/each}}

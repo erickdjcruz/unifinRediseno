@@ -1,0 +1,61 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="sidebar-nav-flyout-actions">
+    <ul role="menu" class="m-0">
+        {{#each actions}}
+            {{#if type}}
+                {{#eq type 'divider'}}
+                    <li class="divider border-b border-[--separator-color]"></li>
+                {{else}}
+                    {{field ../../../this template="detail"}}
+                {{/eq}}
+            {{else}}
+                <li role="menuitem"{{#if name}} data-name="{{name}}"{{/if}}{{#unless preventClose}} data-flyout-action="close"{{/unless}}>
+                    {{#if event}}
+                        <button
+                            class="megamenu-dropdown-item w-full py-2 px-3 flex flex-row items-center text-xs text-[--text-color] bg-transparent hover:bg-[--dropdown-link-background-hover]"
+                            data-navbar-menu-item="{{label}}"
+                            data-bs-placement="bottom"
+                            title="{{str label ../../../module}}"
+                            data-event="{{event}}"
+                            data-event-target="{{eventTarget}}"
+                            track="click:{{event}}"
+                        >
+                    {{else}}
+                         <a
+                            class="megamenu-dropdown-item py-2 px-3 flex flex-row items-center text-xs text-[--text-color] hover:bg-[--dropdown-link-background-hover]"
+                            data-navbar-menu-item="{{label}}"
+                            data-bs-placement="bottom"
+                            title="{{str label ../../../module}}"
+                            href="{{route}}"
+                            data-route="{{route}}"
+                            {{#if openwindow}}
+                                data-openwindow="true"
+                            {{/if}}
+                            track="click:{{route}}"
+                        >
+                    {{/if}}
+
+                    {{#if icon}}
+                        <i class="{{buildIcon icon}} mr-2"></i>
+                    {{/if}}
+                    <span class="ellipsis_inline">
+                        {{str label ../../module}}
+                    </span>
+
+                    {{#if event}}</button>{{else}}</a>{{/if}}
+                </li>
+            {{/if}}
+        {{/each}}
+    </ul>
+</div>

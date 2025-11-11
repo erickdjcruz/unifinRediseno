@@ -1,0 +1,115 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    [ADMIN] Set a case as 'Requested For Close'
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint sets a case as 'Requested for Close' in the portal on a Sugar Serve instance.
+</span>
+
+<h2>Request Arguments</h2>
+<span class="lead">
+    This endpoint does not accept any arguments.
+</span>
+
+<h2>Response Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            &lt;record field&gt;
+        </td>
+        <td>
+            &lt;record field type&gt;
+        </td>
+        <td>
+            Returns the fields for the updated Cases record.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+{
+    "id":"d6582610-d69b-11ea-afe4-acde48001122",
+    "name":"Need to purchase additional licenses",
+    "date_entered":"2020-08-04T21:44:16+00:00",
+    "date_modified":"2020-08-04T21:56:03+00:00",
+    "modified_user_id":"19dc0582-d69c-11ea-95e6-acde48001122",
+    "modified_by_name":"Sugar Customer Support Portal ",
+    "created_by":"1",
+    "created_by_name":"Administrator",
+    "description":"",
+    "deleted":false,
+    "case_number":150,
+    "type":"Product",
+    "status":"Pending Input",
+    "priority":"P2",
+    "resolution":"",
+    "work_log":"",
+    "follow_up_datetime":"",
+    "widget_follow_up_datetime":"",
+    "resolved_datetime":"",
+    "hours_to_resolution":null,
+    "business_hours_to_resolution":null,
+    "pending_processing":false,
+    "account_name":"Gifted Holdings AG",
+    "business_center_id":"",
+    "source":"",
+    "request_close":true,
+    "request_close_date":"2020-08-04T21:56:03+00:00",
+    "portal_viewable":true,
+    "widget_status":"",
+    "primary_contact_name":"",
+    "team_count":"",
+    "team_name":[{"id":"West","name":"West","name_2":"","primary":true,"selected":false}],
+    "first_response_target_datetime":"",
+    "first_response_actual_datetime":"",
+    "hours_to_first_response":null,
+    "business_hrs_to_first_response":null,
+    "first_response_var_from_target":null,
+    "first_response_sla_met":"",
+    "first_response_user_id":"",
+    "first_response_user_name":"",
+    "first_response_sent":false,
+    "_acl":{"edit":"no","create":"no","fields":{}},"_module":"Cases"
+}
+</pre>
+
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_10
+        </td>
+        <td>
+            Added <code>Cases/clients/portal</code> PUT endpoint.
+        </td>
+    </tr>
+</table>

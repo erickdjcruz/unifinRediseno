@@ -1,0 +1,41 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if cabMenu}}
+    {{#each cabMenu}}
+        {{#notEq this.type 'cab_actiondropdown'}}
+            {{#if tplName}}
+                {{field ../../../this model=../../../model template=tplName}}
+            {{else}}
+                {{field ../../../this model=../../../model template="detail"}}
+            {{/if}}
+        {{/notEq}}
+    {{/each}}
+    {{#if cabButtons}}
+        <a class="menu-more-btn" data-bs-toggle="dropdown" href="javascript:void(0);"
+           data-bs-placement="bottom" data-bs-display="static">
+            <i class="sicon sicon-kebab" aria-hidden="true"></i>
+            {{tooltipTemplate (str 'LBL_MORE') 'bottom'}}
+        </a>
+        <ul data-menu="dropdown" class="dropdown-menu border-0 dark:border border-[--dropdown-border-widget] rounded-md shadow-xl" role="menu">
+            {{#each cabButtons}}
+                <li role="menuitem">
+                    {{field ../this model=../this.model template="detail"}}
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <a class="menu-more-btn disabled" rel="tooltip" data-bs-placement="bottom" title="{{str 'LBL_NO_OPTIONS'}}">
+            <i class="sicon sicon-kebab" aria-hidden="true"></i>
+        </a>
+    {{/if}}
+{{/if}}

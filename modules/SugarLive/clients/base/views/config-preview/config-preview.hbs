@@ -1,0 +1,67 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class='accordion-inner'>
+    <div id='tabs'>
+        {{#if tabsLength}}
+            <ul class='ul nav nav-tabs'>
+                {{#each tabs}}
+                    <li class='tab'><a href='#{{module}}'>
+                        {{getModuleName module plural=true}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+            {{#each tabs}}
+                <div id='{{module}}'>
+                        <div class='sugarlive-config-tabcontent'>
+                            <p>{{title}}</p>
+                            <div class='omni-detail'>
+                                <div class='omni-detail-wrapper'>
+                                    <div class='omni-detail-content omni-detail-title'>
+                                        <div class='omni-detail-title-text'>{{detailTitle}}</div>
+                                    </div>
+
+                                    <div class='omni-detail-content'>
+                                        <div class='left-column'>
+                                            {{#each ../summaryFields}}
+                                                <div>{{str this}}</div>
+                                            {{/each}}
+                                        </div>
+                                        <div class='right-column'>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+
+                                    <div class='omni-detail-content'>
+                                        <div class='omni-summary-cell'>
+                                            {{#each fields}}
+                                                <div class='omni-cell'>
+                                                    <div class='omni-label'>{{str label ../module}}</div>
+                                                    {{field ../../this model=../model template='edit'}}
+                                                </div>
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='ccp-placeholder'></div>
+                        </div>
+                    </div>
+            {{/each}}
+        {{else}}
+            <div class='block-footer'>
+                {{str 'LBL_CONFIG_NO_DATA' this.module}}
+            </div>
+        {{/if}}
+    </div>
+</div>

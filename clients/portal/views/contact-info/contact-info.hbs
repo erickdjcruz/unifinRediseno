@@ -1,0 +1,39 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class='welcome'>
+    <div class='thumbnail signup'>
+        <div class='text-center'>
+            <h2 class='brand'><img src='{{logoUrl}}' alt='Support Portal'></h2>
+        </div>
+        <div class='help-inline'>
+            <p class='text-center'>{{str 'LBL_PORTAL_CONTACT_INFO_CONTACT_US'}}</p>
+            {{#if contactInfo.contactPhone}}
+            <br>
+            {{str 'LBL_PORTAL_CONTACT_INFO_PHONE'}} <a href='tel:{{str contactInfo.contactPhone}}'>{{str contactInfo.contactPhone}}</a>
+            {{/if}}
+            {{#if contactInfo.contactEmail}}
+            <br>
+            {{str 'LBL_PORTAL_CONTACT_INFO_EMAIL'}} <a href='mailto:{{str contactInfo.contactEmail}}'>{{str contactInfo.contactEmail}}</a>
+            {{/if}}
+            {{#if contactInfo.contactURL}}
+            <br>
+            {{str 'LBL_PORTAL_CONTACT_INFO_WEB'}} <a href='{{str contactInfo.contactURL}}'>{{str contactInfo.contactURL}}</a>
+            {{/if}}
+            <br>
+            <br>
+            <div class='control-group'>
+                <a href='#' class='btn btn-link btn-invisible'>{{str 'LBL_LOGIN_BUTTON_LABEL'}}</a>
+            </div>
+        </div>
+    </div>
+</div>

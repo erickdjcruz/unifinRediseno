@@ -1,0 +1,118 @@
+.cabmenu {
+  display: flex;
+  background: @btnSecondaryBackground;
+  border: @borderWidget;
+  border-radius: 50%;
+  position: absolute;
+  padding: 0 3.5px;
+
+  .focus-icon-container {
+    display: flex;
+  }
+
+  > span {
+    display: none;
+
+    a {
+      font-size: 12px;
+      line-height: 12px;
+    }
+  }
+
+  > .menu-more-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    text-decoration: none;
+
+    .sicon-kebab {
+      padding: 9px 4.5px;
+    }
+
+    &:not(.disabled) {
+      .sicon-kebab:hover {
+        color: @sicon-hover-color;
+      }
+    }
+  }
+
+  &:hover,
+  &.open {
+    > span {
+      display: flex;
+    }
+
+    > .menu-more-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 28px;
+      text-decoration: none;
+
+      &.disabled {
+        .sicon-kebab:hover {
+          cursor: default;
+        }
+      }
+    }
+
+    border-radius: 15px;
+  }
+
+  &.open {
+    > .menu-more-btn {
+      .sicon-kebab {
+        color: @sicon-color;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    border: 1px solid @linkColor;
+    left: auto;
+    right: 7px;
+    top: 30px;
+
+    > li span {
+      a {
+        border: none;
+        outline: none;
+
+        &:hover {
+          i {
+            color: @sicon-hover-color;
+          }
+        }
+      }
+
+      i {
+        padding-right: 5px;
+      }
+    }
+  }
+
+  > span {
+    justify-content: center;
+    align-items: center;
+
+    i {
+      padding: 9px 4.5px;
+    }
+
+    &:hover {
+      i {
+        color: @sicon-hover-color;
+      }
+    }
+  }
+
+  .reply-all-icon {
+    position: relative;
+
+    &::before,
+    &::after {
+      position: absolute;
+    }
+  }
+}

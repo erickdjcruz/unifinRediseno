@@ -1,0 +1,238 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2 xmlns="http://www.w3.org/1999/html">Overview</h2>
+<span class="lead">
+    Set status, update start and end dates of the specific activity
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This request will set status, update start and end dates of the specific activity
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                record
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                journey id
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                activity_module
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Module name of specific Activity i.e. Tasks
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                activity_id
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Id of specific Activity
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+        <tr>
+            <td>
+                status
+            </td>
+            <td>
+                String
+            </td>
+            <td>
+                Activity Status i.e. Completed
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+{
+    "record": "896fa41c-a6ef-11ed-9dg4-525400773k81",
+    "activity_module": "Calls",
+    "activity_id": "e00ce644-2ce5-11ed-8ea1-0242ac120006",
+    "status": "Completed",
+}
+</pre>
+
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an array containing the following fields:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                isValid
+            </td>
+            <td>
+                Boolean
+            </td>
+            <td>
+                Confirms that Activity state is updated successfully
+            </td>
+        </tr>
+        <tr>
+            <td>
+                data
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                Journey Attributes with related Forms and Stages
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+    [
+        "isValid": true
+        "data" : [
+            "id" => "ab59ba3c-34bd-11ed-a307-34cff6a7288f",
+            "name" => "Florencia Padgett - Becoming a Ninja",
+            "progress" => 0.13,
+            "state" => "in_progress",
+            "score" => "30",
+            "points" => "217",
+            "archived" => 0",
+            "description" => "Testing journey",
+            "dri_workflow_template_id" => "ea1ecdea-f835-11e6-b8bd-5254009e5526",
+            "dri_workflow_template_name" => "New Case Management",
+            "disabled_stage_actions" => "",
+            "disabled_activity_actions" => "",
+            "momentum_ratio" => "1",
+            "momentum_points" => "0",
+            "momentum_score" => "0",
+            "user_access" => true,
+            "journey" => [
+                "forms" => [
+                    "id" => "ab59ba3c-34bd-11ed-a307-34cff6a7288f",
+                    "name" => "Book Final Meeting",
+                    "action_type" => "create_record",
+                    "action_trigger_type" => "manual_create",
+                    "activity_module" => "Tasks",
+                ],
+            ],
+            "stages" => [
+                "id" => "5ae66ac8-3369-11ed-a7a3-34cff6a7288f",
+                "label" => "01. Phase 1 - Research",
+                "name" => "Test Stage",
+                "state" => "not_started",
+                "sort_order" => 4,
+                "score" => 50,
+                "points" => 0,
+                "progress" => 1,
+                "momentum_ratio" => 1,
+                "momentum_points" => 0,
+                "momentum_score" => 0,
+                "dri_subworkflow_template_id" => "f525e55c-f835-11e6-bd49-5254009e5526",
+                "dri_subworkflow_template_name" => "Interactive Quick Deal",
+                "activities" => [
+                    "id" => "0f0d11bc-3349-11ed-bbeb-34cff6a7288f",
+                    "name" => "Arrange introduction",
+                    "status" => "Pending Input",
+                    "dri_workflow_sort_order" => 1,
+                    "customer_journey_type" => "",
+                    "customer_journey_score" => "",
+                    "customer_journey_progress" => 0,
+                    "customer_journey_points" => 10,
+                    "cj_parent_activity_type" => "",
+                    "is_cj_parent_activity" => 0,
+                    "is_customer_journey_activity" => 0,
+                    "dri_subworkflow_id" => "16ce4f88-3349-11ed-a953-34cff6a7288f",
+                    "cj_parent_activity_id" => "",
+                    "assigned_user_id" => "1",
+                    "assigned_user_name" => "admin",
+                    "assigned_user" => [
+                        "id" => "1",
+                        "user_name" => "admin",
+                        "last_name" => "Administrator",
+                        "sugar_login" => "1",
+                        "title" => "Administrator",
+                    ],
+                    "cj_momentum_start_date" => "",
+                    "cj_momentum_end_date" => "",
+                    "cj_momentum_points" => 0,
+                    "cj_momentum_ratio" => 1,
+                    "cj_momentum_score" => 0,
+                    "cj_url" => "",
+                    "start_next_journey_id" => "5ba2d4b0-3369-11ed-ad1b-34cff6a7288f",
+                    "blocked_by" => ["a48f6680-f836-11e6-a884-5254009e5526"],
+                    "blocked_by_stages" => [],
+                    "forms" => [
+                        "id" => "ab59ba3c-34bd-11ed-a307-34cff6a7288f",
+                        "name" => "Book Final Meeting",
+                        "action_type" => "create_record",
+                        "action_trigger_type" => "manual_create",
+                        "activity_module" => "Tasks",
+                    ],
+
+                ],
+                "forms" => [
+                    "id" => "ab59ba3c-34bd-11ed-a307-34cff6a7288f",
+                    "name" => "Book Final Meeting",
+                    "action_type" => "create_record",
+                    "action_trigger_type" => "manual_create",
+                    "activity_module" => "Tasks",
+                ],
+            ],
+        ]
+    ]
+</pre>

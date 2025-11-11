@@ -1,0 +1,45 @@
+/**********
+*  Legend
+*/
+
+.sc-menu .sc-series {
+  cursor: pointer;
+  font-size: @chartTextSize;
+
+  line {
+    fill: none;
+  }
+
+  text {
+    cursor: pointer;
+  }
+}
+
+.sc-menu .disabled circle {
+  fill: @white;
+}
+
+.sc-menu-background {
+  fill: fade(@white, 90%);
+  stroke: @gray20;
+  stroke-width: 1px;
+}
+
+.sc-menu-link {
+  cursor: pointer;
+  fill: @linkColor;
+
+  &:hover {
+    fill: @linkColorHover;
+    text-decoration: underline;
+  }
+}
+
+.sc-line-legend .sc-series {
+  cursor: default;
+  pointer-events: none;
+
+  text {
+    cursor: default;
+  }
+}

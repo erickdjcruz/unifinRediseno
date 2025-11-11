@@ -1,0 +1,48 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div>
+	<ul class='nav nav-tabs'>
+		<li class='active' data-tabname='overview'>
+			<a>{{str 'LBL_OVERVIEW' 'DocuSignEnvelopes'}}</a>
+		</li>
+		<li data-tabname='envelopes'>
+			<a>{{str 'LBL_ENVELOPES' 'DocuSignEnvelopes'}}</a>
+		</li>
+		{{#if showDrafts}}
+			<li data-tabname='drafts'>
+				<a>{{str 'LBL_DRAFTS' 'DocuSignEnvelopes'}}</a>
+			</li>
+		{{/if}}
+		{{#if showNewEnvelopeDocs}}
+			<li data-tabname='documents'>
+				<a>{{str 'LBL_NEW_ENVELOPE' 'DocuSignEnvelopes'}}</a>
+			</li>
+		{{/if}}
+	</ul>
+	<div class='main'>
+		<div class='overview_docusign_content'>
+			<div class='chart-{{cid}}'>
+				{{#with dashletConfig.chart}}
+					{{field ../this model=../this.chartModel template=detail}}
+				{{/with}}
+			</div>
+		</div>
+	</div>
+	<div class='envelopes_docusign_content'></div>
+	{{#if showDrafts}}
+		<div class='drafts_docusign_content'></div>
+	{{/if}}
+	{{#if showNewEnvelopeDocs}}
+		<div class='documents_docusign_content'></div>
+	{{/if}}
+</div>

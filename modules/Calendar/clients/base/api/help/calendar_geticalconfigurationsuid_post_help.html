@@ -1,0 +1,131 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Add calendar configurations in the database and return the uid and the publish key
+</span>
+
+<h2>Request</h2>
+<code class="codesample">
+    POST /Calendar/getICalConfigurationsUID
+</code>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                calendarConfigurations
+            </td>
+            <td>
+                Array
+            </td>
+            <td>
+                The list of calendar configurations that needs to be stored in the database
+            </td>
+            <td>
+                True
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an object containing the following fields:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                key
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The publish key
+            </td>
+        </tr>
+        <tr>
+            <td>
+                calendarConfigurationUID
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                The UID where calendars configurations are stored in the database
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Request Example</h3>
+<pre class="pre-scrollable">
+[
+    {
+        "id": "f75a25c6-eeb8-11eb-abe8-0242ac140005",
+        "calendarId": "f75a25c6-eeb8-11eb-abe8-0242ac140005",
+        "userId": "1",
+        "teamId": ""
+    },
+    {
+        "id": "49cfb786-ef8a-11eb-a8a5-0242ac140005",
+        "calendarId": "49cfb786-ef8a-11eb-a8a5-0242ac140005",
+        "userId": "1",
+        "teamId": ""
+    },
+]
+</pre>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+{
+    calendarConfigurationUID: "546fcdb6-f11d-11eb-83b3-0242ac140004"
+    key: "c056558a-e941-11eb-basa-0242ac140005"
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/Calendar/getICalConfigurationsUID</code> POST endpoint.
+        </td>
+    </tr>
+</table>

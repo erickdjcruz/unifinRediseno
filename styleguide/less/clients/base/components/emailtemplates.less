@@ -1,0 +1,35 @@
+.emailtemplates-record {
+  [data-name="body_html"] {
+    .record-edit-link-wrapper {
+      display: none;
+    }
+  }
+}
+
+.btn-margin(@margin) {
+  .btn {
+    margin: @margin 0 0;
+  }
+}
+
+.record-cell {
+  [data-type="show-plain-text"] {
+    .btn-margin(10px);
+  }
+
+  &[data-type="insert-variable"] {
+    .btn-margin(0);
+
+    input[type="text"][name="variable_text"] {
+      width: calc(~'100% - 448px'); // Width of row minus hard-coded select dropdown width
+      position: relative;
+      bottom: 5px;
+    }
+  }
+}
+
+.collapsed-plain-text {
+  > textarea {
+    height: 45px;
+  }
+}

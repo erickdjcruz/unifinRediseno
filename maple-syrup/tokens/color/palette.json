@@ -1,0 +1,86 @@
+{
+  "color": {
+    "black": { "value": "#000000" },
+    "white": { "value": "#ffffff" },
+    "transparent": { "value": "transparent" },
+    "gray": {
+      "980": { "value": "#0f1215", "comment": "Gray 98" },
+      "950": { "value": "#16191d", "comment": "Gray 95" },
+      "900": { "value": "#2b2d2e", "comment": "Gray 90" },
+      "800": { "value": "#4d5154", "comment": "Gray 80" },
+      "700": { "value": "#6f777b", "comment": "Gray 70" },
+      "600": { "value": "#9ba1a6", "comment": "Gray 60" },
+      "500": { "value": "#b8bcbe", "comment": "Gray 50" },
+      "400": { "value": "#d9dddf", "comment": "Gray 40" },
+      "300": { "value": "#e5eaed", "comment": "Gray 30" },
+      "200": { "value": "#f1f3f4", "comment": "Gray 20" },
+      "100": { "value": "#f8fafc", "comment": "Gray 10" },
+      "50": { "value": "#0f0f0f", "comment": "Gray 6" }
+    },
+    "blue": {
+      "900": { "value": "#002036", "comment": "Dark blue accent" },
+      "800": { "value": "#002e4e", "comment": "Dark blue half" },
+      "600": { "value": "#005d9c", "comment": "Dark blue" },
+      "400": { "value": "#0679c8", "comment": "Sugar blue" },
+      "300": { "value": "#79ade0", "comment": "Dark mode" },
+      "200": { "value": "#bedef4" , "comment": "Light blue accent"},
+      "100": { "value": "#d6eeff", "comment": "Light blue" },
+      "50": { "value": "#eaf6ff", "comment": "Light blue half" }
+    },
+    "army": {
+      "600": { "value": "#537600", "comment": "Dark army" },
+      "400": { "value": "#6cdf46", "comment": "Standard army" },
+      "200": { "value": "#e4fbb4", "comment": "Light army" }
+    },
+    "coral": {
+      "600": { "value": "#a23354", "comment": "Dark coral" },
+      "400": { "value": "#f476b1", "comment": "Standard coral" },
+      "200": { "value": "#fde2eb", "comment": "Light coral" }
+    },
+    "green": {
+      "600": { "value": "#056f37", "comment": "Dark green" },
+      "400": { "value": "#00ba83", "comment": "Standard green" },
+      "200": { "value": "#baffcc", "comment": "Light green" }
+    },
+    "ocean": {
+      "600": { "value": "#29388c", "comment": "Dark ocean" },
+      "400": { "value": "#517bf8", "comment": "Standard ocean" },
+      "200": { "value": "#c6ddff", "comment": "Light ocean" }
+    },
+    "orange": {
+      "600": { "value": "#9b4617", "comment": "Dark orange" },
+      "400": { "value": "#ff9445", "comment": "Standard orange" },
+      "200": { "value": "#ffdebc", "comment": "Light orange" }
+    },
+    "pacific": {
+      "600": { "value": "#145c95", "comment": "Dark pacific" },
+      "400": { "value": "#36b0ff", "comment": "Standard pacific" },
+      "200": { "value": "#c0edff", "comment": "Light pacific" }
+    },
+    "pink": {
+      "600": { "value": "#832a83", "comment": "Dark pink" },
+      "400": { "value": "#cd74f2", "comment": "Standard pink" },
+      "200": { "value": "#f7d0fd", "comment": "Light pink" }
+    },
+    "purple": {
+      "600": { "value": "#4c2d85", "comment": "Dark purple" },
+      "400": { "value": "#8f5ff5", "comment": "Standard purple" },
+      "200": { "value": "#e2d4fd", "comment": "Light purple" }
+    },
+    "red": {
+      "600": { "value": "#bb0e1b", "comment": "Dark red" },
+      "400": { "value": "#fa374f", "comment": "Standard red" },
+      "200": { "value": "#ffd4d0", "comment": "Light red" }
+    },
+    "teal": {
+      "600": { "value": "#00636e", "comment": "Dark teal" },
+      "400": { "value": "#00e0e0", "comment": "Standard teal" },
+      "200": { "value": "#c5fffb", "comment": "Light teal" }
+    },
+    "yellow": {
+      "600": { "value": "#866500", "comment": "Dark yellow" },
+      "400": { "value": "#ffd132", "comment": "Standard yellow" },
+      "200": { "value": "#fff7ad", "comment": "Light yellow" }
+    }
+  }
+}

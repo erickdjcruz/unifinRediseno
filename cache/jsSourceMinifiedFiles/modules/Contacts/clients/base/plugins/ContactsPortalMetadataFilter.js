@@ -1,0 +1,2 @@
+(function(app){app.events.on('app:init',function(){app.plugins.register('ContactsPortalMetadataFilter',['view'],{removePortalFieldsIfPortalNotActive:function(meta){if(!_.isObject(meta)){return;}
+var portalFields=['portal_name','portal_active','portal_password','portal_user_company_name'];var serverInfo=app.metadata.getServerInfo();if(!serverInfo.portal_active){_.each(meta.panels,function(panel){panel.fields=_.reject(panel.fields,function(field){var name=_.isObject(field)?field.name:field;return _.contains(portalFields,name);});});}}});});})(SUGAR.App);

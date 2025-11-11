@@ -1,0 +1,26 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="record-icon" rel="tooltip" title={{moduleIconToolTip activity.attributes.icon_module}}>
+    {{moduleLabel activity.attributes.icon_module 'lg'}}
+</div>
+
+<div class="record-details mt-1.5" rel="tooltip" data-bs-placement="bottom" title="{{str detailDateTimeTooltip baseModule}}">
+    <div class="record-date-details">
+        <div class="date-day">
+            {{detailDay}}
+        </div>
+        <div class="date-date-time">
+            {{detailDateTime}}
+        </div>
+    </div>
+</div>

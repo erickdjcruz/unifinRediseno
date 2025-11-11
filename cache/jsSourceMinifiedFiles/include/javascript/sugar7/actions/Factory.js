@@ -1,0 +1,2 @@
+(function register(app){app.events.on('app:init',function init(){function ActionFactory(){}
+ActionFactory.prototype.create=function(actionDef){let actionType=app.utils.capitalizeHyphenated(actionDef.actionType);let Action=app.actions[actionType];let action=Action&&new Action(actionDef);return action;};app.actions=app.actions||{};app.actions=_.extend(app.actions,{ActionFactory:ActionFactory});});})(SUGAR.App);

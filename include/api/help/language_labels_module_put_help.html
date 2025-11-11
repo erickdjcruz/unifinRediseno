@@ -1,0 +1,186 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Update display labels of fields for modules under different languages.
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint is used to update display labels of fields for modules under different languages.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            name
+        </td>
+        <td>
+            string
+        </td>
+        <td>
+            The module name.
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    <tr>
+        <td>
+            labels
+        </td>
+        <td>
+            array
+        </td>
+        <td>
+            The new labels grouped by language keys.
+        </td>
+        <td>
+            True
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Request Examples</h3>
+
+Request example for a field:
+
+<pre class="pre-scrollable">
+[
+  {
+    "name": "Leads",
+    "labels": {
+      "en_us": {
+          "ai_conv_score_classification_c": "Ai Conv Score Classification"
+      },
+      "de_DE": {
+          "ai_conv_score_classification_c": "Ai Conv Score Klassifizierung"
+      },
+      "ja_JP": {
+          "ai_conv_score_classification_c": "AiConv&#x30B9;&#x30B3;&#x30A2;&#x5206;&#x985E;"
+      }
+    }
+  }
+]
+</pre>
+
+<h4>More Request Payload Examples:</h4>
+
+Request example for multiple fields:
+
+<pre class="pre-scrollable">
+[
+  {
+    "name": "Leads",
+    "labels": {
+      "en_us": {
+          "ai_score_c": "Ai Score",
+          "ai_conv_score_classification_c": "Ai Conv Score Classification",
+          "description": "New Description"
+      },
+      "de_DE": {
+          "ai_score_c": "Ai Punktzahl",
+          "ai_conv_score_classification_c": "Ai Conv Score Klassifizierung",
+          "description": "New German Description"
+      },
+      "ja_JP": {
+          "ai_score_c": "&#x611B;&#x30B9;&#x30B3;&#x30A2;",
+          "ai_conv_score_classification_c": "AiConv&#x30B9;&#x30B3;&#x30A2;&#x5206;&#x985E;",
+          "description": "New Japanese Description"
+      }
+    }
+  },
+  {
+    "name": "Opportunities",
+    "labels": {
+      "de_DE": {
+          "amount": "Menge",
+          "amount_usdollar": "Betrag US-Dollar"
+      },
+      "ja_JP": {
+          "amount": "&#x91CF;",
+          "amount_usdollar": "&#x91D1;&#x984D;&#x7C73;&#x30C9;&#x30EB;"
+      }
+    }
+  }
+]
+</pre>
+
+<h3>Response Example</h3>
+
+<pre class="pre-scrollable">
+[
+    {
+        "name": "Leads",
+        "labels": {
+            "en_us": {
+                "LBL_AI_SCORE": "Ai Score",
+                "LBL_AI_CONV_SCORE_CLASSIFICATION": "Ai Conv Score Classification",
+                "LBL_DESCRIPTION": "New Description"
+            },
+            "de_DE": {
+                "LBL_AI_SCORE": "Ai Punktzahl",
+                "LBL_AI_CONV_SCORE_CLASSIFICATION": "Ai Conv Score Klassifizierung",
+                "LBL_DESCRIPTION": "New German Description"
+            },
+            "ja_JP": {
+                "LBL_AI_SCORE": "&#x611B;&#x30B9;&#x30B3;&#x30A2;",
+                "LBL_AI_CONV_SCORE_CLASSIFICATION": "AiConv&#x30B9;&#x30B3;&#x30A2;&#x5206;&#x985E;",
+                "LBL_DESCRIPTION": "New Japanese Description"
+            }
+        }
+    },
+    {
+        "type": "field",
+        "module": "Opportunities",
+        "labels": {
+            "de_DE": {
+                "LBL_LIKELY": "Menge",
+                "LBL_AMOUNT_USDOLLAR": "Betrag US-Dollar"
+            },
+            "ja_JP": {
+                "LBL_LIKELY": "&#x91CF;",
+                "LBL_AMOUNT_USDOLLAR": "&#x91D1;&#x984D;&#x7C73;&#x30C9;&#x30EB;"
+            }
+        }
+    }
+]
+</pre>
+
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11.13
+        </td>
+        <td>
+            Added <code>/lang/labels/module/</code> PUT endpoint.
+        </td>
+    </tr>
+</table>

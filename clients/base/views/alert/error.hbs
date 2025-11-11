@@ -1,0 +1,24 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="alert {{alertClass}} alert-block{{#if closeable}} closeable{{/if}} rounded-md shadow-lg bg-[--alert-background] flex mb-2">
+    <div class="indicator px-4">
+        <i class="sicon sicon-32 {{alertIcon}}"></i>
+    </div>
+    {{#if closeable}}<button class="close btn btn-invisible" data-action="close"><i class="sicon sicon-close"></i></button>{{/if}}
+    <span class="text py-5">
+        {{#if title}}
+            <strong>{{title}}:</strong>
+        {{/if}}
+        {{#each messages}}{{./this}}{{/each}}
+    </span>
+</div>

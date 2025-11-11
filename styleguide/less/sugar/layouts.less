@@ -1,0 +1,196 @@
+/* LAYOUTS
+  ----------------*/
+
+/* twitter-bootstrap import START */
+
+// Container (centered, fixed-width layouts)
+.container {
+  .container-fixed();
+}
+
+// Fluid layouts (left aligned, with sidebar, min- & max-width content)
+.container-fluid {
+  margin-left: @gridGutterWidth;
+  margin-right: @gridGutterWidth;
+  .clearfix();
+}
+
+/* twitter-bootstrap import END */
+
+.container-fluid {
+  margin-top: 20px;
+}
+
+#content {
+  background: @contentBackground;
+  position: fixed;
+  width: calc(~"100% - @sidebarNavWidth");
+  top: @headerNavHeight;
+  right: 0;
+  bottom: 0;
+  left: @sidebarNavWidth;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#content:empty,
+.nprogress-busy #content {
+  background: @contentLoadingBackground;
+}
+
+.main-pane {
+  position: absolute;
+  bottom: 0;
+  padding-top: 0 !important;
+
+  &:not(.bg-transparent) {
+    background-color: var(--primary-content-background);
+  }
+
+  .list-view {
+    width: 100%;
+  }
+
+  &.main-pane.span12 {
+    width: 100%;
+  }
+
+  &.span8 {
+    width: calc(66vw ~"-" @sidebarNavWidth);
+    left: 0;
+  }
+}
+
+// when omniconsole is visible, need to account for record width
+.omniconsole-visible {
+  .main-pane {
+    width: calc(~"100% - 320px");
+
+    &.span8 {
+      width: calc(~"66vw - 320px");
+    }
+  }
+}
+
+.touch {
+  .main-pane {
+    padding-top: 60px !important;
+    top: 0;
+    overflow-x: auto;
+  }
+
+  #content {
+    /* fixes iOS intermitent BWC portrait scroll issue */
+    position: absolute;
+    overflow-x: scroll;
+  }
+}
+
+.side.sidebar-content {
+  width: 34vw;
+  border-left: @borderWidget;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: @zindexSidebarContent;
+
+  &.hide {
+    display: none;
+  }
+}
+
+.navbar,
+#content {
+  min-width: 320px !important;
+}
+
+/* NEW SKIN START */
+
+#header:not(.hide) + #content {
+  /* override */
+  top: 45px;
+}
+
+.main-pane {
+  /* override */
+  top: 49px;
+}
+
+/* NEW SKIN END */
+
+.banner-shifted {
+  #header:not(.hide) + #content {
+    /* override */
+    top: @bannerHeight + 45px;
+  }
+
+  #content {
+    /* override */
+    top: calc(@bannerHeightREM ~"+" @headerNavHeight);
+  }
+}
+
+.split-screen-resizer {
+  background-color: @resizerColor;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: @primaryContentHover;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+}
+
+.split-screen-resizer-horizontal {
+  .split-screen-resizer();
+
+  &:not(.disabled) {
+    cursor: ns-resize;
+  }
+
+  height: 9px;
+}
+
+.split-screen-resizer-vertical {
+  .split-screen-resizer();
+
+  &:not(.disabled) {
+    cursor: ew-resize;
+  }
+
+  width: 9px;
+}
+
+.split-screens-handle {
+  background-color: @dragHandleColor;
+  border-radius: 3px;
+}
+
+.split-screens-handle-horizontal {
+  .split-screens-handle();
+
+  width: 24px;
+  height: 5px;
+}
+
+.split-screens-handle-vertical {
+  .split-screens-handle();
+
+  width: 5px;
+  height: 24px;
+}
+
+.split-screens-container {
+  background-color: @primaryContentBackground;
+}

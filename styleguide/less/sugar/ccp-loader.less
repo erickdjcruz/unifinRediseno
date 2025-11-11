@@ -1,0 +1,38 @@
+/**
+ * This component recreates the loading spinner seen in the Amazon Connect chat
+ * widget.
+ */
+@keyframes ccp-pulse {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(0.8);
+  }
+
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.cpp-loader-container {
+  height: 100%;
+  width: 100%;
+  display: none;
+  align-items: center;
+  justify-content: space-around;
+
+  .ccp-loader {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    border-width: 2px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(6, 173, 203) rgb(6, 173, 203) transparent;
+    display: inline-block;
+    animation: 0.75s linear 0s infinite normal both running ccp-pulse;
+    background: transparent !important;
+  }
+}

@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'Seznam akcí Smart Guide systému Sugar',
+    'LBL_MODULE_TITLE' => 'Akce Smart Guide systému Sugar',
+    'LBL_HOMEPAGE_TITLE' => 'Moje akce Smart Guide systému Sugar',
+    'LNK_NEW_RECORD' => 'Nová akce Smart Guide systému Sugar',
+    'LNK_VIEW_RECORDS' => 'Zobrazit akce Smart Guide systému Sugar',
+    'LNK_CJ_FORM_LIST' => 'Zobrazit akce Smart Guide systému Sugar',
+    'LNK_LIST' => 'Akce Smart Guide systému Sugar',
+    'LBL_SEARCH_FORM_TITLE' => 'Vyhledat akci Smart Guide systému Sugar',
+    'LBL_MODULE_NAME' => 'Akce Smart Guide systému Sugar',
+    'LBL_MODULE_NAME_SINGULAR' => 'Akce Smart Guide systému Sugar',
+    'LBL_TRIGGER_EVENT' => 'Aktivační událost',
+    'LBL_ACTION_TYPE' => 'Typ akce',
+    'LBL_PARENT_MODULE' => 'Nadřazený modul',
+    'LBL_RELATIONSHIP' => 'Vztah',
+    'LBL_ACTIVITY_TEMPLATE' => 'Šablona aktivit',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'Šablona aktivity / fáze / chytrého průvodce',
+    'LBL_ACTIVE' => 'Aktivní',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'Šablona aktivity %s již obsahuje akci systému Sugar využívající spouštěcí událost %s. Pro každou fázi nebo aktivitu ve Smart Guide je stanoven limit jedné aktivní akce systému Sugar pro každý typ spouštěcí události.',
+    'LBL_RECORDVIEW_PANEL4' => 'Vyplnit pole',
+    'LBL_POPULATE_FIELDS' => 'Vyplnit pole',
+    'LBL_ADD_FIELD' => 'Přidat pole',
+    'LBL_REMOVE_FIELD' => 'Odebrat pole',
+    'LBL_FIELD_NAME' => 'Název pole',
+    'LBL_FIELD_VALUE' => 'Hodnota pole',
+    'LBL_FIELD_NOT_AVAILABLE' => 'Toto pole není k dispozici pro zobrazení seznamu.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'Typ aktivační události akce',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'Nelze najít související záznam',
+    'LBL_IGNORE_ERRORS' => 'Ignorovat chyby',
+    'LBL_NO_DISPLAY_FIELDS' => 'Neexistují žádná pole k zobrazení.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'Pole odkazu šablony aktivity',
+    'LBL_STAGE_TEMPLATE_LINK' => 'Pole odkazu šablony fáze',
+    'LBL_EMAIL_TEMPLATES' => 'Šablona e-mailu',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'Vyberte e-mailovou adresu do „Komu“',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'Pole e-mailu',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'Zobrazit ikonu',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'Šablona aktivity / fáze / chytrého průvodce',
+    'LBL_ACTIVITY_MODULE' => 'Modul aktivity',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'Šablona Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'Vyberte spouštěč šablony Smart Guide',
+    'LBL_MAIN_TRIGGER_TYPE' => 'Typ aktivační události',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'Vyberte typ spouštěče',
+    'LBL_MODULE_TRIGGER' => 'Aktivační událost modulu',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'Vyberte spouštěč modulu',
+    'LBL_FIELD_TRIGGER' => 'Aktivační událost pole',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'Vyberte cíl Smart Guide',
+    'LBL_CJ_TARGET' => 'Cíl Smart Guide',
+    'LBL_CJ_ACTION' => 'Akce Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'Vyberte akci Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'Spouštěč',
+    'LBL_TRIGGER_DESCRIPTION' => 'Pomocí níže uvedených polí vyberte typ spouštěče a podmínky, které spouštěč aktivují.',
+    'LBL_TARGET_ACTION_TITLE' => 'Cíl a akce',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'Pomocí níže uvedených polí vyberte, kde a k jakým akcím dojde při aktivaci spouštěče.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'Vyberte fázi Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'Vyberte aktivity Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'Vyberte aktivitu Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Vyberte akci aktivity fáze',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'Vyberte akci aktivity Smart Guide',
+];

@@ -1,0 +1,231 @@
+/* Drawer Layout */
+#drawers > .drawer {
+  top: @headerNavHeight;
+  bottom: 0;
+  z-index: @zindexFixedNavbar + 1;
+  left: @sidebarNavWidth;
+}
+
+#content {
+  .drawer {
+    width: 100%;
+  }
+}
+
+.drawer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: calc(100% ~"-" @sidebarNavWidth);
+
+  /* backdrop cover */
+  .drawer-backdrop {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: (@zindexFixedNavbar - 2);
+    opacity: 0.5;
+    .user-select(none);
+  }
+
+  /* expand/collapse tab */
+  .drawer-tab .btn {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    height: 15px;
+    width: 20px;
+    margin-left: -10px;
+    z-index: (@zindexFixedNavbar - 1);
+    border-radius: 0 0 4px 4px;
+  }
+
+  .main-pane {
+    top: 3rem;
+    margin-bottom: @headerNavHeight;
+
+    :not(.create) > .rowaction.btn {
+      border: none;
+    }
+  }
+
+  .headerpane {
+    top: @headerNavHeight;
+    padding-top: 0.125rem;
+  }
+
+  /* set drawer transitions */
+  &.transition {
+    transition: top 300ms;
+
+    .main-pane {
+      top: 0;
+    }
+
+    .headerpane,
+    .preview-headerbar {
+      position: relative;
+      top: 0;
+      width: 100%;
+      left: 0;
+    }
+  }
+}
+
+.banner-shifted {
+  #drawers > .drawer {
+    top: @bannerHeightREM;
+
+    .headerpane {
+      top: @bannerHeightREM;
+    }
+  }
+}
+
+/* disables scrolling */
+#content.noscroll {
+  overflow: hidden;
+  z-index: 0;
+}
+
+body.noscroll {
+  overflow: hidden;
+}
+
+.drawer.inactive {
+  overflow: hidden;
+
+  .main-pane {
+    top: 2px;
+  }
+
+  .dashboard {
+    top: 2px;
+    padding-top: 0;
+
+    .dfab-icon {
+      display: none;
+    }
+  }
+
+  .preview-pane {
+    padding-top: 5px;
+  }
+  //FIXME: SC-4915 will improve this.
+  .headerpane,
+  .preview-headerbar,
+  .help-headerbar {
+    position: relative;
+    top: 0;
+    width: 100%;
+
+    .btn-toolbar {
+      visibility: hidden;
+    }
+  }
+}
+
+@media only screen and (orientation: landscape) {
+  .touch {
+    .drawer {
+      &.active {
+        .main-pane > div:not(.dropdown-menu) {
+          display: inline;
+
+          .flex-list-view-content {
+            display: inline;
+          }
+
+          .list-view {
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.touch {
+  .drawer {
+    &.active {
+      -webkit-overflow-scrolling: touch;
+
+      &.transition .main-pane {
+        padding-top: 0 !important;
+      }
+    }
+
+    &.inactive {
+      .main-pane {
+        padding-top: 0 !important;
+      }
+
+      .dashboard {
+        padding-top: 0 !important;
+      }
+    }
+  }
+}
+
+.selection-context {
+  padding: 5px 8px;
+  background: @contentBackground;
+
+  .reset-block {
+    margin-right: 5px;
+  }
+
+  .selected-records {
+    width: 100%;
+
+    &.select2-choices-pills-close.same-size-pills.select2-container.select2-container-multi.select2 {
+      & ul.select2-choices {
+        max-height: 44px;
+        min-height: 44px;
+        overflow-y: auto;
+      }
+    }
+  }
+
+  .label-selected-records {
+    padding-left: 1px;
+  }
+
+  .selected-records-container {
+    padding-right: 63px;
+  }
+
+  .max-pills-label,
+  .more-pills-label {
+    padding-top: 2px;
+    padding-left: 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .transition {
+    .main-pane.span8,
+    .main-pane.span12 {
+      margin: 0;
+    }
+  }
+
+  .drawer.active {
+    overflow: auto;
+  }
+
+  .drawer.inactive {
+    .sidebar-toggle {
+      display: none;
+    }
+
+    .main-pane {
+      margin-top: 0;
+    }
+
+    .preview-pane {
+      position: relative;
+    }
+  }
+}

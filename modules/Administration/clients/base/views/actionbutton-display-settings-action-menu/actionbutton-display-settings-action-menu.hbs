@@ -1,0 +1,128 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="record">
+    <div class="row-fluid panel_body">
+        <h4>{{str "LBL_ACTIONBUTTON_DISPLAY_SETTINGS"}}</h4>
+    </div>
+    <div class="row-fluid panel_body">
+        <div class="span12 record-cell edit ab-admin-display-setting" data-type="text">
+            <div class="ab-admin-button-property labels-on-side flex flex-wrap-no items-center">
+                <div class="record-link-wrapper span1">
+                    <span class="normal index">
+                        <span class="edit">
+                            <input type="checkbox" data-fieldname="listView" {{#if _actionMenu.listView}}checked{{/if}}>
+                        </span>
+                    </span>
+                </div>
+                <div class="record-label-wrapper">
+                    <div class="record-label block text-right">
+                        {{str "LBL_ACTIONBUTTON_LIST_VIEW"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid panel_body">
+        <div class="span12 record-cell edit ab-admin-display-setting" data-type="text">
+            <div class="ab-admin-button-property labels-on-side flex flex-wrap-no items-center">
+                <div class="record-link-wrapper span1">
+                    <span class="normal index">
+                        <span class="edit">
+                        <input type="checkbox" data-fieldname="subpanels" {{#if _actionMenu.subpanels}}checked{{/if}}>
+                        </span>
+                    </span>
+                </div>
+                <div class="record-label-wrapper">
+                    <div class="record-label block text-right">
+                        {{str "LBL_ACTIONBUTTON_SUBPANELS"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid panel_body">
+        <div class="span12 record-cell edit ab-admin-display-setting" data-type="text">
+            <div class="ab-admin-button-property labels-on-side flex flex-wrap-no items-center">
+                <div class="record-link-wrapper span1">
+                    <span class="normal index">
+                        <span class="edit">
+                        <input type="checkbox" data-fieldname="recordView" {{#if _actionMenu.recordView}}checked{{/if}}>
+                        </span>
+                    </span>
+                </div>
+                <div class="record-label-wrapper">
+                    <div class="record-label block text-right">
+                        {{str "LBL_ACTIONBUTTON_RECORD_VIEW"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid panel_body">
+        <div class="span12 record-cell edit ab-admin-display-setting" data-type="text">
+            <div class="ab-admin-button-property labels-on-side flex flex-wrap-no items-center">
+                <div class="record-link-wrapper span1">
+                    <span class="normal index">
+                        <span class="edit">
+                        <input type="checkbox" data-fieldname="recordViewDashlet" {{#if _actionMenu.recordViewDashlet}}checked{{/if}}>
+                        </span>
+                    </span>
+                </div>
+                <div class="record-label-wrapper">
+                    <div class="record-label block text-right">
+                        {{str "LBL_ACTIONBUTTON_RECORD_VIEW_DASHLET"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid panel_body">
+        <div class="span12 record-cell edit ab-admin-display-setting" data-type="text">
+            <div class="ab-admin-button-property labels-on-side flex flex-wrap-no items-center">
+                <div class="record-link-wrapper span1">
+                    <span class="normal index">
+                        <span class="edit">
+                        <input type="checkbox" data-fieldname="focusDashboardHeader" {{#if _actionMenu.focusDashboardHeader}}checked{{/if}}>
+                        </span>
+                    </span>
+                </div>
+                <div class="record-label-wrapper">
+                    <div class="record-label block text-right">
+                        {{str "LBL_ACTIONBUTTON_FOCUS_DASHBOARD_HEADER"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row-fluid panel_body">
+        <div class="span12 record-cell edit">
+            <span class="detail">
+                <div class="record-label">
+                    {{str "LBL_ACTIONBUTTON_ORDER"}}
+                </div>
+                <span class="normal index">
+                    <span class="edit">
+                        <select class="ab-admin-order" data-fieldname="orderNumber">
+                            {{#each _orderData}}
+                                <option value="{{this}}" {{#eq ../_actionMenu.orderNumber this}}selected{{/eq}}>
+                                    {{this}}
+                                </option>
+                            {{/each}}
+                        </select>
+                    </span>
+                </span>
+            </span>
+        </div>
+    </div>
+</div>

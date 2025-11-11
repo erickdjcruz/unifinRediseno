@@ -1,0 +1,23 @@
+regions:
+- id: na
+  description: Northern America
+  boundaries:
+  - name: range1
+    lower: 1000000000
+    upper: 1999999999
+    provisionable: true
+  - name: range2
+    lower: 3000000000
+    upper: 3999999999
+    provisionable: true
+- id: eu
+  description: Europe
+  boundaries:
+  - name: range2017
+    lower: 2000000000
+    upper: 2999999999
+    provisionable: false
+  - name: range2018
+    lower: 4000000000
+    upper: 4999999999
+    provisionable: true

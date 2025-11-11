@@ -1,0 +1,27 @@
+.my-pipeline-content {
+  .arrowholder.left,
+  .arrowholder.right {
+    .arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  .table {
+    display: block;
+
+    .total-amount,
+    .header-text {
+      text-align: right;
+    }
+
+    .pipeline-tile .list {
+      & > div {
+        text-align: right;
+
+        a {
+          float: right;
+        }
+      }
+    }
+  }
+}

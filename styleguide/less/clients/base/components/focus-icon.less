@@ -1,0 +1,339 @@
+// Surrounding container for icon
+.focus-icon-container {
+  display: none;
+  z-index: 1;
+
+  &.hide {
+    display: none;
+  }
+
+  // Focus icon and hover
+  .focus-icon {
+    display: block;
+    padding: 3px;
+    height: 12px;
+    width: 12px;
+
+    &:hover {
+      cursor: pointer;
+      color: @sicon-hover-color;
+    }
+  }
+}
+
+// Improved accessibility for keyboard navigation
+.relate-field-container {
+  padding: 2px;
+
+  &:focus-within {
+    .focus-icon-container:not(.hide) {
+      display: block;
+
+      .focus-icon:focus-within {
+        color: @sicon-hover-color;
+      }
+    }
+  }
+}
+
+// Hide on search and select
+table.search-and-select {
+  td {
+    &[data-fieldname="name"],
+    &[data-type="fullname"],
+    &[data-type="name"],
+    &[data-type="parent"],
+    &[data-type="relate"] {
+      .relate-field-container {
+        // Fix tooltips and ellipsed text
+        display: block;
+        flex-direction: unset;
+        justify-content: unset;
+
+        &:hover {
+          .focus-icon-container {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Record view styling
+.record-cell {
+  &[data-fieldname="name"],
+  &[data-type="fullname"],
+  &[data-type="name"],
+  &[data-type="parent"],
+  &[data-type="relate"] {
+    .relate-field-container {
+      display: flex;
+      align-items: center;
+
+      .focus-icon-container {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  &:not(.edit):hover {
+    &[data-fieldname="name"],
+    &[data-type="fullname"],
+    &[data-type="name"],
+    &[data-type="parent"],
+    &[data-type="relate"] {
+      .relate-field-container {
+        .focus-icon-container:not(.hide) {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// List view styling
+td {
+  &[data-fieldname="name"],
+  &[data-type="fullname"],
+  &[data-type="name"],
+  &[data-type="parent"],
+  &[data-type="quote-data-relate"],
+  &[data-type="relate"] {
+    .relate-field-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      .parent_avatar {
+        margin-right: 2px;
+      }
+
+      .focus-icon-container {
+        margin-left: 10px;
+        position: static;
+      }
+
+      &:hover {
+        .focus-icon-container:not(.hide) {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// Multi-line list view styling
+div {
+  &[data-fieldname="name"],
+  &[data-type="fullname"],
+  &[data-type="name"],
+  &[data-type="parent"],
+  &[data-type="quote-data-relate"],
+  &[data-type="relate"] {
+    .relate-field-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+
+      .parent_avatar {
+        margin-right: 2px;
+      }
+
+      .focus-icon-container {
+        margin-left: 10px;
+        position: static;
+      }
+
+      &:hover {
+        .focus-icon-container:not(.hide) {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// Preview styling
+.preview-data {
+  .field-row {
+    .field-value {
+      &[data-fieldname="name"],
+      &[data-fieldname="parent_name"],
+      &[data-type="fullname"],
+      &[data-type="name"],
+      &[data-type="parent"],
+      &[data-type="relate"] {
+        .relate-field-container {
+          display: flex;
+          align-items: center;
+
+          .focus-icon-container {
+            margin-left: 10px;
+            margin-right: 10px;
+          }
+        }
+      }
+
+      &:hover {
+        .focus-icon-container:not(.hide) {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// Tabbed dashlet styling
+.tabbed-dashlet-list-item {
+  .details {
+    .name {
+      .tabbed-dashlet-field {
+        &[data-fieldname="name"] {
+          .relate-field-container {
+            padding: 0;
+            display: flex;
+            align-items: center;
+
+            .focus-icon-container {
+              margin-left: 10px;
+              margin-right: 10px;
+
+              .focus-icon {
+                padding: 0;
+              }
+            }
+          }
+        }
+      }
+
+      &:hover {
+        .focus-icon-container:not(.hide) {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// Purchase History dashlet styling
+.purchase-history {
+  .purchase-name,
+  .pli-name {
+    &[data-fieldname="name"] {
+      .relate-field-container {
+        padding: 0;
+        display: flex;
+        align-items: center;
+
+        .focus-icon-container {
+          margin-left: 10px;
+          margin-right: 10px;
+
+          .focus-icon {
+            padding: 0;
+          }
+        }
+      }
+    }
+
+    &:hover {
+      .focus-icon-container:not(.hide) {
+        display: block;
+      }
+    }
+  }
+
+  .pli-name {
+    &[data-fieldname="name"] {
+      .relate-field-container {
+        justify-content: flex-end;
+        padding-right: 32px;
+
+        .focus-icon-container {
+          position: relative;
+          right: -32px;
+        }
+      }
+
+      &:hover {
+        .date-name-link {
+          margin-right: -32px;
+        }
+      }
+    }
+  }
+}
+
+// Activity Timeline dashlet styling
+.activity-timeline {
+  .relate-field-container {
+    display: flex;
+    padding: 0;
+
+    .focus-icon-container {
+      margin-top: 0.125rem;
+    }
+
+    .focus-icon {
+      padding: 0;
+    }
+  }
+
+  .activity-card-header {
+    .panel-header {
+      .relate-field-container {
+        .focus-icon-container {
+          margin-left: 0.625rem;
+          margin-right: 2rem;
+        }
+      }
+
+      &:hover {
+        .focus-icon-container:not(.hide) {
+          display: block;
+        }
+      }
+    }
+
+    .panel-users {
+      .relate-field-container {
+        .focus-icon-container {
+          flex: 0 0 1em;
+          margin-top: 0.25rem;
+          width: 0;
+        }
+
+        &:hover {
+          .focus-icon-container:not(.hide) {
+            display: block;
+          }
+        }
+      }
+
+      .user-value {
+        .focus-icon-container {
+          margin-top: 0.125rem;
+        }
+      }
+    }
+  }
+
+  .activity-card-content {
+    .relate-field-container {
+      .focus-icon-container {
+        flex: 0 0 1em;
+        width: 0;
+      }
+
+      &:hover {
+        .focus-icon-container:not(.hide) {
+          display: block;
+        }
+      }
+    }
+  }
+}

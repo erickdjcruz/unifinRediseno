@@ -1,0 +1,289 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    Get Calendar Definitions.
+</span>
+
+<h2>Request</h2>
+<code class="codesample">
+    POST /Calendar/getCalendarDefs
+</code>
+
+<h2>Request Arguments</h2>
+<pre class="pre-scrollable">
+    {
+        calendars:[
+            {
+                "id": "6a6ecbae-535c-11ec-b080-0242ac140008",
+                "calendarId": "6a6ecbae-535c-11ec-b080-0242ac140008",
+                "userId": "1"
+            },
+            {
+                "id": "6a7358cc-535c-11ec-9ff7-0242ac140008",
+                "calendarId": "6a7358cc-535c-11ec-9ff7-0242ac140008",
+                "userId": "1"
+            }
+        ]
+    }
+</pre>
+
+<h2>Response</h2>
+<span class="lead">
+    The response will be an array of objects containing the calendar definitions:
+</span>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                calendarId
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Calendar ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                id
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Calendar ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                assigned_user_id
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                User ID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                name
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Calendar definition name
+            </td>
+        </tr>
+        <tr>
+            <td>
+                color
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Color value of events
+            </td>
+        </tr>
+        <tr>
+            <td>
+                module
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Events module
+            </td>
+        </tr>
+        <tr>
+            <td>
+                start_field
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Field used for event start
+            </td>
+        </tr>
+        <tr>
+            <td>
+                end_field
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Field used for event end
+            </td>
+        </tr>
+        <tr>
+            <td>
+                dblclick_event
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Double click informations
+            </td>
+        </tr>
+        <tr>
+            <td>
+                calendar_type
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Calendar type: either made for main calendar or dashlets
+            </td>
+        </tr>
+        <tr>
+            <td>
+                allow_create
+            </td>
+            <td>
+                bool
+            </td>
+            <td>
+                Allow create
+            </td>
+        </tr>
+        <tr>
+            <td>
+                allow_update
+            </td>
+            <td>
+                bool
+            </td>
+            <td>
+                Allow update
+            </td>
+        </tr>
+        <tr>
+            <td>
+                allow_delete
+            </td>
+            <td>
+                bool
+            </td>
+            <td>
+                Allow delete
+            </td>
+        </tr>
+        <tr>
+            <td>
+                objName
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                Object name of the module
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+<h3>Response Example</h3>
+<pre class="pre-scrollable">
+[
+    {
+        "calendarId": "6a6ecbae-535c-11ec-b080-0242ac140008",
+        "id": "6a6ecbae-535c-11ec-b080-0242ac140008",
+        "assigned_user_id": "1",
+        "name": "Calls",
+        "color": "#c0edff",
+        "module": "Calls",
+        "start_field": "date_start",
+        "end_field": null,
+        "dblclick_event": "detail:self:id",
+        "calendar_type": "^main^",
+        "allow_create": true,
+        "allow_update": true,
+        "allow_delete": true,
+        "objName": "Call"
+    },
+    {
+        "calendarId": "6a7358cc-535c-11ec-9ff7-0242ac140008",
+        "id": "6a7358cc-535c-11ec-9ff7-0242ac140008",
+        "assigned_user_id": "1",
+        "name": "Meetings",
+        "color": "#c6ddff",
+        "module": "Meetings",
+        "start_field": "date_start",
+        "end_field": null,
+        "dblclick_event": "detail:self:id",
+        "calendar_type": "^main^",
+        "allow_create": true,
+        "allow_update": true,
+        "allow_delete": true,
+        "objName": "Meeting"
+    },
+    {
+        "calendarId": "6a778dca-535c-11ec-b946-0242ac140008",
+        "id": "6a778dca-535c-11ec-b946-0242ac140008",
+        "assigned_user_id": "1",
+        "name": "Tasks",
+        "color": "#e2d4fd",
+        "module": "Tasks",
+        "start_field": "date_start",
+        "end_field": "date_due",
+        "dblclick_event": "detail:self:id",
+        "calendar_type": "^main^",
+        "allow_create": true,
+        "allow_update": true,
+        "allow_delete": true,
+        "objName": "Task"
+    },
+]
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/Calendar/modules</code> POST endpoint.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            v11_15
+        </td>
+        <td>
+            Added objName
+        </td>
+    </tr>
+</table>

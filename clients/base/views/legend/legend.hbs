@@ -1,0 +1,46 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div id="legend-container" class="flex h-full pl-1.25 pr-2 flex-wrap">
+    <div class="inline-flex overflow-hidden items-center flex-1" id="inline-elements">
+        {{#each _legend}}
+            <div data-container="legend-item-container{{../_id}}">
+                <li data-container="dropdown-legend-item" class="hidden" id="{{id}}">
+                    <a class="dropdown-item-li">
+                        <div class="flex items-center">
+                            <canvas height="12" width="12" class="h-3 mr-2 rounded-full"></canvas>
+                            <span class="truncate" id="legend-item-label">{{label}}</span>
+                        </div>
+                    </a>
+                </li>
+                <div data-container="inline-legend-item" class="flex {{#if ../_useMargin}}ml-2.5{{/if}} cursor-pointer" id="{{id}}">
+                    <canvas height="15" width="15" class="h-4 mr-2 rounded-full"></canvas>
+                    <span class="truncate" id="legend-item-label">{{label}}</span>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+    <div id="dropdown-container{{_id}}" class="!hidden flex relative min-w-fit items-center justify-end detail btn-group actions">
+        <a class="flex btn dropdown-toggle actionbtn-toggle chart-legend-dropdown"
+           data-bs-toggle="dropdown" data-bs-display="static" id="dropdown-toggle">
+            <span id="dropdown-toggle-text"></span>
+            <i class="sicon sicon-chevron-down ml-1"></i>
+        </a>
+        <ul
+            data-menu="dropdown"
+            class="dropdown-menu dropdown-restrictions absolute border-0 dark:border border-[--dropdown-border-widget] max-h-[15rem] max-w-[12.5rem] rounded-md shadow-xl w-50"
+            role="menu"
+            id="dropdown-elements{{_id}}"
+        >
+        </ul>
+    </div>
+</div>

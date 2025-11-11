@@ -1,0 +1,68 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+
+<h2>Overview</h2>
+<span class="lead">
+    Retrieves the currency symbol for a certain record.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>module</td>
+            <td>String</td>
+            <td>The module of the record</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>record_id</td>
+            <td>String</td>
+            <td>The ID of the record</td>
+            <td>Yes</td>
+        </tr>
+    </tbody>
+</table>
+
+</pre>
+
+<h2>Response Arguments</h2>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+   The currency symbol
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/DocumentMerge/getCurrencySymbol/:module/:record_id</code> GET endpoint.
+        </td>
+    </tr>
+</table>

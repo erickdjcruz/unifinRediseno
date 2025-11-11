@@ -1,0 +1,96 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+{{#eq value.length "0"}}
+    <div class="controls-{{../fitGroupClass}} btn-fit" id="empty-field">
+        <button type="button" class="btn first" name="populate_add" data-index="0" rel="tooltip" title="{{str "LBL_ADD"}}"><i class="sicon sicon-plus"></i></button>
+    </div>
+{{else}}
+    <div class="pb-7">
+        {{#each value}}
+            {{setIndex @index}}
+
+            <div class="labels-on-side mb-2">
+                {{#eq ../../view.tplName "preview"}}
+                    {{#notEq @index 0}}
+                        <div class="field-label ellipsis_inline" data-original-title="" title="">{{str "LBL_CJ_TARGET" "CJ_Forms"}}</div>
+                    {{/notEq}}
+                {{else}}
+                    <div class="record-label-wrapper span2 mr-3">
+                        <div class="ellipsis_inline record-label" data-bs-placement="bottom" data-original-title="{{str "LBL_CJ_TARGET" "CJ_Forms"}}" title="" {{#if def.tabindex}} tabindex="{{def.tabindex}}"{{/if}}>
+                            <i class="sicon sicon-plus-sm label-plus"></i>
+                            <span class="text-overflow">{{str "LBL_CJ_TARGET" "CJ_Forms"}}</span>
+                        </div>
+                    </div>
+                {{/eq}}
+                <div class="inline-block cj-target-list {{#eq ../this.view.tplName "preview"}}w-2/5{{else}}w-60{{/eq}}">
+                    <select class="select2 mr-1 w-full" data-placeholder="{{str "LBL_CJ_TARGET_PLACEHOLDER" "CJ_Forms"}}" data-index="{{@index}}" id="{{../this.namePrefix}}_options{{@index}}" name="{{../this.namePrefix}}_options{{@index}}" {{#if def.tabindex}} tabindex="{{def.tabindex}}"{{/if}}>
+                        {{#each ../optionsList}}
+                            <option value="{{@key}}" {{#eq @key ../id}}selected{{/eq}} >{{this}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                {{#each ../populateFieldsMetaData}}
+                    {{#checkFieldName @key ../../../targetFieldName ../index}}
+                        {{#notEq ../../id 'Smart Guide'}}
+                            <div class="{{#eq ../../../../view.tplName "preview"}}w-2/5{{else}}w-60{{/eq}} inline-block ml-1 mr-1" id="{{name}}" data-index="{{../../../index}}">
+                                {{field ../../../../this.view model=../../../../this.view.model template='edit'}}
+                            </div>
+                        {{/notEq}}
+                    {{/checkFieldName}}
+                {{/each}}
+                <div class="btn-group">
+                    {{#if remove_button}}
+                        <button type="button" class="btn btn-invisible btn-dark" name="populate_remove" data-index="{{@index}}" rel="tooltip" title="{{str "LBL_REMOVE"}}"><i class="sicon sicon-minus"></i></button>
+                    {{/if}}
+                    {{#if add_button}}
+                        <button type="button" class="btn btn-invisible btn-dark" name="populate_add" data-index="{{@index}}" rel="tooltip" title="{{str "LBL_ADD"}}"><i class="sicon sicon-plus"></i></button>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="labels-on-side mb-4">
+                {{#eq ../../view.tplName "preview"}}
+                    <div class="field-label ellipsis_inline" data-original-title="" title="">{{str "LBL_CJ_ACTION" "CJ_Forms"}}</div>
+                {{else}}
+                    <div class="record-label-wrapper span2 mr-3">
+                        <div class="ellipsis_inline record-label" data-bs-placement="bottom" data-original-title="{{str "LBL_CJ_ACTION" "CJ_Forms"}}" title="" {{#if def.tabindex}} tabindex="{{def.tabindex}}"{{/if}}>
+                            <i class="sicon sicon-plus-sm label-plus"></i>
+                            <span class="text-overflow">{{str "LBL_CJ_ACTION" "CJ_Forms"}}</span>
+                        </div>
+                    </div>
+                {{/eq}}
+                <div class="inline-block cj-action-list {{#eq ../this.view.tplName "preview"}}w-2/5{{else}}w-60{{/eq}}">
+                    <select class="select2 mr-1 w-full" data-placeholder="{{str "LBL_CJ_ACTION_PLACEHOLDER" "CJ_Forms"}}" data-index="{{@index}}" id="{{../this.namePrefix}}_actions{{@index}}" name="{{../this.namePrefix}}_actions{{@index}}" {{#if def.tabindex}} tabindex="{{def.tabindex}}"{{/if}}>
+                        {{#each ../actionsList}}
+                            {{#eq @key ../id}}
+                                {{#each this}}
+                                    <option value="{{@key}}" {{#eq @key ../../../action_id}}selected{{/eq}} >{{this}}</option>
+                                {{/each}}
+                            {{/eq}}
+                        {{/each}}
+                    </select>
+                </div>
+                {{#each ../actionFieldsMetaData}}
+                    {{#checkFieldName @key ../../../actionFieldName ../index}}
+                        {{#notEq ../../id 'Smart Guide Activities'}}
+                            <div class="{{#eq ../../../../view.tplName "preview"}}w-2/5{{else}}w-60{{/eq}} inline-block ml-1 mr-1" id="{{name}}" data-index="{{../../../index}}">
+                                {{field ../../../../this.view model=../../../../this.view.model template='edit'}}
+                            </div>
+                        {{/notEq}}
+                    {{/checkFieldName}}
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
+{{/eq}}

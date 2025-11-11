@@ -1,0 +1,988 @@
+.calendar-scheduler {
+  // toolbar customizations
+  .k-scheduler-toolbar.k-toolbar {
+    border-bottom: 0;
+    background-color: @primaryContentBackground;
+    color: @textColor;
+    padding-left: 0;
+    padding-right: 0;
+    overflow: visible;
+
+    .k-button-text {
+      color: @textColor;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    > * {
+      margin-left: unset !important;
+      margin-right: unset !important;
+    }
+
+    .k-button.k-button-icon.k-icon-button.k-nav-prev {
+      background-color: @btnBackground;
+      border: @borderWidget;
+    }
+
+    .k-button.k-nav-today {
+      background-color: @btnBackground;
+      border: @borderWidget;
+    }
+
+    .k-button.k-button-icon.k-icon-button.k-nav-next {
+      background-color: @btnBackground;
+      border: @borderWidget;
+    }
+
+    .k-nav-current {
+      font-weight: bold;
+    }
+
+    .k-button.k-button-icon.k-icon-button.dropdown-toggle {
+      background-color: @btnBackground;
+      color: @textColor;
+    }
+
+    .k-scheduler-views.k-button-group {
+      height: 30px;
+      margin-right: 20px;
+    }
+
+    .k-scheduler-views.k-button-group.force-display {
+      display: inherit !important;
+    }
+
+    .k-scheduler-views-wrapper .k-dropdown.k-views-dropdown {
+      display: inline-block;
+      box-sizing: border-box;
+      font-size: 12px;
+      margin-top: 1px;
+      height: fit-content;
+      width: 110px;
+      background-color: @btnBackground;
+
+      a {
+        background-color: @btnBackground;
+      }
+    }
+
+    .usersLegend {
+      margin-right: 10px;
+
+      li div:first-child {
+        display: block;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-right: 0;
+      }
+
+      button {
+        width: 70px;
+        border: @borderWidget;
+        font-size: 12px;
+      }
+
+      button span {
+        width: 50px;
+      }
+
+      .dropdown-menu {
+        position: fixed;
+      }
+    }
+
+    .exportButtons {
+      margin-right: 10px;
+
+      li div:first-child {
+        display: block;
+        padding: 8px 14px;
+      }
+
+      li div:hover {
+        background-color: #c6e7fd;
+        color: #2e87cf;
+      }
+
+      .k-button {
+        text-align: left;
+        background-color: @btnBackground;
+        color: inherit;
+        border: @borderWidget;
+      }
+
+      .shareButton {
+        background: url('@{baseUrl}/img/share.svg') no-repeat center;
+        width: 20px;
+        height: 20px;
+        filter: contrast(0.3);
+      }
+
+      button span {
+        width: 50px;
+      }
+
+      .dropdown-menu {
+        position: fixed;
+      }
+    }
+
+    .userSettings {
+      button {
+        border: @borderWidget;
+      }
+    }
+  }
+
+  .k-scheduler-header .k-scheduler-header-wrap .k-scheduler-table {
+    text-transform: capitalize !important;
+  }
+
+  .templateHtmlWrapper {
+    display: flex;
+    padding-top: 3px;
+
+    div.calendarEventBody {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 100%;
+    }
+  }
+
+  .previewEvent[data-record] {
+    cursor: pointer;
+    width: 7px;
+
+    &:not(:first-child) {
+      margin-left: 1px;
+    }
+  }
+
+  .k-resize-w,
+  .k-resize-n,
+  .k-resize-e,
+  .k-resize-s {
+    opacity: 0;
+  }
+
+  /*class used in agenda view*/
+  .k-scheduler-mark {
+    border-radius: unset !important;
+    display: none;
+    float: left;
+    margin-top: 6px;
+    margin-right: 0;
+  }
+
+  .k-task {
+    height: 100%;
+  }
+
+  .k-scheduler-content {
+    .k-event {
+      box-shadow: unset;
+    }
+
+    td:not(:last-child) {
+      border-right: 1px solid #c9c9c9;
+    }
+
+    .k-event-actions {
+      position: inherit;
+    }
+  }
+
+  .k-scheduler-monthview {
+    .k-scheduler-content {
+      overflow-y: auto !important;
+    }
+
+    .k-today {
+      background-color: unset;
+    }
+
+    .k-today::before {
+      border-top: 0;
+    }
+
+    td[role="gridcell"].k-today.k-state-selected span {
+      color: @white;
+    }
+
+    .k-today .k-link.k-nav-day {
+      border-radius: 50%;
+      color: @white;
+      background-color: #0072e6;
+      height: 25px;
+      width: 25px;
+      line-height: 25px;
+      display: inline-block;
+      text-align: center;
+    }
+  }
+
+  .k-scheduler-header-wrap .k-scheduler-table {
+    background-color: @primaryContentBackground;
+
+    th {
+      text-align: center;
+    }
+  }
+
+  div[data-role="scheduler"] {
+    padding: 0 10px 10px;
+    border-top-style: unset;
+  }
+
+  .k-scheduler-layout {
+    color: @textColor;
+    border: 1px solid #ccc;
+  }
+
+  .k-scheduler-header.k-state-default {
+    padding-right: 0 !important;
+  }
+
+  .event-template {
+    cursor: pointer;
+    height: 100%;
+  }
+
+  div[role="gridcell"],
+  .k-scheduler-agenda .k-task {
+    border-radius: 5px;
+  }
+
+  .k-scheduler {
+    background-color: @primaryContentBackground;
+    border: @borderWidget;
+
+    .k-scheduler-navigation {
+      margin-right: unset;
+
+      &.k-button-group {
+        .k-button {
+          height: 27px;
+        }
+      }
+    }
+
+    .calendarIcon {
+      vertical-align: middle;
+      text-align: center;
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      margin-left: 10px;
+      margin-top: 4px;
+    }
+  }
+
+  .k-scheduler-footer.k-toolbar {
+    background-color: @primaryContentBackground;
+    padding-left: 0;
+    padding-top: 10px;
+
+    button {
+      background-color: @btnBackground;
+      color: @textColor;
+      border: @borderWidget;
+
+      span.k-i-clock::before {
+        font-family: 'SugarIcons';
+        font-size: @baseFontSize;
+        content: @sicon-clock;
+      }
+    }
+  }
+
+  td[role="gridcell"].k-state-selected {
+    background-color: inherit;
+
+    &.k-nonwork-hour {
+      background-color: #e3f1fb;
+    }
+
+    .k-link {
+      color: @textColor;
+    }
+  }
+
+  .k-scheduler-layout {
+    &.k-scheduler-timelineview {
+      .k-event {
+        margin-top: 3px;
+      }
+    }
+  }
+
+  .k-scheduler-layout {
+    &.k-scheduler-monthScheduleview {
+      .k-event {
+        margin-top: 4px;
+      }
+    }
+  }
+
+  .k-scheduler-layout {
+    &:not(.k-scheduler-monthview) {
+      border-bottom: unset;
+    }
+  }
+
+  //views header
+  & .k-scheduler-layout > tbody > tr:nth-child(1) > td:nth-child(1) .k-scheduler-times .k-scheduler-table > tbody > tr:nth-child(1),
+  & .k-scheduler-layout .k-scheduler-header .k-scheduler-date-group,
+  & .k-scheduler-monthScheduleview .k-scheduler-header .k-scheduler-table tbody tr:nth-child(1),
+  & .k-scheduler-monthview > tbody > tr:nth-child(1) > td:nth-child(1) .k-scheduler-header .k-scheduler-header-wrap table th,
+  & .k-scheduler-agendaview > tbody > tr:nth-child(1) > td:nth-child(1) .k-scheduler-header .k-scheduler-header-wrap table th {
+    background-color: #f8fafc;
+  }
+}
+
+.k-scheduler-monthview {
+  td[role="gridcell"].k-state-selected {
+    box-shadow: inset 0 0 0 2px #0072c6;
+  }
+}
+
+.k-scheduler-agendaview {
+  .k-state-selected {
+    background-color: initial;
+  }
+}
+
+.k-scheduler-dayview,
+.k-scheduler-workWeekview,
+.k-scheduler-weekview {
+  .k-scheduler-content {
+    border-left: 1px solid #c9c9c9;
+  }
+}
+
+//mini calendar activated from scheduler toolbar
+.k-widget.k-calendar {
+  background-color: @primaryContentBackground;
+
+  .k-header {
+    background-color: inherit;
+    font-weight: bold;
+    color: @textColor;
+    text-transform: capitalize;
+  }
+
+  th {
+    background-color: inherit;
+  }
+
+  .k-calendar-view thead,
+  .k-footer a {
+    text-transform: capitalize;
+    color: @linkColor;
+  }
+
+  .k-header,
+  .k-content,
+  .k-content th {
+    color: @textColor;
+  }
+
+  .k-content th {
+    border-bottom-width: inherit;
+  }
+
+  .k-today .k-link {
+    color: #3f51b5;
+    box-shadow: inset 0 0 0 1px #3f51b5;
+    border-radius: 20px;
+  }
+
+  .k-state-hover {
+    background-color: @primaryContentBackground;
+
+    .k-link {
+      border-radius: 20px;
+    }
+  }
+
+  .k-state-focused .k-link {
+    border-radius: 20px;
+    box-shadow: inset 0 0 0 1px grey;
+  }
+
+  .k-state-selected .k-link {
+    border-radius: 20px;
+    color: #fff;
+    background-color: #0072c6;
+  }
+}
+
+.k-popup.k-calendar-container {
+  background-color: @primaryContentBackground;
+  border: @borderWidget !important;
+}
+
+.k-scheduler-times-all-day {
+  text-transform: capitalize;
+}
+
+.k-scheduler-agendaview .k-scheduler-header .k-scheduler-table th {
+  text-align: left;
+}
+
+.k-context-menu {
+  color: var(--text-color) !important;
+  background-color: @primaryContentBackground !important;
+  border: @borderWidget !important;
+}
+
+#calendar-wrapper {
+  display: flex;
+}
+
+.k-widget.k-tooltip {
+  width: 300px !important;
+  box-shadow: @shadowWidget !important;
+  opacity: 0.9 !important;
+  background-color: @primaryContentBackground !important;
+  color: @textColor !important;
+}
+
+.event-tooltip {
+  display: grid;
+
+  i {
+    float: left;
+    width: 20px;
+  }
+
+  > div {
+    padding: 10px;
+  }
+
+  .userDot {
+    border-radius: 50%;
+    display: inline-flex;
+    margin: 0;
+    width: 12px;
+    height: 12px;
+  }
+
+  .category-icon {
+    margin-top: 5px;
+  }
+
+  .category-icon > div {
+    height: 100%;
+  }
+
+  .category-container {
+    margin-left: 30px;
+  }
+
+  .hideBottomBorder {
+    border-bottom: 0 !important;
+  }
+
+  .tooltip-header {
+    font-size: larger;
+    font-weight: bold;
+  }
+
+  .tooltip-time {
+    font-size: larger;
+
+    span {
+      display: block;
+    }
+  }
+
+  .tooltip-description {
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: larger;
+  }
+
+  .tooltip-attendees {
+    font-size: larger;
+
+    .userDot {
+      margin-right: 5px;
+    }
+  }
+}
+
+#publish_icalendar_modal {
+  .modal-body {
+    padding: 20px 10px;
+  }
+
+  .form-control {
+    width: 520px;
+    height: 30px;
+    font-size: 12pt;
+  }
+}
+
+.businessHoursContainer {
+  padding: 10px;
+}
+
+.calendar-scheduler-panel {
+  display: none;
+  width: 250px;
+}
+
+.calendar-main-scheduler {
+  position: relative;
+  height: 100%;
+  overflow-x: auto;
+
+  .calendar-main-panel {
+    background-color: @primaryContentBackground;
+    width: 325px;
+    border-right: @borderWidget;
+    position: static;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 8888;
+    height: 100%;
+  }
+
+  .scheduler-component {
+    float: left;
+    height: inherit;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 325px;
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  #mini-calendar {
+    z-index: 100;
+    width: auto;
+    border: @borderWidget;
+    border-right-style: unset;
+    border-left-style: unset;
+    border-top-style: unset;
+    background-color: @primaryContentBackground;
+
+    .k-today .k-link {
+      color: #3f51b5;
+      box-shadow: inset 0 0 0 1px #3f51b5;
+      border-radius: 20px;
+    }
+
+    .k-state-hover {
+      background-color: @primaryContentBackground;
+
+      .k-link {
+        border-radius: 20px;
+      }
+    }
+
+    .k-state-focused .k-link {
+      border-radius: 20px;
+      box-shadow: inset 0 0 0 1px grey;
+    }
+
+    .k-state-selected .k-link {
+      border-radius: 20px;
+      color: #fff;
+      background-color: #0072c6;
+      box-shadow: none;
+    }
+
+    .k-footer a {
+      text-transform: capitalize;
+      color: @linkColor;
+    }
+
+    .k-header {
+      text-transform: capitalize;
+      font-weight: bold;
+      background-color: @primaryContentBackground;
+    }
+
+    .k-header,
+    .k-content,
+    .k-content th {
+      color: @textColor;
+    }
+
+    .k-content th {
+      border-bottom-width: inherit;
+    }
+
+    a[data-action=prev],
+    a[data-action=next] {
+      margin: 5px;
+      border: @borderWidget;
+    }
+  }
+
+  .calendarsWrapper {
+    line-height: 25px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: 14px;
+
+    > div:first-child {
+      border-bottom: @borderWidget;
+    }
+
+    div.record-label {
+      font-weight: bold;
+    }
+
+    span[data-title] {
+      margin-left: 10px;
+    }
+
+    span[name=addCalendar] {
+      float: right;
+      margin-right: 10px;
+
+      .sicon-plus:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+//class used on my calendars and other calendars fields
+.calendar {
+  .btn-link.calendar-clear {
+    font-weight: bold;
+  }
+
+  span[name=addCalendar] {
+    float: right;
+    margin-left: inherit;
+
+    .sicon-plus:hover {
+      cursor: pointer;
+    }
+  }
+
+  input[type="checkbox"] {
+    + label {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      display: inline;
+    }
+  }
+
+  .search-group {
+    display: inline-flex;
+    position: relative;
+    width: 90%;
+    margin-left: 10px;
+
+    .calendars-search {
+      width: 100%;
+    }
+
+    i {
+      width: 20px;
+      position: absolute;
+      right: 0;
+      line-height: inherit;
+      top: 2px;
+
+      &:not(.hidden) {
+        display: inline;
+      }
+    }
+
+    input:focus + i {
+      visibility: hidden;
+    }
+  }
+}
+
+.dashboard .thumbnail.dashlet.calendar {
+  .exportButtons {
+    display: none;
+  }
+}
+
+.calendars-list {
+  margin: 10px;
+  list-style-type: none;
+
+  li {
+    padding: 3px;
+
+    .sicon-close {
+      visibility: hidden;
+    }
+
+    &:hover {
+      .sicon-close {
+        visibility: visible;
+        cursor: pointer;
+      }
+    }
+  }
+
+  span[name=removeOtherCalendar] {
+    float: right;
+    margin-right: 10px;
+  }
+}
+
+.selectAllCheckbox {
+  padding-left: 3px;
+}
+
+.calendar,
+.calendar-scheduler {
+  .userDot {
+    border-radius: 50%;
+    display: inline-flex;
+    margin: 0 5px;
+    width: 7px;
+    height: 7px;
+  }
+}
+
+.calendar-scheduler {
+  .userBar {
+    position: absolute;
+    display: inline-flex;
+    width: 0.4em;
+    height: 100%;
+    margin-top: -3px;
+
+    :first-of-type {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+  }
+
+  .k-scheduler-agenda .previewEvent:first-of-type .userBar {
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+  }
+}
+
+.calendar-clear {
+  font-size: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.calendarAddContainer {
+  padding: 10px;
+  height: 30px;
+
+  span {
+    float: left;
+  }
+}
+
+//needed for detail and preview color
+.record-cell div[data-content="color-picker-icon"] {
+  width: 20px;
+  height: 20px;
+}
+
+.k-scheduler-agendaview .k-state-hover,
+.k-scheduler-agendaview .k-state-selected {
+  background-color: initial;
+
+  .k-scheduler-timecolumn {
+    color: @textColor;
+  }
+}
+
+.calendar-alert .alert-confirmation .alert {
+  .alert-btn-cancel {
+    width: 50px;
+    display: table-cell !important;
+    text-align: center;
+  }
+
+  .alert-btn-save {
+    padding: 10px 15px;
+    color: inherit;
+    margin: 0;
+    width: 60px;
+    border-right: 1px solid #ffd132;
+    display: table-cell;
+    text-align: center;
+    font-weight: bold;
+
+    &:hover {
+      background-color: @warningBackground;
+      text-decoration: none;
+      color: @black;
+    }
+  }
+
+  .alert-btn-saveAndSendEmails {
+    padding: 10px 15px;
+    color: inherit;
+    margin: 0;
+    width: 170px;
+    display: table-cell;
+    text-align: center;
+    font-weight: bold;
+
+    &:hover {
+      background-color: @warningBackground;
+      text-decoration: none;
+      color: @black;
+    }
+  }
+}
+
+body.sugar-dark-theme {
+  .calendar-scheduler {
+    .k-nonwork-hour {
+      background-color: @primaryContentActive;
+
+      td {
+        background-color: @primaryContentActive;
+      }
+    }
+
+    .k-scheduler-agendaview {
+      .k-scheduler-content table tr td {
+        border-bottom: unset;
+      }
+
+      .k-scheduler-datecolumn {
+        background-color: @primaryContentActive;
+        color: @textColor;
+      }
+    }
+
+    .k-scheduler-content {
+      th {
+        border-bottom: @borderWidget;
+      }
+
+      td {
+        border-bottom: @borderWidget;
+
+        &:not(:last-child) {
+          border-right: @borderWidget;
+        }
+      }
+    }
+
+    .k-scheduler-times tr {
+      border-bottom: @borderWidget !important;
+
+      th {
+        border-bottom: @borderWidget;
+      }
+    }
+
+    .k-scheduler-header th,
+    .k-scheduler-table td,
+    .k-scheduler-times-all-day {
+      border-bottom: @borderWidget;
+    }
+
+    .k-scheduler-layout {
+      border: @borderWidget;
+
+      &:not(.k-scheduler-monthview):not(.k-scheduler-agendaview) {
+        border-bottom: @borderWidget;
+      }
+    }
+
+    .k-scheduler-footer.k-toolbar {
+      border-top: unset;
+    }
+  }
+
+  .k-widget.k-tooltip {
+    background-color: @primaryContentActive !important;
+    border: @borderWidget;
+
+    .tooltip-description {
+      border-top: @borderWidget;
+      border-bottom: @borderWidget;
+    }
+  }
+
+  //views header
+  & .k-scheduler-layout > tbody > tr:nth-child(1) > td:nth-child(1) .k-scheduler-times .k-scheduler-table > tbody > tr:nth-child(1),
+  & .k-scheduler-layout .k-scheduler-header .k-scheduler-date-group,
+  & .k-scheduler-monthScheduleview .k-scheduler-header .k-scheduler-table tbody tr:nth-child(1),
+  & .k-scheduler-monthview > tbody > tr:nth-child(1) > td:nth-child(1) .k-scheduler-header .k-scheduler-header-wrap table th,
+  & .k-scheduler-agendaview > tbody > tr:nth-child(1) > td:nth-child(1) .k-scheduler-header .k-scheduler-header-wrap table th {
+    background-color: @primaryContentActive;
+  }
+
+  .k-scheduler-dayview,
+  .k-scheduler-workWeekview,
+  .k-scheduler-weekview {
+    .k-scheduler-content {
+      border-left: @borderWidget;
+    }
+  }
+
+  .k-scheduler-timelineview,
+  .k-scheduler-monthScheduleview {
+    .k-scheduler-times {
+      border-bottom: @borderWidget;
+    }
+  }
+
+  .k-context-menu {
+    color: @dropdownLinkColor !important;
+    background-color: @dropdownBackground !important;
+
+    .k-menu-item {
+      border: @borderWidget;
+
+      &:hover {
+        background-color: @dropdownLinkBackgroundHover;
+      }
+    }
+  }
+
+  .k-menu.k-context.menu {
+    .k-item > .k-link:hover {
+      color: @textColorHover;
+    }
+  }
+
+  .k-dropdown .k-state-focused,
+  .k-list > .k-state-hover,
+  .k-state-hover {
+    color: @textColorHover;
+  }
+
+  // toolbar customizations
+  .k-scheduler-toolbar.k-toolbar {
+    .exportButtons {
+      li div:hover {
+        background-color: @dropdownLinkBackgroundHover;
+      }
+    }
+  }
+
+  #mini-calendar .k-state-selected .k-link {
+    background-color: @red;
+  }
+
+  .k-scheduler-monthview {
+    .k-today .k-link.k-nav-day {
+      background-color: @red;
+    }
+  }
+}

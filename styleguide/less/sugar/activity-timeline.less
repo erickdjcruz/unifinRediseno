@@ -1,0 +1,377 @@
+/* NEW SKIN START */
+
+.activity-card {
+  display: flex;
+  position: relative;
+
+  .fieldset,
+  .fieldset-inline {
+    &.fieldset-empty {
+      display: none;
+    }
+  }
+
+  .panel-attachments .square-pill {
+    margin-top: 0.5rem;
+  }
+
+  .activity-card-detail {
+    background: @contentTimelineBackground;
+    padding: 10px 7px;
+    text-align: center;
+    flex: 0 0 60px;
+    font-size: 10px;
+    line-height: 14px;
+    color: @textColorLight;
+
+    .record-icon {
+      .center-content();
+
+      border-radius: 50%;
+    }
+
+    .panel-header {
+      margin-top: 6px;
+      font-weight: 600;
+    }
+  }
+
+  .activity-card-main {
+    border-bottom: @borderWidget;
+    padding: 17px 12px 16px;
+    width: 100%;
+    color: @textColor;
+
+    .activity-label {
+      color: @labelColor;
+      align-self: center;
+    }
+
+    .panel-user-single {
+      align-items: baseline;
+    }
+
+    .activity-card-header {
+      .panel-header {
+        font-weight: 600;
+        font-size: 14px;
+        display: inline-flex;
+        width: 100%;
+
+        .activity-card-header {
+          margin-right: 0.5rem;
+
+          &.email-state {
+            color: @textColor;
+            font-size: 12px;
+            font-weight: normal;
+            padding-left: 12px;
+          }
+        }
+
+        span {
+          .ellipsis_inline {
+            white-space: normal;
+          }
+        }
+
+        &.panel-header-create .relate-field-container {
+          padding: 0;
+        }
+      }
+
+      .created-status {
+        color: @historyLogColor;
+        font-weight: 600;
+      }
+
+      .panel-users {
+        & > span {
+          line-height: 22px;
+
+          .relate-field-container {
+            padding: 0;
+
+            .label-module {
+              margin-right: 0.375rem;
+
+              &.label-module-size-sm {
+                height: 1.25rem;
+                width: 1.25rem;
+              }
+            }
+          }
+        }
+
+        .activity-label {
+          display: flex;
+          margin-right: 0.5rem;
+          line-height: 22px;
+          color: @labelColor;
+        }
+
+        .sicon-user {
+          font-size: 10px;
+        }
+
+        .header-user-item {
+          display: flex;
+
+          &:not(:last-child) {
+            margin-bottom: 0.5rem;
+          }
+        }
+      }
+
+      a {
+        display: inline;
+      }
+
+      .panel-users {
+        .header-user {
+          display: flex;
+          align-items: center;
+          align-self: center;
+
+          .avatar {
+            .center-content();
+
+            background-color: @gray30;
+            height: 16px;
+            min-width: 16px;
+            width: 16px;
+            align-self: center;
+          }
+
+          .user-value {
+            display: inline-flex;
+            padding-left: 4px;
+            color: @gray70;
+          }
+        }
+
+        .header-user-to-user {
+          display: flex;
+          align-items: center;
+
+          .arrow {
+            margin: 0 11px;
+          }
+        }
+
+        .header-user-list {
+          display: flex;
+          flex-wrap: wrap;
+          margin: -6px -6px 0;
+
+          .header-user {
+            margin: 6px 6px 0;
+          }
+
+          .header-more-users {
+            margin-left: 6px;
+            color: @gray70;
+            align-self: flex-end;
+          }
+        }
+      }
+    }
+
+    .activity-card-content {
+      .label-module {
+        margin-right: 0.375rem;
+
+        &.label-module-size-sm {
+          height: 1.25rem;
+          width: 1.25rem;
+        }
+      }
+
+      .relate-field-container {
+        padding: 0;
+
+        .label-module {
+          margin-top: -1px;
+        }
+      }
+
+      .currency-field {
+        .original:empty {
+          display: none;
+        }
+      }
+
+      .change-before-value {
+        .currency-field {
+          .converted,
+          .original {
+            text-decoration: line-through;
+          }
+        }
+      }
+
+      .activity-date-modified {
+        margin-top: 0.5rem;
+        text-align: left;
+        font-size: 10px;
+        line-height: 14px;
+        color: @labelColor;
+      }
+
+      .btn {
+        &.activity-card-show-more {
+          padding-left: 0;
+          margin-left: 0;
+        }
+
+        &.activity-card-show-less {
+          padding-left: 0;
+          margin-left: 0;
+        }
+      }
+
+      .select2-container-multi .select2-choices {
+        display: flex;
+        padding: 0;
+        background: none;
+        gap: 0.25rem;
+
+        .select2-search-choice {
+          margin-right: 0.5rem;
+          padding: 0.125rem 0.5rem;
+        }
+      }
+
+      .activity-card-content-body {
+        &.collapsed-timeline {
+          max-height: 300px;
+          overflow: hidden;
+        }
+
+        &.expanded-timeline {
+          max-height: none;
+        }
+
+        .panel-header {
+          margin-top: 0.5rem;
+          display: flex;
+          align-items: baseline;
+
+          span {
+            .ellipsis_inline {
+              white-space: normal;
+            }
+          }
+        }
+
+        .label {
+          &.label-pending,
+          &.label-important,
+          &.label-success,
+          &.label-inverse {
+            margin-left: 12px;
+          }
+        }
+
+        .panel-group {
+          column-gap: 1rem;
+          row-gap: 0.5rem;
+          flex-wrap: wrap;
+
+          .fieldset {
+            gap: 0.5rem;
+          }
+
+          .fieldset-field {
+            margin: auto 0;
+          }
+        }
+      }
+
+      [class^="panel"] {
+        margin-top: 0.5rem;
+      }
+
+      .panel-attachments {
+        ul.select2-choices {
+          border: none;
+          flex-wrap: wrap;
+        }
+      }
+
+      .activity-card-status,
+      .activity-card-text {
+        margin-bottom: 10px;
+      }
+
+      .control-group.email .btn-toolbar.prevent-mousedown {
+        display: none;
+      }
+    }
+  }
+
+  &.activity-card-notes {
+    .activity-card-main .activity-card-content-body {
+      .panel-attachments {
+        .attachment-preview img {
+          max-height: 300px;
+        }
+      }
+    }
+  }
+
+  &.activity-card-emails .panel-header {
+    flex-direction: column;
+    row-gap: 0.5rem;
+
+    .label-state {
+      font-weight: normal;
+      font-size: 12px;
+    }
+  }
+
+  .cabmenu {
+    right: 12px;
+    top: 11px;
+
+    &:not(.open) {
+      display: none;
+    }
+  }
+
+  &:hover {
+    .cabmenu {
+      display: flex;
+      border-radius: 15px;
+    }
+  }
+
+  &.activity-card-audit {
+    .change-container {
+      display: flex;
+      align-items: center;
+
+      div[class$="-container"] {
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+
+      .change-field-name {
+        font-weight: 600;
+      }
+
+      .change-before-value {
+        font-style: italic;
+        color: @gray70;
+        text-decoration: line-through;
+      }
+
+      .change-after-value-container {
+        padding: 2px 6px;
+      }
+    }
+  }
+}
+
+/* NEW SKIN END */

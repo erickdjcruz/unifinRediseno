@@ -1,0 +1,97 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+
+<h2>Overview</h2>
+<span class="lead">
+    Upload a document and link it to a parent record.
+</span>
+
+<h2>Request Arguments</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>sugar_mr_id</td>
+        <td>String</td>
+        <td>The ID of the DocumentMerge record</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>gen_doc_id</td>
+        <td>String</td>
+        <td>The ID of the Document record to be created</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>use_revision</td>
+        <td>boolean</td>
+        <td>Indicates whether to use revsions or not when creating the document</td>
+        <td>No (default is true)</td>
+    </tr>
+    <tr>
+        <td>record_module</td>
+        <td>String</td>
+        <td>The module of the record from which the merge was initiated</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>record_id</td>
+        <td>String</td>
+        <td>The ID of the record from which the merge was initiated</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>parent_module</td>
+        <td>String</td>
+        <td>If the merge was initiated from a subpanel send the parent record module also</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>parent_id</td>
+        <td>String</td>
+        <td>If the merge was initiated from a subpanel send the parent record ID also</td>
+        <td>No</td>
+    </tr>
+    </tbody>
+</table>
+
+</pre>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+Document ID
+@throws SugarException
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_14
+        </td>
+        <td>
+            Added <code>/DocumentMerge/createDocument</code> POST endpoint.
+        </td>
+    </tr>
+</table>

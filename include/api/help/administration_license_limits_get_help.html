@@ -1,0 +1,62 @@
+<!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+-->
+<h2>Overview</h2>
+<span class="lead">
+    [ADMIN] Get License Limits
+</span>
+
+<h2>Summary</h2>
+<span class="lead">
+    This endpoint gets the license limits, the number of unused licensed seats for each license type.
+    This endpoint is only available to administrators.
+</span>
+
+<h2>Request Arguments</h2>
+<span class="lead">
+    This endpoint does not accept any arguments.
+</span>
+
+<h3>Response</h3>
+<pre class="pre-scrollable">
+{
+  "license_key": "licensekeyissuedbysugar",
+  "default_limit": 100,
+  "limit_enforced": 1,
+  "default_license_type" : "CURRENT",
+  "seats": {
+    "CURRENT": 100,
+    "SUGAR_SERVE": 10
+  },
+  "available_seats": {
+    "CURRENT": 25,
+    "SUGAR_SERVE": 1,
+    "SUGAR_SELL":0,
+  }
+}
+</pre>
+
+<h2>Change Log</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Version</th>
+        <th>Change</th>
+    </tr>
+    <tr>
+        <td>
+            v11_2
+        </td>
+        <td>
+            Added <code>Administration/license/limits</code> GET endpoint.
+        </td>
+    </tr>
+</table>

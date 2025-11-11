@@ -1,0 +1,56 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#with templateComponent}}
+    <div class="row-fluid dm-spacing">
+        <div class="span11">
+            <textarea class="preview dm-select" readonly>{{preview}}</textarea>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="span4">{{str 'LBL_DOCUMENT_MERGE_DATE_FORMAT' module}}</div>
+                <div class="span6">
+                    <select class="select2 dm-tag-attribute dateFormatSelect"
+                        placeholder="{{str 'LBL_DOCUMENT_MERGE_DATE_FORMAT' module}}" name="format">
+                        <option></option>
+                        {{#each dateFormats}}
+                            <option>{{this}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="span12">
+                <div class="span4"></div>
+                <div class="span8"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid dm-spacing">
+        <div class="span12">
+            <div class="span4">{{str 'LBL_DOCUMENT_MERGE_CUSTOM_DATE' module}}</div>
+            <div class="span8">
+                <input type="checkbox" class="customOption">
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid dm-spacing">
+        <div class="span12 customOptions">
+            <div class="span4"><a href="https://momentjs.com/docs/#/displaying/format/" target="_blank">
+                    {{str 'LBL_HELP'}}</a> </div>
+            <div class="span6">
+                <input type="text" name="format"
+                    placeholder="{{str 'LBL_DOCUMENT_MERGE_DEFAULT_DATE_FORMAT' module}}" class="dm-tag-attribute
+                    customValue" attr-name="format" />
+            </div>
+        </div>
+    </div>
+{{/with}}

@@ -1,0 +1,27 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if isAvailable}}
+    <button data-action="omnichannel" class="btn logged-out" aria-label="Omnichannel" role="link" type="button">
+        <span class="omni-circle inline-block w-3 h-3 rounded-full"></span>
+        <span class="omni-label text-xs ml-1.5">{{str 'LBL_OMNICHANNEL'}}</span>
+    </button>
+
+    {{#if configAvailable}}
+        <div class="config-menu dropdown" data-mode="init">
+            <i class="sicon sicon-kebab toggle dropdown-toggle" data-bs-toggle="dropdown"></i>
+            <i class="sicon sicon-kebab disabled" rel="tooltip" title="{{str 'LBL_OMNICHANNEL_SET_OFFLINE_BEFORE_CONFIGURING'}}"></i>
+
+            <div class="option-layout-open dropdown-menu border-0 dark:border border-[--dropdown-border-widget] rounded-md shadow-xl">{{str 'LBL_OMNICHANNEL_CONFIG_LAYOUT'}}</div>
+        </div>
+    {{/if}}
+{{/if}}

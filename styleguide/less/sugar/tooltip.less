@@ -1,0 +1,107 @@
+/* TOOLTIP
+  ----------------*/
+
+/* twitter-bootstrap import START */
+
+// Base class
+.tooltip {
+  position: absolute;
+  z-index: @zindexTooltip;
+  display: block;
+  visibility: visible;
+  padding: 5px;
+  font-size: 11px;
+  opacity: 0;
+  &.top { margin-top: -3px; }
+  &.right { margin-left: 3px; }
+  &.left { margin-left: -3px; }
+}
+
+// Wrapper for the tooltip content
+.tooltip-inner {
+  max-width: 200px;
+  padding: 3px 8px;
+  color: @tooltipColor;
+  text-align: center;
+  text-decoration: none;
+  background-color: @tooltipBackground;
+  border-radius: @baseBorderRadius;
+  box-shadow: 1px 1px 3px 1px fade(@black, 20%);
+}
+
+// Arrows
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+
+.tooltip {
+  &[data-popper-placement="top"] .tooltip-arrow {
+    bottom: 0;
+    border-width: @tooltipArrowWidth @tooltipArrowWidth 0;
+    border-top-color: @tooltipArrowColor;
+  }
+
+  &[data-popper-placement="right"] .tooltip-arrow {
+    margin-left: -5px;
+    border-width: @tooltipArrowWidth @tooltipArrowWidth @tooltipArrowWidth 0;
+    border-right-color: @tooltipArrowColor;
+  }
+
+  &[data-popper-placement="left"] .tooltip-arrow {
+    top: 50%;
+    right: 0;
+    border-width: @tooltipArrowWidth 0 @tooltipArrowWidth @tooltipArrowWidth;
+    border-left-color: @tooltipArrowColor;
+  }
+
+  &[data-popper-placement="bottom"] .tooltip-arrow {
+    top: 0;
+    left: 50%;
+    border-width: 0 @tooltipArrowWidth @tooltipArrowWidth;
+    border-bottom-color: @tooltipArrowColor;
+  }
+}
+
+/* twitter-bootstrap import END */
+
+.tooltip {
+  text-shadow: none;
+  font-weight: normal;
+  word-wrap: break-word;
+  pointer-events: none;
+
+  &.in,
+  &.show {
+    opacity: 1;
+  }
+
+  div,
+  span,
+  a {
+    color: @white;
+  }
+}
+
+.tooltip-inner {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+
+  & > div {
+    text-align: left;
+  }
+
+  & > p {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 13px;
+    color: @gray20;
+    line-height: normal;
+    margin: 3px 0;
+  }
+}

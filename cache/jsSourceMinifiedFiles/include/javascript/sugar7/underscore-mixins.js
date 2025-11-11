@@ -1,0 +1,1 @@
+(function(app){app.events.on('app:init',function(){_.mixin({moveIndex:function(array,fromIndex,toIndex){array.splice(toIndex,0,_.first(array.splice(fromIndex,1)));return array;}});});})(SUGAR.App);

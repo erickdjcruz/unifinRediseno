@@ -1,0 +1,79 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="tab-pane active">
+    {{#if collection.dataFetched}}
+        {{#each collection.display_columns}}
+            <table class="table table-striped dataTable">
+                <thead>
+                    <tr>
+                        {{#each fields}}
+                            <th class="relative {{#isSortable ../module this}}sorting{{#eq ../../../collection.orderBy.field name}}_{{../../../../collection.orderBy.direction}}{{/eq}} orderBy{{name}}{{/isSortable}}{{#if widthClass}} {{widthClass}}{{/if}}"
+                            {{#if styles}} style="{{styles}}"{{/if}}
+                            {{#if name}} data-fieldname="{{name}}"{{/if}} data-orderby="{{orderBy}}">
+                                <div class="sortable-row-header-container p-2">
+                                    <span class="sortable-row-header-column-name">
+                                         {{#if icon}}
+                                             <i class="{{buildIcon icon.type}}" rel="tooltip"  title="{{str icon.tooltip ../../module}} "></i>
+                                         {{/if}}
+                                        {{str label ../module}}
+                                    </span>
+                                    <span class="sortable-row-header-arrows">
+                                        <i class="sicon sicon-arrow-up"></i>
+                                        <i class="sicon sicon-arrow-down"></i>
+                                    </span>
+                                </div>
+                            </th>
+                        {{/each}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each ../collection.models}}
+                        <tr class="single"{{#if id}} data-id="{{id}}"{{/if}}>
+                            {{#each ../fields}}
+                                <td
+                                    class="{{#if align}}{{align}}{{/if}}"
+                                    {{#if name}} data-fieldname="{{name}}"{{/if}}
+                                    {{#if type}} data-type="{{type}}"{{/if}}
+                                >
+                                    {{field ../../../this model=../this template='list'}}
+                                </td>
+                            {{/each}}
+                            {{#if hasEditAccess}}
+                                <td class="edit-td sticky right-0">
+                                    <div class="flex flex-row items-center absolute h-full top-0 right-0 pr-1.5">
+                                        <div class="btn-group detail flex flex-row items-center rounded-full shadow-lg bg-[--dashlet-background]">
+                                            <button type="button" class="btn btn-invisible" data-action="edit-list-row">
+                                                <i class="sicon sicon-edit"></i>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group edit flex flex-row items-center rounded-full shadow-lg bg-[--dashlet-background] w-15 h-7.5">
+                                            <button type="button" class="btn btn-invisible pr-0" data-action="cancel-list-row">
+                                                <i class="sicon sicon-close"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-invisible pl-0" data-action="save-list-row">
+                                                <i class="sicon sicon-check-circle"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            {{/if}}
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{/each}}
+        {{#unless collection.length}}
+            {{partial 'nodata' this}}
+        {{/unless}}
+    {{/if}}
+</div>

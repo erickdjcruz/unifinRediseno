@@ -1,0 +1,11 @@
+// Customize appearance of "Transcript" fields in calls record view
+.call-transcript:not(:empty):not(.nolicense) {
+  border: 2px solid @borderColor;
+  border-radius: @borderRadiusSmall;
+  max-height: 125px;
+  overflow-y: auto;
+
+  &.empty-transcript {
+    border: none;
+  }
+}

@@ -1,0 +1,33 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<ul class="nav nav-tabs">
+    {{#each _tabs}}
+        {{#if hasTitle}}
+            <li class="tab{{#eq ../../activeTabIndex @index}} active{{/eq}}" data-bs-toggle="tab">
+                <a
+                    class="ellipsis_inline"
+                    data-index="{{@index}}"
+                    data-html="true"
+                    rel="tooltip"
+                    data-bs-placement="bottom"
+                    data-original-title="{{#if ../isFocusDashboard}}{{../../context.dataTitle.module}} | {{../../context.dataTitle.view}}
+{{../../context.dataTitle.name}}{{else}}{{../../recordName}}{{/if}}"
+                >
+                    {{moduleLabel context.module 'sm'}}
+                    <span class="tab-title font-semibold">{{#if ../isFocusDashboard}}{{../../dashboardName}}{{else}}{{../../recordName}}{{/if}}</span>
+                    <i class="sicon sicon-close" data-index="{{@index}}"></i>
+                </a>
+            </li>
+        {{/if}}
+    {{/each}}
+</ul>

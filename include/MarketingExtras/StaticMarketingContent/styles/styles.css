@@ -1,0 +1,42 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+.static {
+	position: static;
+}
+.cover {
+	background-size: cover;
+	background-position: center right;
+	background-repeat: no-repeat;
+}
+.owl-carousel .owl-slide {
+	position: relative;
+	height: 100vh;
+	background-color: lightgray;
+}
+.owl-carousel .owl-nav [class*="owl-"]:hover {
+	background: transparent;
+}
+section {
+	display: none;
+}
+
+@media(min-width:768px) {
+	.cover {
+		background-position: center center;
+	}
+}
+
+@media(min-width:992px) {
+	.cover {
+		background-position: center center;
+	}
+}
+
+@media(min-width:1200px) {
+	.cover {
+		background-position: center center;
+	}
+}

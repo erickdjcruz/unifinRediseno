@@ -1,0 +1,31 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="report-loading-screen-overlay" data-widget="report-loading" data-type="filters">
+    <div class="filters-skeleton-loader h-full min-h-[6.25rem] w-full"></div>
+</div>
+<div class="flex flex-row items-center m-0.75 ml-2.5 mr-2.5 mb-2.5 mt-2.5 apply-button-container hidden"data-container="apply-button-container">
+    <button class="ml-0 btn btn-primary apply-filters-btn disabled !text-sm w-full" type="button" data-action="apply-runtime-filters" disabled>
+        {{str "LBL_APPLY_FILTERS"}}
+    </button>
+</div>
+<div class="report-filters-container h-full overflow-x-hidden overflow-y-auto" data-container="filters-container">
+</div>
+<div class="report-no-data-available hidden h-full mr-5 text-center" data-widget="report-no-filters">
+    {{str "LBL_NO_FILTERS_REPORT_AVAILABLE"}}
+</div>
+<div class="report-no-data-available hidden h-full mr-5 text-center" data-widget="report-hidden-filters">
+    {{{str "LBL_NO_RUNTIME_FILTERS_REPORT_AVAILABLE"}}}
+</div>
+<div class="report-filters-no-data-available hidden h-full mr-5 text-center" data-widget="report-no-data">
+    {{str "LBL_NO_DATA_AVAILABLE"}}
+</div>

@@ -1,0 +1,14 @@
+{
+  "color": {
+    "base": {
+      "button": {
+        "primary": {
+          "base": { "value": "{color.blue.600.value}", "comment": "Standardized primary button color" },
+          "hover": { "value": "{color.blue.800.value}", "comment": "Standardized primary button hover color" },
+          "active": { "value": "{color.blue.800.value}", "comment": "Standardized primary button active color" },
+          // "disabled": { "value": "TODO" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if properties.hasBeenCalculated}}
+    <a id="{{buttonId}}"
+        class="actionbuttons actionbuttons-{{templateComponent.activeButtonMeta.settings.type}}{{#unless templateComponent.activeButtonMeta.settings.isRowAction}} btn {{#eq templateComponent.actionMeta.settings.type "button"}}{{#eq templateComponent.actionMeta.settings.size "large"}} btn-large {{/eq}}{{#eq templateComponent.actionMeta.settings.size "small"}} btn-mini {{/eq}}{{/eq}} btn-{{properties.colorScheme}}{{/unless}} ml-2"
+        href="javascript:void(0);"
+        title="{{properties.description}}"
+        role="button"
+        aria-label="{{properties.label}}">{{#if properties.showIcon}}<i class="{{buildIcon properties.icon}}"></i>{{/if}}{{#if properties.showLabel}}<div class="actionbuttons-ellipsis">{{properties.label}}</div>{{/if}}
+    </a>
+{{else}}
+        {{partial 'button-loading' this.templateComponent this}}
+{{/if}}

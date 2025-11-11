@@ -1,0 +1,38 @@
+.step-circle {
+  border-radius: 14px;
+  height: 26px;
+  width: 26px;
+  position: relative;
+  display: inline-block;
+  background: @primaryContentBackground;
+  text-align: center;
+  margin-right: 12px;
+  border: @borderWidget;
+
+  > span {
+    display: inline-block;
+    background: @contentBackground;
+    width: 18px;
+    height: 18px;
+    border: @borderWidget;
+    border-radius: 10px;
+    margin-top: 3px;
+    font-weight: bold;
+  }
+
+  .sicon-check-circle-lg {
+    display: none;
+    color: @green;
+    margin-top: 5px;
+  }
+
+  &.complete {
+    > span {
+      display: none;
+    }
+
+    .sicon-check-circle-lg {
+      display: inline-block;
+    }
+  }
+}

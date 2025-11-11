@@ -1,0 +1,46 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="row-fluid dm-tag-builder-relationships">
+    {{#each relationshipStack}}
+        <div>
+            <div class="span8">
+                <select class="relationshipSelect dm-select"
+                    placeholder="{{str 'LBL_DOCUMENT_MERGE_SELECT_RELATIONSHIP' ../module}}"
+                    {{#notEq ../relationshipStack.length 1}}
+                        {{#if @last}}
+                            enabled="enabled"
+                        {{else}}
+                            disabled="disabled"
+                        {{/if}}
+                    {{/notEq}}>
+                    <option></option>
+                    {{#each this}}
+                        <option value={{name}} {{#if selected}}selected{{/if}}>
+                            {{str vname module}} [{{name}}]
+                        </option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="span4">
+                {{#eq @index ../secondLastRelationshipStackIndex}}
+                    <button class="relationshipOptions dm-tag-builder-relationship-options btn btn-default"
+                        stack-index={{@index}}><i class="sicon sicon-settings" stack-index={{@index}}></i></button>
+                {{/eq}}
+                {{#eq @index ../secondLastRelationshipStackIndex}}
+                    <button class="removeRelationship dm-tag-builder-relationship-options btn btn-default"
+                        stack-index={{@index}}><i class="sicon sicon-close" stack-index={{@index}}></i></button>
+                {{/eq}}
+            </div>
+        </div>
+    {{/each}}
+</div>

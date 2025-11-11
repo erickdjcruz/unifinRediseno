@@ -1,0 +1,64 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="maps-bottom-border">
+    <table class="table table-striped table-class mb-0.5" id= "table-id">
+        <tr>
+            <th>{{str 'LBL_MAPS_LOGGER_LBL_MODULE' module}}</th>
+            <th>{{str 'LBL_MAPS_LOGGER_LBL_NAME' module}}</th>
+            <th>{{str 'LBL_MAPS_LOGGER_LBL_STATUS' module}}</th>
+            <th>{{str 'LBL_MAPS_LOGGER_LBL_GEOCODE' module}}</th>
+        </tr>
+        {{#each this.model.attributes.records}}
+            <tr data-id="{{parent_id}}" data-module="{{parent_type}}">
+                <td>{{getModuleName parent_type plural=true}}</td>
+                <td><a class="ellipsis_inline" href="#{{parent_type}}/{{parent_id}}">{{parent_name}}</a></td>
+                <td>
+                    {{#eq status 'FAILED'}}
+                        <a data-action="log-details" class="ellipsis_inline maps-text-color-red">{{status}} <i class="sicon sicon-info mb-0.5"></i></a>
+                    {{/eq}}
+                    {{#notEq status 'FAILED'}}
+                        {{status}}
+                    {{/notEq}}
+                </td>
+                <td>
+                    {{#if geocoded}}
+                        {{str 'LBL_MAPS_LOGGER_YES' ../../module}}
+                    {{else}}
+                        {{str 'LBL_MAPS_LOGGER_NO' ../../module}}
+                    {{/if}}
+                </td>
+            </tr>
+        {{/each}}
+    </table>
+    <div class="flex-table-pagination maps-logger-background">
+        {{#if this.model.attributes.totalPages}}
+            <div class="list-pagination" aria-label="page-navigation">
+                <div class="pagination-items">
+                    <button data-action="paginate-prev" class="btn paginate-prev {{#eq this.model.attributes.currentPage 1}}disabled{{/eq}}">
+                        <i class="sicon sicon-chevron-left"></i>
+                    </button>
+                        <span>{{this.model.attributes.currentPage}}</span>
+                    <span>{{str 'LBL_MAPS_LOGGER_OF' ../module}}</span>
+                        <span>{{this.model.attributes.totalPages}}</span>
+                    <button data-action="paginate-next" class="btn paginate-next {{#eq this.model.attributes.currentPage this.model.attributes.totalPages}}disabled{{/eq}}">
+                        <i class="sicon sicon-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        {{else}}
+            <div class="no-data-available text-center p-2">
+                {{str 'LBL_NO_DATA_AVAILABLE'}}
+            </div>
+        {{/if}}
+    </div>
+</div>

@@ -1,0 +1,1 @@
+(function register(app){app.events.on('app:init',function init(){function EmptyOperator(def){this.def=def;};EmptyOperator.prototype.getUpdatedInput=function(callback){callback({properties:{_inputType:false,},});};app.filterOperators=app.filterOperators||{};app.filterOperators=_.extend(app.filterOperators,{EmptyOperator:EmptyOperator});});})(SUGAR.App);

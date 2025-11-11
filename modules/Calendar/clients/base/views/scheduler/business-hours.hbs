@@ -1,0 +1,40 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class='modal fade' id='add_business_hours_modal' data-content='business-hours-modal' role='dialog'>
+  <div class='modal-dialog'>
+
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type='button' class='close' data-bs-dismiss='modal'><i class='sicon sicon-close'></i></button>
+        <h4 class='modal-title'>{{str 'LBL_CALENDAR_MODAL_BUSINESS_HOURS' 'Calendar'}}</h4>
+      </div>
+
+      <div class='modal-body'>
+        <div class='businessHoursContainer'>
+          <label for='startTime'>{{str 'LBL_CALENDAR_MODAL_START_BUSINESS_HOUR' 'Calendar'}}</label>
+          <input type='text' id='startTime' name='startTime' placeholder='--:--'>
+
+          <label for='endTime'>{{str 'LBL_CALENDAR_MODAL_END_BUSINESS_HOUR' 'Calendar'}}</label>
+          <input type='text' id='endTime' name='endTime' placeholder='--:--'>
+        </div>
+      </div>
+
+      <div class='modal-footer'>
+        <span>
+            <a class='btn btn-primary saveHours' href='javascript:void(0)'name='saveHours'>{{str 'LBL_SAVE_BUTTON' 'Calendar'}}</a>
+        </span>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,54 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if collection.dataFetched}}
+    {{#each meta.panels}}
+        <table class="table table-striped dataTable">
+            <thead>
+                <tr>
+                    {{#each fields}}
+                        <th class="relative {{#isSortable ../../module this}}sorting{{#eq ../../../collection.orderBy.field name}}_{{../../../../orderBy.direction}}{{/eq}} orderBy{{name}}{{/isSortable}}{{#if widthClass}} {{widthClass}}{{/if}}"
+                        {{#if styles}} style="{{styles}}"{{/if}}
+                        {{#if name}} data-fieldname="{{name}}"{{/if}} data-orderby="{{orderBy}}">
+                          <div class="sortable-row-header-container p-2">
+                            <span>
+                                 {{#if icon}}
+                                     <i class="{{buildIcon icon.type}}" rel="tooltip"  title="{{str icon.tooltip ../../../module}} "></i>
+                                 {{/if}}
+                                {{str label ../../module}}
+                            </span>
+                            <span class="sortable-row-header-arrows">
+                              <i class="sicon sicon-arrow-up"></i>
+                              <i class="sicon sicon-arrow-down"></i>
+                            </span>
+                          </div>
+                        </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each ../collection.models}}
+                    <tr class="single"{{#if id}} data-id="{{id}}"{{/if}}>
+                        {{#each ../fields}}
+                            <td{{#if align}} class="{{align}}"{{/if}}{{#if name}} data-fieldname="{{name}}"{{/if}} data-type="{{type}}">{{field ../../../this model=../this template=../../../viewName}}</td>
+                        {{/each}}
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{/each}}
+    {{#unless collection.length}}
+        <div class="block-footer">
+            {{str "LBL_NO_DATA_AVAILABLE"}}
+        </div>
+    {{/unless}}
+{{/if}}

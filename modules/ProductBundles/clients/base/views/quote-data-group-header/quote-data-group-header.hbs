@@ -1,0 +1,39 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<tr
+    class="bg-[--content-background] flex-list-row-header left-0 quote-data-group-header stick-left ui-not-droppable"
+    name="{{model.module}}_{{model.cid}}"
+>
+    <td class="absolute bg-[--content-background] flex focus-within:z-30 justify-evenly two-dropdowns z-10"{{#if name}} data-fieldname="{{name}}"{{/if}}>
+        <span class="absolute action-button-wrapper inset-0 left-column-save-cancel px-2 py-1">
+            {{#each leftSaveCancelColumn}}
+                {{field ../this model=../model template=../viewName}}
+            {{/each}}
+        </span>
+        <span class="absolute action-button-wrapper inset-0 left-column-buttons p-2">
+            {{#each leftColumns}}
+                {{field ../this model=../model template=../viewName}}
+            {{/each}}
+        </span>
+    </td>
+    {{#each _fields}}
+        <td{{#if align}} class="{{align}}"{{/if}} data-type="{{type}}" colspan="{{../listColSpan}}">
+            <div class="quote-data-group-title">
+                <span class="group-loading-icon">
+                    <i class="sicon sicon-refresh sicon-is-spinning"></i>
+                </span>
+                {{field ../this model=../model template=../viewName}}
+            </div>
+        </td>
+    {{/each}}
+</tr>

@@ -1,0 +1,34 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="flex flex-row items-center m-2 ml-2.5 mr-2.5">
+    <input class="w-full" type="text" value="{{data._searchTerm}}" placeholder="{{str 'LBL_SEARCH'}}" data-fieldname="search-multiple">
+</div>
+<div class="report-multiselect-wrapper">
+    <div class="flex flex-row items-center pt-1.5 pb-1.5 pl-2.5 pr-2.5 select-all">
+        <label class="h-full inline-flex my-0.5 text-[--text-color] w-full"><input class="mr-2.5" type="checkbox" name="select-all"> {{str 'LBL_SELECT_ALL' 'Reports'}}</label>
+    </div>
+    <div class="report-multiselect-options overflow-y-auto">
+        {{#each data._inputValue}}
+            <div class="flex flex-row items-center p-1.5 pl-2.5 pr-2.5">
+                <label class="h-full inline-flex my-0.5 text-[--text-color] w-full"><input class="mr-2.5" type="checkbox" value="{{@key}}" data-fieldname="enum-multiple" checked>
+                {{this}}</label>
+            </div>
+        {{/each}}
+        {{#each data._inputValue1}}
+            <div class="flex flex-row items-center p-1.5 pl-2.5 pr-2.5">
+                <label class="h-full inline-flex my-0.5 text-[--text-color] w-full"><input class="mr-2.5" type="checkbox" value="{{@key}}" data-fieldname="enum-multiple">
+                {{this}}</label>
+            </div>
+        {{/each}}
+    </div>
+</div>

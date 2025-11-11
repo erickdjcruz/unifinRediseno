@@ -1,0 +1,70 @@
+<?php
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+$mod_strings = [
+    'LBL_LIST_FORM_TITLE' => 'سرد إجراءات Smart Guide Sugar',
+    'LBL_MODULE_TITLE' => 'إجراء Smart Guide Sugar',
+    'LBL_HOMEPAGE_TITLE' => 'إجراءات Smart Guide Sugar الخاصة بي',
+    'LNK_NEW_RECORD' => 'إجراء Smart Guide Sugar جديد',
+    'LNK_VIEW_RECORDS' => 'عرض إجراءات Smart Guide Sugar',
+    'LNK_CJ_FORM_LIST' => 'عرض إجراءات Smart Guide Sugar',
+    'LNK_LIST' => 'إجراءات Smart Guide Sugar',
+    'LBL_SEARCH_FORM_TITLE' => 'بحث عن إجراء Smart Guide Sugar',
+    'LBL_MODULE_NAME' => 'إجراءات Smart Guide Sugar',
+    'LBL_MODULE_NAME_SINGULAR' => 'إجراء Smart Guide Sugar',
+    'LBL_TRIGGER_EVENT' => 'حدث البدء',
+    'LBL_ACTION_TYPE' => 'نوع الإجراء',
+    'LBL_PARENT_MODULE' => 'الوحدة الأصل',
+    'LBL_RELATIONSHIP' => 'العلاقة',
+    'LBL_ACTIVITY_TEMPLATE' => 'قالب النشاط',
+    'LBL_JOURNEY_STAGE_ACTIVITY_TEMPLATE' => 'قالب الدليل الذكي/المرحلة/النشاط',
+    'LBL_ACTIVE' => 'نشطة',
+    'LBL_DUPLICATE_TRIGGER_EVENT_FOUND_ERROR' => 'لقالب النشاط %s بالفعل إجراء Sugar باستخدام حدث البدء %s. يوجد حد بإجراء Sugar واحد لكل نوع حدث بدء لكل مرحلة أو نشاط في Smart Guide.',
+    'LBL_RECORDVIEW_PANEL4' => 'ملء الحقول',
+    'LBL_POPULATE_FIELDS' => 'ملء الحقول',
+    'LBL_ADD_FIELD' => 'إضافة حقل',
+    'LBL_REMOVE_FIELD' => 'إزالة الحقل',
+    'LBL_FIELD_NAME' => 'اسم الحقل',
+    'LBL_FIELD_VALUE' => 'قيمة الحقل',
+    'LBL_FIELD_NOT_AVAILABLE' => 'هذا الحقل غير متوفر لعرض القائمة.',
+    'LBL_ACTION_TRIGGER_TYPE' => 'نوع مشغل الإجراء',
+    'LBL_COULD_NOT_FIND_RELATED_RECORD' => 'تعذر العثور على السجل ذي الصلة',
+    'LBL_IGNORE_ERRORS' => 'تجاهل الأخطاء',
+    'LBL_NO_DISPLAY_FIELDS' => 'لا توجد حقول لعرضها.',
+    'LBL_ACTIVITY_TEMPLATE_LINK' => 'حقل ارتباط قالب النشاط',
+    'LBL_STAGE_TEMPLATE_LINK' => 'حقل ارتباط قالب المرحلة',
+    'LBL_EMAIL_TEMPLATES' => 'قالب البريد الإلكتروني',
+    'LBL_SELECT_TO_EMAIL_ADDRESS' => 'حدد عنوان البريد الإلكتروني "إلى"',
+    'LBL_RECORDVIEW_PANEL_EMAIL_FIELDS' => 'حقول البريد الإلكتروني',
+    'LBL_DISPLAY_ACTIVITY_RSA_ICON' => 'أيقونة العرض',
+    'CJ_FORMS_LBL_PARENT_NAME' => 'قالب الدليل الذكي/المرحلة/النشاط',
+    'LBL_ACTIVITY_MODULE' => 'وحدة النشاط',
+    'LBL_SMART_GUIDE_TEMPLATE' => 'قالب Smart Guide',
+    'LBL_SMART_GUIDE_TEMPLATE_PLACEHOLDER' => 'حدد مشغل قالب الدليل الذكي',
+    'LBL_MAIN_TRIGGER_TYPE' => 'نوع المشغل',
+    'LBL_MAIN_TRIGGER_TYPE_PLACEHOLDER' => 'حدد نوع المشغل',
+    'LBL_MODULE_TRIGGER' => 'مشغل الوحدة',
+    'LBL_MODULE_TRIGGER_PLACEHOLDER' => 'حدد مشغل الوحدة',
+    'LBL_FIELD_TRIGGER' => 'مشغل الحقل',
+    'LBL_CJ_TARGET_PLACEHOLDER' => 'حدد هدف Smart Guide',
+    'LBL_CJ_TARGET' => 'هدف Smart Guide',
+    'LBL_CJ_ACTION' => 'إجراء Smart Guide',
+    'LBL_CJ_ACTION_PLACEHOLDER' => 'تحديد إجراء Smart Guide',
+    'LBL_TRIGGER_TITLE' => 'المشغل',
+    'LBL_TRIGGER_DESCRIPTION' => 'استخدم الحقول أدناه لتحديد نوع المشغل والشروط التي ستنشط المشغل.',
+    'LBL_TARGET_ACTION_TITLE' => 'الهدف والإجراء',
+    'LBL_TARGET_ACTION_DESCRIPTION' => 'استخدم الحقول أدناه لتحديد مكان الإجراءات التي ستحدث عند تنشيط المشغل وأي إجراءات.',
+    'LBL_SELECT_SMART_GUIDE_STAGE_PLACEHOLDER' => 'تحديد مرحلة Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_PLACEHOLDER' => 'تحديد أنشطة Smart Guide',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITY_PLACEHOLDER' => 'تحديد نشاط Smart Guide',
+    'LBL_SELECT_STAGE_ACTIVITIES_ACTION_PLACEHOLDER' => 'تحديد إجراء أنشطة المرحلة',
+    'LBL_SELECT_SMART_GUIDE_ACTIVITIES_ACTION_PLACEHOLDER' => 'تحديد إجراء أنشطة Smart Guide',
+];

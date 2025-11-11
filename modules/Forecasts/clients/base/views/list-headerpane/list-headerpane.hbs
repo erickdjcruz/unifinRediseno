@@ -1,0 +1,39 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+
+<div class="headerpane listheaderpane bg-[--primary-content-background] block box-border fixed pl-3">
+    <div class="box user font-normal inline-block mt-4 text-base">
+        <span class="module-title max-w-[300px] overflow-hidden pull-left text-ellipsis whitespace-nowrap">{{{title}}}</span>
+        {{#each meta.tree}}
+            {{field ../this}}
+        {{/each}}
+    </div>
+
+    <div class="box quarter-picker font-normal inline-block mt-4 text-base">
+        {{#each this.meta.timeperiod}}
+            {{field ../this model=../this.tpModel}}
+        {{/each}}
+    </div>
+
+    <div class="box datapoints font-normal inline-block mt-4 text-base">
+        {{#each this.meta.header-datapoints}}
+            {{field ../this model=../this.model}}
+        {{/each}}
+    </div>
+
+    <div class="box btn-toolbar dropdown font-normal inline-block mt-4 text-base">
+        {{#each meta.buttons}}
+            {{field ../this}}
+        {{/each}}
+    </div>
+</div>

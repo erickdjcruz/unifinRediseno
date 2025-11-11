@@ -1,0 +1,48 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+{{#if tabs}}
+<div class="tabbable">
+    <ul class="nav nav-tabs nav-tabs-indented">
+        {{#each tabs}}
+            <li class="tab tab-badgeable {{#eq ../activeTab @index}}active{{/eq}}"
+                data-bs-toggle="tab" data-index="{{@index}}">
+                <a
+                    class="ellipsis_inline"
+                    data-original-title="{{str name module params}}"
+                >
+                    {{#if icon}}
+                        {{#if icon.module}}
+                            {{moduleLabel icon.module 'sm'}}
+                        {{/if}}
+                        {{#if icon.image}}
+                            {{{icon.image}}}
+                        {{/if}}
+                    {{/if}}
+                    <span class="tab-title font-semibold">{{str name module params}}</span>
+
+                    {{#each badges}}
+                        {{field ../../this}}
+                    {{/each}}
+                </a>
+            </li>
+        {{/each}}
+    </ul>
+</div>
+{{/if}}
+{{#if buttons}}
+<div class="tabbable-toolbar">
+    {{#each buttons}}
+        {{field ../this}}
+    {{/each}}
+</div>
+{{/if}}

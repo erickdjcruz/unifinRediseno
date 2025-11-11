@@ -1,0 +1,39 @@
+/* RENAME MODULES
+  ----------------*/
+
+.module-names-and-icons-group {
+  .dataTable {
+    &.table-striped {
+      &.module-names-and-icons {
+        thead th[data-fieldname] {
+          border: @borderWidget;
+
+          &:not(.stick-left):not(.stick-first):not(.stick-right):not(:last-child)::after {
+            border-right: unset;
+          }
+        }
+
+        tbody {
+          td {
+            max-width: fit-content;
+
+            .fieldset-inline {
+              .fieldset-field:not(:first-child) {
+                padding-right: 0;
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+
+      .error input::placeholder {
+        color: @errorText;
+      }
+    }
+  }
+
+  .select2-container {
+    min-width: 12rem;
+  }
+}

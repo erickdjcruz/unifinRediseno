@@ -1,0 +1,31 @@
+{{!--
+/*
+ * Your installation or use of this SugarCRM file is subject to the applicable
+ * terms available at
+ * http://support.sugarcrm.com/Resources/Master_Subscription_Agreements/.
+ * If you do not agree to all of the applicable terms or do not have the
+ * authority to bind the entity as an authorized representative, then do not
+ * install or use this SugarCRM file.
+ *
+ * Copyright (C) SugarCRM Inc. All rights reserved.
+ */
+--}}
+<div class="chart-tooltip-wrapper inline-block" rel="tooltip" data-bs-placement="bottom" data-original-title="{{str 'LBL_CHART_VIEW' module}}">
+    <button class="btn report-visibility-button" id="chart" data-action="change-visibility" data-original-title="{{str 'LBL_CHART_VIEW' module}}">
+        <i class="sicon sicon-add-dashlet-lg"></i>
+    </button>
+</div>
+
+<div class="data-table-tooltip-wrapper inline-block" rel="tooltip" data-bs-placement="bottom" data-original-title="{{str 'LBL_TABLE_VIEW' module}}">
+    <button class="btn report-visibility-button" id="table" data-action="change-visibility" data-original-title="{{str 'LBL_TABLE_VIEW' module}}">
+        <i class="sicon sicon-data-table"></i>
+    </button>
+</div>
+
+<div class="filters-tooltip-wrapper inline-block relative" rel="tooltip" data-bs-placement="bottom" data-original-title="{{str 'LBL_FILTER_VIEW' module}}">
+    <button class="btn report-visibility-button" id="filters" data-action="change-visibility" data-original-title="{{str 'LBL_FILTER_VIEW' module}}">
+        <i class="sicon sicon-filter"></i>
+        <div class="report-filters-badge absolute hidden rounded-lg" data-container="filters-badge">0</div>
+    </button>
+</div>
+
