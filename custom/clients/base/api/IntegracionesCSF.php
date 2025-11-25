@@ -62,6 +62,9 @@ class IntegracionesCSF extends SugarApi
         $base64_CSF = $args['base64'];
         $date_issued = $args['vigencia'];
         $vigencia = gmdate("Y-m-d");
+
+        $origen = $args['origen_sys'];
+        $GLOBALS['log']->fatal("Origen Peticion: ".$origen);
         
         $url_token_robina = $sugar_config['regimenes_sat_url'].'/auth/login/token';
         $user = $sugar_config['regimenes_sat_user'];
@@ -78,7 +81,7 @@ class IntegracionesCSF extends SugarApi
         $instanciaAPI = new UnifinAPI();
         $responseToken = $instanciaAPI->postSimilarityToken( $url_token_robina, $user, $password  );
 
-        if( !empty($responseToken) ){
+        if( !empty($responseToken) && $origen != 'onboarding' ){
             $token = $responseToken['access_token'];
             
             ///tax-status/retrieve-pdf/{rfc} -- http://192.168.150.231:5471/auth/login/token
@@ -87,10 +90,72 @@ class IntegracionesCSF extends SugarApi
             $responseCSF_base64=$this->callDigitalVal($url_digital_csf, $token );
             file_put_contents('custom/csf/csf_'.$rfc.'.pdf', $responseCSF_base64);
             $b64CSFVal = chunk_split(base64_encode(file_get_contents('custom/csf/csf_'.$rfc.'.pdf')));
+        }
+        if($origen == 'onboarding'){
+            $url_csf=$sugar_config['regimenes_sat_url'].'/tax-status/upload/';
+            
+            if( !empty($responseToken) ){
+                $token = $responseToken['access_token'];
+
+                $file_pdf=$this->generateFilePDF($base64_CSF);
+
+                $responsevalidate=$this->callValidateCSF($url_csf, $token , $file_pdf);
+                $rfc =  $responsevalidate['rfc'] ?? null;
+                $GLOBALS['log']->fatal( "rfc:".$rfc );
+
+                if($rfc != null){
+                    // Fechas dinámicas
+                    $from = date('Y-m-01\T00:00:00', strtotime('-1 year'));
+                    $to = date('Y-m-01\T00:00:00');
+
+                    $url_ticket = $sugar_config['regimenes_sat_url'].'/orders/place-order';
+
+                    $body = json_encode([
+                        "options" => [
+                            "period" => [
+                                "to" => $to,
+                                "from" => $from
+                            ]
+                        ],
+                        "taxpayer" => $rfc,
+                        "extractor" => "tax_status"
+                    ]);
+
+                    $GLOBALS['log']->fatal($url_ticket);
+                    $GLOBALS['log']->fatal($body);
+                    $responseRobinaTicket = $this->callCreateTicket($url_ticket, $token, $body);
+                    $GLOBALS['log']->fatal( 'creo ticket' );
+                    //$GLOBALS['log']->fatal( print_r($response,true) );
+                    $GLOBALS['log']->fatal( 'ticket:'.$responseRobinaTicket['id'] );
+                    //$response = json_decode($response, true);
+
+                    if (isset($responseRobinaTicket['detail'][0]['msg']) && $responseRobinaTicket['detail'][0]['msg'] === 'value is not a valid dict') {
+                        $responseRobinaTicket['codeerror'] = 400;
+                        $responseRobinaTicket['messageerror'] = 'No se encontraron datos del RFC';
+                        $GLOBALS['log']->fatal('Error crear ticket');
+                        //return $response1; // Termina aquí y regresa el error
+                    }
+                    $ticket = '';
+
+                    // Validar y extraer datos
+                    if (!empty($responseRobinaTicket['id']) && !empty($responseRobinaTicket['createdAt'])) {
+                        $ticket = $responseRobinaTicket['id'];
+                        //$response['ticket'] = $ticket;
+                        $GLOBALS['log']->fatal( 'ticket: '. $ticket);
+                        $response['ticket'] = $ticket;
+                    }
+                }                   
+
+                $b64CSFVal = $base64_CSF;
+                file_put_contents('custom/csf/csf_'.$rfc.'.pdf', chunk_split($base64_CSF));
+            }
+        }
+
+        if($b64CSFVal != null){
 
             //file_put_contents('custom/csf/csforiginal.pdf', chunk_split($base64_CSF));
             //file_put_contents('custom/csf/csf1.pdf', $responseCSF_base64);            
-            $response['robina']= "Validación digital de CSF generada correctamente";
+            //$response['description']= "Validación digital de CSF generada correctamente";
             //$GLOBALS['log']->fatal( "emptyb64_csf: " . !empty($responseCSF_base64) );
             if( !empty($responseCSF_base64) ){
                 //Envia petición hacia alfresco
@@ -115,7 +180,7 @@ class IntegracionesCSF extends SugarApi
             //$GLOBALS['log']->fatal( "response_base64: " . !empty($response_base64) );
             if( !empty($response_base64) ){
                 file_put_contents('custom/csf/validator_'.$rfc.'.pdf', $response_base64);
-                $response['robina']= "Validación digital de CSF generada correctamente";
+                //$response['robina']= "Validación digital de CSF generada correctamente";
 
                 //Envía Constancia de Situación Fiscal hacia Quantico
                 $url_expediente = $sugar_config['quantico_expediente_url'].'/Expedient_CS/rest/QuanticoDocuments/QuanticoUploadDocument';
@@ -428,6 +493,47 @@ class IntegracionesCSF extends SugarApi
   
     }
 
+    public function callValidateCSF( $url, $token, $file ){
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('file'=> new CURLFILE($file)),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer '.$token
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        return json_decode($response, true);
+    }
+
+    public function generateFilePDF( $base64 ){
+        $folderPath = "custom/csf/";
+        
+        //Se realiza explode ya que la cadena viene como: data:application/pdf;base64,JVBER...
+        $pdf_base64 = explode(";base64,", $base64);
+
+        $str_base64 = base64_decode($pdf_base64[1]);
+
+        //Se genera el archivo pdf con el string obtenido
+        $archivo = $folderPath .'CSFC_'. uniqid() . '.pdf';
+
+        file_put_contents($archivo, $str_base64);
+
+        return $archivo;
+
+
+    }
 
 }
 
