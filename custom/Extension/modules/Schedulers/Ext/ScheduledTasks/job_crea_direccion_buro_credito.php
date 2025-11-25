@@ -11,29 +11,12 @@ function job_crea_direccion_buro_credito()
     
     try {
         // Consultar cuentas que tienen la bandera activa
-        $query = "SELECT addir.accounts_dire_direccion_1accounts_ida as account_id
-        from unifin.accounts acc
-        INNER JOIN unifin.accounts_cstm accCstm ON accCstm.id_c = acc.id
-        INNER JOIN accounts_dire_direccion_1_c as addir ON addir.accounts_dire_direccion_1accounts_ida = acc.id
-        left join dire_direccion dd on addir.accounts_dire_direccion_1dire_direccion_idb = dd.id
-        inner join dire_direccion_cstm ddc on dd.id = ddc.id_c
-        where addir.deleted = 0 
-        and dd.inactivo = 0 
-        AND CAST(acc.date_entered AS DATE) >= '2024-10-01'
-        AND dd.deleted = 0
-        AND dd.inactivo = 0
-        AND accCstm.tipo_registro_cuenta_c IN ('2', '3', '4')
-        AND (dd.indicador & 2 = 2)
-        and addir.accounts_dire_direccion_1accounts_ida in (
-            SELECT ac.id_c as account_id FROM tct02_resumen a
-            INNER JOIN tct02_resumen_cstm ac ON ac.id_c = a.id
-            WHERE ac.crear_direccion_buro_c = 1 
-            AND a.deleted = 0
-            AND ( TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) >= 5 
-            OR TIMESTAMPDIFF(MINUTE, a.date_entered, NOW()) <= -5 )
-            ORDER BY a.date_entered ASC 
-        ) "; 
-        
+        $GLOBALS['log']->fatal("*** INICIANDO JOB: CrearDireccionBuroJob - Buscando cuentas con bandera activa ***");
+        $query = "SELECT a.id from accounts a, accounts_cstm b, accounts_dire_direccion_1_c c, dire_direccion d, dire_direccion_cstm e, tct02_resumen_cstm f
+        where a.id = b.id_c and a.id = c.accounts_dire_direccion_1accounts_ida and d.id = e.id_c and a.id = f.id_c and a.deleted = 0 and 
+        d.id = c.accounts_dire_direccion_1dire_direccion_idb and c.deleted = 0 and d.deleted = 0 and b.tipo_registro_cuenta_c IN (2,3,4) and 
+        d.inactivo = 0 and d.indicador &2 = 2 and f.seguimiento_bc_c = 0 and a.date_entered >= '2024-10-01'"; 
+                
         //$GLOBALS['log']->fatal("consulta");
         $GLOBALS['log']->fatal($query);
 
@@ -112,9 +95,10 @@ function job_crea_direccion_buro_credito()
                     $sincolonia = [" ","", ".", "-", "_", "Sin Colonia", "SIN COLONIA","OTRA NO ESPECIFICADA EN EL CATALOGO"];
                     $sinciudad = [" ","", ".", "-", "_" , "Sin Ciudad", "SIN CIUDAD","OTRA NO ESPECIFICADA EN EL CATALOGO"];
                        
-                    if (empty($auxDireccion)) {
-                        //$GLOBALS['log']->fatal("No se encontró dirección fiscal para cuenta: " . $accountId);
-                        $cuentasConError++;
+                   if (empty($auxDireccion)) {
+                    $cuentasConError++;
+                    }elseif (in_array($auxDireccion->colonia_c, $sincolonia) && ($auxDireccion->localidad_c != '' && $auxDireccion->localidad_c != null ) ) {
+                        $cuentasSinLocalidad++;
                     }else {
                         $direccion_completa = '';
                         $desc_aux = '';
